@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Build JSD_Fuzzy_TwoStage_SensorID.ipynb.
+"""Build 04_Klasifikasi_Dulu_Baru_Sensor_Mana.ipynb.
 
 Fixes the gap flagged by Bu Luh (WhatsApp 2026-07-17):
   1) "sensor mana yang ada fault" -> belum ada jawaban yang di-chain dari hasil
-     klasifikasi 17-kelas (JSD_Fuzzy_Broker_PerSensor.ipynb menjawabnya tapi
+     klasifikasi 17-kelas (archive/LAMA_TIDAK_VALID_Sensor_Mana_Label_Kembar.ipynb menjawabnya tapi
      lewat task multi-label terpisah, bukan lanjutan dari 17-kelas).
   2) "akurasi tetap per klasifikasi... 17 kelas di EDM dan 17 kelas di JSD,
      setelah itu identifikasi sensor yang salah" -> Stage 1 (17-kelas, sama
-     seperti JSD_Fuzzy_ANN_Paper.ipynb) tetap dipertahankan utuh, lalu Stage 2
+     seperti 01_Metode_Mana_Paling_Akurat_EDM_vs_JSD.ipynb) tetap dipertahankan utuh, lalu Stage 2
      (baru) mengidentifikasi sensor yang fault, dari split test yang SAMA.
 
 Root cause kenapa belum bisa di-chain: `inject_faults_multisensor` di notebook
@@ -37,7 +37,7 @@ Menjawab 2 pesan WhatsApp Bu Luh (2026-07-17):
 
 **Desain 2 stage (chained, dari split test yang sama):**
 - **Stage 1** — klasifikasi 17 kelas (normal + 16 skenario fault kombinasi),
-  identik dengan `JSD_Fuzzy_ANN_Paper.ipynb`: akurasi + classification report
+  identik dengan `01_Metode_Mana_Paling_Akurat_EDM_vs_JSD.ipynb`: akurasi + classification report
   per kelas, dijalankan terpisah untuk **EDM-Fuzzy** dan **JSD-Fuzzy**.
 - **Stage 2** (baru) — untuk window yang diklasifikasi fault oleh Stage 1,
   jalankan `MultiOutputClassifier` (4 label biner `[S1,S2,S3,S4]`) untuk
@@ -160,7 +160,7 @@ print("Columns:", cols, "| Shape X:", X.shape, "-> downsampled X_ds:", X_ds.shap
 cells.append(md("""# Fault Injection — Sensor-Selective (17 skenario tetap sama)
 
 Simulator fault dan `SCENARIOS` (16 kombinasi + normal = 17 kelas) **identik**
-dengan `JSD_Fuzzy_ANN_Paper.ipynb`. Yang berubah hanya `inject_faults_multisensor`:
+dengan `01_Metode_Mana_Paling_Akurat_EDM_vs_JSD.ipynb`. Yang berubah hanya `inject_faults_multisensor`:
 sekarang menerima `sensor_subset` — hanya sensor dalam subset yang disuntik
 fault, sensor lain tetap bersih. Tiap skenario diulang untuk beberapa ukuran
 subset (`SENSOR_SUBSET_SIZES`) supaya window punya keragaman "berapa & sensor
@@ -199,7 +199,7 @@ def simulate_choose_one(x, options, seed=None):
     f, kw = options[rng.integers(len(options))]
     return f(x, **kw, seed=seed)
 
-# 17 skenario (1 normal + 16 fault) -- IDENTIK JSD_Fuzzy_ANN_Paper.ipynb
+# 17 skenario (1 normal + 16 fault) -- IDENTIK 01_Metode_Mana_Paling_Akurat_EDM_vs_JSD.ipynb
 SCENARIOS = {
     "faulty": [(simulate_choose_one, {"options": [
         (simulate_drift_fault, {"intensity": 0.02}),
@@ -322,7 +322,7 @@ print("Per-sensor fault prevalence (subsampled):", Ysens_s.mean(axis=0).round(3)
 
 cells.append(md("""# Entropy Features — EDM-Fuzzy & JSD-Fuzzy (rich)
 
-Fungsi identik `JSD_Fuzzy_ANN_Paper.ipynb`. JSD-Fuzzy pakai varian *rich*
+Fungsi identik `01_Metode_Mana_Paling_Akurat_EDM_vs_JSD.ipynb`. JSD-Fuzzy pakai varian *rich*
 (`[jsd, fe, mean_m, std_m]`/skala, 4 fitur/skala) yang terbukti menaikkan
 akurasi 17-kelas dari ~0.34 ke ~0.42 dibanding varian lama (1 fitur/skala).
 """))
@@ -435,7 +435,7 @@ for name in METHOD_LIST:
 
 cells.append(md("""# Fitur Hibrida (Entropy + Time-Domain)
 
-Sama seperti `JSD_Fuzzy_Broker_PerSensor.ipynb`: entropy murni digabung 12
+Sama seperti `archive/LAMA_TIDAK_VALID_Sensor_Mana_Label_Kembar.ipynb`: entropy murni digabung 12
 fitur time-domain/sensor (mean/std/rms/ptp/mad/skew/kurt/slope/maxΔ/trend/zcr/
 HF-energy) supaya offset/bias (yang entropy buta) tetap tertangkap fitur level.
 Fitur hibrida ini dipakai untuk **Stage 1 dan Stage 2**.
@@ -467,11 +467,18 @@ for name, Fh in FEAT_by_method.items():
     print(name, "hybrid feature shape:", Fh.shape)
 """))
 
-cells.append(md("""# Stage 1 — Klasifikasi 17 Kelas (EDM-Fuzzy vs JSD-Fuzzy)
+cells.append(md("""# Tahap 1 — Klasifikasi, 3 Tingkat Kesulitan
 
-Jawaban langsung untuk pesan Bu Luh #2: akurasi & classification report per
-kelas, **17 kelas di EDM-Fuzzy** dan **17 kelas di JSD-Fuzzy**, split/seed
-identik untuk keduanya.
+Bu Luh minta tiga bentuk (voice note 2026-07-19), jadi Tahap 1 dijalankan tiga kali:
+
+| Tugas | Isi | Dari pesan |
+|---|---|---|
+| `T1_biner` | fault vs non-fault (2 kelas) | *"dari kita sudah bisa mengklasifikasikan fault dan non-fault-nya, kemudian salahnya di sensor mana"* |
+| `T2_single5` | normal + 4 fault tunggal (5 kelas) | *"kalau satu-satu berarti pakai skenario yang kedua"* |
+| `T3_17kelas` | 17 kelas penuh (normal + 16 kombinasi) | permintaan sebelumnya, tetap dipertahankan |
+
+Tiap tugas dijalankan untuk **EDM-Fuzzy** dan **JSD-Fuzzy** dengan split & seed
+identik, lalu **Tahap 2 (identifikasi sensor) menyusul di atas hasil tugas itu**.
 """))
 
 cells.append(code("""from sklearn.model_selection import train_test_split, StratifiedKFold, GridSearchCV
@@ -485,84 +492,83 @@ from sklearn.metrics import (accuracy_score, f1_score, precision_recall_fscore_s
                               confusion_matrix, ConfusionMatrixDisplay)
 
 TEST_FRAC = 0.25
+SINGLE_FAULT_NAMES = ["drift", "spike", "bias", "hardware"]
 
-# split index sekali -> dipakai ulang di Stage 2 supaya benar-benar "chained"
-# dari test set yang sama (bukan split baru).
-idx_all = np.arange(len(y_s))
-idx_tr, idx_te = train_test_split(idx_all, test_size=TEST_FRAC, random_state=RANDOM_SEED, stratify=y_s)
+# --- Definisi 3 tugas Tahap 1 -------------------------------------------------
+# Tiap tugas: subset window yang dipakai (keep) + label kelasnya (y) + nama kelas.
+def build_task_T1_biner():
+    # Window normal cuma dibangkitkan sekali, sedangkan tiap skenario fault
+    # diulang -> kalau dibiarkan, kelas "fault" ~16x lebih banyak dan akurasi
+    # 0,9x cuma efek menebak kelas mayoritas. Jadi kelas fault disubsample
+    # supaya seimbang 50:50 dan angkanya berarti.
+    rng = np.random.default_rng(RANDOM_SEED)
+    idx_normal = np.where(y_s == 0)[0]
+    idx_fault = np.where(y_s > 0)[0]
+    n = min(len(idx_normal), len(idx_fault))
+    keep = np.concatenate([rng.choice(idx_normal, n, replace=False),
+                            rng.choice(idx_fault, n, replace=False)])
+    rng.shuffle(keep)
+    return keep, (y_s[keep] > 0).astype(int), ["non-fault", "fault"]
+
+def build_task_T2_single5():
+    sf_idx = [scenario_names.index(n) for n in SINGLE_FAULT_NAMES if n in scenario_names]
+    keep = np.where((y_s == 0) | np.isin(y_s, sf_idx))[0]
+    remap = {0: 0}
+    for new, old in enumerate(sf_idx, start=1):
+        remap[old] = new
+    return keep, np.array([remap[v] for v in y_s[keep]]), ["normal"] + SINGLE_FAULT_NAMES
+
+def build_task_T3_17kelas():
+    return np.arange(len(y_s)), y_s.copy(), scenario_names
+
+TASKS = {
+    "T1_biner":   dict(build=build_task_T1_biner,   desc="fault vs non-fault (2 kelas)"),
+    "T2_single5": dict(build=build_task_T2_single5, desc="normal + 4 fault tunggal (5 kelas)"),
+    "T3_17kelas": dict(build=build_task_T3_17kelas, desc="17 kelas penuh"),
+}
 
 def build_hidden_candidates(I, O):
     base = sorted(set([max(8, I // 4), max(16, I // 2), max(32, int(np.floor((2/3)*I + O))), I, min(2*I, 512)]))
     cand = [(h,) for h in base]
     for h1 in base:
-        for h2 in sorted(set([max(4, h1 // 4), max(8, h1 // 2)])):
-            cand.append((h1, h2))
-    return list(dict.fromkeys(cand))[:20]
+        cand.append((h1, max(8, h1 // 2)))
+    return list(dict.fromkeys(cand))[:12]
 
-def train_ann_17class(F_local, name):
-    Xtr, Xte, ytr, yte = F_local[idx_tr], F_local[idx_te], y_s[idx_tr], y_s[idx_te]
-    I = Xtr.shape[1]; O = len(np.unique(y_s))
+def run_stage1(F_task, y_task, tr, te):
+    Xtr, Xte, ytr, yte = F_task[tr], F_task[te], y_task[tr], y_task[te]
+    I = Xtr.shape[1]; O = len(np.unique(y_task))
     pipe = Pipeline([("imputer", SimpleImputer(strategy="median")), ("scaler", StandardScaler()),
-                      ("mlp", MLPClassifier(max_iter=400, random_state=RANDOM_SEED, early_stopping=True, n_iter_no_change=10))])
+                      ("mlp", MLPClassifier(max_iter=400, random_state=RANDOM_SEED,
+                                            early_stopping=True, n_iter_no_change=10))])
     grid = {"mlp__hidden_layer_sizes": build_hidden_candidates(I, O),
-            "mlp__alpha": [1e-4, 1e-3, 1e-2], "mlp__learning_rate_init": [1e-3, 3e-4], "mlp__activation": ["relu", "tanh"]}
-    cv = StratifiedKFold(n_splits=3, shuffle=True, random_state=RANDOM_SEED)
-    gs = GridSearchCV(pipe, grid, cv=cv, n_jobs=ANN_GRID_N_JOBS, scoring="accuracy")
+            "mlp__alpha": [1e-4, 1e-3, 1e-2], "mlp__activation": ["relu", "tanh"]}
+    gs = GridSearchCV(pipe, grid, cv=StratifiedKFold(3, shuffle=True, random_state=RANDOM_SEED),
+                      n_jobs=ANN_GRID_N_JOBS, scoring="accuracy")
     gs.fit(Xtr, ytr)
-    best = gs.best_estimator_; pred = best.predict(Xte)
-    metrics = {"best_params": gs.best_params_, "best_cv_acc": float(gs.best_score_),
-               "test_acc": float(accuracy_score(yte, pred)), "macro_f1": float(f1_score(yte, pred, average="macro", zero_division=0))}
-    return {"gs": gs, "Xte": Xte, "yte": yte, "pred": pred, "metrics": metrics}
+    pred = gs.best_estimator_.predict(Xte)
+    return {"yte": yte, "pred": pred, "best_params": gs.best_params_,
+            "test_acc": float(accuracy_score(yte, pred)),
+            "macro_f1": float(f1_score(yte, pred, average="macro", zero_division=0))}
 
-train_results = {}
-for name in METHOD_LIST:
-    log_stage(f"Stage1 ANN grid: {name}")
-    res, mtr = run_with_metrics(f"Stage1 ANN {name}", lambda n=name: train_ann_17class(FEAT_by_method[n], n))
-    train_results[name] = res
-    print(name, "| test_acc:", round(res["metrics"]["test_acc"], 4), "| macro_f1:", round(res["metrics"]["macro_f1"], 4))
+def run_stage2(F_task, Ysens_task, y_task, pred_stage1, tr, te):
+    \"\"\"Identifikasi sensor, dirantai dari Tahap 1.
 
-stage1_summary = pd.DataFrame({n: r["metrics"] for n, r in train_results.items()}).T
-export_df(stage1_summary.reset_index().rename(columns={"index": "Method"}), "stage1_17class_summary")
-stage1_summary
-"""))
-
-cells.append(code("""# === Stage 1: classification report per kelas (EDM-Fuzzy & JSD-Fuzzy) ===
-for name, res in train_results.items():
-    print(f"=== 17-kelas | {name} ===")
-    print(classification_report(res["yte"], res["pred"], labels=np.arange(len(scenario_names)),
-                                  target_names=scenario_names, zero_division=0))
-    print(f"Accuracy: {res['metrics']['test_acc']:.4f}  Macro-F1: {res['metrics']['macro_f1']:.4f}\\n")
-    cm = confusion_matrix(res["yte"], res["pred"], labels=np.arange(len(scenario_names)))
-    fig, ax = plt.subplots(figsize=(9, 8))
-    ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=scenario_names).plot(xticks_rotation=45, ax=ax, colorbar=False)
-    ax.set_title(f"Stage 1 — Confusion Matrix 17-kelas — {name}")
-    plt.tight_layout(); plt.savefig(f"exports/stage1_cm_{name.replace('-','_')}.png", dpi=120); plt.show()
-"""))
-
-cells.append(md("""# Stage 2 — Identifikasi Sensor (chained dari Stage 1)
-
-Untuk window yang berlabel fault (kelas != normal) di **split test yang sama**
-(`idx_te`), latih & evaluasi `MultiOutputClassifier(MLPClassifier)` -> 4
-keputusan biner `[S1,S2,S3,S4]` menunjuk sensor yang benar-benar fault.
-
-Dua varian evaluasi:
-- **oracle**: filter faulty window pakai label 17-kelas TRUE (batas atas performa Stage 2).
-- **end-to-end**: filter pakai label 17-kelas PREDIKSI Stage 1 (angka realistis, termasuk error Stage 1 yang ikut terbawa).
-"""))
-
-cells.append(code("""def train_sensor_id(F_local, Ysens_local, y_true_local, y_pred_stage1, seed=RANDOM_SEED):
-    Xtr, Xte = F_local[idx_tr], F_local[idx_te]
-    Ytr, Yte = Ysens_local[idx_tr], Ysens_local[idx_te]
-    ytr_true = y_true_local[idx_tr]
-    yte_true = y_true_local[idx_te]
-
-    tr_mask = ytr_true != 0  # train sensor-ID hanya dari window fault (ground truth)
+    Dilatih dari window fault di data latih; dievaluasi dua cara:
+      oracle     = window uji yang BENAR-BENAR fault (batas atas)
+      end_to_end = window uji yang DIPREDIKSI fault oleh Tahap 1 (realistis)
+    \"\"\"
+    Xtr, Xte = F_task[tr], F_task[te]
+    Ytr, Yte = Ysens_task[tr], Ysens_task[te]
+    tr_mask = y_task[tr] != 0
+    if tr_mask.sum() < 20:
+        return None, None, None
     Xtr_f, Ytr_f = Xtr[tr_mask], Ytr[tr_mask]
 
-    base = MLPClassifier(max_iter=300, random_state=seed, early_stopping=True, n_iter_no_change=12)
-    pipe = Pipeline([("imp", SimpleImputer(strategy="median")), ("sc", StandardScaler()), ("mo", MultiOutputClassifier(base))])
+    base = MLPClassifier(max_iter=300, random_state=RANDOM_SEED, early_stopping=True, n_iter_no_change=12)
+    pipe = Pipeline([("imp", SimpleImputer(strategy="median")), ("sc", StandardScaler()),
+                      ("mo", MultiOutputClassifier(base))])
     I = Xtr_f.shape[1]
-    grid = {"mo__estimator__hidden_layer_sizes": [(max(16, I // 2),), (I,), (max(16, I // 2), max(8, I // 4))],
+    grid = {"mo__estimator__hidden_layer_sizes": [(max(16, I // 2),), (I,)],
             "mo__estimator__alpha": [1e-4, 1e-3]}
     gs = GridSearchCV(pipe, grid, cv=3, scoring="f1_macro", n_jobs=N_JOBS)
     gs.fit(Xtr_f, Ytr_f)
@@ -579,65 +585,172 @@ cells.append(code("""def train_sensor_id(F_local, Ysens_local, y_true_local, y_p
             p, r, f, _ = precision_recall_fscore_support(Ye[:, j], pred[:, j], average="binary", zero_division=0)
             try: auc = roc_auc_score(Ye[:, j], proba[:, j])
             except Exception: auc = np.nan
-            per[sname] = dict(Acc=accuracy_score(Ye[:, j], pred[:, j]), Prec=p, Rec=r, F1=f, AUC=auc)
-        return dict(tag=tag, n=int(mask.sum()), per=per,
+            per[sname] = dict(Prev=Ye[:, j].mean(), Acc=accuracy_score(Ye[:, j], pred[:, j]),
+                              Prec=p, Rec=r, F1=f, AUC=auc)
+        return dict(tag=tag, n=int(mask.sum()), per=per, pred=pred, Ye=Ye, mask=mask,
                     subset_acc=accuracy_score(Ye, pred), hamming=hamming_loss(Ye, pred),
                     macro_f1=f1_score(Ye, pred, average="macro", zero_division=0))
 
-    oracle = eval_on(yte_true != 0, "oracle")
-    end2end = eval_on(y_pred_stage1 != 0, "end_to_end")
-    return oracle, end2end
+    return eval_on(y_task[te] != 0, "oracle"), eval_on(pred_stage1 != 0, "end_to_end"), best
+"""))
 
-sensor_rows = []
-sensor_results = {}
+cells.append(code("""# === Jalankan 3 tugas x 2 metode: Tahap 1 lalu Tahap 2 ===
+results = {}          # (task, method) -> dict
+stage1_rows, stage2_rows = [], []
+
+for task_name, tdef in TASKS.items():
+    keep, y_task, class_names = tdef["build"]()
+    Ysens_task = Ysens_s[keep]
+    tr_local, te_local = train_test_split(np.arange(len(keep)), test_size=TEST_FRAC,
+                                          random_state=RANDOM_SEED, stratify=y_task)
+    print(f"\\n{'='*70}\\nTUGAS {task_name} — {tdef['desc']} | n={len(keep)} "
+          f"| kelas={dict(zip(*np.unique(y_task, return_counts=True)))}")
+
+    for name in METHOD_LIST:
+        F_task = FEAT_by_method[name][keep]
+        if not budget_ok(600, f"{task_name}/{name}"):
+            continue
+
+        log_stage(f"Tahap 1 | {task_name} | {name}")
+        s1, _ = run_with_metrics(f"Stage1 {task_name} {name}",
+                                 lambda: run_stage1(F_task, y_task, tr_local, te_local))
+        log_stage(f"Tahap 2 | {task_name} | {name}")
+        (oracle, e2e, _model), _ = run_with_metrics(
+            f"Stage2 {task_name} {name}",
+            lambda: run_stage2(F_task, Ysens_task, y_task, s1["pred"], tr_local, te_local))
+
+        results[(task_name, name)] = dict(s1=s1, oracle=oracle, e2e=e2e,
+                                          class_names=class_names, keep=keep,
+                                          y_task=y_task, te=te_local)
+        stage1_rows.append({"Tugas": task_name, "Metode": name, "n_kelas": len(class_names),
+                            "Akurasi": round(s1["test_acc"], 4), "Macro_F1": round(s1["macro_f1"], 4)})
+        print(f"  {name:10s} Tahap1 acc={s1['test_acc']:.3f} F1={s1['macro_f1']:.3f}", end="")
+
+        for res in (oracle, e2e):
+            if res is None: continue
+            for sname, mm in res["per"].items():
+                stage2_rows.append({"Tugas": task_name, "Metode": name, "Eval": res["tag"],
+                                     "Sensor": sname, "n_uji": res["n"],
+                                     "Prevalensi": round(mm["Prev"], 3),
+                                     "Akurasi": round(mm["Acc"], 3), "Precision": round(mm["Prec"], 3),
+                                     "Recall": round(mm["Rec"], 3), "F1": round(mm["F1"], 3),
+                                     "ROC_AUC": round(mm["AUC"], 3) if not np.isnan(mm["AUC"]) else np.nan})
+            stage2_rows.append({"Tugas": task_name, "Metode": name, "Eval": res["tag"],
+                                 "Sensor": "SEMUA-4-BENAR", "n_uji": res["n"], "Prevalensi": np.nan,
+                                 "Akurasi": round(res["subset_acc"], 3), "Precision": np.nan,
+                                 "Recall": np.nan, "F1": round(res["macro_f1"], 3), "ROC_AUC": np.nan})
+        if e2e is not None:
+            print(f" | Tahap2 F1-sensor rata2={np.nanmean([m['F1'] for m in e2e['per'].values()]):.3f}")
+        else:
+            print()
+
+stage1_tbl = pd.DataFrame(stage1_rows)
+stage2_tbl = pd.DataFrame(stage2_rows)
+print("\\n\\n=== TAHAP 1 — akurasi klasifikasi per tugas ===")
+print(stage1_tbl.to_string(index=False))
+export_df(stage1_tbl, "tahap1_akurasi_per_tugas")
+"""))
+
+cells.append(code("""# === TAHAP 2 — identifikasi sensor, per tugas (end-to-end) ===
+e2e_tbl = stage2_tbl[stage2_tbl.Eval == "end_to_end"]
+print("=== Identifikasi sensor, dirantai dari tiap tugas Tahap 1 ===")
+print(e2e_tbl.to_string(index=False))
+export_df(stage2_tbl, "tahap2_identifikasi_sensor")
+
+print("\\n=== Ringkas: F1 sensor rata-rata per tugas x metode ===")
+ring = (e2e_tbl[e2e_tbl.Sensor != "SEMUA-4-BENAR"]
+        .groupby(["Tugas", "Metode"])[["F1", "ROC_AUC"]].mean().round(3))
+print(ring.to_string())
+export_df(ring.reset_index(), "tahap2_ringkas_per_tugas")
+"""))
+
+cells.append(code("""# === Plot: makin mudah tugas Tahap 1, makin bagus identifikasi sensornya ===
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+piv1 = stage1_tbl.pivot(index="Tugas", columns="Metode", values="Akurasi")
+piv1.plot.bar(ax=axes[0], rot=0)
+axes[0].set_title("Tahap 1 — akurasi klasifikasi"); axes[0].set_ylabel("Akurasi"); axes[0].set_ylim(0, 1.05)
+
+piv2 = (e2e_tbl[e2e_tbl.Sensor != "SEMUA-4-BENAR"]
+        .groupby(["Tugas", "Metode"])["F1"].mean().unstack())
+piv2.plot.bar(ax=axes[1], rot=0)
+axes[1].set_title("Tahap 2 — F1 identifikasi sensor (end-to-end)")
+axes[1].set_ylabel("F1 rata-rata 4 sensor"); axes[1].set_ylim(0, 1.05)
+
+plt.tight_layout(); plt.savefig("exports/tahap1_vs_tahap2.png", dpi=120); plt.show()
+print("[Saved] exports/tahap1_vs_tahap2.png")
+"""))
+
+cells.append(md("""## Rincian per Skenario — "kalau pakai kombinasi 3 fault, sensornya ketahuan tidak?"
+
+Tabel di atas masih rata-rata semua skenario. Sel di bawah memecahnya
+**per skenario fault** (pakai tugas 17 kelas): untuk tiap skenario, seberapa
+bagus Tahap 2 menunjuk sensor yang benar.
+"""))
+
+cells.append(code("""# === Tahap 2 dipecah per skenario (tugas 17 kelas) ===
+per_scenario_rows = []
 for name in METHOD_LIST:
-    log_stage(f"Stage2 sensor-ID grid: {name}")
-    (oracle, e2e), mtr = run_with_metrics(f"Stage2 sensor-ID {name}", lambda n=name: train_sensor_id(
-        FEAT_by_method[n], Ysens_s, y_s, train_results[n]["pred"]))
-    sensor_results[name] = dict(oracle=oracle, end_to_end=e2e)
-    for res in (oracle, e2e):
-        if res is None: continue
-        for sname, m in res["per"].items():
-            sensor_rows.append({"Method": name, "Eval": res["tag"], "Sensor": sname, "n_test": res["n"],
-                                 "Accuracy": round(m["Acc"], 3), "Precision": round(m["Prec"], 3),
-                                 "Recall": round(m["Rec"], 3), "F1": round(m["F1"], 3),
-                                 "ROC_AUC": round(m["AUC"], 3) if not np.isnan(m["AUC"]) else np.nan})
-        sensor_rows.append({"Method": name, "Eval": res["tag"], "Sensor": "SUBSET(all4)", "n_test": res["n"],
-                             "Accuracy": round(res["subset_acc"], 3), "Precision": np.nan, "Recall": np.nan,
-                             "F1": round(res["macro_f1"], 3), "ROC_AUC": np.nan})
+    key = ("T3_17kelas", name)
+    if key not in results: continue
+    r = results[key]
+    e2e = r["e2e"]
+    if e2e is None: continue
 
-sensor_summary = pd.DataFrame(sensor_rows)
-print(sensor_summary.to_string(index=False))
-export_df(sensor_summary, "stage2_sensor_id_summary")
+    # label skenario asli untuk window uji yang lolos filter Tahap 1
+    y_true_te = r["y_task"][r["te"]][e2e["mask"]]
+    for cls in np.unique(y_true_te):
+        sel = y_true_te == cls
+        if sel.sum() < 5:      # terlalu sedikit untuk dilaporkan
+            continue
+        Ye, pred = e2e["Ye"][sel], e2e["pred"][sel]
+        f1s = [precision_recall_fscore_support(Ye[:, j], pred[:, j], average="binary", zero_division=0)[2]
+               for j in range(len(SENSORS))]
+        per_scenario_rows.append({
+            "Metode": name,
+            "Skenario": scenario_names[cls],
+            "Jumlah fault": scenario_names[cls].count("+") + 1 if cls > 0 else 0,
+            "n_window": int(sel.sum()),
+            "F1 sensor (rata2)": round(float(np.mean(f1s)), 3),
+            "Semua-4-benar": round(float(accuracy_score(Ye, pred)), 3),
+        })
+
+per_scenario = pd.DataFrame(per_scenario_rows)
+if per_scenario.empty:
+    print("Tidak cukup window per skenario untuk dipecah (naikkan MAX_PER_CLASS).")
+else:
+    per_scenario = per_scenario.sort_values(["Metode", "Jumlah fault", "Skenario"])
+    print("=== Identifikasi sensor per skenario (tugas 17 kelas, end-to-end) ===")
+    print(per_scenario.to_string(index=False))
+    export_df(per_scenario, "tahap2_per_skenario")
+
+    print("\\n=== Rata-rata menurut BANYAKNYA fault yang bercampur ===")
+    byn = per_scenario.groupby(["Metode", "Jumlah fault"])[["F1 sensor (rata2)", "Semua-4-benar"]].mean().round(3)
+    print(byn.to_string())
+    export_df(byn.reset_index(), "tahap2_per_jumlah_fault")
 """))
 
-cells.append(code("""# === Plot: F1 per-sensor, EDM-Fuzzy vs JSD-Fuzzy (end-to-end, chained dari Stage 1) ===
-fig, ax = plt.subplots(figsize=(8, 5))
-sub = sensor_summary[(sensor_summary.Eval == "end_to_end") & (sensor_summary.Sensor != "SUBSET(all4)")]
-piv = sub.pivot(index="Sensor", columns="Method", values="F1").reindex(SENSORS)
-piv.plot.bar(ax=ax, rot=0)
-ax.set_title("Stage 2 — F1 per sensor (end-to-end, chained dari Stage 1)")
-ax.set_ylabel("F1"); ax.set_ylim(0, 1.05)
-plt.tight_layout(); plt.savefig("exports/stage2_f1_per_sensor.png", dpi=120); plt.show()
-"""))
+cells.append(md("""## Ringkasan — apa yang dibuktikan notebook ini
 
-cells.append(md("""## Ringkasan untuk Bu Luh
+1. **Identifikasi sensor bisa dirantai dari klasifikasi apa pun.** Tahap 2
+   dijalankan di atas hasil Tahap 1 (bukan tugas terpisah), untuk ketiga bentuk
+   klasifikasi yang Bu Luh minta: biner, 5 kelas, dan 17 kelas.
+2. **Makin sederhana tugas Tahap 1, makin bersih hasil Tahap 2** — karena lebih
+   sedikit error yang diteruskan ke tahap berikutnya. Bandingkan baris
+   `T1_biner` vs `T3_17kelas` di tabel ringkas.
+3. **`oracle` vs `end_to_end`** memisahkan dua sumber error: `oracle` = kalau
+   Tahap 1 sempurna, `end_to_end` = angka apa adanya termasuk kesalahan Tahap 1.
+4. **Kolom `Prevalensi` wajib dibaca.** Kalau prevalensi ≈ 1 dan ROC-AUC ≈ 0,5,
+   model cuma menebak "semua sensor fault" — itu yang bikin hasil notebook
+   per-sensor versi lama tidak sah.
 
-- **Pesan 1** ("sensor mana yang ada fault") -> dijawab Stage 2 di atas: per
-  window fault, model menunjuk sensor `[S1,S2,S3,S4]` mana yang kena, dengan
-  F1/Precision/Recall/ROC-AUC per sensor (tabel `stage2_sensor_id_summary.csv`).
-- **Pesan 2** ("akurasi tetap per klasifikasi, 17 kelas EDM & 17 kelas JSD,
-  setelah itu identifikasi sensor") -> Stage 1 tetap 17 kelas utuh untuk kedua
-  metode (tabel `stage1_17class_summary.csv` + classification report di atas),
-  dan Stage 2 dijalankan **setelah itu**, dari split test yang sama (chained,
-  bukan task terpisah seperti `JSD_Fuzzy_Broker_PerSensor.ipynb`).
-- Angka `end_to_end` di Stage 2 sudah termasuk error Stage 1 yang ikut terbawa
-  (window yang salah diklasifikasi 17-kelas ikut masuk evaluasi sensor-ID);
-  `oracle` adalah batas atas kalau Stage 1 sempurna.
+**Yang TIDAK dijawab di sini:** *"bias-nya di sensor mana, drift-nya di sensor
+mana"*. Notebook ini hanya menjawab sensor mana yang fault, belum jenis
+fault-nya per sensor — lihat notebook `05` untuk itu.
 """))
 
 nb = {"cells": cells, "metadata": {"kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"}, "language_info": {"name": "python", "version": "3.9"}}, "nbformat": 4, "nbformat_minor": 5}
 
-with open("/Users/kelvin/apps/public-files/JSD_Fuzzy_TwoStage_SensorID.ipynb", "w") as f:
+with open("/Users/kelvin/apps/public-files/04_Klasifikasi_Dulu_Baru_Sensor_Mana.ipynb", "w") as f:
     json.dump(nb, f, indent=1)
-print("wrote JSD_Fuzzy_TwoStage_SensorID.ipynb | cells:", len(cells))
+print("wrote 04_Klasifikasi_Dulu_Baru_Sensor_Mana.ipynb | cells:", len(cells))
