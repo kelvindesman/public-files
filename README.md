@@ -16,6 +16,7 @@ hal itu. Baca berurutan dari 01.
 | 04 | `04_Klasifikasi_Dulu_Baru_Sensor_Mana.ipynb` | Setelah tahu ada fault, sensor **mana** yang rusak? | **Bisa, dan dirantai dari hasil klasifikasi.** Dijalankan untuk 3 bentuk: biner, 5 kelas, dan 17 kelas |
 | 05 | `05_Fault_Jenis_Apa_di_Sensor_Mana.ipynb` | Bias-nya di sensor mana, drift-nya di sensor mana? | **Bisa** — 16 label (4 sensor × 4 jenis fault), hasilnya berupa peta sensor × jenis fault |
 | 06 | `06_ANN_vs_XGBoost.ipynb` | Batasnya di classifier atau di fiturnya? | Pembanding XGBoost untuk menguji apakah ANN yang jadi penghambat |
+| 07 | `07_CV_5_Skenario_Performa_Komputasi_dan_Sensor.ipynb` | Pakai **data terbaru** dan **cross-validation**: bagaimana perbandingan 5 skenario, berapa ongkos komputasinya, dan sensor mana yang rusak? | Satu notebook berisi tiga tabel: performa (akurasi/precision/recall/F1 ± std antar-fold), biaya komputasi (CPU, memori, waktu, latensi inferensi), dan identifikasi sensor rusak |
 
 ## Alur pemikirannya
 
@@ -26,6 +27,7 @@ hal itu. Baca berurutan dari 01.
 04  sensor mana yang rusak             -> dirantai setelah klasifikasi
 05  jenis fault apa di sensor mana     -> peta sensor x jenis fault
 06  apakah ANN penghambatnya           -> pembanding XGBoost
+07  data terbaru + cross-validation    -> performa + biaya komputasi + sensor mana
 ```
 
 Notebook 04 dan 05 menjawab pertanyaan pembimbing secara berurutan: 04 menjawab
@@ -55,9 +57,14 @@ sensor) dan ROC-AUC-nya 0,50 — setara tebak acak. Angka tinggi itu murni efek
 
 ## Data
 
-Semua notebook mengunduh sendiri `tabel_sensor4_generated.csv` dari GitHub saat
-dijalankan, jadi **internet harus aktif** (di Kaggle: Settings → Internet → On).
-Kolomnya `kelembaban1..kelembaban4`.
+Notebook `01`–`06` mengunduh sendiri `tabel_sensor4_generated.csv` dari GitHub
+saat dijalankan, jadi **internet harus aktif** (di Kaggle: Settings → Internet →
+On). Kolomnya `kelembaban1..kelembaban4`.
+
+Notebook `07` memakai dataset terbaru **`data_sensor.csv`** (281.721 baris,
+2025-09-14 s.d. 2025-12-21, tanpa nilai kosong). Loader-nya memakai file lokal
+kalau ada (termasuk `/kaggle/input/...`), kalau tidak ada baru mengunduh dari
+GitHub.
 
 ## Menjalankan
 
