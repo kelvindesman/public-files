@@ -16,7 +16,7 @@ hal itu. Baca berurutan dari 01.
 | 04 | `04_Klasifikasi_Dulu_Baru_Sensor_Mana.ipynb` | Setelah tahu ada fault, sensor **mana** yang rusak? | **Bisa, dan dirantai dari hasil klasifikasi.** Dijalankan untuk 3 bentuk: biner, 5 kelas, dan 17 kelas |
 | 05 | `05_Fault_Jenis_Apa_di_Sensor_Mana.ipynb` | Bias-nya di sensor mana, drift-nya di sensor mana? | **Bisa** — 16 label (4 sensor × 4 jenis fault), hasilnya berupa peta sensor × jenis fault |
 | 06 | `06_ANN_vs_XGBoost.ipynb` | Batasnya di classifier atau di fiturnya? | Pembanding XGBoost untuk menguji apakah ANN yang jadi penghambat |
-| 07 | `07_Skema_Diagram_CV_5_Skenario_dan_Sensor.ipynb` | Skema flowchart pembimbing dijalankan utuh dengan **data terbaru** dan **cross-validation**: 5 skenario, berapa ongkos komputasinya, sensor mana yang rusak? | Satu notebook mengikuti flowchart kotak per kotak (broker → sinkronisasi → segmentasi N ∈ {2000;7000;10000} → EDM-Fuzzy 4T fitur → ANN-LM grid search), dengan tiga tabel: performa ± std antar-fold, biaya komputasi, dan identifikasi sensor rusak |
+| 07 | `07_Skema_Diagram_CV_5_Skenario_dan_Sensor.ipynb` | Skema flowchart pembimbing dijalankan utuh dengan **data terbaru** dan **cross-validation**: 5 skenario, berapa ongkos komputasinya, sensor mana yang rusak? | Satu notebook mengikuti flowchart kotak per kotak (broker → sinkronisasi → segmentasi → EDM-Fuzzy 4T fitur → ANN-LM grid search), plus **§3b laporan validasi & pembersihan data**, **§11 dua uji kontrol** (data bersih & fault satu sensor), dan **§13 tanya-jawab pembimbing** |
 
 ## Alur pemikirannya
 
@@ -33,6 +33,26 @@ hal itu. Baca berurutan dari 01.
 Notebook 04 dan 05 menjawab pertanyaan pembimbing secara berurutan: 04 menjawab
 *"sensor mana yang fault"*, 05 menjawab *"bias-nya di sensor mana, drift-nya di
 sensor mana"*.
+
+## Notebook 07 — peta pertanyaan pembimbing → bagian notebook
+
+| Pertanyaan | Dijawab di |
+|---|---|
+| Tabel identifikasi sensor itu artinya apa? `Prevalensi` vs `Akurasi` vs `P(rusak)` | **§0** (versi tanpa istilah) + **§13-Q1** |
+| Bisa dites dengan data yang dikondisikan bersih (tanpa fault)? | **§11 Kontrol A** — FPR / spesifisitas + `P(rusak)` di window bersih vs fault |
+| Bisa dites dengan fault hanya di satu sensor? | **§11 Kontrol B** — Top-1 vs tebak acak 25 % |
+| Beda tabel "F1 rata-rata 4 sensor" dengan peta panas F1? | **§13-Q3** — angka sama, peta panas per sensor, tabel ringkas rata-ratanya |
+| Preprocessing-nya per jam? | **§3** — bukan; **rata-rata per 5 menit** (281.721 → 28.173 baris) |
+| Yang masuk broker sudah di-downsample? | **§13-Q5** — belum; broker terima 30 detik, perata-rataan sesudahnya |
+| Ada validasi & pembersihan, bukan cuma resample? | **§3b** — 10 langkah + tabel `07_mutu_data.csv` |
+| Panjang data 2000/7000/10000 atau 200/700/1000? | **§5** — tabel konversi; durasinya identik (0,69 / 2,43 / 3,47 hari) |
+| Window yang tidak genap N sampel di-exclude? | **§5** — blok akuntansi window; `window_setengah_jadi` selalu 0 |
+
+Tiga pengaman anti "model cuma menebak semua sensor rusak" di notebook 07:
+subset sensor yang di-fault **diundi ulang tiap pengulangan** (+ sel pemeriksa
+label kembar di §5), fitur tahap sensor dibuat **relatif terhadap rata-rata tiga
+sensor lain**, dan **ambang keputusan dicari di data latih** tiap fold, bukan
+dipatok 0,5.
 
 ## Penting: satu hasil lama yang TIDAK sah
 
@@ -78,7 +98,7 @@ kaggle kernels output  kelvindsmn/<slug> -p ./hasil
 
 Kernel yang sudah ada: `jsd-fuzzy-ann-paper` (01),
 `jsd-fuzzy-broker-architecture-v2` (02), `jsd-fuzzy-scenario-ladder` (03),
-`jsd-fuzzy-twostage-sensorid` (04).
+`jsd-fuzzy-twostage-sensorid` (04), `jsd-fuzzy-cv-5skenario` (07).
 
 **Di laptop:**
 
@@ -100,6 +120,7 @@ Beberapa notebook dihasilkan oleh skrip supaya isinya bisa diulang persis:
 | Skrip | Menghasilkan |
 |---|---|
 | `build_notebook.py` | `01_...` (gabungan dua notebook di `archive/`) |
+| `build_cv_5skenario_notebook.py` | `07_...` |
 | `build_twostage_notebook.py` | `04_...` |
 | `build_faulttype_persensor_notebook.py` | `05_...` |
 | `add_headers.py` | menyisipkan header "apa yang dibuktikan" ke tiap notebook |
