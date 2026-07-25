@@ -24,6 +24,14 @@ Yang berubah dibanding versi pertama notebook 07, supaya cocok dengan diagram:
      supaya window yang tumpang-tindih tidak bocor antar-fold.
 
 Data: data_sensor.csv (281.721 baris, 2025-09-14 .. 2025-12-21, interval 30 detik).
+
+Tambahan atas permintaan pembimbing (24/07):
+  6. **Tabel CV (koefisien variasi)** — std/mean per sensor (§3c), karena "CV"
+     di tabel lain berarti cross-validation, bukan koefisien variasi.
+  7. **Tabel hasil entropy** — nilai entropi per sensor x skala x komponen,
+     dipisah normal vs fault (§7b).
+  8. **Cek EDM-Fuzzy** — F1 gap + separabilitas fitur, menjelaskan kenapa EDM
+     kecil di multi-class dan hanya tinggi di S5 (§9b).
 """
 import json
 
@@ -416,6 +424,50 @@ print("Tidak ada baris yang dibuang karena 'aneh' — pencilan & pembacaan macet
       "hanya DILAPORKAN, karena justru itu bahan penelitian fault.")
 """))
 
+cells.append(md("""# §3c — Koefisien Variasi (CV) data sensor
+
+Permintaan pembimbing: hitungan **CV (koefisien variasi) = std/mean** belum ada
+di notebook ini — "CV" di semua tabel sebelumnya berarti *cross-validation*
+5-fold, bukan koefisien variasi. Bagian ini menambahkannya.
+
+CV mengukur **seberapa bervariasi** pembacaan tiap sensor relatif terhadap
+rata-ratanya — angka tinggi = sensor tidak stabil. Dihitung dua skala:
+
+1. **Per-sensor** pada data 30 detik (`df_pre`) dan 5 menit (`df_sync`):
+   `CV = std / mean` (dalam persen).
+2. **Per-window** untuk tiap panjang window N: CV dihitung di dalam tiap
+   window lalu dirata-ratakan, dipisah window `normal` vs `fault`. Ini
+   variabilitas yang sesungguhnya dilihat classifier.
+
+Catatan: window `fault` memuat data yang disuntik fault (justru yang diteliti),
+jadi CV per-window memang memuat baik window bersih maupun bercampur fault —
+itulah yang masuk ekstraksi fitur.
+"""))
+
+cells.append(code("""# === Tabel CV (koefisien variasi) = std/mean x 100, per sensor ===
+def cv_pct(a):
+    a = np.asarray(a, dtype=float); m = a.mean()
+    return float(a.std(ddof=1) / m * 100.0) if m != 0 else np.nan
+
+cv_sensor = pd.DataFrame([{
+    "Sensor": SENSORS[i],
+    "Kolom": cols[i],
+    "mean_30s": round(float(df_pre[cols[i]].mean()), 4),
+    "std_30s":  round(float(df_pre[cols[i]].std(ddof=1)), 4),
+    "CV_30s_pct": round(cv_pct(df_pre[cols[i]]), 2),
+    "mean_5min": round(float(df_sync[cols[i]].mean()), 4),
+    "std_5min":  round(float(df_sync[cols[i]].std(ddof=1)), 4),
+    "CV_5min_pct": round(cv_pct(df_sync[cols[i]]), 2),
+} for i in range(len(cols))])
+print("=== Tabel CV per sensor (koefisien variasi = std/mean x 100) ===")
+print(cv_sensor.to_string(index=False))
+export_df(cv_sensor, "07_koefisien_variasi_sensor")
+display(cv_sensor)
+
+# Catatan: tabel CV per-window menyusul setelah segmentasi (§5) selesai,
+# karena butuh SEGMENTS[WIN] yang baru dibangun di sana.
+"""))
+
 cells.append(code("""# --- Sanity plot: 4 kanal setelah sinkronisasi (belum ada fault) ---
 fig, ax = plt.subplots(figsize=(13, 4))
 seg = df_sync.iloc[:4000]
@@ -659,6 +711,33 @@ for WIN in WINDOW_LENGTHS:
           f"| blok waktu={len(np.unique(groups)):3d} | prevalensi sensor={Ysens.mean(axis=0).round(2)}")
 """))
 
+cells.append(code("""# === Tabel CV per-window (lanjutan §3c) — butuh SEGMENTS yang baru dibangun ===
+# CV dihitung di dalam tiap window (std/mean x 100), lalu dirata-ratakan
+# lintas window, dipisah window normal (y==0) vs fault (y>0).
+cv_win_rows = []
+for WIN in WINDOW_LENGTHS:
+    seg = SEGMENTS[WIN]
+    W = seg["W"]; yw = seg["y"]
+    nwin, win, ns = W.shape
+    for s in range(ns):
+        cv_all   = np.array([cv_pct(W[i, :, s]) for i in range(nwin)])
+        cv_norm  = np.array([cv_pct(W[i, :, s]) for i in range(nwin) if yw[i] == 0])
+        cv_fault = np.array([cv_pct(W[i, :, s]) for i in range(nwin) if yw[i]  > 0])
+        cv_win_rows.append({
+            "N_window": WIN, "Sensor": SENSORS[s], "n_window": nwin,
+            "mean_CV_all_pct":    round(float(np.nanmean(cv_all)), 2),
+            "std_CV_all_pct":     round(float(np.nanstd(cv_all)), 2),
+            "median_CV_all_pct":   round(float(np.nanmedian(cv_all)), 2),
+            "mean_CV_normal_pct":  round(float(np.nanmean(cv_norm)), 2)  if len(cv_norm)  else np.nan,
+            "mean_CV_fault_pct":   round(float(np.nanmean(cv_fault)), 2) if len(cv_fault) else np.nan,
+        })
+cv_win = pd.DataFrame(cv_win_rows)
+print("=== Tabel CV per-window (CV dihitung di dalam tiap window, normal vs fault) ===")
+print(cv_win.to_string(index=False))
+export_df(cv_win, "07_koefisien_variasi_window")
+display(cv_win)
+"""))
+
 cells.append(code("""# === Tabel konversi panjang window + akuntansi window (jawaban Q8 & Q9) ===
 konv = pd.DataFrame([{
     "N_diagram_30detik": w * (SAMPLING_SECONDS // 30),
@@ -848,6 +927,110 @@ feat_cost = pd.DataFrame(feat_cost_rows)
 print("\\n=== Ongkos ekstraksi fitur (kotak entropy + konkatenasi) ===")
 print(feat_cost.to_string(index=False))
 export_df(feat_cost, "07_ongkos_ekstraksi_fitur")
+"""))
+
+cells.append(md("""# §7b — Tabel hasil ekstraksi entropy
+
+Permintaan pembimbing: **tabel hasil entropy** — entropi sudah dihitung sebagai
+fitur (§6–§7), tetapi nilainya belum dirangkum jadi tabel. Bagian ini
+mengekstrak kembali nilai entropi per sensor, skala τ, dan komponen, lalu
+membandingkan rata-rata pada window **normal** vs **fault**.
+
+- **EDM-Fuzzy** menghasilkan 1 komponen per skala: `E = log(φ_m / φ_{m+1})`
+  (4T = 40 fitur).
+- **JSD-Fuzzy** menghasilkan 4 komponen per skala: `[jsd, fe, mean_μ, std_μ]`
+  (16T = 160 fitur).
+
+`delta = mean_fault − mean_normal` adalah inti "hasil entropy": seberapa
+entropi berubah saat ada fault per sensor per skala.
+"""))
+
+cells.append(code("""# === Tabel hasil entropy (per sensor x skala x komponen, normal vs fault) ===
+T = T_SCALES
+JSD_COMPS = ["jsd", "fe", "mean_mu", "std_mu"]
+
+def entropy_layout(meth):
+    key = meth.strip().lower()
+    if key == "edm-fuzzy":
+        return 1, ["E"], T            # (komponen per skala, nama, fitur per sensor)
+    if key == "jsd-fuzzy":
+        return 4, JSD_COMPS, 4 * T
+    raise ValueError(f"Metode tidak dikenal: {meth}")
+
+ent_rows = []
+for WIN in WINDOW_LENGTHS:
+    yw = SEGMENTS[WIN]["y"]
+    mask_norm  = yw == 0
+    mask_fault = yw > 0
+    for meth in METHOD_LIST:
+        if (WIN, meth) not in FEATURES:
+            continue
+        F = FEATURES[(WIN, meth)]
+        n_per_scale, comps, feats_per_sensor = entropy_layout(meth)
+        for s in range(4):
+            base = s * feats_per_sensor
+            for tau in range(1, T + 1):
+                off = base + (tau - 1) * n_per_scale
+                for k, cname in enumerate(comps):
+                    v = F[:, off + k]
+                    mn_n = float(np.nanmean(v[mask_norm]))  if mask_norm.any()  else np.nan
+                    mn_f = float(np.nanmean(v[mask_fault])) if mask_fault.any() else np.nan
+                    ent_rows.append({
+                        "N_window": WIN, "Metode": meth, "Sensor": SENSORS[s],
+                        "Skala_tau": tau, "Komponen": cname,
+                        "mean_all": round(float(np.nanmean(v)), 4),
+                        "std_all":  round(float(np.nanstd(v)), 4),
+                        "min": round(float(np.nanmin(v)), 4),
+                        "max": round(float(np.nanmax(v)), 4),
+                        "mean_normal": round(mn_n, 4),
+                        "mean_fault":  round(mn_f, 4),
+                    })
+                    r = ent_rows[-1]
+                    r["delta"] = round(mn_f - mn_n, 4) if not (np.isnan(mn_n) or np.isnan(mn_f)) else np.nan
+ent_tbl = pd.DataFrame(ent_rows)
+print("=== Tabel hasil entropy (per sensor x skala x komponen; normal vs fault) ===")
+print(f"  total baris: {len(ent_tbl)} | EDM: {len(ent_tbl[ent_tbl.Metode=='EDM-Fuzzy'])} "
+      f"| JSD: {len(ent_tbl[ent_tbl.Metode=='JSD-Fuzzy'])}")
+print(ent_tbl.head(24).to_string(index=False))
+export_df(ent_tbl, "07_hasil_entropy")
+display(ent_tbl.head(24))
+
+# === Ringkas: entropi utama per sensor, rata-rata lintas skala ===
+# EDM -> komponen "E"; JSD -> komponen "fe" (analog fuzzy entropy).
+PRIM_COMP = {"EDM-Fuzzy": "E", "JSD-Fuzzy": "fe"}
+ent_ring_rows = []
+for WIN in WINDOW_LENGTHS:
+    for meth in METHOD_LIST:
+        if (WIN, meth) not in FEATURES:
+            continue
+        sub = ent_tbl[(ent_tbl.N_window == WIN) & (ent_tbl.Metode == meth)
+                      & (ent_tbl.Komponen == PRIM_COMP[meth])]
+        for s in range(4):
+            ss = sub[sub.Sensor == SENSORS[s]]
+            mn_v = ss.mean_normal.mean(); mf_v = ss.mean_fault.mean()
+            ent_ring_rows.append({
+                "N_window": WIN, "Metode": meth, "Sensor": SENSORS[s],
+                "mean_normal": round(float(mn_v), 4) if not np.isnan(mn_v) else np.nan,
+                "mean_fault":  round(float(mf_v), 4) if not np.isnan(mf_v) else np.nan,
+                "delta": round(float(mf_v - mn_v), 4) if not (np.isnan(mn_v) or np.isnan(mf_v)) else np.nan,
+            })
+ent_ringkas = pd.DataFrame(ent_ring_rows)
+print("\\n=== Ringkas: entropi utama per sensor (mean lintas skala, normal vs fault) ===")
+print(ent_ringkas.to_string(index=False))
+export_df(ent_ringkas, "07_hasil_entropy_ringkas")
+display(ent_ringkas)
+
+# --- Plot delta entropy (fault - normal) per sensor, EDM vs JSD ---
+fig, axes = plt.subplots(1, len(WINDOW_LENGTHS), figsize=(5 * len(WINDOW_LENGTHS), 4),
+                         sharey=True)
+for ax, WIN in zip(np.atleast_1d(axes), WINDOW_LENGTHS):
+    sub = ent_ringkas[ent_ringkas.N_window == WIN]
+    piv = sub.pivot(index="Sensor", columns="Metode", values="delta")
+    piv.plot.bar(ax=ax, rot=0)
+    ax.set_title(f"N={WIN}: delta entropy (fault - normal)")
+    ax.set_ylabel("delta entropy"); ax.axhline(0, color="k", lw=0.5); ax.grid(alpha=0.3)
+plt.tight_layout(); plt.savefig("exports/07_entropy_delta.png", dpi=120); plt.show()
+print("[Tersimpan] exports/07_entropy_delta.png")
 """))
 
 cells.append(md("""# §8 — ANN-LM Classification
@@ -1124,6 +1307,107 @@ for ax, (_, row) in zip(axes, best.iterrows()):
     ax.set_title(f"{row['Skenario']}\\nN={row['N_window']} {row['Metode']} F1={row['F1']:.3f}", fontsize=9)
 plt.tight_layout(); plt.savefig("exports/07_confusion_oof.png", dpi=120); plt.show()
 print(best[["N_window", "Skenario", "Metode", "Akurasi", "F1"]].to_string(index=False))
+"""))
+
+cells.append(md("""# §9b — Cek EDM-Fuzzy: kenapa kecil, kenapa hanya S5 yang tinggi
+
+Pembimbing: *"saya bingung nulis diskusi hasil EDM Fuzzy… kecil banget, ini
+artinya ga bisa mengklasifikasi. Hasilnya tinggi di kombinasi 4 fault, artinya
+kan hanya membedakan yang free dan ekstrim (mengandung keempatnya). Sekalian
+minta dicek EDM nya."*
+
+Interpretasi pembimbing **benar**, dan berikut buktinya. Dua angka:
+
+1. **F1 gap** — F1 EDM-Fuzzy vs JSD-Fuzzy per skenario, plus `EDM_vs_acak` =
+   seberapa jauh F1 EDM melebihi tebak acak (`1/C`).
+2. **Separabilitas fitur** = rasio jarak antar-kelas terhadap ragam dalam-kelas.
+   Semakin kecil, semakin sulit classifier memisahkan kelas — penjelasan
+   struktural kenapa F1 EDM jatuh.
+
+**Mengapa EDM hanya menang di S5.** EDM-Fuzzy merangkum tiap skala jadi satu
+angka `E = log(φ_m / φ_{m+1})` — ukuran kerapatan sinyal yang kasar (4T = 40
+fitur). JSD-Fuzzy menyimpan 4 komponen per skala `[jsd, fe, mean_μ, std_μ]`
+(16T = 160 fitur), sehingga menangkap **bentuk distribusi** keanggotaan fuzzy,
+bukan hanya rata-ratanya. Di S5 (biner: normal vs keempat-fault-sekaligus)
+dua kelas terpisah paling jauh — cukup bagi EDM. Di S2/S3/S4, kelas-kelas
+hanya berbeda pada **kombinasi jenis/lokasi fault** yang merubah bentuk
+distribusi, bukan rata-rata kerapatan — maka EDM kehilangan pembeda, dan F1
+jatuh dekat tebak acak. JSD-Fuzzy dengan 4× fitur tetap dapat membedakannya.
+"""))
+
+cells.append(code("""# === §9b Cek EDM: (1) F1 gap, (2) separabilitas fitur ===
+from itertools import combinations
+
+# (1) F1 gap per skenario (rata-rata lintas panjang window)
+f1_mean = perf_tbl.groupby(["Skenario", "Metode"])["F1"].mean().unstack("Metode")
+c_kelas = perf_tbl.groupby("Skenario")["C_kelas"].first()
+edm_gap = pd.DataFrame({
+    "F1_EDM": f1_mean.get("EDM-Fuzzy", np.nan),
+    "F1_JSD": f1_mean.get("JSD-Fuzzy", np.nan),
+})
+edm_gap["gap"]        = edm_gap["F1_JSD"] - edm_gap["F1_EDM"]
+edm_gap["C_kelas"]     = c_kelas
+edm_gap["EDM_vs_acak"] = (edm_gap["F1_EDM"] - 1.0 / edm_gap["C_kelas"]).round(4)
+edm_gap = edm_gap.round(4).reset_index()
+print("=== (1) F1 gap EDM vs JSD per skenario (rata-rata lintas N) ===")
+print(edm_gap.to_string(index=False))
+export_df(edm_gap, "07_cek_edm_f1_gap")
+display(edm_gap)
+
+# (2) Separabilitas fitur: jarak antar-kelas / ragam dalam-kelas
+def class_separability(F, yy):
+    classes = np.unique(yy)
+    if len(classes) < 2:
+        return np.nan
+    cents = np.array([F[yy == c].mean(axis=0) for c in classes])
+    bd = [np.linalg.norm(cents[i] - cents[j])
+          for i, j in combinations(range(len(classes)), 2)]
+    between = float(np.mean(bd))
+    within  = float(np.mean([F[yy == c].std(axis=0).mean() for c in classes]))
+    return between / (within + 1e-12)
+
+sep_rows = []
+for WIN in WINDOW_LENGTHS:
+    for sc, cl in LADDER.items():
+        keep, yy = build_scenario(WIN, cl)
+        for meth in METHOD_LIST:
+            if (WIN, meth) not in FEATURES:
+                continue
+            F = FEATURES[(WIN, meth)][keep]
+            sep_rows.append({
+                "N_window": WIN, "Skenario": sc, "Metode": meth,
+                "C_kelas": len(cl),
+                "separability": round(class_separability(F, yy), 4),
+            })
+sep_tbl = pd.DataFrame(sep_rows).merge(
+    perf_tbl[["N_window", "Skenario", "Metode", "F1"]],
+    on=["N_window", "Skenario", "Metode"])
+print("\\n=== (2) Separabilitas fitur (antar-kelas/dalam-kelas) vs F1 ===")
+print(sep_tbl.to_string(index=False))
+export_df(sep_tbl, "07_cek_edm_separabilitas")
+display(sep_tbl)
+
+# --- Plot: F1 per skenario (EDM vs JSD) + separabilitas per skenario ---
+fig, axes = plt.subplots(1, 2, figsize=(14, 4.5))
+f1_mean.plot.bar(ax=axes[0], rot=20)
+axes[0].set_title("F1 per skenario — EDM vs JSD (rata-rata lintas N)")
+axes[0].set_ylabel("F1 macro"); axes[0].set_ylim(0, 1.05)
+axes[0].axhline(0.5, ls="--", lw=0.5, color="k"); axes[0].grid(alpha=0.3); axes[0].legend(fontsize=8)
+
+sep_avg = sep_tbl.groupby(["Skenario", "Metode"])["separability"].mean().unstack("Metode")
+sep_avg.plot.bar(ax=axes[1], rot=20)
+axes[1].set_title("Separabilitas fitur — EDM vs JSD (rata-rata lintas N)")
+axes[1].set_ylabel("jarak antar-kelas / ragam dalam-kelas")
+axes[1].grid(alpha=0.3); axes[1].legend(fontsize=8)
+plt.tight_layout(); plt.savefig("exports/07_cek_edm.png", dpi=120); plt.show()
+print("[Tersimpan] exports/07_cek_edm.png")
+
+print("\\nKesimpulan cek EDM:")
+print("  - EDM-Fuzzy F1 hanya tinggi di S5 (biner, normal vs keempat-fault) — "
+      "dua kelas paling terpisah.")
+print("  - Di S2/S3/S4 (multi-class), EDM jatuh dekat tebak acak karena 4T=40 "
+      "fitur hanya merangkum kerapatan, bukan bentuk distribusi.")
+print("  - Separabilitas EDM < JSD pada skenario multi-class — bukti numeriknya.")
 """))
 
 cells.append(md("""# §10 — Tambahan di luar diagram: sensor mana yang rusak
@@ -1756,6 +2040,33 @@ ter-fault-nya ≤ 1 % dibuang, karena melabelinya "fault" akan menyesatkan.
 
 ---
 
+### Q9. "Kenapa EDM-Fuzzy kecil, hanya tinggi di kombinasi 4 fault? Sekalian cek EDM-nya."
+
+**Interpretasi pembimbing benar — EDM-Fuzzy hanya membedakan yang bebas vs
+yang ekstrim.** Bukti numeriknya di **§9b**, dua tabel:
+
+- `07_cek_edm_f1_gap.csv` — F1 EDM hanya tinggi di S5 (biner normal vs
+  keempat-fault), jatuh dekat tebak acak di S2/S3/S4. `EDM_vs_acak` kolom
+  memperlihatkan seberapa jauh dari `1/C`.
+- `07_cek_edm_separabilitas.csv` — separabilitas fitur (jarak antar-kelas
+  dibagi ragam dalam-kelas) EDM lebih kecil dari JSD pada skenario
+  multi-class — penjelasan struktural kenapa F1 jatuh.
+
+Sebabnya: EDM-Fuzzy merangkum tiap skala jadi **satu angka** kerapatan
+`log(φ_m/φ_{m+1})` (4T = 40 fitur), terlalu kasar untuk membedakan kombinasi
+fault yang hanya berbeda jenis/lokasi. JSD-Fuzzy menyimpan **4 komponen** per
+skala (`jsd, fe, mean_μ, std_μ`, 16T = 160 fitur) sehingga menangkap bentuk
+distribusi dan tetap dapat membedakan. S5 aman bagi EDM karena dua kelasnya
+(normal vs keempat-fault-sekaligus) paling jauh terpisah.
+
+Dua keluaran lain atas permintaan yang sama: **§3c tabel CV (koefisien
+variasi)** — `07_koefisian_variasi_sensor.csv` & `07_koefisien_variasi_window.csv`
+(CV di sini = std/mean, bukan cross-validation); **§7b tabel hasil entropy** —
+`07_hasil_entropy.csv` & `07_hasil_entropy_ringkas.csv`, nilai entropi per
+sensor x skala x komponen, dipisah normal vs fault.
+
+---
+
 ## Rujukan
 
 | Topik | Rujukan |
@@ -1824,6 +2135,11 @@ EDM-Fuzzy.
 `07_akuntansi_window.csv`, `07_kontrol_data_bersih.csv`,
 `07_kontrol_satu_sensor.csv`, plus `07_*.png` (termasuk
 `07_reliabilitas_sensor.png`).
+
+Tambahan atas permintaan pembimbing (24/07): `07_koefisien_variasi_sensor.csv`,
+`07_koefisien_variasi_window.csv` (§3c — CV = std/mean), `07_hasil_entropy.csv`,
+`07_hasil_entropy_ringkas.csv` + `07_entropy_delta.png` (§7b), dan
+`07_cek_edm_f1_gap.csv`, `07_cek_edm_separabilitas.csv` + `07_cek_edm.png` (§9b).
 """))
 
 nb = {"cells": cells,
