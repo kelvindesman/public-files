@@ -1381,18 +1381,21 @@ print("[Tersimpan] exports/07_performa_vs_komputasi.png")
 """))
 
 cells.append(code("""# === Confusion matrix out-of-fold, konfigurasi terbaik tiap skenario ===
-best = perf_tbl.loc[perf_tbl.groupby("Skenario")["F1"].idxmax()]
-fig, axes = plt.subplots(1, len(best), figsize=(4.3 * len(best), 4))
-axes = np.atleast_1d(axes)
-for ax, (_, row) in zip(axes, best.iterrows()):
-    r = RUNS[(row["N_window"], row["Skenario"], row["Metode"])]
-    mask = r["out"]["pred_oof"] >= 0
-    cm = confusion_matrix(r["y"][mask], r["out"]["pred_oof"][mask], normalize="true")
-    ConfusionMatrixDisplay(cm, display_labels=r["class_names"]).plot(
-        ax=ax, colorbar=False, values_format=".2f", xticks_rotation=45, cmap="Blues")
-    ax.set_title(f"{row['Skenario']}\\nN={row['N_window']} {row['Metode']} F1={row['F1']:.3f}", fontsize=9)
-plt.tight_layout(); plt.savefig("exports/07_confusion_oof.png", dpi=120); plt.show()
-print(best[["N_window", "Skenario", "Metode", "Akurasi", "F1"]].to_string(index=False))
+best = perf_tbl.loc[perf_tbl.groupby("Skenario")["F1"].idxmax()] if len(perf_tbl) else perf_tbl
+if len(best) == 0:
+    print("[skip] perf_tbl kosong (kemungkinan semua run kena budget guard) — confusion matrix dilewati.")
+else:
+    fig, axes = plt.subplots(1, len(best), figsize=(4.3 * len(best), 4))
+    axes = np.atleast_1d(axes)
+    for ax, (_, row) in zip(axes, best.iterrows()):
+        r = RUNS[(row["N_window"], row["Skenario"], row["Metode"])]
+        mask = r["out"]["pred_oof"] >= 0
+        cm = confusion_matrix(r["y"][mask], r["out"]["pred_oof"][mask], normalize="true")
+        ConfusionMatrixDisplay(cm, display_labels=r["class_names"]).plot(
+            ax=ax, colorbar=False, values_format=".2f", xticks_rotation=45, cmap="Blues")
+        ax.set_title(f"{row['Skenario']}\\nN={row['N_window']} {row['Metode']} F1={row['F1']:.3f}", fontsize=9)
+    plt.tight_layout(); plt.savefig("exports/07_confusion_oof.png", dpi=120); plt.show()
+    print(best[["N_window", "Skenario", "Metode", "Akurasi", "F1"]].to_string(index=False))
 """))
 
 cells.append(md("""# §9a — Confusion matrix khusus EDM-Fuzzy
@@ -1407,21 +1410,25 @@ matrix-nya (bukan cuma di angka F1).
 
 cells.append(code("""# === Confusion matrix out-of-fold, EDM-Fuzzy saja, tiap skenario ===
 perf_edm = perf_tbl[perf_tbl.Metode == "EDM-Fuzzy"]
-best_edm = perf_edm.loc[perf_edm.groupby("Skenario")["F1"].idxmax()]
-best_edm = best_edm.set_index("Skenario").loc[[sc for sc in LADDER if sc in best_edm.index]].reset_index()
+if len(perf_edm) == 0:
+    print("[skip] Tidak ada baris EDM-Fuzzy di perf_tbl (kemungkinan kena budget guard "
+          "di §7/§8 untuk semua N_window) — confusion matrix EDM dilewati.")
+else:
+    best_edm = perf_edm.loc[perf_edm.groupby("Skenario")["F1"].idxmax()]
+    best_edm = best_edm.set_index("Skenario").loc[[sc for sc in LADDER if sc in best_edm.index]].reset_index()
 
-fig, axes = plt.subplots(1, len(best_edm), figsize=(4.3 * len(best_edm), 4))
-axes = np.atleast_1d(axes)
-for ax, (_, row) in zip(axes, best_edm.iterrows()):
-    r = RUNS[(row["N_window"], row["Skenario"], "EDM-Fuzzy")]
-    mask = r["out"]["pred_oof"] >= 0
-    cm = confusion_matrix(r["y"][mask], r["out"]["pred_oof"][mask], normalize="true")
-    ConfusionMatrixDisplay(cm, display_labels=r["class_names"]).plot(
-        ax=ax, colorbar=False, values_format=".2f", xticks_rotation=45, cmap="Oranges")
-    ax.set_title(f"{row['Skenario']}\\nN={row['N_window']} EDM-Fuzzy F1={row['F1']:.3f}", fontsize=9)
-plt.tight_layout(); plt.savefig("exports/07_confusion_oof_edm.png", dpi=120); plt.show()
-print("[Tersimpan] exports/07_confusion_oof_edm.png")
-print(best_edm[["N_window", "Skenario", "Akurasi", "F1"]].to_string(index=False))
+    fig, axes = plt.subplots(1, len(best_edm), figsize=(4.3 * len(best_edm), 4))
+    axes = np.atleast_1d(axes)
+    for ax, (_, row) in zip(axes, best_edm.iterrows()):
+        r = RUNS[(row["N_window"], row["Skenario"], "EDM-Fuzzy")]
+        mask = r["out"]["pred_oof"] >= 0
+        cm = confusion_matrix(r["y"][mask], r["out"]["pred_oof"][mask], normalize="true")
+        ConfusionMatrixDisplay(cm, display_labels=r["class_names"]).plot(
+            ax=ax, colorbar=False, values_format=".2f", xticks_rotation=45, cmap="Oranges")
+        ax.set_title(f"{row['Skenario']}\\nN={row['N_window']} EDM-Fuzzy F1={row['F1']:.3f}", fontsize=9)
+    plt.tight_layout(); plt.savefig("exports/07_confusion_oof_edm.png", dpi=120); plt.show()
+    print("[Tersimpan] exports/07_confusion_oof_edm.png")
+    print(best_edm[["N_window", "Skenario", "Akurasi", "F1"]].to_string(index=False))
 """))
 
 cells.append(md("""# §9b — Cek EDM-Fuzzy: kenapa kecil, kenapa hanya S5 yang tinggi
