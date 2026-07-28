@@ -1059,6 +1059,53 @@ plt.tight_layout(); plt.savefig("exports/07_entropy_delta.png", dpi=120); plt.sh
 print("[Tersimpan] exports/07_entropy_delta.png")
 """))
 
+cells.append(md("""# §7c — Tabel CV Entropi per Data Length x Class x Scale (format referensi)
+
+Permintaan pembimbing: tabel acuan (paper) berbentuk **Data Length x Class x
+Scale**. Tiap sel = **CV (koefisien variasi = std/mean) dari nilai entropi
+EDM-Fuzzy** pada skala τ itu, dihitung lintas window kelas fault **tunggal**
+(Bias, Drift, Spike, Hardware malfunction — dari skenario `S2_Fault_Tunggal`),
+setelah dirata-rata ke-4 sensor per window. Beda dari §3c (CV data mentah
+sensor) — ini CV dari **hasil entropi**, yaitu ukuran stabilitas entropi lintas
+window pada tiap kombinasi panjang data (Data Length) x skala.
+
+`Data Length` di sini = `N_window` (§5, panjang window dalam sampel: 2000/7000/
+10000 default). CV rendah = entropi kelas itu stabil lintas window pada skala
+τ tersebut; CV tinggi = entropi masih berfluktuasi banyak antar-window.
+"""))
+
+cells.append(code("""# === Tabel CV entropi per Data Length x Class x Scale (format referensi) ===
+CLASS_MAP_REF = {"Bias": "bias", "Drift": "drift", "Spike": "spike",
+                  "Hardware malfunction": "hardware"}
+
+rows_ref = []
+for WIN in WINDOW_LENGTHS:
+    seg = SEGMENTS[WIN]
+    F = FEATURES.get((WIN, "EDM-Fuzzy"))
+    if F is None:
+        continue
+    T = T_SCALES
+    F3 = F.reshape(len(F), 4, T)            # (nwin, sensor, skala)
+    F_mean_sensor = F3.mean(axis=1)         # (nwin, skala) -> rata-rata 4 sensor
+    for label, key in CLASS_MAP_REF.items():
+        if key not in condition_names:
+            continue
+        idx = seg["y"] == condition_names.index(key)
+        if idx.sum() < 2:
+            continue
+        Fc = F_mean_sensor[idx]              # (n_window_kelas, skala)
+        cv_per_scale = Fc.std(axis=0, ddof=1) / np.abs(Fc.mean(axis=0))
+        row = {"Data Length": WIN, "Class": label}
+        row.update({str(s): round(float(cv_per_scale[s - 1]), 3) for s in range(1, T + 1)})
+        rows_ref.append(row)
+
+tabel_cv_referensi = pd.DataFrame(rows_ref)
+print("=== Tabel CV entropi per Data Length x Class x Scale (format referensi) ===")
+print(tabel_cv_referensi.to_string(index=False))
+export_df(tabel_cv_referensi, "07_cv_entropi_referensi")
+display(tabel_cv_referensi)
+"""))
+
 cells.append(md("""# §8 — ANN-LM Classification
 
 Kotak `ANN-LM Classification` pada diagram:
