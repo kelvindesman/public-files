@@ -813,6 +813,45 @@ def fuzzy_phi(V, r, n_ref=256, seed=0):
     mu = 1.0 / (1.0 + d2 / rr); mu[np.arange(len(ref)), ref] = 0.0
     return (mu.sum(axis=1) / (N - 1)).mean()
 
+def coarse_grain_cmse(x, s, k):
+    n = (len(x) - k) // s
+    if n <= 0: return np.array([], dtype=float)
+    return x[k:k + n*s].reshape(-1, s).mean(axis=1)
+
+def embed_matrix_centered(y, m_):
+    if len(y) < m_: return np.empty((0, m_), float)
+    V = np.lib.stride_tricks.sliding_window_view(y, m_)
+    u = V.mean(axis=1, keepdims=True)
+    return V - u
+
+def fuzzy_phi_exact(V, r, n_ref=256, seed=0):
+    rng = np.random.default_rng(seed)
+    N = V.shape[0]
+    if N < 3: return np.nan
+    ref = rng.choice(N, size=n_ref, replace=False) if N > n_ref else np.arange(N)
+    A = V[ref]
+    a2 = np.sum(A * A, axis=1, keepdims=True)
+    b2 = np.sum(V * V, axis=1, keepdims=True).T
+    d = np.sqrt(np.maximum(a2 + b2 - 2 * (A @ V.T), 0.0))
+    mu = 1.0 / (1.0 + d / (r + 1e-12))
+    mu[np.arange(len(ref)), ref] = 0.0
+    return (mu.sum(axis=1) / (N - 1)).mean()
+
+def edm_fuzzy_entropy_1d(x, scales, m=2, r_ratio=0.15, n_ref=256, seed=0):
+    out = []
+    r = r_ratio * np.std(x, ddof=1) # SD of original time series
+    for s in scales:
+        val_k = []
+        for k in range(s):
+            y = coarse_grain_cmse(x, s, k)
+            if len(y) < (m + 2): continue
+            phi_m = fuzzy_phi_exact(embed_matrix_centered(y, m), r, n_ref=n_ref, seed=seed + 11 * s + k)
+            phi_m1 = fuzzy_phi_exact(embed_matrix_centered(y, m + 1), r, n_ref=n_ref, seed=seed + 17 * s + k)
+            if phi_m > 0 and phi_m1 > 0 and not np.isnan(phi_m) and not np.isnan(phi_m1):
+                val_k.append(np.log(phi_m / phi_m1))
+        out.append(np.mean(val_k) if len(val_k) > 0 else np.nan)
+    return np.array(out, dtype=float)
+
 def fuzzy_similarity_samples(V, r, n_ref=256, seed=0):
     rng = np.random.default_rng(seed); N = V.shape[0]
     if N < 3: return np.array([], dtype=float)
@@ -824,21 +863,6 @@ def fuzzy_similarity_samples(V, r, n_ref=256, seed=0):
         mu[ri, i] = np.nan
     return mu[~np.isnan(mu)].ravel()
 
-def edm_fuzzy_entropy_1d(x, scales, m=2, r_ratio=0.2, n_ref=256, seed=0):
-    \"\"\"-> vektor panjang T: satu nilai entropi per skala tau (E_i^(1..T)).\"\"\"
-    out = []
-    for s in scales:
-        y = coarse_grain_mean(x, s)
-        if len(y) < (m + 2):
-            out.append(np.nan); continue
-        r = r_ratio * np.std(y, ddof=1)
-        phi_m = fuzzy_phi(embed_matrix(y, m), r, n_ref=n_ref, seed=seed + 11 * s)
-        phi_m1 = fuzzy_phi(embed_matrix(y, m + 1), r, n_ref=n_ref, seed=seed + 17 * s)
-        if not phi_m or not phi_m1 or phi_m <= 0 or phi_m1 <= 0 or np.isnan(phi_m) or np.isnan(phi_m1):
-            out.append(np.nan)
-        else:
-            out.append(np.log(phi_m / phi_m1))
-    return np.array(out, dtype=float)
 
 def jsd_fuzzy_entropy_1d(x, scales, m=2, r_ratio=0.2, n_ref=256, seed=0, bins=20):
     out = []; bin_edges = np.linspace(0.0, 1.0, bins + 1); eps = 1e-12
@@ -900,8 +924,10 @@ def concat_multisensor_features(W, method, seed=0, n_jobs=-1):
     def one_window(i):
         return np.concatenate([entropy_1d(W[i, :, s], sd=seed + 1000 * i + 19 * s) for s in range(ns)])
 
-    return np.vstack(Parallel(n_jobs=n_jobs, prefer="processes")(
+    F_ent = np.vstack(Parallel(n_jobs=n_jobs, prefer="processes")(
         delayed(one_window)(i) for i in range(nwin)))
+
+    return F_ent
 
 feat_cost_rows = []
 FEATURES = {}          # (WIN, metode) -> matriks fitur (nwin, 4T)
@@ -1156,7 +1182,8 @@ cells.append(code("""def nested_grouped_cv(F, y, groups, n_splits=N_SPLITS):
     for tr, te in skf.split(F, y, groups=groups):
         if len(np.unique(y[tr])) < 2:
             continue
-        gs = GridSearchCV(make_ann(), ANN_GRID, cv=3, scoring="f1_macro", n_jobs=N_JOBS)
+        pipe, clf_grid = make_ann(), ANN_GRID
+        gs = GridSearchCV(pipe, clf_grid, cv=3, scoring="f1_macro", n_jobs=N_JOBS)
         tf0 = _time.perf_counter(); gs.fit(F[tr], y[tr]); fit_times.append(_time.perf_counter() - tf0)
         ti0 = _time.perf_counter(); pred = gs.best_estimator_.predict(F[te])
         infer_times.append(_time.perf_counter() - ti0); n_infer.append(len(te))
@@ -1220,7 +1247,7 @@ for WIN in WINDOW_LENGTHS:
                                "infer_ms_per_window": round(cost["infer_ms_per_window"], 3)})
             arch_rows.append({"N_window": WIN, "Skenario": sc, "Metode": meth,
                                "Hidden_terpilih": "; ".join(sorted({str(h) for h, _ in out["chosen"]})),
-                               "Aktivasi_terpilih": "; ".join(sorted({a for _, a in out["chosen"]}))})
+                               "Aktivasi_terpilih": "; ".join(sorted({str(a) for _, a in out["chosen"]}))})
             print(f"  N={WIN} {sc:22s} {meth:10s} F1={mn['f1']:.3f}±{sd['f1']:.3f} "
                   f"acc={mn['acc']:.3f} | cpu={cost['cpu_s']:.0f}s")
 
@@ -1245,6 +1272,18 @@ print("=== Performa fault detection — grouped %d-fold CV, grid search per fold
 print(show.to_string(index=False))
 export_df(perf_tbl, "07_performa_cv_5skenario")
 display(show)
+"""))
+
+cells.append(code("""# === TABEL PERFORMA MIRIP REFERENSI (TABLE IV) ===
+tbl_ref_acc = perf_tbl.pivot_table(index=["Skenario", "N_window"], columns="Metode", values="Akurasi") * 100
+tbl_ref_f1 = perf_tbl.pivot_table(index=["Skenario", "N_window"], columns="Metode", values="F1") * 100
+tbl_ref = pd.concat([tbl_ref_acc], keys=["Akurasi (%)"], axis=1).join(
+          pd.concat([tbl_ref_f1], keys=["F1 Score (%)"], axis=1))
+tbl_ref = tbl_ref.round(2)
+print("\\n=== DIAGNOSTIC ACCURACY USING EDM-FUZZY AND JSD-FUZZY (%) ===")
+print(tbl_ref.to_string())
+p_ref = Path(EXPORT_DIR) / "07_performa_mirip_referensi.csv"
+tbl_ref.to_csv(p_ref)
 """))
 
 cells.append(code("""# === TABEL 2 — BIAYA KOMPUTASI ===
@@ -1877,7 +1916,7 @@ final = (perf_tbl.merge(comp_tbl, on=["N_window", "Skenario", "Metode"])
                  .merge(sf1, on=["N_window", "Skenario", "Metode"], how="left")
                  .merge(sall, on=["N_window", "Skenario", "Metode"], how="left"))
 cols_final = ["N_window", "Skenario", "Metode", "C_kelas", "n_fitur", "Akurasi", "Precision",
-              "Recall", "F1", "F1_std", "Hidden_terpilih", "cpu_s_total", "peak_mem_mb",
+              "Recall", "F1", "F1_std", "Hidden_terpilih", "Aktivasi_terpilih", "cpu_s_total", "peak_mem_mb",
               "infer_ms_per_window", "F1_sensor", "Semua_4_benar"]
 if len(prob_tbl):                       # mutu probabilitas ikut masuk ringkasan
     sprob = (prob_tbl[prob_tbl.Eval == "end_to_end"]
