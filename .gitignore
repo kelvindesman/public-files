@@ -4,3 +4,4 @@ exports/
 _temp_exec.ipynb
 __pycache__/
 *.prepatch
+venv/

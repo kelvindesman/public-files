@@ -1,159 +1,6 @@
-#!/usr/bin/env python3
-"""Build 07_Skema_Diagram_CV_5_Skenario_dan_Sensor.ipynb.
-
-Notebook ini mengikuti flowchart pembimbing ("Multisource Soil Moisture Sensor
-Acquisition -> Broker -> ... -> Fault Classification and Evaluation") kotak per
-kotak, sambil menjawab permintaan terakhir:
-
-  * perbandingan 5 skenario (S1..S5) pakai CROSS-VALIDATION,
-  * fault detection dilaporkan dua sisi: performa (akurasi/precision/recall/F1)
-    dan biaya komputasi (CPU, memori, waktu, latensi inferensi),
-  * output tambahan: sensor mana yang rusak.
-
-Yang berubah dibanding versi pertama notebook 07, supaya cocok dengan diagram:
-  1. Window length: durasi sesuai diagram; pada laju 5 menit N in {200, 700, 1000}.
-     Ketiganya dijalankan sebagai studi sensitivitas panjang window.
-  2. Fitur = EDM-Fuzzy murni, 4 sensor x T skala = 4T fitur (kotak "Multisensor
-     Entropy Feature Concatenation"). Fitur time-domain hibrida DIBUANG dari
-     jalur utama karena tidak ada di diagram. JSD-Fuzzy tetap ikut sebagai
-     pembanding usulan paper.
-  3. ANN-LM: solver 'lbfgs' (sklearn tidak punya Levenberg-Marquardt asli) dan
-     hidden layer dipilih lewat Grid Search, persis kotak "ANN-LM Classification".
-  4. Ada langkah "Time synchronization" eksplisit (grid waktu 30 detik).
-  5. Cross-validation memakai StratifiedGroupKFold dengan grup = blok waktu,
-     supaya window yang tumpang-tindih tidak bocor antar-fold.
-
-Data: data_sensor.csv (281.721 baris, 2025-09-14 .. 2025-12-21, interval 30 detik).
-
-Tambahan atas permintaan pembimbing (24/07):
-  6. **Tabel CV (koefisien variasi)** — std/mean per sensor (§3c), karena "CV"
-     di tabel lain berarti cross-validation, bukan koefisien variasi.
-  7. **Tabel hasil entropy** — nilai entropi per sensor x skala x komponen,
-     dipisah normal vs fault (§7b).
-  8. **Cek EDM-Fuzzy** — F1 gap + separabilitas fitur, menjelaskan kenapa EDM
-     kecil di multi-class dan hanya tinggi di S5 (§9b).
-"""
-import json
-
-REPO_RAW = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv"
-OUT = "/Users/kelvin/apps/public-files/07_Skema_Diagram_CV_5_Skenario_dan_Sensor.ipynb"
-
-
-def md(src):
-    return {"cell_type": "markdown", "metadata": {}, "source": src.splitlines(keepends=True)}
-
-
-def code(src):
-    return {"cell_type": "code", "metadata": {}, "execution_count": None, "outputs": [],
-            "source": src.splitlines(keepends=True)}
-
-
-cells = []
-
-cells.append(md("""<!-- HEADER-KLAIM -->
-# 07 — Skema Diagram Pembimbing, Dijalankan dengan Cross-Validation (5 Skenario + Sensor Mana)
-
-| | |
-|---|---|
-| **Pertanyaan** | Jalankan **persis skema pada flowchart** (akuisisi → broker → sinkronisasi → injeksi fault → segmentasi → EDM-Fuzzy τ=1..T → konkatenasi 4T fitur → ANN-LM grid search → evaluasi), pakai **data terbaru** dan **cross-validation**, untuk **5 skenario**. Lalu: sensor mana yang rusak? |
-| **Yang diukur** | (a) **Performa**: akurasi, precision, recall, F1 macro — rata-rata ± simpangan baku antar-fold. (b) **Komputasi**: CPU time, wall time, memori puncak, latensi inferensi per window. (c) **Identifikasi sensor rusak** (tambahan di luar diagram). |
-| **Panjang window** | Data di-preprocessing jadi **1 sampel per 5 menit**, jadi cacah sampel diagram diskalakan agar **durasinya identik**: **N ∈ {200, 700, 1000}** = 0,69 / 2,43 / 3,47 hari (rasio 1 : 3,5 : 5 sama seperti 2000/7000/10000 pada laju 30 detik). Ketiganya dijalankan sebagai studi sensitivitas. |
-| **Fitur** | **EDM-Fuzzy murni**: 4 sensor × T skala = **4T fitur** (kotak konkatenasi). JSD-Fuzzy ikut sebagai pembanding usulan paper. Fitur time-domain **tidak** dipakai di jalur utama karena tidak ada di diagram. |
-| **Classifier** | **ANN-LM** — `solver='lbfgs'` (quasi-Newton, paling dekat ke Levenberg–Marquardt; LM asli hanya ada di MATLAB `trainlm`), **hidden layer dipilih Grid Search**, output C neuron sesuai jumlah kelas tiap skenario. |
-| **Data** | `data_sensor.csv` — 281.721 baris mentah, 2025-09-14 s.d. 2025-12-21 (97,8 hari), interval akuisisi 30 detik, kolom `kelembaban1..kelembaban4`. Setelah rata-rata per 5 menit: **28.173 baris**. |
-
----
-"""))
-
-cells.append(md("""## §0 — Baca ini dulu (versi tanpa istilah)
-
-Analogi seluruh notebook: **empat termometer di satu ruangan.**
-
-1. **Akuisisi.** Empat sensor kelembaban tanah mencatat angka tiap 30 detik.
-2. **Broker.** Semua catatan dikumpulkan ke satu meja — tapi tetap **empat
-   lembar terpisah**, tidak dijadikan satu angka rata-rata. (Kalau dirata-rata,
-   satu sensor rusak akan tersamarkan tiga yang sehat — dibuktikan di notebook `02`.)
-3. **Preprocessing.** Catatan 30 detik dirangkum jadi **satu angka tiap 5 menit**
-   (rata-rata 10 pembacaan). Seperti mencatat nilai rata-rata per jam pelajaran
-   alih-alih tiap menit: pola tetap terlihat, derau berkurang.
-4. **Potong jadi window.** Rekaman panjang dipotong jadi potongan-potongan
-   berdurasi tetap, seperti memotong film jadi klip. Satu klip = satu contoh
-   yang dinilai.
-5. **Ekstraksi fitur (entropy).** Tiap klip diringkas jadi beberapa angka yang
-   menggambarkan **seberapa tidak beraturan** sinyalnya. Analogi: menilai
-   tulisan tangan bukan dari isinya, tapi dari serapi apa hurufnya.
-6. **ANN.** Angka-angka ringkasan itu diberikan ke jaringan saraf tiruan untuk
-   memutuskan: klip ini normal atau ada fault, dan fault jenis apa.
-7. **Tahap tambahan.** Untuk klip yang divonis fault, model kedua menebak
-   **sensor mana** yang rusak, lengkap dengan angka keyakinannya.
-
-### Tiga angka yang paling sering salah baca
-
-| Kolom | **Bukan** ini | Artinya yang benar |
-|---|---|---|
-| `Prevalensi` | bukan hasil prediksi model | **kunci jawaban**: berapa persen window uji yang memang sensornya rusak. Ini sifat data (karena fault-nya kita suntikkan sendiri), bukan tebakan model |
-| `Akurasi` | bukan "peluang sensor rusak" | berapa persen tebakan model yang benar untuk sensor itu |
-| `P(Sx rusak)` | bukan akurasi, bukan prevalensi | keyakinan model **untuk satu window tertentu** |
-
-Analogi: `Prevalensi` = berapa banyak siswa yang benar-benar sakit di kelas;
-`Akurasi` = berapa banyak tebakan dokter yang tepat; `P(rusak)` = "menurut saya
-anak ini 70% kemungkinan demam".
-
-### Aturan main sebelum menyebut angka mana pun "bagus"
-
-- **F1 tinggi + ROC-AUC ≈ 0,5 = tidak sah.** Artinya model menebak "semua
-  rusak" terus. Analogi: dokter yang menyatakan **semua** pasien sakit akan
-  dapat recall 100% dan terlihat hebat — padahal tidak menilai apa-apa.
-  Kegagalan seperti ini pernah terjadi di notebook lama, lihat README.
-- Karena itu **setiap tabel identifikasi sensor di sini selalu memuat
-  `Prevalensi`, `ROC_AUC`, dan uji kalibrasi** — supaya kecurangan semacam itu
-  langsung kelihatan.
-
-### Daftar pertanyaan yang dijawab notebook ini
-
-Semua pertanyaan pembimbing dijawab di **§13 — Tanya-Jawab**, dengan penunjuk
-ke sel yang mencetak angkanya:
-
-1. Tabel identifikasi sensor itu artinya apa? → §0 di atas + §10 + §13-Q1
-2. Bisa dites dengan data yang dikondisikan **bersih** (tanpa fault)? → **§11 kontrol negatif**
-3. Bisa dites dengan fault **hanya di satu sensor**? → **§11 kontrol tunggal**
-4. Bedanya tabel "F1 rata-rata 4 sensor" dengan peta panas F1? → §13-Q4
-5. Preprocessing-nya per jam? → **bukan, per 5 menit** — §3
-6. Yang masuk broker sudah di-downsample atau belum? → §2/§3 + §13-Q6
-7. Preprocessing-nya cuma resample, atau ada validasi & pembersihan? → **§3b**
-8. Panjang datanya 2000/7000/10000 atau 200/700/1000? → **§5, tabel konversi**
-9. Window yang tidak genap N sampel dibuang atau tidak? → **§5, blok akuntansi window**
-"""))
-
-cells.append(md("""## Peta diagram → sel notebook
-
-| Kotak di flowchart | Bagian notebook |
-|---|---|
-| Multisource Soil Moisture Sensor Acquisition | **§1** — muat `data_sensor.csv` |
-| **Broker** — Multisource data integration | **§2** — 4 sensor jadi satu tabel, identitas sensor dipertahankan |
-| Time synchronization — S₁..S₄ | **§3** — rata-rata per 5 menit, grid waktu seragam, gap ditambal |
-| Data preparation and Fault Injection | **§4** — injeksi fault (sensor-selective) |
-| Time series segmentation and Labelling, N ∈ {2000; 7000; 10000} pada laju 30 detik | **§5** — segmentasi + pelabelan, N ∈ {200; 700; 1000} pada laju 5 menit (durasi sama) |
-| EDM-Fuzzy Entropy Feature Extraction, τ = 1..T | **§6** — E₁..E₄ per sensor |
-| Multisensor Entropy Feature Concatenation → 4T fitur | **§7** — konkatenasi |
-| ANN-LM Classification (input 4T, hidden = grid search, output C) | **§8** — ANN-LM + CV |
-| Fault Classification and Evaluation | **§9** — performa + biaya komputasi |
-| *(tambahan, di luar diagram)* | **§3b** — laporan validasi & pembersihan data |
-| *(tambahan, di luar diagram)* | **§10** — sensor mana yang rusak, **§10b** — probabilitasnya |
-| *(tambahan, di luar diagram)* | **§11** — kontrol: data bersih & fault satu sensor |
-| *(tambahan, di luar diagram)* | **§13** — tanya-jawab pembimbing |
-
-**Catatan jujur soal dua penyimpangan yang disengaja:**
-
-1. **`solver='lbfgs'`, bukan Levenberg–Marquardt.** scikit-learn tidak punya
-   LM. lbfgs sama-sama quasi-Newton dan paling dekat perilakunya. LM sungguhan
-   perlu MATLAB `trainlm`.
-2. **JSD-Fuzzy ikut dijalankan** walau diagram hanya menyebut EDM-Fuzzy, karena
-   JSD-Fuzzy adalah usulan paper dan diagram ini dipakai untuk membandingkan
-   keduanya. Jalur EDM-Fuzzy tetap persis 4T fitur seperti di diagram.
-"""))
-
-cells.append(code("""# === Runtime guard — jalankan sel ini PALING AWAL ===
+import matplotlib; matplotlib.use("Agg")
+def display(*args): pass
+# === Runtime guard — jalankan sel ini PALING AWAL ===
 import os, time
 
 for _v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",
@@ -177,9 +24,9 @@ def log_stage(label):
     print(f"[t+{elapsed_s()/60:6.1f} min] {label}", flush=True)
 
 log_stage(f"runtime guard aktif | budget={KAGGLE_TIME_BUDGET_H} jam | BLAS threads=1")
-"""))
 
-cells.append(code("""# === Konfigurasi global ===
+
+# === Konfigurasi global ===
 import numpy as np, pandas as pd, matplotlib.pyplot as plt, warnings, logging
 import time as _time, tracemalloc, platform
 from pathlib import Path
@@ -230,7 +77,7 @@ def export_df(df, name, index=False):
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
 
 def run_with_metrics(label, fn):
-    \"\"\"Ukur wall time, CPU time, dan memori puncak satu blok kerja.\"\"\"
+    """Ukur wall time, CPU time, dan memori puncak satu blok kerja."""
     tracemalloc.start()
     t0 = _time.perf_counter(); c0 = _time.process_time()
     result = fn()
@@ -244,20 +91,12 @@ def run_with_metrics(label, fn):
 print("Mesin :", platform.processor() or platform.machine(), "| CPU:", os.cpu_count())
 print("Window N :", WINDOW_LENGTHS, "| T skala :", T_SCALES, "-> fitur EDM = 4T =", 4 * T_SCALES)
 print("Metode   :", METHOD_LIST, "| K-Fold :", N_SPLITS, "| MAX_PER_CLASS :", MAX_PER_CLASS)
-"""))
 
-cells.append(md("""# §1 — Multisource Soil Moisture Sensor Acquisition
 
-Kotak pertama diagram. Data akuisisi 4 sensor kelembaban tanah dibaca dari
-`data_sensor.csv` (dataset terbaru). Kalau file ada di direktori kerja atau di
-`/kaggle/input/...` file itu yang dipakai; kalau tidak, diunduh dari GitHub
-(**Kaggle: Settings → Internet → On**).
-"""))
-
-cells.append(code("""import requests, glob
+import requests, glob
 from io import StringIO
 
-DATA_URL = "__REPO_RAW__"
+DATA_URL = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv"
 DATA_NAME = "data_sensor.csv"
 
 def load_sensor_data():
@@ -279,46 +118,16 @@ if missing:
 print("Baris akuisisi:", len(df_raw), "| kolom sensor:", cols)
 print("Rentang waktu :", df_raw.index[0], "->", df_raw.index[-1])
 display(df_raw[cols].describe().round(2))
-""".replace("__REPO_RAW__", REPO_RAW)))
 
-cells.append(md("""# §2 — Broker: Multisource Data Integration
 
-Kotak `Broker` pada diagram. Broker berperan sebagai **pengumpul**: keempat
-aliran sensor disatukan jadi **satu tabel**, tetapi **identitas tiap sensor
-dipertahankan** sebagai kolom terpisah — bukan dilebur/dirata-rata jadi satu
-sinyal. Bukti kenapa peleburan merugikan ada di notebook `02`.
-"""))
-
-cells.append(code("""df_broker = df_raw[cols].copy()
+df_broker = df_raw[cols].copy()
 df_broker.index = pd.to_datetime(df_broker.index, utc=True)
 df_broker = df_broker.sort_index()
 print("Tabel broker:", df_broker.shape, "| 4 kanal terpisah (tidak difusikan)")
 display(df_broker.head(3))
-"""))
 
-cells.append(md("""# §3 — Time Synchronization
 
-Kotak `Time synchronization` pada diagram:
-
-$$S_1 = S_1(t_1), S_1(t_2), \\dots, S_1(t_N) \\qquad \\dots \\qquad S_4 = S_4(t_1), \\dots, S_4(t_N)$$
-
-Keempat sensor dipaksa ke **satu sumbu waktu seragam**. Kalau ada stempel waktu
-yang bolong atau ganda, di sini ketahuan dan ditambal, supaya sampel ke-*i* dari
-keempat sensor benar-benar merujuk waktu yang sama sebelum masuk windowing.
-
-**Preprocessing laju sampling.** Akuisisi mentah 30 detik dirata-ratakan jadi
-**satu sampel per 5 menit** (`RESAMPLE_RULE`): 281.721 baris → ±28.173 baris.
-Rata-rata, bukan pengambilan tiap ke-10, supaya derau akuisisi ikut teredam dan
-tidak ada sampel yang dibuang begitu saja.
-
-Akibatnya panjang window ikut menyesuaikan — lihat §5. Satu hal yang dirapikan
-bersamaan: kemiringan drift pada injeksi fault dikalikan 10 (`DRIFT_PER_SAMPLE`)
-supaya drift per satuan **waktu** tetap sama seperti versi 30 detik; kalau tidak,
-fault drift-nya jadi 10× lebih lemah dan angkanya tidak sebanding dengan
-notebook `01`–`06`.
-"""))
-
-cells.append(code("""# --- Diagnosa sinkronisasi sebelum ditambal ---
+# --- Diagnosa sinkronisasi sebelum ditambal ---
 dt = df_broker.index.to_series().diff().dt.total_seconds().dropna()
 print("Interval antar-sampel (detik):")
 print(dt.value_counts().head(5).to_string())
@@ -332,7 +141,7 @@ df_pre = df_broker.copy()          # simpan versi 30 detik untuk laporan mutu di
 if RESAMPLE_RULE:
     n_before = len(df_broker)
     df_broker = df_broker.resample(RESAMPLE_RULE).mean()
-    print(f"\\nPreprocessing laju sampling: rata-rata per {RESAMPLE_RULE} "
+    print(f"\nPreprocessing laju sampling: rata-rata per {RESAMPLE_RULE} "
           f"-> {n_before} baris menjadi {len(df_broker)} baris")
 
 # --- Paksa ke grid seragam ---
@@ -346,7 +155,7 @@ if df_sync.isna().any().any():
     raise ValueError("Error-nya jelas: masih ada NaN setelah sinkronisasi.")
 
 X = df_sync.to_numpy(dtype=float)
-print(f"\\nSetelah sinkronisasi: {X.shape} pada grid {SAMPLING_SECONDS} detik "
+print(f"\nSetelah sinkronisasi: {X.shape} pada grid {SAMPLING_SECONDS} detik "
       f"({n_gap} slot ditambal interpolasi waktu)")
 print(f"Rentang total: {(len(X) * SAMPLING_SECONDS) / 86400:.1f} hari")
 print("S1..S4 sekarang berbagi sumbu waktu yang sama.")
@@ -354,40 +163,11 @@ for _w in WINDOW_LENGTHS:
     _dur = _w * SAMPLING_SECONDS / 86400
     _nw = (len(X) - _w) // max(1, _w // 2) + 1 if len(X) >= _w else 0
     print(f"  N={_w:>5} -> {_dur:5.2f} hari per window, {_nw} window tersedia per kondisi")
-"""))
 
-cells.append(md("""# §3b — Validasi & pembersihan data (bukan cuma resample)
 
-Pertanyaan pembimbing: *"apakah di data preprocessing ada hal lain yang
-dilakukan, seperti validation dan cleaning?"* — **Ada.** Urutannya:
-
-| # | Langkah | Jenis | Kenapa perlu |
-|---|---|---|---|
-| 1 | Kolom wajib `kelembaban1..4` ada | validasi | kalau tidak ada, program berhenti dengan pesan jelas (§1) |
-| 2 | Stempel waktu dijadikan `datetime` UTC lalu diurutkan | pembersihan | data mentah tidak dijamin urut |
-| 3 | Stempel waktu ganda dibuang (`keep="first"`) | pembersihan | satu waktu tidak boleh punya dua baris |
-| 4 | Cek nilai kosong (NaN) per kolom | validasi | melaporkan, bukan menyembunyikan |
-| 5 | Cek nilai di luar rentang fisik 0–100 % | validasi | pembacaan mustahil = sensor bermasalah, harus tercatat |
-| 6 | Cek pembacaan macet (nilai sama berturut-turut ≥ 10 kali) | validasi | gejala klasik sensor *stuck-at* |
-| 7 | Cek pencilan ekstrem (`|z| > 6`) | validasi | dilaporkan, **tidak dibuang** |
-| 8 | Rata-rata per 5 menit | pembersihan | meredam derau akuisisi (§3) |
-| 9 | Paksa ke grid waktu seragam + tambal bolong dengan interpolasi waktu | pembersihan | sampel ke-*i* keempat sensor harus merujuk waktu yang sama |
-| 10 | Sisa NaN ditambal median kolom | pembersihan | jaminan tidak ada NaN masuk ekstraksi fitur |
-
-**Kenapa pencilan dan pembacaan macet dilaporkan tapi tidak dibuang:** yang
-sedang diteliti justru **fault**. Membuang pembacaan aneh sebelum pemodelan sama
-saja menghapus barang bukti sebelum penyidikan. Analogi: kalau ingin melatih
-detektor uang palsu, jangan buang dulu semua uang yang terlihat mencurigakan.
-
-Referensi praktik ini: *Data quality dimensions* — kelengkapan, konsistensi,
-ketepatan waktu, validitas (Batini & Scannapieco, *Data Quality*, Springer 2016);
-serta penanganan deret waktu sensor pada Hodge & Austin, *A survey of outlier
-detection methodologies*, Artificial Intelligence Review 22(2), 2004.
-"""))
-
-cells.append(code("""# === Laporan mutu data: sebelum vs sesudah preprocessing ===
+# === Laporan mutu data: sebelum vs sesudah preprocessing ===
 def flatline_max_run(s):
-    \"\"\"Panjang deret nilai identik berturut-turut terpanjang (gejala sensor macet).\"\"\"
+    """Panjang deret nilai identik berturut-turut terpanjang (gejala sensor macet)."""
     v = s.to_numpy()
     brk = np.flatnonzero(np.diff(v) != 0)
     if len(brk) == 0:
@@ -416,35 +196,15 @@ print("=== Laporan mutu data (validasi + pembersihan) ===")
 print(qc.to_string(index=False))
 export_df(qc, "07_mutu_data")
 
-print(f"\\nStempel waktu ganda dibuang : {n_dup}")
+print(f"\nStempel waktu ganda dibuang : {n_dup}")
 print(f"Slot grid yang bolong lalu ditambal interpolasi waktu : {n_gap}")
 print(f"Baris: {len(df_raw)} (30 detik) -> {len(df_pre)} (setelah buang ganda) "
       f"-> {len(df_sync)} (rata-rata 5 menit, grid seragam)")
 print("Tidak ada baris yang dibuang karena 'aneh' — pencilan & pembacaan macet "
       "hanya DILAPORKAN, karena justru itu bahan penelitian fault.")
-"""))
 
-cells.append(md("""# §3c — Koefisien Variasi (CV) data sensor
 
-Permintaan pembimbing: hitungan **CV (koefisien variasi) = std/mean** belum ada
-di notebook ini — "CV" di semua tabel sebelumnya berarti *cross-validation*
-5-fold, bukan koefisien variasi. Bagian ini menambahkannya.
-
-CV mengukur **seberapa bervariasi** pembacaan tiap sensor relatif terhadap
-rata-ratanya — angka tinggi = sensor tidak stabil. Dihitung dua skala:
-
-1. **Per-sensor** pada data 30 detik (`df_pre`) dan 5 menit (`df_sync`):
-   `CV = std / mean` (dalam persen).
-2. **Per-window** untuk tiap panjang window N: CV dihitung di dalam tiap
-   window lalu dirata-ratakan, dipisah window `normal` vs `fault`. Ini
-   variabilitas yang sesungguhnya dilihat classifier.
-
-Catatan: window `fault` memuat data yang disuntik fault (justru yang diteliti),
-jadi CV per-window memang memuat baik window bersih maupun bercampur fault —
-itulah yang masuk ekstraksi fitur.
-"""))
-
-cells.append(code("""# === Tabel CV (koefisien variasi) = std/mean x 100, per sensor ===
+# === Tabel CV (koefisien variasi) = std/mean x 100, per sensor ===
 def cv_pct(a):
     a = np.asarray(a, dtype=float); m = a.mean()
     return float(a.std(ddof=1) / m * 100.0) if m != 0 else np.nan
@@ -466,9 +226,9 @@ display(cv_sensor)
 
 # Catatan: tabel CV per-window menyusul setelah segmentasi (§5) selesai,
 # karena butuh SEGMENTS[WIN] yang baru dibangun di sana.
-"""))
 
-cells.append(code("""# --- Sanity plot: 4 kanal setelah sinkronisasi (belum ada fault) ---
+
+# --- Sanity plot: 4 kanal setelah sinkronisasi (belum ada fault) ---
 fig, ax = plt.subplots(figsize=(13, 4))
 seg = df_sync.iloc[:4000]
 for c in cols:
@@ -476,19 +236,9 @@ for c in cols:
 ax.set_title("Output broker setelah time synchronization — 4 kanal (potongan awal)")
 ax.set_ylabel("kelembaban"); ax.legend(ncol=4, fontsize=9)
 plt.tight_layout(); plt.savefig("exports/07_broker_tersinkron.png", dpi=120); plt.show()
-"""))
 
-cells.append(md("""# §4 — Data Preparation and Fault Injection
 
-Kotak `Data preparation and Fault Injection`. Simulator fault dan 16 kombinasi
-skenario identik notebook `01`/`03` supaya angkanya sebanding lintas notebook.
-
-Satu tambahan penting: injeksi bersifat **sensor-selective** — fault hanya masuk
-ke subset sensor acak (1..4 sensor), sisanya tetap bersih. Tanpa ini, keempat
-label per-sensor jadi kembar dan §10 (identifikasi sensor) tidak sah.
-"""))
-
-cells.append(code("""def simulate_drift_fault(x, intensity=DRIFT_PER_SAMPLE, seed=None):
+def simulate_drift_fault(x, intensity=DRIFT_PER_SAMPLE, seed=None):
     drift = np.arange(len(x)) * intensity
     return x + drift, np.abs(drift) > 1e-6
 
@@ -543,83 +293,9 @@ SCENARIOS = {
 }
 condition_names = ["normal"] + list(SCENARIOS.keys())
 print("Kondisi:", len(SCENARIOS), "fault + normal =", len(condition_names))
-"""))
 
-cells.append(md("""# §5 — Time Series Segmentation and Labelling
 
-Kotak `Time series segmentation and Labelling`. Diagram menulis **N ∈ {2000;
-7000; 10000} sampel** pada laju akuisisi 30 detik — yaitu window **0,69 / 2,43 /
-3,47 hari**. Karena §3 sudah merata-ratakan data jadi 1 sampel per 5 menit,
-cacah sampelnya diskalakan jadi **N ∈ {200; 700; 1000}** supaya **durasi
-window-nya persis sama** dan rasio 1 : 3,5 : 5 pada diagram tetap terjaga.
-
-Kenapa tidak dipaksa tetap 10.000 sampel: pada laju 5 menit itu berarti satu
-window = 34,7 hari, sedangkan seluruh rekaman hanya 97,8 hari → tersisa **4
-window** untuk seluruh dataset. Cross-validation berkelompok tidak bisa jalan
-dengan 4 window. Dengan N = 200/700/1000 tersedia 280 / 79 / 55 window per
-kondisi.
-
-Ketiga panjang window dijalankan penuh, jadi hasilnya sekaligus jadi **studi
-sensitivitas panjang window** — bukan satu angka tunggal.
-
-Catatan kejujuran: pada N = 200 dengan τ sampai 10, deret hasil coarse-graining
-skala terkasar hanya 20 titik, jadi entropi di skala itu lebih berisik daripada
-di N = 1000. Itu bagian dari yang dibaca pada studi sensitivitas.
-
-Stride dipasang `N/2`. Konsekuensinya window bertetangga tumpang-tindih 50%,
-sehingga **cross-validation harus dikelompokkan menurut blok waktu** (dipakai di
-§8), kalau tidak potongan sinyal yang sama bisa muncul di data latih **dan** uji
-sekaligus dan akurasinya jadi terlalu bagus.
-
-Tiap window dilabeli dua hal:
-- label **kondisi** (normal / jenis kombinasi fault) → dipakai §8,
-- label **per-sensor** `[S1,S2,S3,S4]` → dipakai §10.
-
----
-
-## Tabel konversi panjang window — 2000/7000/10000 vs 200/700/1000
-
-Pertanyaan pembimbing: *"vin length datanya bukan 2000, 7000, 10.000?"* —
-**Dua-duanya benar, satuannya yang berbeda.** Diagram menghitung sampel pada
-laju **30 detik**; notebook ini menghitung sampel setelah preprocessing **5
-menit**. **Durasinya identik.**
-
-| Diagram (laju 30 detik) | Notebook ini (laju 5 menit) | Durasi window | Window tersedia |
-|---|---|---|---|
-| N = 2 000 sampel | N = 200 sampel | 0,69 hari (16,7 jam) | 280 per kondisi |
-| N = 7 000 sampel | N = 700 sampel | 2,43 hari | 79 per kondisi |
-| N = 10 000 sampel | N = 1 000 sampel | 3,47 hari | 55 per kondisi |
-
-Analogi: film 90 menit tetap 90 menit, entah disimpan 24 fps (129.600 frame)
-atau 12 fps (64.800 frame). Yang berubah cacah frame-nya, bukan durasinya.
-Rasio 1 : 3,5 : 5 pada diagram juga tetap terjaga.
-
-Kalau tetap dipaksa **10.000 sampel pada laju 5 menit**, satu window = **34,7
-hari**, sedangkan seluruh rekaman cuma 97,8 hari → tersisa **4 window** untuk
-seluruh dataset; cross-validation 5-fold berkelompok tidak bisa jalan. Angka
-persisnya dicetak sel di bawah.
-
----
-
-## Akuntansi window: apakah ada window yang dibuang?
-
-Pertanyaan pembimbing: *"jika ada window yang tidak cukup ... sampel, apakah
-window tersebut excluded?"* Jawabannya dipisah jadi tiga hal yang sering
-tertukar:
-
-| Hal | Angka | Perlakuan |
-|---|---|---|
-| **Panjang window N** | 200 / 700 / 1000 sampel | **Tidak pernah ada window pendek.** `sliding_window_view` hanya membentuk window yang **genap** N sampel. Sisa ekor di ujung rekaman (< N sampel) tidak dijadikan window — jadi tidak ada window setengah jadi yang perlu dibuang |
-| **`n_ref` = 128** | bukan panjang window | jumlah **vektor acuan** yang diambil acak saat menghitung kemiripan fuzzy, supaya biayanya tidak O(N²). Kalau titik yang tersedia < `n_ref`, dipakai **semuanya** (`if N > n_ref` — lihat §6), window tetap ikut, **tidak dibuang** |
-| **Skala kasar τ** | butuh ≥ m+2 = 4 titik setelah coarse-graining | kalau di skala tertentu titiknya kurang, **hanya fitur skala itu** yang jadi `NaN` lalu ditambal median di §7 — **window-nya tetap ikut** |
-
-Satu-satunya penyaringan window yang memang dilakukan: pada kondisi fault,
-window yang porsi sampel ter-fault-nya **≤ 1 %** (`FAULT_RATIO_THR`) dibuang,
-karena melabelinya "fault" akan menyesatkan — isinya praktis normal. Jumlahnya
-dicetak sel di bawah.
-"""))
-
-cells.append(code("""from numpy.lib.stride_tricks import sliding_window_view
+from numpy.lib.stride_tricks import sliding_window_view
 
 def make_windows(Xa, win, stride):
     Xn = np.asarray(Xa, dtype=np.float32); N = Xn.shape[0]
@@ -651,13 +327,13 @@ def window_labels_per_sensor(mask, win, stride, thr=0.02):
 SEG_AUDIT = {}          # akuntansi window per N, dicetak di sel berikutnya
 
 def segment_and_label(X, win):
-    \"\"\"-> W (nwin,win,4), y kondisi, Ysens (nwin,4), start index tiap window.
+    """-> W (nwin,win,4), y kondisi, Ysens (nwin,4), start index tiap window.
 
     Subset sensor yang terkena fault DIUNDI ULANG tiap pengulangan, sebanyak
     N_REPEAT_SUBSET kali per kondisi. Ini yang membuat keempat kolom label
     per-sensor saling bebas; kalau subset-nya cuma diundi sekali per ukuran,
     ada pasangan sensor yang selalu muncul bersama dan kolom labelnya kembar.
-    \"\"\"
+    """
     stride = max(1, win // 2)
     rng = np.random.default_rng(RANDOM_SEED)
     Ws, ys, Ys, st = [], [], [], []
@@ -709,9 +385,9 @@ for WIN in WINDOW_LENGTHS:
     SEGMENTS[WIN] = dict(W=W, y=y, Ysens=Ysens, starts=starts, groups=groups)
     print(f"N={WIN:6d} | window={W.shape} | kondisi terisi={len(np.unique(y)):2d} "
           f"| blok waktu={len(np.unique(groups)):3d} | prevalensi sensor={Ysens.mean(axis=0).round(2)}")
-"""))
 
-cells.append(code("""# === Tabel CV per-window (lanjutan §3c) — butuh SEGMENTS yang baru dibangun ===
+
+# === Tabel CV per-window (lanjutan §3c) — butuh SEGMENTS yang baru dibangun ===
 # CV dihitung di dalam tiap window (std/mean x 100), lalu dirata-ratakan
 # lintas window, dipisah window normal (y==0) vs fault (y>0).
 cv_win_rows = []
@@ -736,9 +412,9 @@ print("=== Tabel CV per-window (CV dihitung di dalam tiap window, normal vs faul
 print(cv_win.to_string(index=False))
 export_df(cv_win, "07_koefisien_variasi_window")
 display(cv_win)
-"""))
 
-cells.append(code("""# === Tabel konversi panjang window + akuntansi window (jawaban Q8 & Q9) ===
+
+# === Tabel konversi panjang window + akuntansi window (jawaban Q8 & Q9) ===
 konv = pd.DataFrame([{
     "N_diagram_30detik": w * (SAMPLING_SECONDS // 30),
     "N_notebook_5menit": w,
@@ -757,7 +433,7 @@ for w in (2000, 7000, 10000):
     print(f"  [andai] N={w:>5} sampel pada laju {SAMPLING_SECONDS}s -> {dur:5.1f} hari/window, "
           f"{nw} window untuk SELURUH rekaman ({len(X)} sampel) -> CV 5-fold {'bisa' if nw >= 10 else 'TIDAK bisa'}")
 
-print("\\n=== Akuntansi window: apa yang dibentuk, apa yang dibuang ===")
+print("\n=== Akuntansi window: apa yang dibentuk, apa yang dibuang ===")
 audit = pd.DataFrame([SEG_AUDIT[w] for w in WINDOW_LENGTHS])
 print(audit.to_string(index=False))
 export_df(audit, "07_akuntansi_window")
@@ -765,9 +441,9 @@ print("Baca: 'window_setengah_jadi' selalu 0 -> tidak pernah ada window dengan "
       "sampel kurang dari N; sisa ekor rekaman tidak dijadikan window sama sekali.")
 print("Satu-satunya window yang dibuang: porsi sampel ter-fault <= "
       f"{FAULT_RATIO_THR:.0%} (kolom 'dibuang_fault<=1%').")
-"""))
 
-cells.append(code("""# === Uji kebebasan label per-sensor (pengaman anti label kembar) ===
+
+# === Uji kebebasan label per-sensor (pengaman anti label kembar) ===
 # Kalau dua kolom label selalu sama, classifier per-sensor untuk keduanya akan
 # identik dan ROC-AUC jatuh ke ~0,5. Cacat inilah yang membatalkan notebook lama.
 for WIN in WINDOW_LENGTHS:
@@ -781,38 +457,50 @@ for WIN in WINDOW_LENGTHS:
     if kembar:
         print(f"  !! PERINGATAN: label sensor kembar {kembar} pada N={WIN}. "
               "Hasil §10 untuk pasangan itu TIDAK sah — naikkan N_REPEAT_SUBSET.")
-print("\\nKalau tidak ada pasangan kembar: keempat label sensor saling bebas, "
+print("\nKalau tidak ada pasangan kembar: keempat label sensor saling bebas, "
       "jadi tabel §10 dan §10b sah dibaca per sensor.")
-"""))
 
-cells.append(md("""# §6 — EDM-Fuzzy Entropy Feature Extraction, τ = 1..T
 
-Kotak entropy pada diagram. Untuk tiap sensor dihitung vektor entropi
-multiskala:
-
-$$E_i = [E_i^{(1)}, E_i^{(2)}, \\dots, E_i^{(T)}], \\quad i = 1..4$$
-
-Jadi tiap sensor menyumbang **T fitur** (satu per skala τ). JSD-Fuzzy dijalankan
-berdampingan sebagai pembanding usulan paper — versinya *rich*
-(`[jsd, fe, mean_μ, std_μ]` per skala), sehingga dimensinya 4× lipat EDM.
-"""))
-
-cells.append(code("""def coarse_grain_mean(x, s):
+def coarse_grain_mean(x, s):
     n = (len(x) // s) * s
     return x[:n].reshape(-1, s).mean(axis=1) if n > 0 else np.array([], dtype=float)
 
 def embed_matrix(y, m_):
     return np.lib.stride_tricks.sliding_window_view(y, m_) if len(y) >= m_ else np.empty((0, m_), float)
 
-def fuzzy_phi(V, r, n_ref=256, seed=0):
+def fuzzy_similarity_samples(V, r, n_ref=256, seed=0):
     rng = np.random.default_rng(seed); N = V.shape[0]
-    if N < 3: return np.nan
-    ref = rng.choice(N, size=n_ref, replace=False) if N > n_ref else np.arange(N)
+    if N < 3: return np.array([], dtype=float)
+    idx = np.arange(N); ref = rng.choice(idx, size=n_ref, replace=False) if N > n_ref else idx
     A = V[ref]; a2 = np.sum(A * A, axis=1, keepdims=True); b2 = np.sum(V * V, axis=1, keepdims=True).T
-    d2 = np.maximum(a2 + b2 - 2 * (A @ V.T), 0.0); rr = r * r + 1e-24
-    mu = 1.0 / (1.0 + d2 / rr); mu[np.arange(len(ref)), ref] = 0.0
-    return (mu.sum(axis=1) / (N - 1)).mean()
+    d = np.sqrt(np.maximum(a2 + b2 - 2 * (A @ V.T), 0.0))
+    mu = 1.0 / (1.0 + (d / (r + 1e-12)) ** 2)
+    for ri, i in enumerate(ref):
+        mu[ri, i] = np.nan
+    return mu[~np.isnan(mu)].ravel()
 
+def jsd_fuzzy_entropy_1d(x, scales, m=2, r_ratio=0.2, n_ref=256, seed=0, bins=20):
+    out = []; bin_edges = np.linspace(0.0, 1.0, bins + 1); eps = 1e-12
+    for s in scales:
+        y = coarse_grain_mean(x, s)
+        if len(y) < (m + 2):
+            out.extend([np.nan] * 4); continue
+        r = r_ratio * np.std(y, ddof=1)
+        mu_m = fuzzy_similarity_samples(embed_matrix(y, m), r, n_ref=n_ref, seed=seed + 11 * s)
+        mu_m1 = fuzzy_similarity_samples(embed_matrix(y, m + 1), r, n_ref=n_ref, seed=seed + 17 * s)
+        if len(mu_m) == 0 or len(mu_m1) == 0:
+            out.extend([np.nan] * 4); continue
+        p, _ = np.histogram(mu_m, bins=bin_edges); q, _ = np.histogram(mu_m1, bins=bin_edges)
+        p = p.astype(float); q = q.astype(float)
+        if p.sum() == 0 or q.sum() == 0:
+            out.extend([np.nan] * 4); continue
+        p /= p.sum(); q /= q.sum(); mm = 0.5 * (p + q)
+        jsd = 0.5 * (np.sum(p * np.log((p + eps) / (mm + eps))) + np.sum(q * np.log((q + eps) / (mm + eps))))
+        fe = np.log((mu_m.mean() + eps) / (mu_m1.mean() + eps))
+        out.extend([jsd, fe, mu_m.mean(), mu_m.std()])
+    return np.array(out, dtype=float)
+
+# --- CMSE-based EDM-Fuzzy Implementation (matching paper exactly) ---
 def coarse_grain_cmse(x, s, k):
     n = (len(x) - k) // s
     if n <= 0: return np.array([], dtype=float)
@@ -852,56 +540,11 @@ def edm_fuzzy_entropy_1d(x, scales, m=2, r_ratio=0.15, n_ref=256, seed=0):
         out.append(np.mean(val_k) if len(val_k) > 0 else np.nan)
     return np.array(out, dtype=float)
 
-def fuzzy_similarity_samples(V, r, n_ref=256, seed=0):
-    rng = np.random.default_rng(seed); N = V.shape[0]
-    if N < 3: return np.array([], dtype=float)
-    idx = np.arange(N); ref = rng.choice(idx, size=n_ref, replace=False) if N > n_ref else idx
-    A = V[ref]; a2 = np.sum(A * A, axis=1, keepdims=True); b2 = np.sum(V * V, axis=1, keepdims=True).T
-    d = np.sqrt(np.maximum(a2 + b2 - 2 * (A @ V.T), 0.0))
-    mu = 1.0 / (1.0 + (d / (r + 1e-12)) ** 2)
-    for ri, i in enumerate(ref):
-        mu[ri, i] = np.nan
-    return mu[~np.isnan(mu)].ravel()
-
-
-def jsd_fuzzy_entropy_1d(x, scales, m=2, r_ratio=0.2, n_ref=256, seed=0, bins=20):
-    out = []; bin_edges = np.linspace(0.0, 1.0, bins + 1); eps = 1e-12
-    for s in scales:
-        y = coarse_grain_mean(x, s)
-        if len(y) < (m + 2):
-            out.extend([np.nan] * 4); continue
-        r = r_ratio * np.std(y, ddof=1)
-        mu_m = fuzzy_similarity_samples(embed_matrix(y, m), r, n_ref=n_ref, seed=seed + 11 * s)
-        mu_m1 = fuzzy_similarity_samples(embed_matrix(y, m + 1), r, n_ref=n_ref, seed=seed + 17 * s)
-        if len(mu_m) == 0 or len(mu_m1) == 0:
-            out.extend([np.nan] * 4); continue
-        p, _ = np.histogram(mu_m, bins=bin_edges); q, _ = np.histogram(mu_m1, bins=bin_edges)
-        p = p.astype(float); q = q.astype(float)
-        if p.sum() == 0 or q.sum() == 0:
-            out.extend([np.nan] * 4); continue
-        p /= p.sum(); q /= q.sum(); mm = 0.5 * (p + q)
-        jsd = 0.5 * (np.sum(p * np.log((p + eps) / (mm + eps))) + np.sum(q * np.log((q + eps) / (mm + eps))))
-        fe = np.log((mu_m.mean() + eps) / (mu_m1.mean() + eps))
-        out.extend([jsd, fe, mu_m.mean(), mu_m.std()])
-    return np.array(out, dtype=float)
-
 scales = np.arange(1, T_SCALES + 1)
-print("Skala tau:", scales.tolist(), "-> EDM-Fuzzy menghasilkan", len(scales), "fitur per sensor")
-"""))
+print("Skala tau:", scales.tolist(), "-> EDM-Fuzzy (CMSE) menghasilkan", len(scales), "fitur per sensor")
 
-cells.append(md("""# §7 — Multisensor Entropy Feature Concatenation
 
-Kotak `4 sensors × T scales → 4T features`. Keempat vektor entropi digabung
-berurutan jadi satu vektor fitur per window:
-
-$$F = [E_1 \\;|\\; E_2 \\;|\\; E_3 \\;|\\; E_4] \\in \\mathbb{R}^{4T}$$
-
-Ini yang jadi **input layer ANN-LM** di §8 (4T neuron). Ongkos ekstraksi diukur
-di sini, terpisah dari ongkos latih model — di sistem nyata ekstraksi fitur ini
-yang jalan tiap window, sedangkan latih model hanya sekali.
-"""))
-
-cells.append(code("""from joblib import Parallel, delayed
+from joblib import Parallel, delayed
 
 def sanitize(F):
     Fdf = pd.DataFrame(F)
@@ -910,13 +553,13 @@ def sanitize(F):
     return Fdf.to_numpy()
 
 def concat_multisensor_features(W, method, seed=0, n_jobs=-1):
-    \"\"\"E_1..E_4 dihitung per sensor lalu dikonkatenasi -> (nwin, 4T) untuk EDM.\"\"\"
     nwin, win, ns = W.shape
     key = method.strip().lower()
 
     def entropy_1d(x, sd):
         if key == "edm-fuzzy":
-            return edm_fuzzy_entropy_1d(x, scales, m=m, r_ratio=r_ratio, n_ref=n_ref, seed=sd)
+            # Pass r_ratio=0.15 explicitly as per paper
+            return edm_fuzzy_entropy_1d(x, scales, m=m, r_ratio=0.15, n_ref=n_ref, seed=sd)
         if key == "jsd-fuzzy":
             return jsd_fuzzy_entropy_1d(x, scales, m=m, r_ratio=r_ratio, n_ref=n_ref, seed=sd, bins=jsd_bins)
         raise ValueError(f"Metode tidak dikenal: {method}")
@@ -924,18 +567,16 @@ def concat_multisensor_features(W, method, seed=0, n_jobs=-1):
     def one_window(i):
         return np.concatenate([entropy_1d(W[i, :, s], sd=seed + 1000 * i + 19 * s) for s in range(ns)])
 
-    F_ent = np.vstack(Parallel(n_jobs=n_jobs, prefer="processes")(
+    return np.vstack(Parallel(n_jobs=n_jobs, prefer="processes")(
         delayed(one_window)(i) for i in range(nwin)))
 
-    return F_ent
-
 feat_cost_rows = []
-FEATURES = {}          # (WIN, metode) -> matriks fitur (nwin, 4T)
+FEATURES = {}
 
 for WIN in WINDOW_LENGTHS:
     seg = SEGMENTS[WIN]
     for meth in METHOD_LIST:
-        need = 0.02 * len(seg["W"]) * (WIN / 1000.0)      # taksiran kasar, untuk budget guard
+        need = 0.02 * len(seg["W"]) * (WIN / 1000.0)
         if not budget_ok(need, f"fitur N={WIN}/{meth}"):
             continue
         log_stage(f"ekstraksi fitur | N={WIN} | {meth} | {len(seg['W'])} window")
@@ -950,28 +591,12 @@ for WIN in WINDOW_LENGTHS:
         print(f"  N={WIN} {meth:10s} -> fitur {F.shape}  ({feat_cost_rows[-1]['ms_per_window']} ms/window)")
 
 feat_cost = pd.DataFrame(feat_cost_rows)
-print("\\n=== Ongkos ekstraksi fitur (kotak entropy + konkatenasi) ===")
+print("\n=== Ongkos ekstraksi fitur (kotak entropy + konkatenasi) ===")
 print(feat_cost.to_string(index=False))
 export_df(feat_cost, "07_ongkos_ekstraksi_fitur")
-"""))
 
-cells.append(md("""# §7b — Tabel hasil ekstraksi entropy
 
-Permintaan pembimbing: **tabel hasil entropy** — entropi sudah dihitung sebagai
-fitur (§6–§7), tetapi nilainya belum dirangkum jadi tabel. Bagian ini
-mengekstrak kembali nilai entropi per sensor, skala τ, dan komponen, lalu
-membandingkan rata-rata pada window **normal** vs **fault**.
-
-- **EDM-Fuzzy** menghasilkan 1 komponen per skala: `E = log(φ_m / φ_{m+1})`
-  (4T = 40 fitur).
-- **JSD-Fuzzy** menghasilkan 4 komponen per skala: `[jsd, fe, mean_μ, std_μ]`
-  (16T = 160 fitur).
-
-`delta = mean_fault − mean_normal` adalah inti "hasil entropy": seberapa
-entropi berubah saat ada fault per sensor per skala.
-"""))
-
-cells.append(code("""# === Tabel hasil entropy (per sensor x skala x komponen, normal vs fault) ===
+# === Tabel hasil entropy (per sensor x skala x komponen, normal vs fault) ===
 T = T_SCALES
 JSD_COMPS = ["jsd", "fe", "mean_mu", "std_mu"]
 
@@ -1041,7 +666,7 @@ for WIN in WINDOW_LENGTHS:
                 "delta": round(float(mf_v - mn_v), 4) if not (np.isnan(mn_v) or np.isnan(mf_v)) else np.nan,
             })
 ent_ringkas = pd.DataFrame(ent_ring_rows)
-print("\\n=== Ringkas: entropi utama per sensor (mean lintas skala, normal vs fault) ===")
+print("\n=== Ringkas: entropi utama per sensor (mean lintas skala, normal vs fault) ===")
 print(ent_ringkas.to_string(index=False))
 export_df(ent_ringkas, "07_hasil_entropy_ringkas")
 display(ent_ringkas)
@@ -1057,90 +682,9 @@ for ax, WIN in zip(np.atleast_1d(axes), WINDOW_LENGTHS):
     ax.set_ylabel("delta entropy"); ax.axhline(0, color="k", lw=0.5); ax.grid(alpha=0.3)
 plt.tight_layout(); plt.savefig("exports/07_entropy_delta.png", dpi=120); plt.show()
 print("[Tersimpan] exports/07_entropy_delta.png")
-"""))
 
-cells.append(md("""# §7c — Tabel CV Entropi per Data Length x Class x Scale (format referensi)
 
-Permintaan pembimbing: tabel acuan (paper) berbentuk **Data Length x Class x
-Scale**. Tiap sel = **CV (koefisien variasi = std/mean) dari nilai entropi
-EDM-Fuzzy** pada skala τ itu, dihitung lintas window kelas fault **tunggal**
-(Bias, Drift, Spike, Hardware malfunction — dari skenario `S2_Single_Faults`),
-setelah dirata-rata ke-4 sensor per window. Beda dari §3c (CV data mentah
-sensor) — ini CV dari **hasil entropi**, yaitu ukuran stabilitas entropi lintas
-window pada tiap kombinasi panjang data (Data Length) x skala.
-
-`Data Length` di sini = `N_window` (§5, panjang window dalam sampel: 2000/7000/
-10000 default). CV rendah = entropi kelas itu stabil lintas window pada skala
-τ tersebut; CV tinggi = entropi masih berfluktuasi banyak antar-window.
-"""))
-
-cells.append(code("""# === Tabel CV entropi per Data Length x Class x Scale (format referensi) ===
-CLASS_MAP_REF = {"Bias": "bias", "Drift": "drift", "Spike": "spike",
-                  "Hardware malfunction": "hardware"}
-
-rows_ref = []
-for WIN in WINDOW_LENGTHS:
-    seg = SEGMENTS[WIN]
-    F = FEATURES.get((WIN, "EDM-Fuzzy"))
-    if F is None:
-        continue
-    T = T_SCALES
-    F3 = F.reshape(len(F), 4, T)            # (nwin, sensor, skala)
-    F_mean_sensor = F3.mean(axis=1)         # (nwin, skala) -> rata-rata 4 sensor
-    for label, key in CLASS_MAP_REF.items():
-        if key not in condition_names:
-            continue
-        idx = seg["y"] == condition_names.index(key)
-        if idx.sum() < 2:
-            continue
-        Fc = F_mean_sensor[idx]              # (n_window_kelas, skala)
-        cv_per_scale = Fc.std(axis=0, ddof=1) / np.abs(Fc.mean(axis=0))
-        row = {"Data Length": WIN, "Class": label}
-        row.update({str(s): round(float(cv_per_scale[s - 1]), 3) for s in range(1, T + 1)})
-        rows_ref.append(row)
-
-tabel_cv_referensi = pd.DataFrame(rows_ref)
-print("=== Tabel CV entropi per Data Length x Class x Scale (format referensi) ===")
-print(tabel_cv_referensi.to_string(index=False))
-export_df(tabel_cv_referensi, "07_cv_entropi_referensi")
-display(tabel_cv_referensi)
-"""))
-
-cells.append(md("""# §8 — ANN-LM Classification
-
-Kotak `ANN-LM Classification` pada diagram:
-
-- **Input layer** — 4T neuron (hasil konkatenasi §7).
-- **Hidden layers** — dipilih lewat **Grid Search**.
-- **Output layer** — C neuron, C = jumlah kelas pada skenario yang dijalankan.
-
-**Levenberg–Marquardt:** scikit-learn tidak menyediakannya, jadi dipakai
-`solver='lbfgs'` (quasi-Newton, paling dekat perilakunya). LM sungguhan butuh
-MATLAB `trainlm`.
-
-## 5 skenario (C berbeda-beda)
-
-| Skenario | Isi | C |
-|---|---|---|
-| S1 | normal vs faulty | 2 |
-| S2 | normal + 4 fault tunggal | 5 |
-| S3 | normal + 6 kombinasi dua fault | 7 |
-| S4 | normal + 4 kombinasi tiga fault | 5 |
-| S5 | normal + kombinasi empat fault | 2 |
-
-## Cara cross-validation-nya
-
-**Nested + grouped**, dua hal yang dua-duanya perlu:
-
-- **Grup = blok waktu.** `StratifiedGroupKFold` menjaga window yang
-  tumpang-tindih (stride = N/2) tidak terpecah antara latih dan uji. Tanpa ini
-  potongan sinyal yang sama muncul di kedua sisi dan akurasinya menggelembung.
-- **Grid Search di dalam tiap fold latih saja** (`cv=3`). Kalau grid dijalankan
-  di seluruh data lalu skornya dilaporkan, angkanya bias optimistis karena
-  arsitektur sudah "mengintip" data uji.
-"""))
-
-cells.append(code("""from sklearn.model_selection import StratifiedGroupKFold, GridSearchCV
+from sklearn.model_selection import StratifiedGroupKFold, GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
@@ -1167,23 +711,23 @@ ANN_GRID = {"mlp__hidden_layer_sizes": HIDDEN_GRID, "mlp__activation": ACT_GRID}
 
 ALL_FAULT = [c for c in condition_names if c != "normal"]
 LADDER = {
-    "S1_Fault_Free_vs_Faulty": [("fault free", ["normal"]), ("faulty", ALL_FAULT)],
-    "S2_Single_Faults":    [("fault free", ["normal"]), ("drift", ["drift"]), ("spike", ["spike"]),
+    "S1_Normal_vs_Faulty": [("normal", ["normal"]), ("faulty", ALL_FAULT)],
+    "S2_Fault_Tunggal":    [("normal", ["normal"]), ("drift", ["drift"]), ("spike", ["spike"]),
                              ("bias", ["bias"]), ("hardware", ["hardware"])],
-    "S3_Two_Fault_Combinations":        [("fault free", ["normal"]), ("bias+HW", ["bias+malfunc"]),
+    "S3_Dua_Fault":        [("normal", ["normal"]), ("bias+HW", ["bias+malfunc"]),
                              ("drift+bias", ["drift+bias"]), ("drift+HW", ["drift+malfunc"]),
                              ("spike+bias", ["spike+bias"]), ("drift+spike", ["drift+spike"]),
                              ("spike+HW", ["spike+malfunc"])],
-    "S4_Three_Fault_Combinations":       [("fault free", ["normal"]), ("drift+bias+HW", ["drift+bias+malfunc"]),
+    "S4_Tiga_Fault":       [("normal", ["normal"]), ("drift+bias+HW", ["drift+bias+malfunc"]),
                              ("drift+spike+bias", ["drift+spike+bias"]),
                              ("spike+bias+HW", ["spike+bias+malfunc"]),
                              ("spike+drift+HW", ["spike+drift+malfunc"])],
-    "S5_Four_Fault_Combinations":      [("fault free", ["normal"]), ("drift+spike+bias+HW", ["spike+bias+malfunc+drift"])],
+    "S5_Empat_Fault":      [("normal", ["normal"]), ("drift+spike+bias+HW", ["spike+bias+malfunc+drift"])],
 }
 cond_to_idx = {c: i for i, c in enumerate(condition_names)}
 
 def build_scenario(WIN, classes):
-    \"\"\"-> indeks window terpilih + label kelas skenario, sudah diseimbangkan.\"\"\"
+    """-> indeks window terpilih + label kelas skenario, sudah diseimbangkan."""
     y_cond = SEGMENTS[WIN]["y"]
     idx_l, y_l = [], []
     for ci, (_, conds) in enumerate(classes):
@@ -1207,14 +751,14 @@ for WIN in WINDOW_LENGTHS:
     for sc, cl in LADDER.items():
         keep, yy = build_scenario(WIN, cl)
         print(f"  {sc:22s} C={len(cl)} n={len(keep):5d} {dict(zip(*np.unique(yy, return_counts=True)))}")
-"""))
 
-cells.append(code("""def nested_grouped_cv(F, y, groups, n_splits=N_SPLITS):
-    \"\"\"Outer StratifiedGroupKFold; Grid Search hidden layer di dalam fold latih.
+
+def nested_grouped_cv(F, y, groups, n_splits=N_SPLITS):
+    """Outer StratifiedGroupKFold; Grid Search hidden layer di dalam fold latih.
 
     Mengembalikan skor per fold, prediksi out-of-fold, arsitektur terpilih, dan
     biaya komputasi (CPU, wall, memori, latensi inferensi).
-    \"\"\"
+    """
     n_grp = len(np.unique(groups))
     k = int(min(n_splits, n_grp, np.min(np.bincount(y)[np.unique(y)])))
     if k < 2:
@@ -1229,8 +773,7 @@ cells.append(code("""def nested_grouped_cv(F, y, groups, n_splits=N_SPLITS):
     for tr, te in skf.split(F, y, groups=groups):
         if len(np.unique(y[tr])) < 2:
             continue
-        pipe, clf_grid = make_ann(), ANN_GRID
-        gs = GridSearchCV(pipe, clf_grid, cv=3, scoring="f1_macro", n_jobs=N_JOBS)
+        gs = GridSearchCV(make_ann(), ANN_GRID, cv=3, scoring="f1_macro", n_jobs=N_JOBS)
         tf0 = _time.perf_counter(); gs.fit(F[tr], y[tr]); fit_times.append(_time.perf_counter() - tf0)
         ti0 = _time.perf_counter(); pred = gs.best_estimator_.predict(F[te])
         infer_times.append(_time.perf_counter() - ti0); n_infer.append(len(te))
@@ -1254,9 +797,9 @@ cells.append(code("""def nested_grouped_cv(F, y, groups, n_splits=N_SPLITS):
 
 print("ANN-LM:", ANN_SOLVER, "| grid hidden:", len(HIDDEN_GRID), "x aktivasi:", len(ACT_GRID),
       "=", len(HIDDEN_GRID) * len(ACT_GRID), "kombinasi | outer CV:", N_SPLITS, "fold grouped")
-"""))
 
-cells.append(code("""# === Jalankan: 3 panjang window x 5 skenario x 2 metode ===
+
+# === Jalankan: 3 panjang window x 5 skenario x 2 metode ===
 perf_rows, comp_rows, arch_rows = [], [], []
 RUNS = {}
 
@@ -1294,7 +837,7 @@ for WIN in WINDOW_LENGTHS:
                                "infer_ms_per_window": round(cost["infer_ms_per_window"], 3)})
             arch_rows.append({"N_window": WIN, "Skenario": sc, "Metode": meth,
                                "Hidden_terpilih": "; ".join(sorted({str(h) for h, _ in out["chosen"]})),
-                               "Aktivasi_terpilih": "; ".join(sorted({str(a) for _, a in out["chosen"]}))})
+                               "Aktivasi_terpilih": "; ".join(sorted({a for _, a in out["chosen"]}))})
             print(f"  N={WIN} {sc:22s} {meth:10s} F1={mn['f1']:.3f}±{sd['f1']:.3f} "
                   f"acc={mn['acc']:.3f} | cpu={cost['cpu_s']:.0f}s")
 
@@ -1302,14 +845,9 @@ perf_tbl = pd.DataFrame(perf_rows)
 comp_tbl = pd.DataFrame(comp_rows)
 arch_tbl = pd.DataFrame(arch_rows)
 log_stage("ANN-LM selesai")
-"""))
 
-cells.append(md("""# §9 — Fault Classification and Evaluation
 
-Kotak terakhir diagram, dilaporkan **dua sisi**: performa dan biaya komputasi.
-"""))
-
-cells.append(code("""# === TABEL 1 — PERFORMA (mean ± std antar-fold) ===
+# === TABEL 1 — PERFORMA (mean ± std antar-fold) ===
 show = perf_tbl.copy()
 for c in ["Akurasi", "Precision", "Recall", "F1"]:
     show[c] = show[c].map("{:.3f}".format) + " ± " + show[c + "_std"].map("{:.3f}".format)
@@ -1319,40 +857,40 @@ print("=== Performa fault detection — grouped %d-fold CV, grid search per fold
 print(show.to_string(index=False))
 export_df(perf_tbl, "07_performa_cv_5skenario")
 display(show)
-"""))
 
-cells.append(code("""# === TABEL PERFORMA MIRIP REFERENSI (TABLE IV) ===
+
+# === Tabel Performa Mirip Referensi (Table IV) ===
+# Index: Skenario, N_window. Columns: Akurasi & F1 tiap Metode
 tbl_ref_acc = perf_tbl.pivot_table(index=["Skenario", "N_window"], columns="Metode", values="Akurasi") * 100
 tbl_ref_f1 = perf_tbl.pivot_table(index=["Skenario", "N_window"], columns="Metode", values="F1") * 100
 tbl_ref = pd.concat([tbl_ref_acc], keys=["Akurasi (%)"], axis=1).join(
           pd.concat([tbl_ref_f1], keys=["F1 Score (%)"], axis=1))
 tbl_ref = tbl_ref.round(2)
-print("\\n=== DIAGNOSTIC ACCURACY USING EDM-FUZZY AND JSD-FUZZY (%) ===")
+print("\n=== DIAGNOSTIC ACCURACY USING EDM-FUZZY AND JSD-FUZZY (%) ===")
 print(tbl_ref.to_string())
-p_ref = Path(EXPORT_DIR) / "07_performa_mirip_referensi.csv"
-tbl_ref.to_csv(p_ref)
-"""))
+tbl_ref.to_csv("exports/07_performa_mirip_referensi.csv")
 
-cells.append(code("""# === TABEL 2 — BIAYA KOMPUTASI ===
+
+# === TABEL 2 — BIAYA KOMPUTASI ===
 print("=== Biaya komputasi (termasuk grid search di dalam tiap fold) ===")
 print(comp_tbl.to_string(index=False))
 export_df(comp_tbl, "07_komputasi_cv_5skenario")
 
-print("\\n=== Rata-rata per metode x panjang window ===")
+print("\n=== Rata-rata per metode x panjang window ===")
 ring = comp_tbl.groupby(["N_window", "Metode"])[
     ["cpu_s_total", "wall_s_total", "peak_mem_mb", "fit_s_per_fold", "infer_ms_per_window"]].mean().round(3)
 print(ring.to_string())
 export_df(ring.reset_index(), "07_komputasi_ringkas")
 
-print("\\n=== Ongkos ekstraksi fitur (jalan tiap window di sistem nyata) ===")
+print("\n=== Ongkos ekstraksi fitur (jalan tiap window di sistem nyata) ===")
 print(feat_cost.to_string(index=False))
 
-print("\\n=== Arsitektur hidden layer yang dipilih Grid Search ===")
+print("\n=== Arsitektur hidden layer yang dipilih Grid Search ===")
 print(arch_tbl.to_string(index=False))
 export_df(arch_tbl, "07_arsitektur_terpilih")
-"""))
 
-cells.append(code("""# === Plot: performa & biaya vs panjang window ===
+
+# === Plot: performa & biaya vs panjang window ===
 fig, axes = plt.subplots(2, 2, figsize=(15, 9))
 
 for meth, mk in zip(METHOD_LIST, ["o-", "s--"]):
@@ -1378,93 +916,24 @@ axes[1, 1].set_ylabel("detik")
 
 plt.tight_layout(); plt.savefig("exports/07_performa_vs_komputasi.png", dpi=120); plt.show()
 print("[Tersimpan] exports/07_performa_vs_komputasi.png")
-"""))
 
-cells.append(code("""# === Confusion matrix out-of-fold, konfigurasi terbaik tiap skenario ===
-best = perf_tbl.loc[perf_tbl.groupby("Skenario")["F1"].idxmax()] if len(perf_tbl) else perf_tbl
-if len(best) == 0:
-    print("[skip] perf_tbl kosong (kemungkinan semua run kena budget guard) — confusion matrix dilewati.")
-else:
-    fig, axes = plt.subplots(1, len(best), figsize=(4.3 * len(best), 4))
-    axes = np.atleast_1d(axes)
-    for ax, (_, row) in zip(axes, best.iterrows()):
-        r = RUNS[(row["N_window"], row["Skenario"], row["Metode"])]
-        mask = r["out"]["pred_oof"] >= 0
-        cm = confusion_matrix(r["y"][mask], r["out"]["pred_oof"][mask], normalize="true")
-        ConfusionMatrixDisplay(cm, display_labels=r["class_names"]).plot(
-            ax=ax, colorbar=False, values_format=".2f", xticks_rotation=45, cmap="Blues")
-        ax.set_title(f"{row['Skenario']}\\nN={row['N_window']} {row['Metode']} F1={row['F1']:.3f}", fontsize=9)
-    plt.tight_layout(); plt.savefig("exports/07_confusion_oof.png", dpi=120); plt.show()
-    print(best[["N_window", "Skenario", "Metode", "Akurasi", "F1"]].to_string(index=False))
-"""))
 
-cells.append(md("""# §9a — Confusion matrix khusus EDM-Fuzzy
+# === Confusion matrix out-of-fold, konfigurasi terbaik tiap skenario ===
+best = perf_tbl.loc[perf_tbl.groupby("Skenario")["F1"].idxmax()]
+fig, axes = plt.subplots(1, len(best), figsize=(4.3 * len(best), 4))
+axes = np.atleast_1d(axes)
+for ax, (_, row) in zip(axes, best.iterrows()):
+    r = RUNS[(row["N_window"], row["Skenario"], row["Metode"])]
+    mask = r["out"]["pred_oof"] >= 0
+    cm = confusion_matrix(r["y"][mask], r["out"]["pred_oof"][mask], normalize="true")
+    ConfusionMatrixDisplay(cm, display_labels=r["class_names"]).plot(
+        ax=ax, colorbar=False, values_format=".2f", xticks_rotation=45, cmap="Blues")
+    ax.set_title(f"{row['Skenario']}\nN={row['N_window']} {row['Metode']} F1={row['F1']:.3f}", fontsize=9)
+plt.tight_layout(); plt.savefig("exports/07_confusion_oof.png", dpi=120); plt.show()
+print(best[["N_window", "Skenario", "Metode", "Akurasi", "F1"]].to_string(index=False))
 
-Permintaan pembimbing: plot di atas otomatis memilih **metode terbaik per
-skenario** — bisa EDM-Fuzzy, bisa JSD-Fuzzy. Karena EDM-Fuzzy hanya menang di
-S5 (lihat §9b di bawah), untuk S1-S4 plot di atas kemungkinan menampilkan
-JSD-Fuzzy, bukan EDM. Bagian ini memaksa **EDM-Fuzzy saja** untuk kelima
-skenario, supaya kelemahan EDM di S1-S4 kelihatan langsung di confusion
-matrix-nya (bukan cuma di angka F1).
-"""))
 
-cells.append(code("""# === Confusion matrix out-of-fold, EDM-Fuzzy saja, tiap skenario ===
-perf_edm = perf_tbl[perf_tbl.Metode == "EDM-Fuzzy"]
-if len(perf_edm) == 0:
-    print("[skip] Tidak ada baris EDM-Fuzzy di perf_tbl (kemungkinan kena budget guard "
-          "di §7/§8 untuk semua N_window) — confusion matrix EDM dilewati.")
-elif perf_edm["F1"].notna().sum() == 0:
-    print("[skip] Semua F1 EDM-Fuzzy NaN — confusion matrix EDM dilewati.")
-else:
-    best_edm = perf_edm.dropna(subset=["F1"]).loc[
-        perf_edm.dropna(subset=["F1"]).groupby("Skenario")["F1"].idxmax()]
-    order = [sc for sc in LADDER if sc in set(best_edm["Skenario"])]
-    best_edm = best_edm.set_index("Skenario").loc[order].reset_index()
-
-    if len(best_edm) == 0:
-        print("[skip] Tidak ada skenario EDM-Fuzzy yang cocok dengan LADDER — confusion matrix EDM dilewati.")
-    else:
-        fig, axes = plt.subplots(1, len(best_edm), figsize=(4.3 * len(best_edm), 4))
-        axes = np.atleast_1d(axes)
-        for ax, (_, row) in zip(axes, best_edm.iterrows()):
-            r = RUNS[(row["N_window"], row["Skenario"], "EDM-Fuzzy")]
-            mask = r["out"]["pred_oof"] >= 0
-            cm = confusion_matrix(r["y"][mask], r["out"]["pred_oof"][mask], normalize="true")
-            ConfusionMatrixDisplay(cm, display_labels=r["class_names"]).plot(
-                ax=ax, colorbar=False, values_format=".2f", xticks_rotation=45, cmap="Oranges")
-            ax.set_title(f"{row['Skenario']}\\nN={row['N_window']} EDM-Fuzzy F1={row['F1']:.3f}", fontsize=9)
-        plt.tight_layout(); plt.savefig("exports/07_confusion_oof_edm.png", dpi=120); plt.show()
-        print("[Tersimpan] exports/07_confusion_oof_edm.png")
-        print(best_edm[["N_window", "Skenario", "Akurasi", "F1"]].to_string(index=False))
-"""))
-
-cells.append(md("""# §9b — Cek EDM-Fuzzy: kenapa kecil, kenapa hanya S5 yang tinggi
-
-Pembimbing: *"saya bingung nulis diskusi hasil EDM Fuzzy… kecil banget, ini
-artinya ga bisa mengklasifikasi. Hasilnya tinggi di kombinasi 4 fault, artinya
-kan hanya membedakan yang free dan ekstrim (mengandung keempatnya). Sekalian
-minta dicek EDM nya."*
-
-Interpretasi pembimbing **benar**, dan berikut buktinya. Dua angka:
-
-1. **F1 gap** — F1 EDM-Fuzzy vs JSD-Fuzzy per skenario, plus `EDM_vs_acak` =
-   seberapa jauh F1 EDM melebihi tebak acak (`1/C`).
-2. **Separabilitas fitur** = rasio jarak antar-kelas terhadap ragam dalam-kelas.
-   Semakin kecil, semakin sulit classifier memisahkan kelas — penjelasan
-   struktural kenapa F1 EDM jatuh.
-
-**Mengapa EDM hanya menang di S5.** EDM-Fuzzy merangkum tiap skala jadi satu
-angka `E = log(φ_m / φ_{m+1})` — ukuran kerapatan sinyal yang kasar (4T = 40
-fitur). JSD-Fuzzy menyimpan 4 komponen per skala `[jsd, fe, mean_μ, std_μ]`
-(16T = 160 fitur), sehingga menangkap **bentuk distribusi** keanggotaan fuzzy,
-bukan hanya rata-ratanya. Di S5 (biner: normal vs keempat-fault-sekaligus)
-dua kelas terpisah paling jauh — cukup bagi EDM. Di S2/S3/S4, kelas-kelas
-hanya berbeda pada **kombinasi jenis/lokasi fault** yang merubah bentuk
-distribusi, bukan rata-rata kerapatan — maka EDM kehilangan pembeda, dan F1
-jatuh dekat tebak acak. JSD-Fuzzy dengan 4× fitur tetap dapat membedakannya.
-"""))
-
-cells.append(code("""# === §9b Cek EDM: (1) F1 gap, (2) separabilitas fitur ===
+# === §9b Cek EDM: (1) F1 gap, (2) separabilitas fitur ===
 from itertools import combinations
 
 # (1) F1 gap per skenario (rata-rata lintas panjang window)
@@ -1511,7 +980,7 @@ for WIN in WINDOW_LENGTHS:
 sep_tbl = pd.DataFrame(sep_rows).merge(
     perf_tbl[["N_window", "Skenario", "Metode", "F1"]],
     on=["N_window", "Skenario", "Metode"])
-print("\\n=== (2) Separabilitas fitur (antar-kelas/dalam-kelas) vs F1 ===")
+print("\n=== (2) Separabilitas fitur (antar-kelas/dalam-kelas) vs F1 ===")
 print(sep_tbl.to_string(index=False))
 export_df(sep_tbl, "07_cek_edm_separabilitas")
 display(sep_tbl)
@@ -1531,77 +1000,22 @@ axes[1].grid(alpha=0.3); axes[1].legend(fontsize=8)
 plt.tight_layout(); plt.savefig("exports/07_cek_edm.png", dpi=120); plt.show()
 print("[Tersimpan] exports/07_cek_edm.png")
 
-print("\\nKesimpulan cek EDM:")
+print("\nKesimpulan cek EDM:")
 print("  - EDM-Fuzzy F1 hanya tinggi di S5 (biner, normal vs keempat-fault) — "
       "dua kelas paling terpisah.")
 print("  - Di S2/S3/S4 (multi-class), EDM jatuh dekat tebak acak karena 4T=40 "
       "fitur hanya merangkum kerapatan, bukan bentuk distribusi.")
 print("  - Separabilitas EDM < JSD pada skenario multi-class — bukti numeriknya.")
-"""))
 
-cells.append(md("""# §10 — Tambahan di luar diagram: sensor mana yang rusak
 
-Diagram berhenti di "Fault Classification and Evaluation" — sudah tahu **ada**
-fault jenis apa, belum tahu **dari sensor mana**. Bagian ini menyambungnya:
-untuk window yang diputuskan fault oleh ANN-LM, model tahap kedua menghasilkan
-4 keputusan biner `[S1,S2,S3,S4]` beserta probabilitasnya.
-
-## Cara kerjanya: tiap sensor dibandingkan dengan tetangganya
-
-Analogi: ada empat termometer di satu ruangan. Untuk menebak mana yang rusak,
-yang dilihat bukan angka satu termometer saja, tapi **selisihnya terhadap
-rata-rata tiga temannya**. Termometer yang menyimpang sendirian itulah yang
-mencurigakan.
-
-Diterjemahkan ke fitur: vektor 4T dipecah lagi jadi empat blok per sensor, lalu
-untuk sensor ke-*j* dibentuk masukan
-
-$$x_j = [\\; E_j \\;|\\; \\overline{E}_{k \\ne j} \\;|\\; E_j - \\overline{E}_{k \\ne j} \\;]$$
-
-yaitu **entropi sensor itu sendiri**, **rata-rata entropi tiga sensor lain**, dan
-**selisih keduanya**. Satu model biner dilatih pada gabungan keempat sensor
-(4× lebih banyak contoh latih), lalu dipakai bergantian untuk S1..S4.
-
-**Ambang keputusan tidak dipatok 0,5.** Ambang dicari di dalam **data latih tiap
-fold** (nilai yang memaksimalkan F1 di situ), lalu dipakai apa adanya di data
-uji. Kalau ambangnya dipatok 0,5, model cenderung menjawab "rusak" untuk hampir
-semua sensor sehingga recall 1,00 dan precision persis sama dengan prevalensi —
-persis cacat yang dicurigai pembimbing. Ambang rata-rata terpilih dilaporkan di
-tabel biaya §10.
-
-Dua keuntungan yang langsung menjawab kecurigaan "modelnya cuma menebak semua
-rusak":
-
-1. Masukannya **relatif**. Kalau keempat sensor sama-sama tenang, kolom selisih
-   ≈ 0 untuk semuanya, jadi tidak ada alasan menjawab "rusak".
-2. Modelnya **tidak tahu nomor sensor**. Ia tidak bisa hafal "S4 biasanya
-   rusak"; ia harus melihat bukti pada blok fiturnya.
-
-Dievaluasi tiga cara:
-
-| Evaluasi | Artinya |
-|---|---|
-| `oracle` | pada window yang **memang** fault → batas atas kemampuan tahap ini |
-| `end_to_end` | pada window yang **diprediksi** fault oleh ANN-LM → angka apa adanya |
-| `satu_sensor` | khusus window dengan **tepat satu** sensor rusak → uji kontrol §11 |
-
-**`Prevalensi` wajib dibaca bareng `F1`.** Prevalensi ≈ 1 dengan ROC-AUC ≈ 0,5
-berarti model cuma menebak "semua sensor rusak" — cacat yang membatalkan hasil
-notebook per-sensor versi lama (lihat README).
-
-Keluarannya **dua bentuk**: keputusan biner (tabel di §10) dan **probabilitas
-`P(sensor rusak)` per window** (§10b). Probabilitas dikalibrasi supaya angka
-0,43 benar-benar berarti "43 dari 100 window seperti ini memang rusak".
-"""))
-
-cells.append(code("""from sklearn.calibration import CalibratedClassifierCV
+from sklearn.calibration import CalibratedClassifierCV
 
 def stack_per_sensor(F):
-    \"\"\"(nwin, 4T) -> (nwin, 4, 3T): [blok sensor | rata-rata 3 sensor lain | selisih].
+    """(nwin, 4T) -> (nwin, 4, 3T): [blok sensor | rata-rata 3 sensor lain | selisih].
 
     Fitur jadi RELATIF terhadap tetangga, dan model tidak pernah melihat nomor
     sensor. Itu yang mencegah jawaban malas 'semua sensor rusak'.
-    \"\"\"
+    """
     n, d = F.shape
     b = d // len(SENSORS)
     B = F.reshape(n, len(SENSORS), b)
@@ -1718,9 +1132,9 @@ for (WIN, sc, meth), r in RUNS.items():
 sensor_tbl = pd.DataFrame(sensor_rows)
 sensor_cost = pd.DataFrame(sensor_cost_rows)
 print("Selesai:", len(sensor_tbl), "baris hasil identifikasi sensor")
-"""))
 
-cells.append(code("""# === TABEL 3 — sensor mana yang rusak ===
+
+# === TABEL 3 — sensor mana yang rusak ===
 e2e = sensor_tbl[sensor_tbl.Eval == "end_to_end"]
 cols_show = ["N_window", "Skenario", "Metode", "Sensor", "n_window", "Prevalensi",
              "Akurasi", "Precision", "Recall", "F1", "ROC_AUC"]
@@ -1728,19 +1142,19 @@ print("=== Identifikasi sensor rusak — end-to-end (dirantai dari ANN-LM) ===")
 print(e2e[cols_show].to_string(index=False))
 export_df(sensor_tbl, "07_identifikasi_sensor")
 
-print("\\n=== Ringkas: F1 rata-rata 4 sensor ===")
+print("\n=== Ringkas: F1 rata-rata 4 sensor ===")
 ring_s = (e2e[e2e.Sensor != "SEMUA-4-BENAR"]
           .groupby(["N_window", "Skenario", "Metode"])[["F1", "ROC_AUC", "Prevalensi"]].mean().round(3))
 print(ring_s.to_string())
 export_df(ring_s.reset_index(), "07_identifikasi_sensor_ringkas")
 
 if len(sensor_cost):
-    print("\\n=== Biaya komputasi tahap identifikasi sensor ===")
+    print("\n=== Biaya komputasi tahap identifikasi sensor ===")
     print(sensor_cost.to_string(index=False))
     export_df(sensor_cost, "07_komputasi_tahap_sensor")
-"""))
 
-cells.append(code("""# === Peta panas F1 identifikasi sensor ===
+
+# === Peta panas F1 identifikasi sensor ===
 piv = (e2e[e2e.Sensor != "SEMUA-4-BENAR"]
        .pivot_table(index=["N_window", "Skenario", "Metode"], columns="Sensor", values="F1"))
 fig, ax = plt.subplots(figsize=(7.5, 0.42 * len(piv) + 2))
@@ -1757,35 +1171,11 @@ for i in range(piv.shape[0]):
 ax.set_title("F1 identifikasi sensor rusak (end-to-end)")
 plt.colorbar(im, ax=ax, shrink=0.8)
 plt.tight_layout(); plt.savefig("exports/07_peta_sensor.png", dpi=120); plt.show()
-"""))
 
-cells.append(md("""# §10b — Probabilitas: seberapa besar kemungkinan tiap sensor rusak
 
-§10 menjawab "ya/tidak". Bagian ini menjawab **"berapa persen kemungkinannya"**:
-tiap window uji menghasilkan empat angka `P(S1 rusak) … P(S4 rusak)`, keluaran
-`predict_proba` yang sudah dikalibrasi Platt di dalam data latih tiap fold.
-
-Sebuah probabilitas hanya boleh disebut probabilitas kalau **terbukti kalibrasi**,
-jadi dilaporkan tiga hal sekaligus:
-
-| Ukuran | Artinya | Bagus kalau |
-|---|---|---|
-| **Brier score** | rata-rata kuadrat selisih probabilitas dengan kenyataan (0/1) | makin kecil |
-| **Brier skill** | perbaikan terhadap tebakan konstan = prevalensi | > 0; ≤ 0 berarti tidak lebih baik daripada menyebut angka prevalensi saja |
-| **ECE** | rata-rata jarak antara probabilitas yang diucapkan dan frekuensi sebenarnya, 10 bin | makin kecil (< 0,10 layak) |
-
-`ROC_AUC` melengkapi: ia mengukur **urutan** (sensor yang lebih mungkin rusak
-dapat angka lebih tinggi) walau kalibrasinya meleset.
-
-**Cara membaca `P = 0,43`:** dari sekumpulan window yang diberi angka ±0,43,
-kira-kira 43% memang sensornya rusak — itulah yang diperiksa diagram reliabilitas.
-Angka ini **bukan** akurasi, dan **bukan** peluang seumur hidup sensor rusak;
-ia peluang bersyarat pada potongan sinyal sepanjang N sampel yang sedang dinilai.
-"""))
-
-cells.append(code("""# === TABEL 4 — mutu probabilitas per sensor ===
+# === TABEL 4 — mutu probabilitas per sensor ===
 def ece_score(yt, p, n_bins=10):
-    \"\"\"Expected Calibration Error: |probabilitas yang diucapkan - frekuensi nyata|.\"\"\"
+    """Expected Calibration Error: |probabilitas yang diucapkan - frekuensi nyata|."""
     edges = np.linspace(0, 1, n_bins + 1)
     idx = np.clip(np.digitize(p, edges[1:-1]), 0, n_bins - 1)
     e = 0.0
@@ -1829,13 +1219,13 @@ if len(prob_tbl):
     print("=== Probabilitas sensor rusak — mutu angkanya (end-to-end) ===")
     print(p_e2e.drop(columns=["Eval"]).to_string(index=False))
     export_df(prob_tbl, "07_probabilitas_sensor")
-    print("\\nBaca: Brier_skill <= 0 berarti probabilitasnya belum lebih berguna "
+    print("\nBaca: Brier_skill <= 0 berarti probabilitasnya belum lebih berguna "
           "daripada menyebut angka prevalensi; ECE > 0,10 berarti kalibrasinya masih meleset.")
 else:
     print("Tidak ada probabilitas tersimpan (semua fold gagal / terlalu kecil).")
-"""))
 
-cells.append(code("""# === Diagram reliabilitas: yang diucapkan vs yang terjadi ===
+
+# === Diagram reliabilitas: yang diucapkan vs yang terjadi ===
 if len(prob_tbl):
     # konfigurasi terbaik = ROC-AUC rata-rata 4 sensor tertinggi (end-to-end)
     _auc = (p_e2e.groupby(["N_window", "Skenario", "Metode"])["ROC_AUC"].mean().dropna())
@@ -1866,9 +1256,9 @@ if len(prob_tbl):
     axes[1].set_title("Sebaran probabilitas yang dikeluarkan")
     axes[1].legend(fontsize=8)
     plt.tight_layout(); plt.savefig("exports/07_reliabilitas_sensor.png", dpi=120); plt.show()
-"""))
 
-cells.append(code("""# === TABEL 5 — contoh keluaran per window: 4 probabilitas + kenyataannya ===
+
+# === TABEL 5 — contoh keluaran per window: 4 probabilitas + kenyataannya ===
 if len(prob_tbl):
     d = PROBA[key]
     m = np.where((d["pred_oof"] != 0) & (d["pred"][:, 0] >= 0) & ~np.isnan(d["proba"][:, 0]))[0]
@@ -1886,47 +1276,11 @@ if len(prob_tbl):
     export_df(ex, "07_contoh_probabilitas_per_window")
 
     rank1 = np.mean([d["Ysens"][i, d["proba"][i].argmax()] for i in m])
-    print(f"\\nSensor dengan probabilitas tertinggi memang rusak pada {rank1:.1%} window "
+    print(f"\nSensor dengan probabilitas tertinggi memang rusak pada {rank1:.1%} window "
           f"(n={len(m)}). Pembanding acak = rata-rata prevalensi.")
-"""))
 
-cells.append(md("""# §11 — Dua uji kontrol yang diminta pembimbing
 
-> *"misal dites pakai data yang kita kondisikan data benar (tidak ada fault)
-> bisa ga vin, sebagai pembanding. atau data rusak hanya di salah satu sensor"*
-
-**Bisa, dan memang harus.** Keduanya dijalankan di sini.
-
-## Kontrol A — data yang dikondisikan bersih (tidak ada fault sama sekali)
-
-Window `normal` **tidak disentuh injeksi apa pun**: sinyal apa adanya dari
-keempat sensor. Yang diukur: seberapa sering model salah berteriak "fault"
-padahal datanya bersih — **false alarm rate**.
-
-Analogi: alarm kebakaran diuji di ruangan yang jelas-jelas tidak terbakar. Kalau
-tetap berbunyi, alarmnya yang bermasalah, bukan ruangannya.
-
-Dua angka dilaporkan:
-
-| Ukuran | Artinya | Bagus kalau |
-|---|---|---|
-| `FPR` (false positive rate) | % window bersih yang divonis fault | makin kecil |
-| `Spesifisitas` = 1 − FPR | % window bersih yang benar disebut normal | makin besar |
-
-Ditambah pembanding penting: **rata-rata `P(sensor rusak)` pada window bersih
-vs pada window fault**. Kalau kedua angka itu mirip, model tidak benar-benar
-membedakan apa pun — persis kecurigaan pembimbing pada tabel sebelumnya.
-
-## Kontrol B — fault hanya di **satu** sensor
-
-Diambil hanya window yang **tepat satu** sensornya rusak, lalu ditanya: sensor
-dengan `P(rusak)` tertinggi apakah memang sensor yang rusak? (`Top-1`).
-
-Pembanding jujurnya **tebak acak = 25 %** (1 dari 4 sensor). Angka di bawah 25 %
-berarti model lebih buruk daripada melempar dadu.
-"""))
-
-cells.append(code("""# === KONTROL A — data bersih: seberapa sering alarm palsu? ===
+# === KONTROL A — data bersih: seberapa sering alarm palsu? ===
 ctrl_rows = []
 for (WIN, sc, meth), r in RUNS.items():
     y, pred = r["y"], r["out"]["pred_oof"]
@@ -1954,12 +1308,12 @@ ctrl_tbl = pd.DataFrame(ctrl_rows)
 print("=== KONTROL A — dites pakai data yang dikondisikan bersih (tanpa fault) ===")
 print(ctrl_tbl.to_string(index=False))
 export_df(ctrl_tbl, "07_kontrol_data_bersih")
-print("\\nBaca: Spesifisitas = benar menyebut 'normal' pada data yang memang bersih.")
+print("\nBaca: Spesifisitas = benar menyebut 'normal' pada data yang memang bersih.")
 print("'Selisih' > 0 berarti P(rusak) memang naik saat sensornya benar-benar rusak; "
       "kalau ~0, model tidak membedakan apa pun.")
-"""))
 
-cells.append(code("""# === KONTROL B — fault hanya di satu sensor: sensor mana yang ditunjuk? ===
+
+# === KONTROL B — fault hanya di satu sensor: sensor mana yang ditunjuk? ===
 top1_rows = []
 for (WIN, sc, meth), d in PROBA.items():
     m = ((d["Ysens"].sum(axis=1) == 1) & (d["pred"][:, 0] >= 0) & ~np.isnan(d["proba"][:, 0]))
@@ -1983,7 +1337,7 @@ if len(top1_tbl):
     print("=== KONTROL B — window dengan TEPAT satu sensor rusak ===")
     print(top1_tbl.to_string(index=False))
     export_df(top1_tbl, "07_kontrol_satu_sensor")
-    print("\\nBaca: Top1 = sensor dengan P(rusak) tertinggi memang sensor yang rusak. "
+    print("\nBaca: Top1 = sensor dengan P(rusak) tertinggi memang sensor yang rusak. "
           "Pembanding tebak acak = 0,25.")
 else:
     print("Tidak ada window dengan tepat satu sensor rusak yang lolos ke tahap ini.")
@@ -1991,12 +1345,12 @@ else:
 # Tabel §10 versi 'satu_sensor' (per sensor, hanya window 1-sensor-rusak)
 if "satu_sensor" in set(sensor_tbl.Eval):
     s1 = sensor_tbl[(sensor_tbl.Eval == "satu_sensor") & (sensor_tbl.Sensor != "SEMUA-4-BENAR")]
-    print("\\n=== Rinci per sensor pada window 1-sensor-rusak ===")
+    print("\n=== Rinci per sensor pada window 1-sensor-rusak ===")
     print(s1[["N_window", "Skenario", "Metode", "Sensor", "n_window", "Prevalensi",
               "Akurasi", "Precision", "Recall", "F1", "ROC_AUC"]].to_string(index=False))
-"""))
 
-cells.append(code("""# === Ringkasan gabungan untuk laporan ===
+
+# === Ringkasan gabungan untuk laporan ===
 sf1 = (e2e[e2e.Sensor != "SEMUA-4-BENAR"]
        .groupby(["N_window", "Skenario", "Metode"])["F1"].mean().rename("F1_sensor").reset_index())
 sall = (e2e[e2e.Sensor == "SEMUA-4-BENAR"]
@@ -2006,7 +1360,7 @@ final = (perf_tbl.merge(comp_tbl, on=["N_window", "Skenario", "Metode"])
                  .merge(sf1, on=["N_window", "Skenario", "Metode"], how="left")
                  .merge(sall, on=["N_window", "Skenario", "Metode"], how="left"))
 cols_final = ["N_window", "Skenario", "Metode", "C_kelas", "n_fitur", "Akurasi", "Precision",
-              "Recall", "F1", "F1_std", "Hidden_terpilih", "Aktivasi_terpilih", "cpu_s_total", "peak_mem_mb",
+              "Recall", "F1", "F1_std", "Hidden_terpilih", "cpu_s_total", "peak_mem_mb",
               "infer_ms_per_window", "F1_sensor", "Semua_4_benar"]
 if len(prob_tbl):                       # mutu probabilitas ikut masuk ringkasan
     sprob = (prob_tbl[prob_tbl.Eval == "end_to_end"]
@@ -2022,260 +1376,5 @@ print(final.to_string(index=False))
 export_df(final, "07_ringkasan_lengkap")
 display(final)
 log_stage("selesai")
-"""))
 
-cells.append(md("""# §13 — Tanya-Jawab (pertanyaan pembimbing, dijawab satu per satu)
 
----
-
-### Q1. "Tabel ini artinya kemungkinan semua sensor mengandung data rusak dengan kemungkinan S1 = 0,429, S2 = 0,469, dst. Akurasi prediksi = 0,714, gitu ya?"
-
-**Belum tepat — kolom `Prevalensi` bukan keluaran model.**
-
-`Prevalensi = 0,429` artinya: **dari window uji yang dinilai, 42,9 % memang
-sensor 1-nya rusak.** Itu **kunci jawaban**, bukan tebakan. Angkanya kita
-ketahui persis karena fault-nya kita suntikkan sendiri. Gunanya sebagai
-pembanding: model baru boleh disebut berguna kalau hasilnya mengalahkan
-"asal tebak mengikuti prevalensi".
-
-`Akurasi = 0,714` artinya: **71,4 % keputusan model untuk sensor 1 itu benar.**
-
-Analogi ujian: `Prevalensi` = berapa persen soal yang kunci jawabannya "B";
-`Akurasi` = berapa persen jawaban murid yang benar. Kalau 43 % kunci jawabannya
-"B", murid yang menjawab "B" untuk semua soal langsung dapat 43 % — tanpa
-belajar. Karena itu **akurasi harus selalu dibaca berdampingan dengan
-prevalensi**.
-
-Yang menjawab pertanyaan *"berapa kemungkinan sensor ini rusak"* adalah
-**§10b**, kolom `P(Sx rusak)` — dihitung per window, bukan per tabel.
-
-**Kenapa `ROC_AUC` wajib dilihat lebih dulu.** F1 tinggi bisa muncul semata-mata
-karena prevalensi tinggi. Karena itu rancangan notebook ini memasang tiga
-pengaman terhadap jawaban malas "semua sensor rusak":
-
-1. **Subset sensor yang terkena fault diundi ulang `N_REPEAT_SUBSET` kali** per
-   kondisi, sehingga tidak ada pasangan sensor yang selalu rusak bersamaan.
-   Kalau label dua sensor sampai kembar, classifier per-sensor tidak punya apa
-   pun untuk dibedakan dan `ROC_AUC` otomatis jatuh ke 0,5. **§5 punya sel
-   pemeriksa khusus** yang mencetak korelasi antar-label dan memberi peringatan
-   kalau kekembaran itu muncul.
-2. **Fiturnya relatif** — tiap sensor dinilai dari selisihnya terhadap rata-rata
-   tiga sensor lain (§10), jadi "semua rusak" bukan jawaban yang mudah.
-3. **Ambang keputusan dicari di data latih**, bukan dipatok 0,5, supaya recall
-   tidak digelembungkan.
-
-**Cara membaca tabel §10 yang aman, tiga langkah:**
-1. Lihat `ROC_AUC` dulu. ≈ 0,5 → berhenti, sisanya tidak usah dibaca.
-2. Baru lihat `F1` bersama `Prevalensi`.
-3. Untuk probabilitas, syaratkan `Brier_skill > 0` **dan** `ECE < 0,10`.
-
----
-
-### Q2. "Bisa nggak dites pakai data yang kita kondisikan benar (tidak ada fault) sebagai pembanding? Atau data rusak hanya di salah satu sensor?"
-
-**Bisa — keduanya sudah dijalankan di §11.**
-
-- **Kontrol A** memakai window `normal` yang **tidak disuntik fault sama
-  sekali**, dan melaporkan `FPR` (seberapa sering alarm palsu) serta
-  `Spesifisitas`. Ditambah pembanding rata-rata `P(rusak)` pada window bersih
-  vs window fault — kalau dua angka itu mirip, model tidak membedakan apa pun.
-- **Kontrol B** memakai window yang **tepat satu** sensornya rusak, dan
-  melaporkan `Top1` — apakah sensor dengan probabilitas tertinggi memang sensor
-  yang rusak. Pembandingnya tebak acak 25 %.
-
----
-
-### Q3. "Bedanya tabel *Ringkas: F1 rata-rata 4 sensor* dengan peta panas *F1 identifikasi sensor* apa?"
-
-**Angkanya sama, tingkat rinciannya berbeda.** Peta panas menampilkan F1 **per
-sensor** (empat kotak per baris); tabel ringkas adalah **rata-rata keempat kotak
-itu** dalam satu baris.
-
-Contoh dari hasil sebelumnya, baris `N | S1_Fault_Free_vs_Faulty | JSD-Fuzzy`:
-peta panas 0,93 · 0,89 · 0,87 · 0,90 → rata-ratanya 0,898, persis angka di
-tabel ringkas. Jadi peta panas untuk melihat **sensor mana yang paling sulit**,
-tabel ringkas untuk membandingkan **skenario dan metode**.
-
----
-
-### Q4. "Data jadi di-preprocessing, ngambil data tiap jam kan?"
-
-**Bukan tiap jam — tiap 5 menit**, dan bukan "diambil" melainkan
-**dirata-rata**. Sepuluh pembacaan 30 detik dirangkum jadi satu angka
-(281.721 baris → 28.173 baris). Bedanya penting: mengambil sampel ke-10 membuang
-9 pembacaan; merata-rata memakai semuanya dan sekaligus meredam derau. Lihat §3.
-
----
-
-### Q5. "Yang masuk ke broker itu data yang sudah di-sampling per 5 menit?"
-
-**Bukan.** Urutannya mengikuti diagram:
-
-```
-sensor (30 detik) -> BROKER -> sinkronisasi waktu -> preprocessing 5 menit -> windowing
-```
-
-Broker menerima **data mentah 30 detik** dan tugasnya hanya **mengumpulkan** 4
-aliran jadi satu tabel dengan identitas sensor tetap terpisah (§2). Perata-rataan
-5 menit terjadi **sesudah** broker, sebagai langkah preprocessing (§3).
-
-Kalau nanti di lapangan perata-rataan dipindah ke perangkat (sebelum broker),
-hasilnya setara **asalkan** yang dikirim benar-benar rata-rata 5 menit, bukan
-satu pembacaan sesaat tiap 5 menit.
-
----
-
-### Q6. "Apakah di preprocessing ada hal lain, seperti validation dan cleaning?"
-
-**Ada, sepuluh langkah, dan sekarang dicetak sebagai tabel di §3b**: cek kolom
-wajib, urut waktu, buang stempel waktu ganda, cek NaN, cek nilai di luar rentang
-fisik 0–100 %, cek pembacaan macet, cek pencilan ekstrem, rata-rata 5 menit,
-paksa ke grid waktu seragam + tambal bolong, lalu jaminan bebas NaN.
-
-Yang sengaja **tidak** dilakukan: membuang pencilan. Karena yang diteliti adalah
-fault, membuang pembacaan aneh sebelum pemodelan sama dengan menghapus barang
-bukti.
-
----
-
-### Q7. "Length datanya bukan 2000, 7000, 10.000? Di perhitungan CV pakai 2000, 7000, 10.000."
-
-**Dua-duanya benar, beda satuan.** Diagram menghitung sampel pada laju 30 detik;
-notebook ini menghitung sampel setelah preprocessing 5 menit. **Durasinya sama
-persis**: 0,69 / 2,43 / 3,47 hari. Tabel konversinya dicetak di §5.
-
-Kalau 10.000 sampel dipaksa pada laju 5 menit, satu window = 34,7 hari,
-sedangkan rekaman totalnya 97,8 hari → hanya 4 window untuk seluruh dataset,
-dan cross-validation 5-fold tidak bisa jalan. Angkanya juga dicetak di §5.
-
-Semua tabel hasil sekarang memuat kolom `N_diagram_30detik` di tabel konversi
-supaya tidak ada lagi kebingungan satuan.
-
----
-
-### Q8. "Kalau ada window yang tidak cukup panjang, apakah window itu di-exclude?"
-
-**Tidak ada window yang setengah jadi.** Pembentuk window hanya menghasilkan
-window yang **genap** N sampel; sisa ekor rekaman yang kurang dari N sampel
-tidak dijadikan window sama sekali. Jumlahnya dicetak di blok akuntansi §5.
-
-Angka **256** (dan di notebook ini **128**) adalah `n_ref` — **banyaknya vektor
-acuan** yang diambil acak saat menghitung kemiripan fuzzy, supaya biaya
-hitungnya tidak O(N²). Kalau titik yang tersedia lebih sedikit dari `n_ref`,
-dipakai **semuanya**; window tetap ikut dan **tidak dibuang**.
-
-Satu-satunya penyaringan window: pada kondisi fault, window yang porsi sampel
-ter-fault-nya ≤ 1 % dibuang, karena melabelinya "fault" akan menyesatkan.
-
----
-
-### Q9. "Kenapa EDM-Fuzzy kecil, hanya tinggi di kombinasi 4 fault? Sekalian cek EDM-nya."
-
-**Interpretasi pembimbing benar — EDM-Fuzzy hanya membedakan yang bebas vs
-yang ekstrim.** Bukti numeriknya di **§9b**, dua tabel:
-
-- `07_cek_edm_f1_gap.csv` — F1 EDM hanya tinggi di S5 (biner normal vs
-  keempat-fault), jatuh dekat tebak acak di S2/S3/S4. `EDM_vs_acak` kolom
-  memperlihatkan seberapa jauh dari `1/C`.
-- `07_cek_edm_separabilitas.csv` — separabilitas fitur (jarak antar-kelas
-  dibagi ragam dalam-kelas) EDM lebih kecil dari JSD pada skenario
-  multi-class — penjelasan struktural kenapa F1 jatuh.
-
-Sebabnya: EDM-Fuzzy merangkum tiap skala jadi **satu angka** kerapatan
-`log(φ_m/φ_{m+1})` (4T = 40 fitur), terlalu kasar untuk membedakan kombinasi
-fault yang hanya berbeda jenis/lokasi. JSD-Fuzzy menyimpan **4 komponen** per
-skala (`jsd, fe, mean_μ, std_μ`, 16T = 160 fitur) sehingga menangkap bentuk
-distribusi dan tetap dapat membedakan. S5 aman bagi EDM karena dua kelasnya
-(normal vs keempat-fault-sekaligus) paling jauh terpisah.
-
-Dua keluaran lain atas permintaan yang sama: **§3c tabel CV (koefisien
-variasi)** — `07_koefisian_variasi_sensor.csv` & `07_koefisien_variasi_window.csv`
-(CV di sini = std/mean, bukan cross-validation); **§7b tabel hasil entropy** —
-`07_hasil_entropy.csv` & `07_hasil_entropy_ringkas.csv`, nilai entropi per
-sensor x skala x komponen, dipisah normal vs fault.
-
----
-
-## Rujukan
-
-| Topik | Rujukan |
-|---|---|
-| Fuzzy entropy | Chen W., Wang Z., Xie H., Yu W. (2007). *Characterization of surface EMG signal based on fuzzy entropy.* IEEE Trans. Neural Syst. Rehabil. Eng. 15(2), 266–272 |
-| Multiscale entropy (coarse-graining τ) | Costa M., Goldberger A.L., Peng C.-K. (2002). *Multiscale entropy analysis of complex physiologic time series.* Phys. Rev. Lett. 89(6), 068102 |
-| Jensen–Shannon divergence | Lin J. (1991). *Divergence measures based on the Shannon entropy.* IEEE Trans. Inf. Theory 37(1), 145–151 |
-| Kalibrasi probabilitas (Platt scaling) | Platt J. (1999). *Probabilistic outputs for support vector machines.* Advances in Large Margin Classifiers, 61–74 |
-| Kenapa kalibrasi wajib diuji | Niculescu-Mizil A., Caruana R. (2005). *Predicting good probabilities with supervised learning.* ICML |
-| Brier score | Brier G.W. (1950). *Verification of forecasts expressed in terms of probability.* Monthly Weather Review 78(1), 1–3 |
-| Bahaya prevalensi tinggi pada F1 | Saito T., Rehmsmeier M. (2015). *The precision–recall plot is more informative than the ROC plot on imbalanced datasets.* PLoS ONE 10(3), e0118432 |
-| Kebocoran data pada CV deret waktu | Bergmeir C., Benítez J.M. (2012). *On the use of cross-validation for time series predictor evaluation.* Information Sciences 191, 192–213 |
-| Kebocoran akibat window tumpang-tindih | Hammerla N.Y., Plötz T. (2015). *Let's (not) stick together: pairwise similarity biases cross-validation in activity recognition.* UbiComp |
-| Mutu data (validasi & pembersihan) | Batini C., Scannapieco M. (2016). *Data Quality: Concepts, Methodologies and Techniques.* Springer |
-| Deteksi pencilan pada deret sensor | Hodge V.J., Austin J. (2004). *A survey of outlier detection methodologies.* Artificial Intelligence Review 22(2), 85–126 |
-| Levenberg–Marquardt untuk ANN | Hagan M.T., Menhaj M.B. (1994). *Training feedforward networks with the Marquardt algorithm.* IEEE Trans. Neural Networks 5(6), 989–993 |
-"""))
-
-cells.append(md("""## Ringkasan — apa yang dibuktikan notebook ini
-
-1. **Skema di flowchart dijalankan utuh, kotak per kotak**: akuisisi → broker →
-   sinkronisasi waktu (rata-rata 5 menit) → injeksi fault → segmentasi (N ∈ {200;
-   700; 1000} sampel = 0,69 / 2,43 / 3,47 hari, durasi sama dengan diagram) →
-   EDM-Fuzzy τ=1..T → konkatenasi 4T fitur → ANN-LM dengan hidden layer hasil
-   Grid Search → evaluasi.
-2. **Cross-validation-nya dibuat tidak bocor.** Window bertetangga tumpang-tindih
-   50%, jadi fold dikelompokkan menurut blok waktu (`StratifiedGroupKFold`) dan
-   Grid Search hanya melihat data latih tiap fold. Angka di sini lebih rendah
-   tapi lebih jujur daripada CV acak biasa.
-3. **Panjang window jadi variabel, bukan asumsi.** Ketiga nilai N pada diagram
-   dijalankan semua, jadi terlihat berapa panjang window yang sepadan dengan
-   ongkosnya — ongkos ekstraksi entropy naik kira-kira linier terhadap N.
-4. **Biaya komputasi dilaporkan sejajar dengan performa.** Yang menentukan bisa
-   tidaknya jalan online di broker adalah `ms_per_window` pada ekstraksi fitur
-   (bukan waktu latih), karena bagian itu yang berulang tiap window.
-5. **Sensor rusak bisa ditunjuk** sebagai lanjutan dari kotak terakhir diagram,
-   dengan pembanding `oracle` vs `end_to_end`.
-6. **Keluarannya bukan cuma ya/tidak, tapi probabilitas.** Tiap window
-   menghasilkan `P(S1 rusak) … P(S4 rusak)`, dikalibrasi Platt di dalam data
-   latih tiap fold, lalu diuji kejujurannya lewat Brier score, Brier skill,
-   ECE, dan diagram reliabilitas (§10b).
-
-**Cara baca angkanya:** utamakan **F1 macro** — jumlah kelas C berbeda antar
-skenario sehingga akurasi tidak sebanding lintas skenario. Untuk §10, baca `F1`
-bersama `Prevalensi` dan `ROC_AUC`. Untuk §10b, sebuah probabilitas baru boleh
-dikutip kalau `Brier_skill > 0` **dan** `ECE` kecil; kalau tidak, angkanya hanya
-skor urutan, bukan peluang.
-
-**Dua penyimpangan dari diagram, disengaja dan dicatat:** `solver='lbfgs'`
-sebagai pengganti Levenberg–Marquardt (sklearn tidak punya LM), dan JSD-Fuzzy
-ikut dijalankan sebagai pembanding usulan paper walau diagram hanya menyebut
-EDM-Fuzzy.
-
-7. **Dua uji kontrol dijalankan** (§11): data yang dikondisikan **bersih**
-   (false alarm rate) dan window dengan **tepat satu sensor rusak** (Top-1
-   identifikasi vs tebak acak 25 %).
-8. **Preprocessing dilaporkan, bukan diklaim** (§3b): sepuluh langkah validasi
-   dan pembersihan beserta angkanya, dan pernyataan tegas bahwa pencilan
-   dilaporkan tetapi tidak dibuang.
-
-**File keluaran** di folder `exports/`: `07_performa_cv_5skenario.csv`,
-`07_komputasi_cv_5skenario.csv`, `07_ongkos_ekstraksi_fitur.csv`,
-`07_arsitektur_terpilih.csv`, `07_identifikasi_sensor.csv`,
-`07_probabilitas_sensor.csv`, `07_contoh_probabilitas_per_window.csv`,
-`07_ringkasan_lengkap.csv`, `07_mutu_data.csv`, `07_konversi_window.csv`,
-`07_akuntansi_window.csv`, `07_kontrol_data_bersih.csv`,
-`07_kontrol_satu_sensor.csv`, plus `07_*.png` (termasuk
-`07_reliabilitas_sensor.png`).
-
-Tambahan atas permintaan pembimbing (24/07): `07_koefisien_variasi_sensor.csv`,
-`07_koefisien_variasi_window.csv` (§3c — CV = std/mean), `07_hasil_entropy.csv`,
-`07_hasil_entropy_ringkas.csv` + `07_entropy_delta.png` (§7b), dan
-`07_cek_edm_f1_gap.csv`, `07_cek_edm_separabilitas.csv` + `07_cek_edm.png` (§9b).
-"""))
-
-nb = {"cells": cells,
-      "metadata": {"kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
-                   "language_info": {"name": "python", "version": "3.9"}},
-      "nbformat": 4, "nbformat_minor": 5}
-
-with open(OUT, "w") as f:
-    json.dump(nb, f, indent=1)
-print("wrote", OUT, "| cells:", len(cells))
