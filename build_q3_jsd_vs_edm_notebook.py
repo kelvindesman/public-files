@@ -158,7 +158,7 @@ from IPython.display import FileLink, display
 
 warnings.filterwarnings("ignore")
 
-METHOD_LIST = ["EDM-Fuzzy", "JSD-Fuzzy"]      # baseline vs usulan — hanya dua, sesuai scope paper
+METHOD_LIST = ["MSE", "CMSE", "EDM-Fuzzy", "JSD-Fuzzy"]      # MSE & CMSE ditambah sesuai request
 RANDOM_SEED = 42
 N_JOBS = -1
 N_SPLITS = 5
@@ -175,7 +175,7 @@ _DEFAULT_WIN = "200" if RESAMPLE_RULE else "2000"
 WINDOW_LENGTHS = [int(v) for v in os.environ.get("WINDOW_LENGTHS", _DEFAULT_WIN).split(",")]
 WIN_MAIN = WINDOW_LENGTHS[0]
 
-T_SCALES = int(os.environ.get("T_SCALES", 10))       # tau = 1..T -> 10 fitur per sensor per metode
+T_SCALES = int(os.environ.get("T_SCALES", 15))       # tau = 1..T -> 15 fitur per sensor per metode
 MAX_PER_CLASS = int(os.environ.get("MAX_PER_CLASS", 100))
 
 DRIFT_PER_SAMPLE = 0.02 * (SAMPLING_SECONDS / 30)
@@ -675,6 +675,60 @@ def jsd_fuzzy_entropy_1d(x, scales, m=2, r_ratio=0.2, n_ref=128, seed=0,
         out.append(np.mean(val_k) if val_k else np.nan)
     return np.array(out, dtype=float)
 
+def _cheb_pair_count(y, dim, r, n_ref=None, seed=0):
+    N = len(y) - dim + 1
+    if N < 2:
+        return 0, 0
+    V = np.lib.stride_tricks.sliding_window_view(y, dim)
+    if n_ref is not None and n_ref < N:
+        rng = np.random.default_rng(seed)
+        ref = rng.choice(N, size=n_ref, replace=False)
+        A = V[ref]
+        d = np.max(np.abs(A[:, None, :] - V[None, :, :]), axis=2)
+        matches = d < r
+        matches[np.arange(len(ref)), ref] = False
+        return int(matches.sum()), len(ref) * (N - 1)
+    else:
+        d = np.max(np.abs(V[:, None, :] - V[None, :, :]), axis=2)
+        matches = d < r
+        np.fill_diagonal(matches, False)
+        return int(matches.sum()), N * (N - 1)
+
+def sample_entropy_1d(y, m, r, n_ref=128, seed=0):
+    y = np.ascontiguousarray(y)
+    c_m, t_m = _cheb_pair_count(y, m, r, n_ref, seed)
+    c_m1, t_m1 = _cheb_pair_count(y, m + 1, r, n_ref, seed + 1)
+    if t_m == 0 or t_m1 == 0 or c_m == 0 or c_m1 == 0:
+        return np.nan
+    return -np.log((c_m1 / t_m1) / (c_m / t_m))
+
+def mse_1d(x, scales, m=2, r_ratio=0.2, n_ref=128, seed=0):
+    out = []
+    r = r_ratio * np.std(x, ddof=1)
+    for s in scales:
+        y = coarse_grain_cmse(x, s, 0)
+        if len(y) < (m + 2):
+            out.append(np.nan)
+        else:
+            out.append(sample_entropy_1d(y, m, r, n_ref, seed + 11*s))
+    return np.array(out, dtype=float)
+
+def cmse_1d(x, scales, m=2, r_ratio=0.2, n_ref=128, seed=0):
+    out = []
+    r = r_ratio * np.std(x, ddof=1)
+    for s in scales:
+        ent_list = []
+        for k in range(s):
+            y = coarse_grain_cmse(x, s, k)
+            if len(y) < (m + 2):
+                continue
+            ent_list.append(sample_entropy_1d(y, m, r, n_ref, seed + 11*s + k))
+        if len(ent_list) == 0:
+            out.append(np.nan)
+        else:
+            out.append(np.nanmean(ent_list))
+    return np.array(out, dtype=float)
+
 scales = np.arange(1, T_SCALES + 1)
 print("Skala tau:", scales.tolist())
 print("EDM-Fuzzy  -> ", len(scales), "fitur per sensor (Euclidean)")
@@ -746,6 +800,10 @@ def entropy_1d(x, method, sd):
         return edm_fuzzy_entropy_1d(x, scales, m=m, r_ratio=r_ratio, n_ref=n_ref, seed=sd)
     if key == "jsd-fuzzy":
         return jsd_fuzzy_entropy_1d(x, scales, m=m, r_ratio=r_ratio, n_ref=n_ref, seed=sd)
+    if key == "mse":
+        return mse_1d(x, scales, m=m, r_ratio=r_ratio, n_ref=n_ref, seed=sd)
+    if key == "cmse":
+        return cmse_1d(x, scales, m=m, r_ratio=r_ratio, n_ref=n_ref, seed=sd)
     raise ValueError(f"Metode tidak dikenal: {method}")
 
 def concat_multisensor_features(W, method, seed=0, n_jobs=-1):
@@ -1075,7 +1133,7 @@ if len(cv_tbl) > 0:
     for i, scn in enumerate(scen_list):
         ax = axes[0][i]
         sub = cv_tbl[cv_tbl["Scenario"] == scn]
-        for meth, style in zip(METHOD_LIST, ["-o", "-s"]):
+        for meth, style in zip(METHOD_LIST, ["-^", "-d", "-o", "-s"]):
             s2 = sub[sub["Method"] == meth]
             if len(s2) == 0:
                 continue
@@ -1145,7 +1203,7 @@ sep_tbl = pd.DataFrame(sep_rows)
 interp = []
 for scn in sep_tbl["Scenario"].unique():
     sub = sep_tbl[sep_tbl["Scenario"] == scn].set_index("Method")
-    if set(METHOD_LIST).issubset(sub.index):
+    if set(["EDM-Fuzzy", "JSD-Fuzzy"]).issubset(sub.index):
         d_sep = sub.loc["JSD-Fuzzy", "Median spread / IQR"] - sub.loc["EDM-Fuzzy", "Median spread / IQR"]
         d_ovl = sub.loc["JSD-Fuzzy", "IQR overlap rata-rata"] - sub.loc["EDM-Fuzzy", "IQR overlap rata-rata"]
         verdict = ("JSD-Fuzzy lebih terpisah" if (d_sep > 0 and d_ovl <= 0) else
@@ -1279,7 +1337,7 @@ for WIN in WINDOW_LENGTHS:
     for sc, cl in LADDER.items():
         keep, yy = build_scenario(WIN, cl)
         grp = seg["groups"][keep]
-        for meth in METHOD_LIST:
+        for meth in ["EDM-Fuzzy", "JSD-Fuzzy"]:
             if (WIN, meth) not in FEATURES:
                 continue
             if not budget_ok(900, f"{sc}/{meth}/N={WIN}"):
@@ -1333,7 +1391,7 @@ else:
     print("\n=== Selisih per skenario (JSD-Fuzzy - EDM-Fuzzy) ===")
     piv = perf_tbl.pivot_table(index="Scenario", columns="Method",
                                values=["Accuracy", "Precision", "Recall", "F1"])
-    if set(METHOD_LIST).issubset(set(perf_tbl["Method"])):
+    if set(["EDM-Fuzzy", "JSD-Fuzzy"]).issubset(set(perf_tbl["Method"])):
         diff = pd.DataFrame({
             m: (piv[(m, "JSD-Fuzzy")] - piv[(m, "EDM-Fuzzy")]).round(4)
             for m in ["Accuracy", "Precision", "Recall", "F1"]
@@ -1355,7 +1413,7 @@ if len(perf_tbl) > 0:
     scen_order = [SCEN_SHORT[s] for s in LADDER if SCEN_SHORT[s] in set(perf_tbl["Scenario"])]
     xs = np.arange(len(scen_order)); w = 0.36
     fig, ax = plt.subplots(1, 2, figsize=(13, 4))
-    for i, meth in enumerate(METHOD_LIST):
+    for i, meth in enumerate(["EDM-Fuzzy", "JSD-Fuzzy"]):
         sub = perf_tbl[perf_tbl["Method"] == meth].set_index("Scenario")
         vals = [sub.loc[s, "F1"] if s in sub.index else np.nan for s in scen_order]
         errs = [sub.loc[s, "F1_std"] if s in sub.index else 0 for s in scen_order]
@@ -1374,11 +1432,11 @@ if len(RUNS) == 0:
     print("Tidak ada run tersimpan — lewati confusion matrix.")
 else:
     keys = [(w, s, m) for (w, s, m) in RUNS if w == WIN_MAIN]
-    keys.sort(key=lambda t: (list(LADDER).index(t[1]), METHOD_LIST.index(t[2])))
+    keys.sort(key=lambda t: (list(LADDER).index(t[1]), ["EDM-Fuzzy", "JSD-Fuzzy"].index(t[2])))
     n_sc = len(LADDER)
-    fig, axes = plt.subplots(len(METHOD_LIST), n_sc,
-                             figsize=(3.8 * n_sc, 3.6 * len(METHOD_LIST)), squeeze=False)
-    for r, meth in enumerate(METHOD_LIST):
+    fig, axes = plt.subplots(len(["EDM-Fuzzy", "JSD-Fuzzy"]), n_sc,
+                             figsize=(3.8 * n_sc, 3.6 * len(["EDM-Fuzzy", "JSD-Fuzzy"])), squeeze=False)
+    for r, meth in enumerate(["EDM-Fuzzy", "JSD-Fuzzy"]):
         for c, sc in enumerate(LADDER):
             ax = axes[r][c]
             key = (WIN_MAIN, sc, meth)
@@ -1433,7 +1491,7 @@ sepenuhnya independen, jadi itu bukan uji utama).
 cells.append(code(r"""# === TABEL RQ5 — paired t-test pada F1 lima skenario ===
 from scipy import stats
 
-if len(perf_tbl) == 0 or not set(METHOD_LIST).issubset(set(perf_tbl["Method"])):
+if len(perf_tbl) == 0 or not set(["EDM-Fuzzy", "JSD-Fuzzy"]).issubset(set(perf_tbl["Method"])):
     print("Butuh hasil kedua metode — lewati RQ5.")
     rq5 = pd.DataFrame()
 else:
@@ -1623,7 +1681,74 @@ cells.append(md(r"""## Yang boleh dan tidak boleh diklaim dari notebook ini
 `08_rq4_confusion_matrix.png`, `08_broker_tersinkron.png`.
 """))
 
+cells.append(md("## Export Custom Table (Sesuai Permintaan)"))
+cells.append(code(r"""
+import matplotlib.pyplot as plt
+
+methods = ["EDM-Fuzzy"]
+classes = ["bias", "drift", "spike", "hardware"]
+class_names = {"bias": "Bias", "drift": "Drift", "spike": "Spike", "hardware": "Hardware\nmalfunction"}
+
+table_data = []
+for c in classes:
+    row = cv_tbl[(cv_tbl["Scenario"] == "S2") & (cv_tbl["Class"] == c) & (cv_tbl["Method"] == "EDM-Fuzzy")]
+    if len(row):
+        r = row.iloc[0]
+        table_data.append({
+            "Window Lengths": "200" if c == "bias" else "",
+            "Class": class_names[c],
+            **{f"s{i}": r[f"s{i}"] for i in range(1, 16)}
+        })
+
+if len(table_data) > 0:
+    headers = ["Window Lengths", "Class"] + [str(i) for i in range(1, 16)]
+    fig, ax = plt.subplots(figsize=(14, 2 + 0.4 * len(table_data)))
+    ax.axis("off")
+    title = "Table 1 \u2013 Coefficients of Variation (CV) of EDM-Fuzzy Entropy across scale factors dan samples"
+    ax.set_title(title, fontsize=12, pad=30, loc="left")
+    
+    cell_text = []
+    for r in table_data:
+        row_vals = [r["Window Lengths"], r["Class"]]
+        for i in range(1, 16):
+            try:
+                row_vals.append(f"{float(r[f's{i}']):.3f}")
+            except:
+                row_vals.append("")
+        cell_text.append(row_vals)
+        
+    cw = [0.1, 0.15] + [0.05]*15
+    tab = ax.table(cellText=cell_text, colLabels=headers, loc="center", cellLoc="center", colWidths=cw)
+    tab.auto_set_font_size(False)
+    tab.set_fontsize(10)
+    tab.scale(1, 2.5)
+    
+    for i in range(len(table_data) + 1):
+        tab[i, 0].set_text_props(ha="left")
+        tab[i, 1].set_text_props(ha="left")
+        for j in range(len(headers)):
+            c_cell = tab[i, j]
+            c_cell.set_linewidth(0)
+            if i == 0:
+                c_cell.set_linewidth(1.2)
+                c_cell.visible_edges = 'B'
+                
+    for j in range(len(headers)):
+        tab[0, j].set_linewidth(1.2)
+        tab[0, j].visible_edges = 'BT'
+        tab[len(table_data), j].set_linewidth(1.2)
+        tab[len(table_data), j].visible_edges = 'B'
+        
+    plt.text(0.6, 0.92, "Scale", ha="center", va="center", fontsize=11, transform=ax.transAxes)
+    plt.plot([0.25, 0.95], [0.88, 0.88], color="black", lw=1.2, transform=ax.transAxes, clip_on=False)
+    
+    plt.tight_layout()
+    plt.savefig("exports/08_cv_table_custom.png", dpi=300, bbox_inches="tight")
+    plt.show()
+"""))
+
 nb = {"cells": cells,
+
       "metadata": {"kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
                    "language_info": {"name": "python", "version": "3.9"}},
       "nbformat": 4, "nbformat_minor": 5}
