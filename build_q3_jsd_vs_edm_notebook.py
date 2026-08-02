@@ -723,10 +723,12 @@ def cmse_1d(x, scales, m=2, r_ratio=0.2, n_ref=128, seed=0):
             if len(y) < (m + 2):
                 continue
             ent_list.append(sample_entropy_1d(y, m, r, n_ref, seed + 11*s + k))
-        if len(ent_list) == 0:
+        
+        valid_ent = [e for e in ent_list if not np.isnan(e)]
+        if len(valid_ent) == 0:
             out.append(np.nan)
         else:
-            out.append(np.nanmean(ent_list))
+            out.append(np.mean(valid_ent))
     return np.array(out, dtype=float)
 
 scales = np.arange(1, T_SCALES + 1)
