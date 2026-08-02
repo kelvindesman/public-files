@@ -1135,7 +1135,7 @@ if len(cv_tbl) > 0:
     fig, axes = plt.subplots(1, len(scen_list), figsize=(4 * len(scen_list), 3.6), squeeze=False)
     for i, scn in enumerate(scen_list):
         ax = axes[0][i]
-        sub = cv_tbl[cv_tbl["Scenario"] == scn]
+        sub = cv_tbl[(cv_tbl["Scenario"] == scn) & (cv_tbl["Window Lengths"] == WIN_MAIN)]
         for meth, style in zip(METHOD_LIST, ["-^", "-d", "-o", "-s"]):
             s2 = sub[sub["Method"] == meth]
             if len(s2) == 0:
@@ -1335,7 +1335,7 @@ cells.append(code(r"""# === Jalankan: 5 skenario x 2 metode ===
 perf_rows, comp_rows, arch_rows = [], [], []
 RUNS = {}
 
-for WIN in WINDOW_LENGTHS:
+for WIN in [WIN_MAIN]:
     seg = SEGMENTS[WIN]
     for sc, cl in LADDER.items():
         keep, yy = build_scenario(WIN, cl)
