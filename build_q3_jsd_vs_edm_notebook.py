@@ -171,7 +171,7 @@ SAMPLING_SECONDS = 300 if RESAMPLE_RULE else 30
 # Paper ini memakai SATU panjang window (bukan studi sensitivitas seperti notebook 07):
 # N = 200 sampel pada laju 5 menit = 0,69 hari = setara N = 2000 pada laju 30 detik,
 # yaitu konfigurasi terbaik pada notebook 07. Bisa ditimpa lewat env WINDOW_LENGTHS.
-_DEFAULT_WIN = "200" if RESAMPLE_RULE else "2000"
+_DEFAULT_WIN = "200,700,1000" if RESAMPLE_RULE else "2000"
 WINDOW_LENGTHS = [int(v) for v in os.environ.get("WINDOW_LENGTHS", _DEFAULT_WIN).split(",")]
 WIN_MAIN = WINDOW_LENGTHS[0]
 
@@ -1052,17 +1052,18 @@ cells.append(code(r"""# === TABEL RQ2 — CV entropi per Skenario x Kelas x Meto
 MU_MIN = 1e-3          # ambang |mean| supaya CV tidak meledak
 
 cv_rows = []
-for sc, cl in LADDER.items():
-    keep, yy = build_scenario(WIN_MAIN, cl)
-    for meth in METHOD_LIST:
-        if (WIN_MAIN, meth) not in SCALE_FEAT:
-            continue
-        S = SCALE_FEAT[(WIN_MAIN, meth)][keep]
-        for ci, (cname, _) in enumerate(cl):
-            sel = np.where(yy == ci)[0]
-            if len(sel) < 3:
+for WIN in WINDOW_LENGTHS:
+    for sc, cl in LADDER.items():
+        keep, yy = build_scenario(WIN, cl)
+        for meth in METHOD_LIST:
+            if (WIN, meth) not in SCALE_FEAT:
                 continue
-            row = {"Scenario": SCEN_SHORT[sc], "Class": cname, "Method": meth, "n": len(sel)}
+            S = SCALE_FEAT[(WIN, meth)][keep]
+            for ci, (cname, _) in enumerate(cl):
+                sel = np.where(yy == ci)[0]
+                if len(sel) < 3:
+                    continue
+                row = {"Window Lengths": WIN, "Scenario": SCEN_SHORT[sc], "Class": cname, "Method": meth, "n": len(sel)}
             cvs, flag = [], False
             for t in range(T_SCALES):
                 v = S[sel, t]
@@ -1089,7 +1090,7 @@ if len(cv_tbl) == 0:
     cv_red = pd.DataFrame()
 else:
     scols = [f"s{t+1}" for t in range(T_SCALES)]
-    piv = cv_tbl.pivot_table(index=["Scenario", "Class"], columns="Method",
+    piv = cv_tbl[cv_tbl["Window Lengths"] == WIN_MAIN].pivot_table(index=["Scenario", "Class"], columns="Method",
                              values=scols + ["Mean CV"])
     red_rows = []
     for (scn, cls), _ in piv.iterrows():
@@ -1690,15 +1691,16 @@ classes = ["bias", "drift", "spike", "hardware"]
 class_names = {"bias": "Bias", "drift": "Drift", "spike": "Spike", "hardware": "Hardware\nmalfunction"}
 
 table_data = []
-for c in classes:
-    row = cv_tbl[(cv_tbl["Scenario"] == "S2") & (cv_tbl["Class"] == c) & (cv_tbl["Method"] == "EDM-Fuzzy")]
-    if len(row):
-        r = row.iloc[0]
-        table_data.append({
-            "Window Lengths": "200" if c == "bias" else "",
-            "Class": class_names[c],
-            **{f"s{i}": r[f"s{i}"] for i in range(1, 16)}
-        })
+for w in WINDOW_LENGTHS:
+    for c in classes:
+        row = cv_tbl[(cv_tbl["Window Lengths"] == w) & (cv_tbl["Scenario"] == "S2") & (cv_tbl["Class"] == c) & (cv_tbl["Method"] == "EDM-Fuzzy")]
+        if len(row):
+            r = row.iloc[0]
+            table_data.append({
+                "Window Lengths": str(w) if c == "bias" else "",
+                "Class": class_names[c],
+                **{f"s{i}": r[f"s{i}"] for i in range(1, 16)}
+            })
 
 if len(table_data) > 0:
     headers = ["Window Lengths", "Class"] + [str(i) for i in range(1, 16)]
