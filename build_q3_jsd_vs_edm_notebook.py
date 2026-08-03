@@ -1066,18 +1066,18 @@ for WIN in WINDOW_LENGTHS:
                 if len(sel) < 3:
                     continue
                 row = {"Window Lengths": WIN, "Scenario": SCEN_SHORT[sc], "Class": cname, "Method": meth, "n": len(sel)}
-            cvs, flag = [], False
-            for t in range(T_SCALES):
-                v = S[sel, t]
-                mu = float(np.nanmean(v)); sd = float(np.nanstd(v, ddof=1))
-                if abs(mu) < MU_MIN:
-                    cv = np.nan; flag = True
-                else:
-                    cv = sd / abs(mu)
-                cvs.append(cv); row[f"s{t+1}"] = round(cv, 4) if np.isfinite(cv) else np.nan
-            row["Mean CV"] = round(float(np.nanmean(cvs)), 4)
-            row["mean_kecil"] = flag
-            cv_rows.append(row)
+                cvs, flag = [], False
+                for t in range(T_SCALES):
+                    v = S[sel, t]
+                    mu = float(np.nanmean(v)); sd = float(np.nanstd(v, ddof=1))
+                    if abs(mu) < MU_MIN:
+                        cv = np.nan; flag = True
+                    else:
+                        cv = sd / abs(mu)
+                    cvs.append(cv); row[f"s{t+1}"] = round(cv, 4) if np.isfinite(cv) else np.nan
+                row["Mean CV"] = round(float(np.nanmean(cvs)), 4)
+                row["mean_kecil"] = flag
+                cv_rows.append(row)
 
 cv_tbl = pd.DataFrame(cv_rows)
 print("=== TABEL RQ2 — CV entropi (Scenario | Class | Method | s1..s10 | Mean CV) ===")
