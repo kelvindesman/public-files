@@ -1,0 +1,14 @@
+{
+  "id": "kelvindsmn/jsd-fuzzy-twostage-sensorid",
+  "title": "JSD_Fuzzy_TwoStage_SensorID",
+  "code_file": "04_Klasifikasi_Dulu_Baru_Sensor_Mana.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}
