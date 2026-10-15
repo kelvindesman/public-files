@@ -1,0 +1,14 @@
+{
+  "id": "kelvindsmn/jsd-edm-ann-lm-lengkap-q3",
+  "title": "JSD EDM ANN-LM Lengkap Q3",
+  "code_file": "11_LM_Asli_EDM_vs_JSD_Lengkap.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}
