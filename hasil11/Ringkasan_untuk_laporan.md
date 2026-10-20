@@ -1,8 +1,8 @@
 # Notebook 11 — bahan untuk laporan (EDM vs JSD, SEMUA classifier LM asli)
 
-Sumber: Kaggle `kelvindsmn/jsd-edm-ann-lm-lengkap-q3` (version 1, COMPLETE,
-wall 525 mnt / 8,75 jam, 0 Traceback, 0 SKIP).
-Notebook: `11_LM_Asli_EDM_vs_JSD_Lengkap.ipynb` (51 sel, dibangun dari
+Sumber: Kaggle `kelvindsmn/jsd-edm-ann-lm-lengkap-q3` (version 2, COMPLETE,
+wall 588 mnt / 9,80 jam, 0 Traceback, 0 SKIP).
+Notebook: `11_LM_Asli_EDM_vs_JSD_Lengkap.ipynb` (54 sel, dibangun dari
 `build_11_annlm_real_notebook.py`).
 Link: https://www.kaggle.com/code/kelvindsmn/jsd-edm-ann-lm-lengkap-q3
 
@@ -27,12 +27,12 @@ Ini temuan jujur yang harus masuk laporan apa adanya.
 
 ## Bagian 2 — Klasifikasi 5 skenario (LM asli, grouped CV)
 
-Selisih F1 (JSD − EDM): **JSD unggul pada 11 dari 15 sel**
-(N=200: 4/5 · N=700: 3/5 · N=1000: 4/5).
-Rata-rata selisih: N=200 +0,037 · N=700 +0,034 · N=1000 +0,019 · pooled +0,030.
+Selisih F1 (JSD − EDM): **JSD unggul pada 12 dari 15 sel**
+(N=200: 5/5 · N=700: 3/5 · N=1000: 4/5).
+Rata-rata selisih: N=200 +0,039 · N=700 +0,033 · N=1000 +0,019 · pooled +0,030.
 
 Uji berpasangan: per window **belum signifikan**
-(p = 0,12 / 0,42 / 0,29); pooled 15 pasang p = 0,0511 (t maupun Wilcoxon) —
+(p = 0,10 / 0,44 / 0,30); pooled 15 pasang p = 0,0504 (t maupun Wilcoxon) —
 tipis di atas 0,05, jadi statusnya tetap "belum signifikan", bukan "lebih baik".
 ROC-AUC OvR tersedia per sel di `11_rq4_performa_ann.csv`; confusion matrix
 kedua metode per skenario di `11_rq4_confusion_matrix.csv` + PNG.
@@ -40,8 +40,8 @@ kedua metode per skenario di `11_rq4_confusion_matrix.csv` + PNG.
 ## Bagian 3 — Sensor fault identification (RQ6, LM asli)
 
 F1 sensor rata-rata lintas window & skenario:
-**EDM-Fuzzy 0,722 vs JSD-Fuzzy 0,770.**
-Exact-match SEMUA-4-BENAR: EDM 0,363 vs JSD 0,466.
+**EDM-Fuzzy 0,721 vs JSD-Fuzzy 0,765.**
+Exact-match SEMUA-4-BENAR: EDM 0,363 vs JSD 0,454.
 
 | N | S1 E/J | S2 E/J | S3 E/J | S4 E/J | S5 E/J |
 |---|---|---|---|---|---|
@@ -63,9 +63,9 @@ Detail per sel di `11_rq3_interpretasi.csv` + boxplot PNG per window.
 > Seluruh classifier pada studi ini memakai Levenberg–Marquardt yang
 > diimplementasikan sendiri (langkah Gauss-Newton terdamping, rasio gain,
 > Jacobian analitik terverifikasi self-check) — tanpa solver quasi-Newton.
-> JSD-Fuzzy mengungguli EDM-Fuzzy pada 11 dari 15 sel klasifikasi
-> (rata-rata +0,02 s.d. +0,04) dan pada identifikasi sensor (F1 0,770 vs
-> 0,722), namun uji berpasangan per window belum signifikan (p ≥ 0,05;
-> pooled p = 0,051), sehingga klaim ditulis sebagai keunggulan deskriptif.
+> JSD-Fuzzy mengungguli EDM-Fuzzy pada 12 dari 15 sel klasifikasi
+> (rata-rata +0,02 s.d. +0,04) dan pada identifikasi sensor (F1 0,765 vs
+> 0,721), namun uji berpasangan per window belum signifikan (p ≥ 0,05;
+> pooled p = 0,050), sehingga klaim ditulis sebagai keunggulan deskriptif.
 > Pada stabilitas fitur (CV), EDM-Fuzzy justru lebih stabil pada sebagian
 > besar skala — dilaporkan apa adanya.

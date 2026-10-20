@@ -20,7 +20,7 @@ hal itu. Baca berurutan dari 01.
 | 08 | `08_JSD_Fuzzy_vs_EDM_Fuzzy_Paper_Q3.ipynb` | Kalau JSD-Fuzzy diuji di dalam kerangka paper (5 skenario S1..S5, 4T fitur, grouped CV), apakah tetap menang dari EDM-Fuzzy? | **JSD-Fuzzy F1 rata-rata 0,627 vs EDM 0,572** (selisih +0,056), tapi uji berpasangan **belum signifikan** (p ≥ 0,05) — jadi ditulis "unggul pada sebagian besar sel", bukan "lebih baik" |
 | 09 | `09_ANN_LM_vs_Bayesian_vs_GA.ipynb` | Dari empat algoritma pelatihan ANN — **LM, Bayesian regularization, GA, Adam** — mana yang paling cocok untuk deteksi fault? | **BR dan LM setara, keduanya jauh di atas GA dan Adam.** F1 rata-rata 10 sel (5 skenario × 2 set fitur): BR 0,504 · LM 0,504 · GA 0,335 · Adam 0,321. Juara terbanyak: BR 5 sel, LM 4, Adam 1, GA 0. LM vs BR **tidak signifikan** (p = 0,99); LM/BR vs GA (p ≤ 0,003) dan vs Adam (p ≤ 0,04) **signifikan**. Jacobian analitik lolos self-check (rel err 6,9e-05), jadi Jacobian numerik **tidak** dipakai. Run Kaggle 112 menit, 0 Traceback |
 | 10 | `10_JSD_Fuzzy_vs_EDM_Fuzzy_ANN_LM_Asli.ipynb` | **Permintaan pembimbing**: ulangi perbandingan JSD vs EDM (notebook 08), tapi pembelajaran ANN-LM diganti **LM asli dari paper** (bukan `lbfgs`) | **JSD-Fuzzy unggul di 11 dari 15 sel** (5 skenario × 3 window, run v3): rata-rata selisih F1 N=200 +0,038 · N=700 +0,035 · N=1000 +0,020 · pooled +0,031. Uji berpasangan **per window tidak signifikan** (p = 0,12 / 0,42 / 0,28; n=5 power rendah); **pooled 15 pasang signifikan p = 0,048** (t maupun Wilcoxon; deskriptif — ketergantungan antar-window beda). Protokol v3: inner CV 2, search 6 iter, refit 40, grid 16 kombinasi. Jacobian analitik lolos self-check (~1e-9). **Akuntansi CPU penuh**: TOTAL 93.740 detik (~26,0 jam-CPU), wall 573 mnt, 0 Traceback, 0 SKIP — tabel `10_ongkos_per_bagian.csv` |
-| 11 | `11_LM_Asli_EDM_vs_JSD_Lengkap.ipynb` | Versi **lengkap** dari 10: EDM vs JSD dengan **semua** classifier LM asli, ditambah **identifikasi sensor** (RQ6) yang dirantai end-to-end dari prediksi out-of-fold | **JSD unggul di 11 dari 15 sel** (sama seperti 10), rata-rata +0,030; tapi **pooled p = 0,051** → statusnya tetap "belum signifikan". Sensor-ID: F1 **0,770 vs 0,722**, exact-match semua-4-benar **0,466 vs 0,363**. **Stabilitas fitur (CV): EDM lebih stabil** di 61–88% pasangan — dilaporkan apa adanya. Tidak ada `lbfgs`/`Adam`/`MLPClassifier`. Wall 525 mnt, **84.151 detik CPU (~23,4 jam-CPU)**, 0 Traceback, 0 SKIP |
+| 11 | `11_LM_Asli_EDM_vs_JSD_Lengkap.ipynb` | Versi **lengkap** dari 10: EDM vs JSD dengan **semua** classifier LM asli, ditambah **identifikasi sensor** (RQ6) yang dirantai end-to-end dari prediksi out-of-fold | **JSD unggul di 12 dari 15 sel**, rata-rata +0,030; tapi **pooled p = 0,050** → statusnya tetap "belum signifikan". Sensor-ID: F1 **0,765 vs 0,721**, exact-match semua-4-benar **0,454 vs 0,363**. **Stabilitas fitur (CV): EDM lebih stabil** di 61–88% pasangan — dilaporkan apa adanya. Tidak ada `lbfgs`/`Adam`/`MLPClassifier`. Wall 588 mnt, **94.490 detik CPU (~26,2 jam-CPU)**, 0 Traceback, 0 SKIP |
 
 ## Alur pemikirannya
 
@@ -35,11 +35,11 @@ hal itu. Baca berurutan dari 01.
 08  JSD vs EDM di dalam kerangka paper -> dua set fitur pada pipeline yang sama
 09  algoritma pelatihan mana yang menang -> BR & LM setara, di atas GA & Adam
 10  ulangi 08 dengan LM asli paper      -> JSD unggul 11/15 sel, pooled p = 0,048
-11  10 + identifikasi sensor (RQ6)      -> JSD unggul, tapi pooled p = 0,051
+11  10 + identifikasi sensor (RQ6)      -> JSD unggul, tapi pooled p = 0,050
 ```
 
 Catatan: `10` dan `11` menjalankan pipeline yang sama tetapi hasil pooled-nya
-berbeda tipis (p = 0,048 vs 0,051). Keduanya harus ditulis apa adanya — batas
+berbeda tipis (p = 0,048 vs 0,050). Keduanya harus ditulis apa adanya — batas
 signifikansi 0,05 tidak dilampaui dengan aman, jadi klaim tetap deskriptif.
 
 Notebook 04 dan 05 menjawab pertanyaan pembimbing secara berurutan: 04 menjawab
