@@ -164,70 +164,57 @@ plt.show()
 print("Simpan: exports/ILU_empat_kanal_bersih.png")
 """))
 
-cells.append(code("""# === Simulator fault — parameter identik dengan notebook penelitian ===
+cells.append(code("""# === Simulator fault — parameter dan perilaku identik dengan notebook penelitian ===
 DRIFT_PER_SAMPLE = 0.02 * (SAMPLING_SECONDS / 30)
 
 def simulate_drift_fault(x, intensity=DRIFT_PER_SAMPLE, seed=None):
-    x = np.asarray(x, dtype=float).copy()
-    return x + np.arange(len(x)) * intensity
+    drift = np.arange(len(x)) * intensity
+    return x + drift, np.abs(drift) > 1e-6
 
 def simulate_spike_fault(x, intensity=0.08, p=0.015, seed=None):
-    rng = np.random.default_rng(seed)
-    x = np.asarray(x, dtype=float).copy()
-    skala = np.nanstd(x)
-    if not np.isfinite(skala) or skala == 0:
-        skala = 1.0
-    mask = rng.random(len(x)) < p
-    x[mask] += rng.normal(0, intensity * skala, mask.sum())
-    return x
+    tau = max(1, int(1.0 / p)) if p > 0 else len(x)
+    spikes = (np.arange(len(x)) % tau == 0).astype(float) * (intensity * np.nanstd(x))
+    return x + spikes, spikes != 0
 
 def simulate_bias_fault(x, bias=0.08, seed=None):
-    return np.asarray(x, dtype=float) + bias
+    return x + bias, np.ones(len(x), bool)
 
 def simulate_hardware_fault(x, stuck_prob=0.08, loss_prob=0.05, seed=None):
     rng = np.random.default_rng(seed)
-    x = np.asarray(x, dtype=float).copy()
-    n = len(x)
-    idx = rng.integers(0, n, size=n)
-    stuck = rng.random(n) < stuck_prob
-    x[stuck] = x[idx[stuck]]
-    loss = rng.random(n) < loss_prob
-    x[loss] = np.nan
-    return x
+    n = len(x); rv = rng.random(n); idx = rng.integers(n, size=n)
+    m1 = rv < stuck_prob; y = x.copy(); y[m1] = x[idx[m1]]
+    m2 = rv < loss_prob; y[m2] = np.nan
+    return y, (m1 | m2)
 
 def simulate_multiple_faults(x, faults, seed=None):
-    rng = np.random.default_rng(seed)
-    y = np.asarray(x, dtype=float).copy()
-    for fn, kwargs in faults:
-        kw = dict(kwargs)
-        if "seed" in fn.__code__.co_varnames:
-            kw["seed"] = int(rng.integers(0, 2**31 - 1))
-        y = fn(y, **kw)
-    return y, None
+    y = x.copy(); m_ = np.zeros(len(x), bool)
+    for f, kw in faults:
+        y, mi = f(y, **kw, seed=seed); m_ |= mi
+    return y, m_
 
-FAULTS = {
-    "spike":    (simulate_spike_fault,    {"intensity": 0.08, "p": 0.015}),
-    "drift":    (simulate_drift_fault,    {"intensity": DRIFT_PER_SAMPLE}),
-    "bias":     (simulate_bias_fault,     {"bias": 0.08}),
-    "hardware": (simulate_hardware_fault, {"stuck_prob": 0.08, "loss_prob": 0.05}),
-}
+_D = {"intensity": DRIFT_PER_SAMPLE}
+_S = {"intensity": 0.08, "p": 0.015}
+_B = {"bias": 0.08}
+_H = {"stuck_prob": 0.08, "loss_prob": 0.05}
+
 SCENARIOS = {
     "normal": [],
-    "spike": [FAULTS["spike"]],
-    "drift": [FAULTS["drift"]],
-    "bias": [FAULTS["bias"]],
-    "hardware": [FAULTS["hardware"]],
-    "drift+spike": [FAULTS["drift"], FAULTS["spike"]],
-    "drift+bias": [FAULTS["drift"], FAULTS["bias"]],
-    "drift+malfunc": [FAULTS["drift"], FAULTS["hardware"]],
-    "spike+bias": [FAULTS["spike"], FAULTS["bias"]],
-    "spike+malfunc": [FAULTS["spike"], FAULTS["hardware"]],
-    "bias+malfunc": [FAULTS["bias"], FAULTS["hardware"]],
-    "drift+spike+bias": [FAULTS["drift"], FAULTS["spike"], FAULTS["bias"]],
-    "spike+drift+malfunc": [FAULTS["spike"], FAULTS["drift"], FAULTS["hardware"]],
-    "drift+bias+malfunc": [FAULTS["drift"], FAULTS["bias"], FAULTS["hardware"]],
-    "spike+bias+malfunc": [FAULTS["spike"], FAULTS["bias"], FAULTS["hardware"]],
-    "spike+bias+malfunc+drift": [FAULTS["spike"], FAULTS["bias"], FAULTS["hardware"], FAULTS["drift"]],
+    "drift": [(simulate_drift_fault, _D)],
+    "spike": [(simulate_spike_fault, _S)],
+    "bias": [(simulate_bias_fault, _B)],
+    "hardware": [(simulate_hardware_fault, _H)],
+    "bias+malfunc": [(simulate_bias_fault, _B), (simulate_hardware_fault, _H)],
+    "spike+malfunc": [(simulate_spike_fault, _S), (simulate_hardware_fault, _H)],
+    "spike+bias": [(simulate_spike_fault, _S), (simulate_bias_fault, _B)],
+    "drift+malfunc": [(simulate_drift_fault, _D), (simulate_hardware_fault, _H)],
+    "drift+bias": [(simulate_drift_fault, _D), (simulate_bias_fault, _B)],
+    "drift+spike": [(simulate_drift_fault, _D), (simulate_spike_fault, _S)],
+    "spike+bias+malfunc": [(simulate_spike_fault, _S), (simulate_bias_fault, _B), (simulate_hardware_fault, _H)],
+    "drift+bias+malfunc": [(simulate_drift_fault, _D), (simulate_bias_fault, _B), (simulate_hardware_fault, _H)],
+    "spike+drift+malfunc": [(simulate_spike_fault, _S), (simulate_drift_fault, _D), (simulate_hardware_fault, _H)],
+    "drift+spike+bias": [(simulate_drift_fault, _D), (simulate_spike_fault, _S), (simulate_bias_fault, _B)],
+    "spike+bias+malfunc+drift": [(simulate_spike_fault, _S), (simulate_bias_fault, _B),
+                                  (simulate_hardware_fault, _H), (simulate_drift_fault, _D)],
 }
 
 print("Kondisi:", len(SCENARIOS), "| drift per sampel:", round(DRIFT_PER_SAMPLE, 4), "%")
