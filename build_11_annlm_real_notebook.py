@@ -42,6 +42,7 @@ persis seperti dokumen rencana:
 Data: data_sensor.csv (281.721 baris, 2025-09-14 .. 2025-12-21, interval 30 detik).
 """
 import json
+import notebook_fault_figures as nff
 
 REPO_RAW = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv"
 OUT = "/Users/kelvin/apps/public-files/11_LM_Asli_EDM_vs_JSD_Lengkap.ipynb"
@@ -409,6 +410,8 @@ ax.set_ylabel("kelembaban"); ax.legend(ncol=4, fontsize=9)
 plt.tight_layout(); plt.savefig("exports/11_broker_tersinkron.png", dpi=120); plt.show()
 """))
 
+cells.append(md(nff.qc_steps_md("§2b", "3")))
+
 # ---------------------------------------------------------------- §4 fault injection
 cells.append(md(r"""# §3 — Data preparation & fault injection
 
@@ -479,6 +482,9 @@ SCENARIOS = {
 condition_names = ["normal"] + list(SCENARIOS.keys())
 print("Kondisi:", len(SCENARIOS), "fault + normal =", len(condition_names))
 """))
+
+cells.append(md(nff.figures_md("§3b", "4")))
+cells.append(code(nff.figures_code("11_", seed_base=11000)))
 
 # ---------------------------------------------------------------- §5 segmentation
 cells.append(md(r"""# §4 — Segmentasi & pelabelan

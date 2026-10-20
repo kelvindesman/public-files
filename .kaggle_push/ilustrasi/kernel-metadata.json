@@ -1,0 +1,14 @@
+{
+  "id": "kelvindsmn/ilustrasi-data-akuisisi-dan-fault",
+  "title": "Ilustrasi Data Akuisisi dan Fault",
+  "code_file": "Ilustrasi_Data_Akuisisi_dan_Fault.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

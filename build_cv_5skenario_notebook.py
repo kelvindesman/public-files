@@ -34,6 +34,7 @@ Tambahan atas permintaan pembimbing (24/07):
      kecil di multi-class dan hanya tinggi di S5 (§9b).
 """
 import json
+import notebook_fault_figures as nff
 
 REPO_RAW = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv"
 OUT = "/Users/kelvin/apps/public-files/07_Skema_Diagram_CV_5_Skenario_dan_Sensor.ipynb"
@@ -386,43 +387,79 @@ detection methodologies*, Artificial Intelligence Review 22(2), 2004.
 """))
 
 cells.append(code("""# === Laporan mutu data: sebelum vs sesudah preprocessing ===
-def flatline_max_run(s):
-    \"\"\"Panjang deret nilai identik berturut-turut terpanjang (gejala sensor macet).\"\"\"
+# Menjawab pertanyaan pembimbing: "data sebelum dibersihkan bisa dicek?"
+# Tiap baris dihitung dari tahap yang persis, jadi angkanya bisa dilacak.
+def flatline_runs(s, min_len=10):
+    \"\"\"(jumlah kejadian, panjang terpanjang) deret nilai identik berturut-turut.\"\"\"
     v = s.to_numpy()
     brk = np.flatnonzero(np.diff(v) != 0)
     if len(brk) == 0:
-        return len(v)
-    seg = np.diff(np.concatenate(([-1], brk, [len(v) - 1])))
-    return int(seg.max())
+        starts, ends = np.array([0]), np.array([len(v) - 1])
+    else:
+        starts = np.concatenate(([0], brk + 1))
+        ends = np.concatenate((brk, [len(v) - 1]))
+    lens = ends - starts + 1
+    return int((lens >= min_len).sum()), int(lens.max())
 
-qc_rows = []
-for c in cols:
-    a = df_pre[c]
+# Rekonstruksi tiap tahap; tidak ada yang dihitung dari variabel yang sudah ditimpa.
+qc_30s = df_pre.copy()
+qc_5m = qc_30s.resample(RESAMPLE_RULE).mean() if RESAMPLE_RULE else qc_30s.copy()
+qc_grid = qc_5m.reindex(pd.date_range(qc_5m.index[0], qc_5m.index[-1],
+                                     freq=f"{SAMPLING_SECONDS}s"))
+qc_interp = qc_grid.interpolate(method="time", limit_direction="both")
+qc_median = qc_interp.fillna(qc_interp.median(numeric_only=True))
+
+checks = [
+    "Jumlah rekaman awal (30 detik)",
+    "Stempel waktu ganda (%)",
+    "Nilai hilang setelah penyelarasan waktu (%)",
+    "Nilai di luar rentang 0-100 (%)",
+    "Pembacaan tetap >=10 pengamatan (kejadian)",
+    "Pembacaan tetap terpanjang (sampel)",
+    "Pencilan ekstrem |z|>6 (titik)",
+    "Nilai hilang setelah resampling 5 menit (%)",
+    "Nilai diisi dengan interpolasi waktu (titik)",
+    "Nilai diisi dengan median (titik)",
+    "Jumlah pengamatan akhir",
+]
+qc_cols = {}
+for c, sname in zip(cols, SENSORS):
+    a = qc_30s[c]
     z = (a - a.mean()) / (a.std(ddof=0) + 1e-12)
-    qc_rows.append({
-        "Kolom": c,
-        "n_baris_30s": len(a),
-        "NaN": int(a.isna().sum()),
-        "Min": round(float(a.min()), 2),
-        "Max": round(float(a.max()), 2),
-        "Di_luar_0_100": int(((a < 0) | (a > 100)).sum()),
-        "Macet_terpanjang": flatline_max_run(a.dropna()),
-        "Pencilan_z6": int((z.abs() > 6).sum()),
-        "n_baris_5menit": int(df_sync[c].notna().sum()),
-        "NaN_setelah_bersih": int(df_sync[c].isna().sum()),
-    })
-qc = pd.DataFrame(qc_rows)
-print("=== Laporan mutu data (validasi + pembersihan) ===")
-print(qc.to_string(index=False))
-export_df(qc, "07_mutu_data")
+    n_flat, run_max = flatline_runs(a.dropna())
+    qc_cols[sname] = [
+        int(len(a)),
+        round(100 * n_dup / len(a), 2),
+        round(100 * qc_grid[c].isna().sum() / len(qc_grid), 2),
+        int(((a < 0) | (a > 100)).sum()),
+        n_flat,
+        run_max,
+        int((z.abs() > 6).sum()),
+        round(100 * qc_5m[c].isna().sum() / len(qc_5m), 2),
+        int((qc_grid[c].isna() & qc_interp[c].notna()).sum()),
+        int((qc_interp[c].isna() & qc_median[c].notna()).sum()),
+        int(qc_median[c].notna().sum()),
+    ]
 
-print(f"\\nStempel waktu ganda dibuang : {n_dup}")
-print(f"Slot grid yang bolong lalu ditambal interpolasi waktu : {n_gap}")
-print(f"Baris: {len(df_raw)} (30 detik) -> {len(df_pre)} (setelah buang ganda) "
-      f"-> {len(df_sync)} (rata-rata 5 menit, grid seragam)")
-print("Tidak ada baris yang dibuang karena 'aneh' — pencilan & pembacaan macet "
-      "hanya DILAPORKAN, karena justru itu bahan penelitian fault.")
+qc = pd.DataFrame(qc_cols, index=pd.Index(checks, name="Pemeriksaan"))
+qc_print = qc.astype(object)
+baris_persen = {1, 2, 3, 7}   # indeks baris yang satuannya persen
+for i, nama in enumerate(checks):
+    fmt = (lambda v: f"{v:.2f}") if i in baris_persen else (lambda v: f"{int(v):,}")
+    qc_print.iloc[i] = [fmt(v) for v in qc.iloc[i]]
+print("=== Laporan mutu data: sebelum vs sesudah pembersihan ===")
+print(qc_print.to_string())
+export_df(qc.reset_index(), "07_mutu_data")
+
+print(f"\\nBaris: {len(df_raw)} (30 detik) -> {len(df_pre)} (setelah buang "
+      f"{n_dup} stempel ganda) -> {len(df_sync)} (rata-rata 5 menit, grid seragam)")
+print(f"Slot grid bolong yang ditambal interpolasi waktu: {n_gap}")
+print("Tidak ada baris yang dibuang karena nilainya 'aneh'. Pencilan dan "
+      "pembacaan tetap hanya DILAPORKAN, karena justru itu gejala fault yang "
+      "sedang diteliti; kalau dibuang, barang buktinya hilang sebelum pemodelan.")
 """))
+
+cells.append(md(nff.qc_steps_md("§3b-2", "4")))
 
 cells.append(md("""# §3c — Koefisien Variasi (CV) data sensor
 
@@ -544,6 +581,9 @@ SCENARIOS = {
 condition_names = ["normal"] + list(SCENARIOS.keys())
 print("Kondisi:", len(SCENARIOS), "fault + normal =", len(condition_names))
 """))
+
+cells.append(md(nff.figures_md("§4b", "5")))
+cells.append(code(nff.figures_code("07_", seed_base=1000)))
 
 cells.append(md("""# §5 — Time Series Segmentation and Labelling
 

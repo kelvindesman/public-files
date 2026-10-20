@@ -12,7 +12,7 @@ terdamping + rasio gain + Jacobian analitik + self-check, dari notebook 09).
 Bagian sensor-ID (§12) = satu `lm_fit` langsung pada target multi-hot
 4 sensor (ambang 0,5), dirantai end-to-end dari prediksi out-of-fold §10.
 
-File mentah: `hasil11/exports/` (37 file: CSV + PNG; tidak ikut commit karena
+File mentah: `hasil11/exports/` (40 file: 20 CSV + 19 PNG + 1 TXT; tidak ikut commit karena
 `exports/` di-gitignore — unduh ulang dari halaman Outputs kernel bila perlu).
 
 ## Bagian 1 — CV stabilitas fitur (4 metode × 3 window × skala)
