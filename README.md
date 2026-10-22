@@ -19,8 +19,8 @@ hal itu. Baca berurutan dari 01.
 | 07 | `07_Skema_Diagram_CV_5_Skenario_dan_Sensor.ipynb` | Skema flowchart pembimbing dijalankan utuh dengan **data terbaru** dan **cross-validation**: 5 skenario, berapa ongkos komputasinya, sensor mana yang rusak? | Satu notebook mengikuti flowchart kotak per kotak (broker → sinkronisasi → segmentasi → EDM-Fuzzy 4T fitur → ANN-LM grid search), plus **§3b laporan validasi & pembersihan data**, **§11 dua uji kontrol** (data bersih & fault satu sensor), dan **§13 tanya-jawab pembimbing**. Run v23: **JSD unggul 13/15 sel** (rata-rata ΔF1 +0,063); identifikasi sensor F1 0,790 vs 0,719, semua-4-benar 0,460 vs 0,357 |
 | 08 | `08_JSD_Fuzzy_vs_EDM_Fuzzy_Paper_Q3.ipynb` | Kalau JSD-Fuzzy diuji di dalam kerangka paper (5 skenario S1..S5, 4T fitur, grouped CV), apakah tetap menang dari EDM-Fuzzy? | **JSD-Fuzzy F1 rata-rata 0,505 vs EDM 0,453** (selisih +0,052), menang di 5/5 skenario; uji-t berpasangan **p = 0,035** (Wilcoxon p = 0,0625) — ditulis "unggul konsisten", signifikansi hanya menurut uji-t |
 | 09 | `09_ANN_LM_vs_Bayesian_vs_GA.ipynb` | Dari empat algoritma pelatihan ANN — **LM, Bayesian regularization, GA, Adam** — mana yang paling cocok untuk deteksi fault? | **BR dan LM setara, keduanya jauh di atas GA dan Adam.** F1 rata-rata 10 sel (5 skenario × 2 set fitur): BR 0,429 · LM 0,433 · GA 0,306 · Adam 0,268. Juara terbanyak: BR 5 sel, LM 4, Adam 1, GA 0. LM vs BR **tidak signifikan** (p = 0,81); LM/BR vs GA (p ≤ 0,002) dan vs Adam (p ≤ 0,025) **signifikan**. Jacobian analitik lolos self-check, jadi Jacobian numerik **tidak** dipakai. Run Kaggle v3, 0 Traceback |
-| 10 | `10_JSD_Fuzzy_vs_EDM_Fuzzy_ANN_LM_Asli.ipynb` | **Permintaan pembimbing**: ulangi perbandingan JSD vs EDM (notebook 08), tapi pembelajaran ANN-LM diganti **LM asli dari paper** (bukan `lbfgs`) | **JSD-Fuzzy unggul di 11 dari 15 sel** (5 skenario × 3 window, run v3): rata-rata selisih F1 N=200 +0,038 · N=700 +0,035 · N=1000 +0,020 · pooled +0,031. Uji berpasangan **per window tidak signifikan** (p = 0,12 / 0,42 / 0,28; n=5 power rendah); **pooled 15 pasang signifikan p = 0,048** (t maupun Wilcoxon; deskriptif — ketergantungan antar-window beda). Protokol v3: inner CV 2, search 6 iter, refit 40, grid 16 kombinasi. Jacobian analitik lolos self-check (~1e-9). **Akuntansi CPU penuh**: TOTAL 93.740 detik (~26,0 jam-CPU), wall 573 mnt, 0 Traceback, 0 SKIP — tabel `10_ongkos_per_bagian.csv` |
-| 11 | `11_LM_Asli_EDM_vs_JSD_Lengkap.ipynb` | Versi **lengkap** dari 10: EDM vs JSD dengan **semua** classifier LM asli, ditambah **identifikasi sensor** (RQ6) yang dirantai end-to-end dari prediksi out-of-fold | **JSD unggul di 12 dari 15 sel**, rata-rata +0,030; tapi **pooled p = 0,050** → statusnya tetap "belum signifikan". Sensor-ID: F1 **0,765 vs 0,721**, exact-match semua-4-benar **0,454 vs 0,363**. **Stabilitas fitur (CV): EDM lebih stabil** di 61–88% pasangan — dilaporkan apa adanya. Tidak ada `lbfgs`/`Adam`/`MLPClassifier`. Wall 588 mnt, **94.490 detik CPU (~26,2 jam-CPU)**, 0 Traceback, 0 SKIP |
+| 10 | `10_JSD_Fuzzy_vs_EDM_Fuzzy_ANN_LM_Asli.ipynb` | **Permintaan pembimbing**: ulangi perbandingan JSD vs EDM (notebook 08), tapi pembelajaran ANN-LM diganti **LM asli dari paper** (bukan `lbfgs`) | **JSD-Fuzzy unggul di 10 dari 15 sel** (run v4): rata-rata selisih F1 N=200 +0,007 · N=700 +0,056 · N=1000 +0,030 · pooled +0,031. Uji berpasangan: **N=700 signifikan p = 0,016**, N=200 p = 0,64, N=1000 p = 0,48; **pooled p = 0,052** (Wilcoxon 0,041) → ditulis deskriptif. Jacobian analitik lolos self-check. **Akuntansi CPU penuh**: TOTAL 85.784 detik (~23,8 jam-CPU), wall 525 mnt, 0 Traceback |
+| 11 | `11_LM_Asli_EDM_vs_JSD_Lengkap.ipynb` | Versi **lengkap** dari 10: EDM vs JSD dengan **semua** classifier LM asli, ditambah **identifikasi sensor** (RQ6) yang dirantai end-to-end dari prediksi out-of-fold | **JSD unggul di 10 dari 15 sel**, rata-rata +0,028; N=700 p = 0,027, tapi **pooled p = 0,076** (Wilcoxon 0,107) → belum signifikan secara gabungan. Sensor-ID: F1 **0,675 vs 0,634** (menang 9/15), semua-4-benar **0,307 vs 0,295**. **Stabilitas fitur (CV): EDM lebih stabil di 56/63 pasangan (89%)** — dilaporkan apa adanya. Tidak ada `lbfgs`/`Adam`/`MLPClassifier`. Wall 610 mnt, **99.162 detik CPU (~27,5 jam-CPU)**, 0 Traceback, 0 SKIP |
 | — | `Ilustrasi_Data_Akuisisi_dan_Fault.ipynb` | Penjelasan 10 langkah akuisisi (nasib missing value & nilai di luar 0–100 %) dan grafik sinyal asli vs setelah injeksi fault untuk semua kelas | **Tidak ada baris dibuang karena nilainya mencurigakan**: stempel ganda 0, NaN 0, luar range 0; pembacaan macet 556/654/659/657 kejadian dan pencilan \|z\|>6 13/0/0/0 hanya **dilaporkan**. Grafik: 5 panel + grid 16 kelas per sensor, NaN dibiarkan celah + versi tertambal. Kaggle `ilustrasi-data-akuisisi-dan-fault` v2 COMPLETE |
 
 ## Koreksi simulator drift (2026-10-22)
@@ -38,8 +38,8 @@ versi lama 300–19.000× terlalu cepat. Versi sekarang:
 Konsekuensinya jujur: kelas drift menjadi jauh lebih sulit dideteksi pada window
 pendek, sehingga F1 kelas drift turun dibanding angka versi lama. Notebook yang
 sudah dijalankan ulang dengan simulator ini: **07 (v23)**, **08 (v17)**,
-**09 (v3)**, dan **Ilustrasi (v3)**; **10** dan **11 (v3)** sedang berjalan.
-Notebook 01–06 masih menampilkan angka sebelum koreksi.
+**09 (v3)**, **10 (v4)**, **11 (v3)**, dan **Ilustrasi (v3)**. Notebook 01–06
+masih menampilkan angka sebelum koreksi.
 
 ## Alur pemikirannya
 
@@ -53,12 +53,13 @@ Notebook 01–06 masih menampilkan angka sebelum koreksi.
 07  skema flowchart + cross-validation -> performa + biaya komputasi + sensor mana
 08  JSD vs EDM di dalam kerangka paper -> dua set fitur pada pipeline yang sama
 09  algoritma pelatihan mana yang menang -> BR & LM setara, di atas GA & Adam
-10  ulangi 08 dengan LM asli paper      -> JSD unggul 11/15 sel, pooled p = 0,048
-11  10 + identifikasi sensor (RQ6)      -> JSD unggul, tapi pooled p = 0,050
+10  ulangi 08 dengan LM asli paper      -> JSD unggul 10/15 sel, pooled p = 0,052
+11  10 + identifikasi sensor (RQ6)      -> JSD unggul 10/15, pooled p = 0,076
 ```
 
 Catatan: `10` dan `11` menjalankan pipeline yang sama tetapi hasil pooled-nya
-berbeda tipis (p = 0,048 vs 0,050). Keduanya harus ditulis apa adanya — batas
+berbeda (p = 0,052 vs 0,076) karena `11` memakai protokol CV dan anggaran
+komputasi yang lebih besar. Keduanya harus ditulis apa adanya — batas
 signifikansi 0,05 tidak dilampaui dengan aman, jadi klaim tetap deskriptif.
 
 Notebook 04 dan 05 menjawab pertanyaan pembimbing secara berurutan: 04 menjawab
