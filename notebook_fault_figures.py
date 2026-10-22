@@ -62,14 +62,15 @@ Garis **abu-abu** = sinyal asli (setelah pembersihan, sebelum injeksi).
 Garis **merah** = setelah injeksi; pada *hardware malfunction* NaN dibiarkan
 sebagai **celah**. Garis **oranye putus-putus** = setelah NaN ditambal
 `ffill/bfill` + median, yaitu yang benar-benar dilihat model. Potongan yang
-diplot 300 sampel = 1,04 hari pada laju 5 menit; seed tetap supaya gambar
+diplot 864 sampel = 3 hari, yaitu tepat satu episode drift; seed tetap supaya gambar
 reproducible. Nilai yang diplot juga diekspor ke CSV.
 
-**Catatan skala.** Drift menambah 0,2 %% per sampel (≈ +60 %% dalam 300 sampel),
-jadi paling kasatmata. Sebaliknya spike hanya ±0,08 × simpangan baku dan bias
-hanya +0,08 %%, lebih kecil daripada ayunan alami sinyal; karena itu panel
-spike/bias diberi kotak **selisih vs asli** (gangguan − asli) supaya besar
-gangguan tetap terbaca. *Hardware malfunction* memakai 8 %% sampel macet dan
+**Catatan skala.** Drift sekarang **1 poin/hari** dalam episode 3 hari
+(total +3 poin per episode 3 hari), sengaja disetarakan dengan drift sensor nyata
+(0,003–0,17 poin/hari), bukan rampa 57,6 poin/hari seperti versi awal. Karena
+itu panel drift memakai kotak **selisih vs asli** agar kemiringannya tetap
+terbaca. Spike hanya ±0,08 × simpangan baku dan bias hanya +0,08 %%, juga lebih
+kecil daripada ayunan alami sinyal; panelnya memakai kotak selisih yang sama. *Hardware malfunction* memakai 8 %% sampel macet dan
 5 %% sampel hilang (NaN); rentang NaN diberi bayangan oranye.
 
 Grafik ini hanya ilustrasi; ia tidak mengubah data yang dipakai §%s.
@@ -78,8 +79,8 @@ Grafik ini hanya ilustrasi; ia tidak mengubah data yang dipakai §%s.
 
 def figures_code(prefix, seed_base=0):
     return r'''# === Grafik: sinyal asli vs setelah injeksi fault (contoh untuk laporan) ===
-FIG_START = 2000          # potongan 300 sampel = 1,04 hari pada laju 5 menit
-FIG_LEN = 300
+FIG_START = int(0.10 * len(df_sync))   # awal episode drift pertama (10% seri)
+FIG_LEN = 864                          # 3 hari = satu episode drift penuh
 CASES_5 = [
     ("Spike", "spike"),
     ("Drift", "drift"),
@@ -147,14 +148,17 @@ def _catat(rows, sensor, kasus, x, asli, inj, isi):
 x_plot = np.arange(FIG_LEN)
 plot_rows = []
 for si, (c, sname) in enumerate(zip(cols, SENSORS)):
-    seg = df_sync[c].iloc[FIG_START:FIG_START + FIG_LEN].to_numpy(dtype=float)
+    full = df_sync[c].to_numpy(dtype=float)
+    seg = full[FIG_START:FIG_START + FIG_LEN]
     if len(seg) < FIG_LEN:
-        raise ValueError("Potongan data untuk gambar kurang dari 300 sampel.")
+        raise ValueError("Potongan data untuk gambar kurang dari FIG_LEN sampel.")
 
     # --- (1) lima panel vertikal, gaya contoh pembimbing ---
     fig, axes = plt.subplots(5, 1, figsize=(7.2, 12.0), sharex=True)
     for ci, (ax, (judul, key)) in enumerate(zip(axes, CASES_5)):
-        y_inj, y_isi = _inject_plot(seg, key, seed=__SEED__ + si * 100 + ci)
+        y_inj_f, y_isi_f = _inject_plot(full, key, seed=__SEED__ + si * 100 + ci)
+        sl = slice(FIG_START, FIG_START + FIG_LEN)
+        y_inj, y_isi = y_inj_f[sl], y_isi_f[sl]
         _panel(ax, x_plot, seg, y_inj, y_isi, judul, inset=True)
         ax.set_ylabel("Kelembaban (%)", fontsize=8)
         _catat(plot_rows, sname, key, x_plot, seg, y_inj, y_isi)
@@ -177,7 +181,9 @@ for si, (c, sname) in enumerate(zip(cols, SENSORS)):
     # --- (2) grid 16 panel: normal + 15 kombinasi ---
     fig, axes = plt.subplots(4, 4, figsize=(14, 11), sharex=True)
     for ci, (ax, (judul, key)) in enumerate(zip(axes.ravel(), CASES_GRID)):
-        y_inj, y_isi = _inject_plot(seg, key, seed=__SEED__ + 5000 + si * 100 + ci)
+        y_inj_f, y_isi_f = _inject_plot(full, key, seed=__SEED__ + 5000 + si * 100 + ci)
+        sl = slice(FIG_START, FIG_START + FIG_LEN)
+        y_inj, y_isi = y_inj_f[sl], y_isi_f[sl]
         _panel(ax, x_plot, seg, y_inj, y_isi, judul)
         ax.tick_params(labelsize=7)
         _catat(plot_rows, sname, key or "normal", x_plot, seg, y_inj, y_isi)

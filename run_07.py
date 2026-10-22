@@ -51,9 +51,16 @@ WINDOW_LENGTHS = [int(v) for v in os.environ.get("WINDOW_LENGTHS", _DEFAULT_WIN)
 T_SCALES = int(os.environ.get("T_SCALES", 10))       # tau = 1..T -> fitur EDM = 4T
 MAX_PER_CLASS = int(os.environ.get("MAX_PER_CLASS", 100))
 
-# Drift bertambah per sampel, jadi intensitasnya harus ikut laju sampling supaya
-# kemiringan drift per satuan WAKTU sama dengan versi 30 detik (0,02 per 30 detik).
-DRIFT_PER_SAMPLE = 0.02 * (SAMPLING_SECONDS / 30)
+# Drift = 1 poin/hari dalam episode 3 hari (lihat blok konstanta di bawah).
+# Drift = laju per WAKTU, bukan per sampel. 1 poin/hari adalah batas atas
+# drift parah (drift sensor nyata 0,003-0,17 poin/hari). Diterapkan sebagai
+# episode 3 hari lalu di-reset (kalibrasi ulang), jadi total <= 3 poin dan
+# nilai tetap di dalam 0-100 %.
+DRIFT_POINTS_PER_DAY = 1.0
+DRIFT_EPISODE_DAYS = 3.0
+DRIFT_N_EPISODES = 3
+DRIFT_SAMPLE_SECONDS = SAMPLING_SECONDS
+DRIFT_PER_SAMPLE = DRIFT_POINTS_PER_DAY * (DRIFT_SAMPLE_SECONDS / 86400.0)
 
 m = 2; r_ratio = 0.2; n_ref = 128; jsd_bins = 40
 SENSORS = ["S1", "S2", "S3", "S4"]
@@ -238,9 +245,20 @@ ax.set_ylabel("kelembaban"); ax.legend(ncol=4, fontsize=9)
 plt.tight_layout(); plt.savefig("exports/07_broker_tersinkron.png", dpi=120); plt.show()
 
 
-def simulate_drift_fault(x, intensity=DRIFT_PER_SAMPLE, seed=None):
-    drift = np.arange(len(x)) * intensity
-    return x + drift, np.abs(drift) > 1e-6
+def simulate_drift_fault(x, intensity=DRIFT_PER_SAMPLE, episode_days=DRIFT_EPISODE_DAYS,
+                         n_episodes=DRIFT_N_EPISODES, seed=None):
+    # Drift bertahap pada beberapa episode, lalu di-reset (kalibrasi ulang).
+    # intensity = poin per sampel (default 1 poin/hari), bukan 0,2 poin/sampel.
+    # Total kenaikan satu episode = intensity * panjang episode (~3 poin), jadi
+    # nilainya tetap di dalam 0-100 % dan tidak ada rampa global 57,6 poin/hari.
+    n = len(x)
+    drift = np.zeros(n, dtype=float)
+    ep_len = max(1, int(round(episode_days * 86400.0 / DRIFT_SAMPLE_SECONDS)))
+    ep_len = min(ep_len, n)
+    for s in (np.linspace(0.10, 0.70, n_episodes) * n).astype(int):
+        e = min(n, s + ep_len)
+        drift[s:e] = intensity * np.arange(1, e - s + 1)
+    return x + drift, drift > 1e-12
 
 def simulate_spike_fault(x, intensity=0.08, p=0.015, seed=None):
     tau = max(1, int(1.0 / p)) if p > 0 else len(x)
@@ -261,12 +279,14 @@ def simulate_multiple_faults(x, faults, seed=None):
     y = x.copy(); m_ = np.zeros(len(x), bool)
     for f, kw in faults:
         y, mi = f(y, **kw, seed=seed); m_ |= mi
-    return y, m_
+    # Jaga domain fisik: injeksi tidak boleh keluar 0-100 %.
+    return np.clip(y, 0.0, 100.0), m_
 
 def simulate_choose_one(x, options, seed=None):
     rng = np.random.default_rng(seed)
     f, kw = options[rng.integers(len(options))]
-    return f(x, **kw, seed=seed)
+    y, m = f(x, **kw, seed=seed)
+    return np.clip(y, 0.0, 100.0), m
 
 SCENARIOS = {
     "faulty": [(simulate_choose_one, {"options": [

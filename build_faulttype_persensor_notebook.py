@@ -184,9 +184,30 @@ Ground truth jadi matriks `(window, 4 sensor, 4 jenis fault)` → 16 label biner
 """))
 
 cells.append(code("""# --- Fault simulators (identik notebook paper) ---
-def simulate_drift_fault(x, intensity=0.02, seed=None):
-    drift = np.arange(len(x)) * intensity
-    return x + drift, np.abs(drift) > 1e-6
+# Drift = laju per WAKTU, bukan per sampel. 1 poin/hari adalah batas atas
+# drift parah (drift sensor nyata 0,003-0,17 poin/hari). Diterapkan sebagai
+# episode 3 hari lalu di-reset (kalibrasi ulang), jadi total <= 3 poin dan
+# nilai tetap di dalam 0-100 %.
+DRIFT_POINTS_PER_DAY = 1.0
+DRIFT_EPISODE_DAYS = 3.0
+DRIFT_N_EPISODES = 3
+DRIFT_SAMPLE_SECONDS = 30
+DRIFT_PER_SAMPLE = DRIFT_POINTS_PER_DAY * (DRIFT_SAMPLE_SECONDS / 86400.0)
+
+def simulate_drift_fault(x, intensity=DRIFT_PER_SAMPLE, episode_days=DRIFT_EPISODE_DAYS,
+                         n_episodes=DRIFT_N_EPISODES, seed=None):
+    # Drift bertahap pada beberapa episode, lalu di-reset (kalibrasi ulang).
+    # intensity = poin per sampel (default 1 poin/hari), bukan 0,2 poin/sampel.
+    # Total kenaikan satu episode = intensity * panjang episode (~3 poin), jadi
+    # nilainya tetap di dalam 0-100 % dan tidak ada rampa global 57,6 poin/hari.
+    n = len(x)
+    drift = np.zeros(n, dtype=float)
+    ep_len = max(1, int(round(episode_days * 86400.0 / DRIFT_SAMPLE_SECONDS)))
+    ep_len = min(ep_len, n)
+    for s in (np.linspace(0.10, 0.70, n_episodes) * n).astype(int):
+        e = min(n, s + ep_len)
+        drift[s:e] = intensity * np.arange(1, e - s + 1)
+    return x + drift, drift > 1e-12
 
 def simulate_spike_fault(x, intensity=0.08, p=0.015, seed=None):
     tau = max(1, int(1.0 / p)) if p > 0 else len(x)
@@ -205,7 +226,7 @@ def simulate_hardware_fault(x, stuck_prob=0.08, loss_prob=0.05, seed=None):
 
 # satu simulator per JENIS fault -> dipakai untuk menempatkan fault per sensor
 SIMULATOR = {
-    "drift":    (simulate_drift_fault,    {"intensity": 0.02}),
+    "drift":    (simulate_drift_fault,    {"intensity": DRIFT_PER_SAMPLE}),
     "spike":    (simulate_spike_fault,    {"intensity": 0.08, "p": 0.015}),
     "bias":     (simulate_bias_fault,     {"bias": 0.08}),
     "hardware": (simulate_hardware_fault, {"stuck_prob": 0.08, "loss_prob": 0.05}),

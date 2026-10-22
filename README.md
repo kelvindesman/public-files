@@ -23,6 +23,24 @@ hal itu. Baca berurutan dari 01.
 | 11 | `11_LM_Asli_EDM_vs_JSD_Lengkap.ipynb` | Versi **lengkap** dari 10: EDM vs JSD dengan **semua** classifier LM asli, ditambah **identifikasi sensor** (RQ6) yang dirantai end-to-end dari prediksi out-of-fold | **JSD unggul di 12 dari 15 sel**, rata-rata +0,030; tapi **pooled p = 0,050** → statusnya tetap "belum signifikan". Sensor-ID: F1 **0,765 vs 0,721**, exact-match semua-4-benar **0,454 vs 0,363**. **Stabilitas fitur (CV): EDM lebih stabil** di 61–88% pasangan — dilaporkan apa adanya. Tidak ada `lbfgs`/`Adam`/`MLPClassifier`. Wall 588 mnt, **94.490 detik CPU (~26,2 jam-CPU)**, 0 Traceback, 0 SKIP |
 | — | `Ilustrasi_Data_Akuisisi_dan_Fault.ipynb` | Penjelasan 10 langkah akuisisi (nasib missing value & nilai di luar 0–100 %) dan grafik sinyal asli vs setelah injeksi fault untuk semua kelas | **Tidak ada baris dibuang karena nilainya mencurigakan**: stempel ganda 0, NaN 0, luar range 0; pembacaan macet 556/654/659/657 kejadian dan pencilan \|z\|>6 13/0/0/0 hanya **dilaporkan**. Grafik: 5 panel + grid 16 kelas per sensor, NaN dibiarkan celah + versi tertambal. Kaggle `ilustrasi-data-akuisisi-dan-fault` v2 COMPLETE |
 
+## Koreksi simulator drift (2026-10-22)
+
+Simulator drift versi awal menambahkan 0,2 poin **per sampel** ke seluruh seri
+(57,6 poin/hari, +5.635 poin total), sehingga nilai menembus 100 % setelah ±22
+jam. Itu tidak fisis: drift sensor kelembaban nyata 0,003–0,17 poin/hari, jadi
+versi lama 300–19.000× terlalu cepat. Versi sekarang:
+
+- `DRIFT_POINTS_PER_DAY = 1,0` — laju per **waktu**, bukan per sampel;
+- tiga episode 3 hari di 10 %, 40 %, 70 % panjang seri, lalu di-reset
+  (kalibrasi ulang) → maksimum +3 poin per episode, bukan rampa global;
+- semua injeksi di-`clip` ke 0–100 %.
+
+Konsekuensinya jujur: kelas drift menjadi jauh lebih sulit dideteksi pada window
+pendek, sehingga F1 kelas drift turun dibanding angka versi lama. Notebook yang
+sudah dijalankan ulang dengan simulator ini: **07 (v23)** dan **Ilustrasi (v3)**;
+**11 (v3)** sedang berjalan. Notebook 01–06, 08–10 masih menampilkan angka
+sebelum koreksi.
+
 ## Alur pemikirannya
 
 ```

@@ -250,7 +250,15 @@ WIN_MAIN = WINDOW_LENGTHS[0]
 T_SCALES = int(os.environ.get("T_SCALES", 15))       # tau = 1..T -> 15 fitur per sensor per metode
 MAX_PER_CLASS = int(os.environ.get("MAX_PER_CLASS", 100))
 
-DRIFT_PER_SAMPLE = 0.02 * (SAMPLING_SECONDS / 30)
+# Drift = laju per WAKTU, bukan per sampel. 1 poin/hari adalah batas atas
+# drift parah (drift sensor nyata 0,003-0,17 poin/hari). Diterapkan sebagai
+# episode 3 hari lalu di-reset (kalibrasi ulang), jadi total <= 3 poin dan
+# nilai tetap di dalam 0-100 %.
+DRIFT_POINTS_PER_DAY = 1.0
+DRIFT_EPISODE_DAYS = 3.0
+DRIFT_N_EPISODES = 3
+DRIFT_SAMPLE_SECONDS = SAMPLING_SECONDS
+DRIFT_PER_SAMPLE = DRIFT_POINTS_PER_DAY * (DRIFT_SAMPLE_SECONDS / 86400.0)
 
 # --- Parameter entropi, DIPAKAI SAMA oleh kedua metode ---
 m = 2                 # embedding dimension
@@ -350,8 +358,8 @@ $$S_1 = S_1(t_1), \dots, S_1(t_N) \qquad \dots \qquad S_4 = S_4(t_1), \dots, S_4
 
 **Preprocessing.** Akuisisi 30 detik dirata-ratakan jadi satu sampel per 5 menit
 (bukan mengambil tiap ke-10, supaya derau ikut teredam). Stempel waktu ganda
-dibuang, bolong ditambal interpolasi waktu. Kemiringan drift dikalikan 10
-(`DRIFT_PER_SAMPLE`) supaya drift per satuan **waktu** sama seperti versi 30 detik.
+dibuang, bolong ditambal interpolasi waktu. Kemiringan drift sekarang **1 poin/hari** (episode 3 hari lalu di-reset),
+sama untuk semua laju sampling, sehingga nilai injeksi tetap di dalam 0–100 %.
 
 Pencilan dan pembacaan macet **dilaporkan, tidak dibuang** — yang diteliti justru
 fault; membuang pembacaan aneh sebelum pemodelan sama saja menghapus barang
@@ -424,9 +432,20 @@ Injeksi bersifat **sensor-selective**: fault hanya masuk ke subset sensor acak
 """))
 
 cells.append(code(r"""_phase("§3 injeksi fault")
-def simulate_drift_fault(x, intensity=DRIFT_PER_SAMPLE, seed=None):
-    drift = np.arange(len(x)) * intensity
-    return x + drift, np.abs(drift) > 1e-6
+def simulate_drift_fault(x, intensity=DRIFT_PER_SAMPLE, episode_days=DRIFT_EPISODE_DAYS,
+                         n_episodes=DRIFT_N_EPISODES, seed=None):
+    # Drift bertahap pada beberapa episode, lalu di-reset (kalibrasi ulang).
+    # intensity = poin per sampel (default 1 poin/hari), bukan 0,2 poin/sampel.
+    # Total kenaikan satu episode = intensity * panjang episode (~3 poin), jadi
+    # nilainya tetap di dalam 0-100 % dan tidak ada rampa global 57,6 poin/hari.
+    n = len(x)
+    drift = np.zeros(n, dtype=float)
+    ep_len = max(1, int(round(episode_days * 86400.0 / DRIFT_SAMPLE_SECONDS)))
+    ep_len = min(ep_len, n)
+    for s in (np.linspace(0.10, 0.70, n_episodes) * n).astype(int):
+        e = min(n, s + ep_len)
+        drift[s:e] = intensity * np.arange(1, e - s + 1)
+    return x + drift, drift > 1e-12
 
 def simulate_spike_fault(x, intensity=0.08, p=0.015, seed=None):
     tau = max(1, int(1.0 / p)) if p > 0 else len(x)
@@ -447,12 +466,14 @@ def simulate_multiple_faults(x, faults, seed=None):
     y = x.copy(); m_ = np.zeros(len(x), bool)
     for f, kw in faults:
         y, mi = f(y, **kw, seed=seed); m_ |= mi
-    return y, m_
+    # Jaga domain fisik: injeksi tidak boleh keluar 0-100 %.
+    return np.clip(y, 0.0, 100.0), m_
 
 def simulate_choose_one(x, options, seed=None):
     rng = np.random.default_rng(seed)
     f, kw = options[rng.integers(len(options))]
-    return f(x, **kw, seed=seed)
+    y, m = f(x, **kw, seed=seed)
+    return np.clip(y, 0.0, 100.0), m
 
 _D = {"intensity": DRIFT_PER_SAMPLE}
 _S = {"intensity": 0.08, "p": 0.015}
@@ -2247,7 +2268,7 @@ cells.append(md(r"""## Yang boleh dan tidak boleh diklaim dari notebook ini
 
 ## Batasan yang sebaiknya masuk bagian *Limitations*
 
-* Fault disuntikkan secara sintetis dengan intensitas tetap (drift 0,2/sampel,
+* Fault disuntikkan secara sintetis dengan intensitas tetap (drift 1 poin/hari (episode 3 hari),
   spike & bias 0,08, hardware stuck 8% / loss 5%). Sensitivitas terhadap
   intensitas fault belum diuji.
 * Entropi bersifat **buta terhadap offset**: bias murni menggeser level tanpa

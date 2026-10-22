@@ -165,11 +165,30 @@ print("Simpan: exports/ILU_empat_kanal_bersih.png")
 """))
 
 cells.append(code("""# === Simulator fault — parameter dan perilaku identik dengan notebook penelitian ===
-DRIFT_PER_SAMPLE = 0.02 * (SAMPLING_SECONDS / 30)
+# Drift = laju per WAKTU, bukan per sampel. 1 poin/hari adalah batas atas
+# drift parah (drift sensor nyata 0,003-0,17 poin/hari). Diterapkan sebagai
+# episode 3 hari lalu di-reset (kalibrasi ulang), jadi total <= 3 poin dan
+# nilai tetap di dalam 0-100 %.
+DRIFT_POINTS_PER_DAY = 1.0
+DRIFT_EPISODE_DAYS = 3.0
+DRIFT_N_EPISODES = 3
+DRIFT_SAMPLE_SECONDS = SAMPLING_SECONDS
+DRIFT_PER_SAMPLE = DRIFT_POINTS_PER_DAY * (DRIFT_SAMPLE_SECONDS / 86400.0)
 
-def simulate_drift_fault(x, intensity=DRIFT_PER_SAMPLE, seed=None):
-    drift = np.arange(len(x)) * intensity
-    return x + drift, np.abs(drift) > 1e-6
+def simulate_drift_fault(x, intensity=DRIFT_PER_SAMPLE, episode_days=DRIFT_EPISODE_DAYS,
+                         n_episodes=DRIFT_N_EPISODES, seed=None):
+    # Drift bertahap pada beberapa episode, lalu di-reset (kalibrasi ulang).
+    # intensity = poin per sampel (default 1 poin/hari), bukan 0,2 poin/sampel.
+    # Total kenaikan satu episode = intensity * panjang episode (~3 poin), jadi
+    # nilainya tetap di dalam 0-100 % dan tidak ada rampa global 57,6 poin/hari.
+    n = len(x)
+    drift = np.zeros(n, dtype=float)
+    ep_len = max(1, int(round(episode_days * 86400.0 / DRIFT_SAMPLE_SECONDS)))
+    ep_len = min(ep_len, n)
+    for s in (np.linspace(0.10, 0.70, n_episodes) * n).astype(int):
+        e = min(n, s + ep_len)
+        drift[s:e] = intensity * np.arange(1, e - s + 1)
+    return x + drift, drift > 1e-12
 
 def simulate_spike_fault(x, intensity=0.08, p=0.015, seed=None):
     tau = max(1, int(1.0 / p)) if p > 0 else len(x)
@@ -190,7 +209,8 @@ def simulate_multiple_faults(x, faults, seed=None):
     y = x.copy(); m_ = np.zeros(len(x), bool)
     for f, kw in faults:
         y, mi = f(y, **kw, seed=seed); m_ |= mi
-    return y, m_
+    # Jaga domain fisik: injeksi tidak boleh keluar 0-100 %.
+    return np.clip(y, 0.0, 100.0), m_
 
 _D = {"intensity": DRIFT_PER_SAMPLE}
 _S = {"intensity": 0.08, "p": 0.015}
@@ -217,7 +237,7 @@ SCENARIOS = {
                                   (simulate_hardware_fault, _H), (simulate_drift_fault, _D)],
 }
 
-print("Kondisi:", len(SCENARIOS), "| drift per sampel:", round(DRIFT_PER_SAMPLE, 4), "%")
+print("Kondisi:", len(SCENARIOS), "| drift:", DRIFT_POINTS_PER_DAY, "poin/hari (episode", DRIFT_EPISODE_DAYS, "hari)")
 """))
 
 cells.append(md(nff.figures_md("3", "4")))
