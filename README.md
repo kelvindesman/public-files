@@ -10,12 +10,12 @@ hal itu. Baca berurutan dari 01.
 
 | # | Notebook | Pertanyaan yang dijawab | Jawabannya |
 |---|---|---|---|
-| 01 | `01_Metode_Mana_Paling_Akurat_EDM_vs_JSD.ipynb` | Metode entropy mana yang paling bagus jadi fitur? | **JSD-Fuzzy *rich*** — akurasi 17 kelas naik 0,34 → 0,42 dibanding JSD versi lama; unggul di keempat jenis fault |
-| 02 | `02_Sensor_Digabung_Broker_Jangan_Dirata_rata.ipynb` | Setelah dikumpulkan broker, 4 sensor boleh dirata-rata jadi 1? | **Tidak.** 4 jalur F1 0,845 vs dirata-rata 0,797. Spike & hardware paling dirugikan karena waktunya beda per sensor |
-| 03 | `03_Akurasi_per_Tingkat_Kombinasi_Fault.ipynb` | Kalau dipecah menurut banyaknya fault yang bercampur, seberapa akurat? | **JSD-Fuzzy menang di 4 dari 5 tingkat** (S1 0,80 · S2 0,68 · S3 0,79 · S4 0,78 · S5 0,97) |
-| 04 | `04_Klasifikasi_Dulu_Baru_Sensor_Mana.ipynb` | Setelah tahu ada fault, sensor **mana** yang rusak? | **Bisa, dan dirantai dari hasil klasifikasi.** Dijalankan untuk 3 bentuk: biner, 5 kelas, dan 17 kelas |
-| 05 | `05_Fault_Jenis_Apa_di_Sensor_Mana.ipynb` | Bias-nya di sensor mana, drift-nya di sensor mana? | **Bisa** — 16 label (4 sensor × 4 jenis fault), hasilnya berupa peta sensor × jenis fault |
-| 06 | `06_ANN_vs_XGBoost.ipynb` | Batasnya di classifier atau di fiturnya? | Pembanding XGBoost untuk menguji apakah ANN yang jadi penghambat |
+| 01 | `01_Metode_Mana_Paling_Akurat_EDM_vs_JSD.ipynb` | Metode entropy mana yang paling bagus jadi fitur? | **JSD-Fuzzy *rich*** — akurasi 17 kelas **0,406 vs EDM 0,230** (macro-F1 0,394 vs 0,217); menang di S2–S5, sedangkan S1 praktis seri (F1 0,484 vs 0,484) |
+| 02 | `02_Sensor_Digabung_Broker_Jangan_Dirata_rata.ipynb` | Setelah dikumpulkan broker, 4 sensor boleh dirata-rata jadi 1? | **Tidak.** 4 jalur F1 **0,821 vs dirata-rata 0,748** (akurasi 0,829 vs 0,726). Spike & hardware paling dirugikan karena waktunya beda per sensor |
+| 03 | `03_Akurasi_per_Tingkat_Kombinasi_Fault.ipynb` | Kalau dipecah menurut banyaknya fault yang bercampur, seberapa akurat? | **JSD-Fuzzy menang di 5 dari 5 tingkat** (F1 0,819 · 0,668 · 0,805 · 0,814 · 1,000 vs EDM 0,766 · 0,492 · 0,494 · 0,644 · 0,990) |
+| 04 | `04_Klasifikasi_Dulu_Baru_Sensor_Mana.ipynb` | Setelah tahu ada fault, sensor **mana** yang rusak? | **Bisa, dan dirantai dari hasil klasifikasi.** Tahap-2 F1 sensor: JSD **0,902** vs EDM 0,846 (dari 17 kelas); semua-4-benar 0,920 vs 0,800 bila 4 fault |
+| 05 | `05_Fault_Jenis_Apa_di_Sensor_Mana.ipynb` | Bias-nya di sensor mana, drift-nya di sensor mana? | **Bisa** — 16 label (4 sensor × 4 jenis fault). F1 per jenis: bias 0,448 vs 0,142 · drift 0,868 vs 0,696 · spike 0,601 vs 0,191 · hardware 0,917 vs 0,924 |
+| 06 | `06_ANN_vs_XGBoost.ipynb` | Batasnya di classifier atau di fiturnya? | **Di keduanya.** XGBoost + fitur JSD F1 0,443 (ANN-LM 0,394); tambah fitur waktu → **0,608**, terbaik di 5 skenario. Fitur EDM saja 0,254 |
 | 07 | `07_Skema_Diagram_CV_5_Skenario_dan_Sensor.ipynb` | Skema flowchart pembimbing dijalankan utuh dengan **data terbaru** dan **cross-validation**: 5 skenario, berapa ongkos komputasinya, sensor mana yang rusak? | Satu notebook mengikuti flowchart kotak per kotak (broker → sinkronisasi → segmentasi → EDM-Fuzzy 4T fitur → ANN-LM grid search), plus **§3b laporan validasi & pembersihan data**, **§11 dua uji kontrol** (data bersih & fault satu sensor), dan **§13 tanya-jawab pembimbing**. Run v23: **JSD unggul 13/15 sel** (rata-rata ΔF1 +0,063); identifikasi sensor F1 0,790 vs 0,719, semua-4-benar 0,460 vs 0,357 |
 | 08 | `08_JSD_Fuzzy_vs_EDM_Fuzzy_Paper_Q3.ipynb` | Kalau JSD-Fuzzy diuji di dalam kerangka paper (5 skenario S1..S5, 4T fitur, grouped CV), apakah tetap menang dari EDM-Fuzzy? | **JSD-Fuzzy F1 rata-rata 0,505 vs EDM 0,453** (selisih +0,052), menang di 5/5 skenario; uji-t berpasangan **p = 0,035** (Wilcoxon p = 0,0625) — ditulis "unggul konsisten", signifikansi hanya menurut uji-t |
 | 09 | `09_ANN_LM_vs_Bayesian_vs_GA.ipynb` | Dari empat algoritma pelatihan ANN — **LM, Bayesian regularization, GA, Adam** — mana yang paling cocok untuk deteksi fault? | **BR dan LM setara, keduanya jauh di atas GA dan Adam.** F1 rata-rata 10 sel (5 skenario × 2 set fitur): BR 0,429 · LM 0,433 · GA 0,306 · Adam 0,268. Juara terbanyak: BR 5 sel, LM 4, Adam 1, GA 0. LM vs BR **tidak signifikan** (p = 0,81); LM/BR vs GA (p ≤ 0,002) dan vs Adam (p ≤ 0,025) **signifikan**. Jacobian analitik lolos self-check, jadi Jacobian numerik **tidak** dipakai. Run Kaggle v3, 0 Traceback |
@@ -39,7 +39,8 @@ Konsekuensinya jujur: kelas drift menjadi jauh lebih sulit dideteksi pada window
 pendek, sehingga F1 kelas drift turun dibanding angka versi lama. Notebook yang
 sudah dijalankan ulang dengan simulator ini: **07 (v23)**, **08 (v17)**,
 **09 (v3)**, **10 (v4)**, **11 (v3)**, dan **Ilustrasi (v3)**. Notebook 01–06
-masih menampilkan angka sebelum koreksi.
+juga sudah dijalankan ulang (01 v6 · 02 v3 · 03 v3 · 04 v6 · 05 v2 · 06 v4),
+jadi seluruh angka di tabel ini memakai simulator drift yang sama.
 
 ## Alur pemikirannya
 
