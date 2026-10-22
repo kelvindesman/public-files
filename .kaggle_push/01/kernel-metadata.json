@@ -1,0 +1,14 @@
+{
+  "id": "kelvindsmn/jsd-fuzzy-ann-paper",
+  "title": "JSD_Fuzzy_ANN_Paper",
+  "code_file": "01_Metode_Mana_Paling_Akurat_EDM_vs_JSD.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

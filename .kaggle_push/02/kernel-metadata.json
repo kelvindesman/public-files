@@ -1,0 +1,14 @@
+{
+  "id": "kelvindsmn/jsd-fuzzy-broker-architecture-v2",
+  "title": "JSD_Fuzzy_Broker_Architecture_v2",
+  "code_file": "02_Sensor_Digabung_Broker_Jangan_Dirata_rata.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

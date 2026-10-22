@@ -1,0 +1,14 @@
+{
+  "id": "kelvindsmn/jsd-fuzzy-faulttype-per-sensor",
+  "title": "JSD_Fuzzy_FaultType_per_Sensor",
+  "code_file": "05_Fault_Jenis_Apa_di_Sensor_Mana.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

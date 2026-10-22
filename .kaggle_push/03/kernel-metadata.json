@@ -1,0 +1,14 @@
+{
+  "id": "kelvindsmn/jsd-fuzzy-scenario-ladder",
+  "title": "JSD_Fuzzy_Scenario_Ladder",
+  "code_file": "03_Akurasi_per_Tingkat_Kombinasi_Fault.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}
