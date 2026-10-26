@@ -1,13 +1,17 @@
 # MAPPING — notebook sidang → notebook penelitian
 
 Dokumen ini satu-satunya acuan kalau ada pertanyaan "angka ini dari mana?".
-Tiga notebook sidang **tidak menghitung ulang** model; mereka membaca hasil yang
-sudah diekspor notebook penelitian, lalu menampilkannya dengan bahasa sederhana.
+Notebook sidang **tidak menghitung ulang** model; ia membaca hasil yang sudah
+diekspor notebook penelitian, lalu menampilkannya dengan bahasa sederhana.
 
 - Commit acuan: `27737ee` (angka 01–11 sesudah koreksi drift)
 - Tanggal: 2026-10-26
 - Display name Kaggle: **Riset Deteksi Fault 4 Sensor Kelembaban**
-- Semua kernel penelitian berstatus **Private**; tautan hanya untuk penguji.
+- Semua kernel berstatus **Private**; tautan hanya untuk penguji.
+- Notebook sidang utama: `sidang/00_Sidang_Deteksi_Fault.ipynb`
+  ([Kaggle](https://www.kaggle.com/code/kelvindsmn/sidang-deteksi-fault-4-sensor-kelembaban))
+  — menggabungkan Peta, Alur, dan Hasil dalam satu kernel + tabel tautan ke 12
+  notebook penelitian.
 
 ---
 
@@ -120,13 +124,14 @@ notebook 01/04/05/07/08.
 | 11 | `jsd-edm-ann-lm-lengkap-q3` | 3 | private |
 | — | `ilustrasi-data-akuisisi-dan-fault` | 3 | private |
 
-Tiga notebook sidang (v1, semua private):
+Notebook sidang (semua private):
 
-| Notebook | Slug |
-|---|---|
-| `00_Peta_Program.ipynb` | `peta-program-deteksi-fault-4-sensor-kelembaban` |
-| `01_Alur_Sistem.ipynb` | `alur-sistem-deteksi-fault-4-sensor-kelembaban` |
-| `02_Hasil.ipynb` | `hasil-deteksi-fault-4-sensor-kelembaban` |
+| Notebook | Slug | Status |
+|---|---|---|
+| `00_Sidang_Deteksi_Fault.ipynb` | `sidang-deteksi-fault-4-sensor-kelembaban` | **utama** (v1) |
+| `00_Peta_Program.ipynb` | `peta-program-deteksi-fault-4-sensor-kelembaban` | digantikan |
+| `01_Alur_Sistem.ipynb` | `alur-sistem-deteksi-fault-4-sensor-kelembaban` | digantikan |
+| `02_Hasil.ipynb` | `hasil-deteksi-fault-4-sensor-kelembaban` | digantikan |
 
 Status private dan display name `Riset Deteksi Fault 4 Sensor Kelembaban`
 diverifikasi di Kaggle pada 2026-10-26.
