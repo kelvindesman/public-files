@@ -120,6 +120,17 @@ notebook 01/04/05/07/08.
 | 11 | `jsd-edm-ann-lm-lengkap-q3` | 3 | private |
 | — | `ilustrasi-data-akuisisi-dan-fault` | 3 | private |
 
+Tiga notebook sidang (v1, semua private):
+
+| Notebook | Slug |
+|---|---|
+| `00_Peta_Program.ipynb` | `peta-program-deteksi-fault-4-sensor-kelembaban` |
+| `01_Alur_Sistem.ipynb` | `alur-sistem-deteksi-fault-4-sensor-kelembaban` |
+| `02_Hasil.ipynb` | `hasil-deteksi-fault-4-sensor-kelembaban` |
+
+Status private dan display name `Riset Deteksi Fault 4 Sensor Kelembaban`
+diverifikasi di Kaggle pada 2026-10-26.
+
 ## Catatan angka yang sering tertukar
 
 | Angka | Nilai benar | Sumber |
