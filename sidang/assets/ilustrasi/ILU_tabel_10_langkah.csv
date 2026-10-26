@@ -1,0 +1,11 @@
+#,Langkah,Hasil,Tindakan
+1,Kolom wajib kelembaban1..4,4/4 ada,lanjut
+2,datetime UTC lalu diurutkan,"281,721 baris terurut",-
+3,Stempel waktu ganda dibuang,0,dibuang (0 baris)
+4,Cek nilai kosong (NaN),0,tidak ada yang ditambal
+5,Cek nilai di luar 0-100%,0,"dilaporkan, tidak dibuang"
+6,Pembacaan macet >= 10,kelembaban1:556 / kelembaban2:654 / kelembaban3:659 / kelembaban4:657,"dilaporkan, tidak dibuang"
+7,Pencilan ekstrem |z| > 6,kelembaban1:13 / kelembaban2:0 / kelembaban3:0 / kelembaban4:0,"dilaporkan, tidak dibuang"
+8,Rata-rata per 5 menit,"281,721 -> 28,173 baris",agregasi
+9,Grid seragam + interpolasi waktu,slot bolong 0 -> isian 0,tidak terpakai di data ini
+10,Sisa NaN ditambal median,isian 0,tidak terpakai di data ini

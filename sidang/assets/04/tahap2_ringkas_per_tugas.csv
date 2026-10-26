@@ -1,0 +1,7 @@
+Tugas,Metode,F1,ROC_AUC
+T1_biner,EDM-Fuzzy,0.489,0.526
+T1_biner,JSD-Fuzzy,0.504,0.68
+T2_single5,EDM-Fuzzy,0.655,0.498
+T2_single5,JSD-Fuzzy,0.676,0.538
+T3_17kelas,EDM-Fuzzy,0.846,0.554
+T3_17kelas,JSD-Fuzzy,0.902,0.571

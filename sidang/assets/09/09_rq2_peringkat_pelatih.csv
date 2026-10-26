@@ -1,0 +1,5 @@
+Trainer,mean_F1,std_F1,juara_sel,rata_peringkat
+BR,0.4287,0.1773,5,1.5
+LM,0.4333,0.2254,4,1.7
+Adam,0.2675,0.0575,1,3.3
+GA,0.3057,0.1715,0,3.5

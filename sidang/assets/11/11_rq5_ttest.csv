@@ -1,0 +1,5 @@
+n_pairs,mean_F1_EDM,mean_F1_JSD,mean_diff,t_stat,p_value,wilcoxon_p,cohen_d,verdict,N_window
+5,0.4601,0.4624,0.0023,0.1964,0.8539,1.0,0.088,"BELUM SIGNIFIKAN (p >= 0,05) — bahas lewat rata-rata F1 dan pola performa saja",200
+5,0.4497,0.5024,0.0526,3.4082,0.0271,0.0625,1.524,"SIGNIFIKAN (p < 0,05) — selisih F1 konsisten lintas skenario",700
+5,0.4643,0.4937,0.0295,0.7433,0.4986,0.625,0.332,"BELUM SIGNIFIKAN (p >= 0,05) — bahas lewat rata-rata F1 dan pola performa saja",1000
+15,0.458,0.4862,0.0281,1.9166,0.0759,0.107,0.495,"BELUM SIGNIFIKAN (p >= 0,05) — bahas lewat rata-rata F1 dan pola performa saja",pooled

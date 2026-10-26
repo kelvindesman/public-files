@@ -29,7 +29,7 @@ pasangan (45,7%, rata-rata −26%) · N=700 59/315 (18,7%, −28%) · N=1000
 
 ## Bagian 2 — Klasifikasi 5 skenario (LM asli, grouped CV)
 
-Selisih F1 (JSD − EDM): **JSD unggul pada 10 dari 15 sel**
+Selisih F1 (JSD − EDM): **JSD unggul pada 11 dari 15 sel**
 (N=200: 3/5 · N=700: 5/5 · N=1000: 3/5).
 Rata-rata selisih: N=200 +0,002 · N=700 +0,053 · N=1000 +0,030 · pooled +0,028.
 F1 rata-rata: EDM 0,458 vs JSD 0,486.
@@ -68,7 +68,7 @@ per window.
 > Seluruh classifier pada studi ini memakai Levenberg–Marquardt yang
 > diimplementasikan sendiri (langkah Gauss-Newton terdamping, rasio gain,
 > Jacobian analitik terverifikasi self-check) — tanpa solver quasi-Newton.
-> JSD-Fuzzy mengungguli EDM-Fuzzy pada 10 dari 15 sel klasifikasi
+> JSD-Fuzzy mengungguli EDM-Fuzzy pada 11 dari 15 sel klasifikasi
 > (rata-rata +0,03) dan pada identifikasi sensor (F1 0,675 vs 0,634), namun
 > hanya window N=700 yang signifikan (p = 0,027); uji gabungan 15 pasang
 > belum signifikan (p = 0,076), sehingga klaim ditulis sebagai keunggulan
