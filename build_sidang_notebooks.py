@@ -168,13 +168,7 @@ plt.tight_layout(); plt.show()
 |---|---|---|
 | Metode mana lebih tinggi? | JSD-Fuzzy menang **11 dari 15 sel**, rata-rata **+0,028** | `11` §10 |
 | Sensor mana yang dikenali? | F1 **0,675 vs 0,634**, menang 9/15 | `11` §12 |
-| Jenis fault tersulit? | **bias** (0,448), lalu spike (0,601) | `05` |
-| Kalau sensor diidentifikasi dari hasil klasifikasi? | F1 **0,902 vs 0,846** | `04` |
-| Pelatih ANN terbaik? | **BR 0,429 ≈ LM 0,433** (p = 0,81) | `09` |
-| ANN vs XGBoost? | Fitur JSD+Time rata-rata **0,750**; XGBoost juga kuat | `06` |
-
-**Satu kalimat statistik.** Selisih +0,028 konsisten, tetapi uji gabungan belum
-kuat (pooled p = 0,076); rincian ada di lampiran privat.
+| Di mana JSD paling menang? | Window N = 700: **5 dari 5** skenario | `11` §10 |
 
 > Yang tidak diklaim: "JSD terbukti signifikan lebih baik". Yang diklaim:
 > "JSD konsisten lebih tinggi pada 11 dari 15 sel".
@@ -190,10 +184,6 @@ Tabel ini supaya tidak bingung kalau penguji minta "notebook aslinya".
 | Angka utama | `11` §10–§13 | `jsd-edm-ann-lm-lengkap-q3` v3 |
 | Broker 4 kanal | `02` | `jsd-fuzzy-broker-architecture-v2` v3 |
 | Data mentah | `Ilustrasi` | `ilustrasi-data-akuisisi-dan-fault` v3 |
-| Jenis fault | `05` | `jsd-fuzzy-faulttype-per-sensor` v2 |
-| Two-stage | `04` | `jsd-fuzzy-twostage-sensorid` v6 |
-| Pelatih ANN | `09` | `ann-lm-vs-bayesian-vs-ga-paper-pmdc` v3 |
-| ANN vs XGBoost | `06` | `jsd-xgb-perscenario` v4 |
 
 Tabel lengkap (nomor sel + nama file): `sidang/MAPPING.md`.
 
@@ -418,11 +408,13 @@ ANN yang dipakai kecil: 60 masukan, satu atau dua lapisan tersembunyi
 cross-validation, bukan setelah melihat data uji.
 
 ```
-60 fitur  ->  [ lapisan tersembunyi ]  ->  kelas (2 / 5 / 17)
+60 fitur  ->  [ lapisan tersembunyi ]  ->  kelas (2 / 5 / 7 / 5 / 2)
 ```
 
-Notebook `04` menambahkan rantai kedua: dari kelas fault, tebak **sensor mana**
-yang rusak. Saat pengujian nyata, label sensor tidak tersedia.
+Klasifier yang dipakai hanya **ANN-LM asli** (Levenberg–Marquardt dengan
+Jacobian analitik), bukan `lbfgs` dan bukan pelatih lain. Notebook `11` §12
+menambahkan rantai kedua: dari kelas fault, tebak **sensor mana** yang rusak.
+Saat pengujian nyata, label sensor tidak tersedia.
 """),
     md("""
 ## 7 — Uji: kenapa harus CV berkelompok
@@ -434,10 +426,14 @@ pembagian fold **dikelompokkan per blok waktu**.
 | Skenario | Yang dibedakan | Kelas |
 |---|---|---|
 | S1 | normal vs ada fault | 2 |
-| S2 | jenis fault tunggal | 5 |
-| S3 | jumlah fault bercampur | 5 |
-| S4 | sensor mana yang rusak | 5 |
-| S5 | semua kondisi | 17 |
+| S2 | fault tunggal (4 jenis) | 5 |
+| S3 | kombinasi **2 fault** (6 kombinasi) | **7** |
+| S4 | kombinasi **3 fault** (4 kombinasi) | 5 |
+| S5 | kombinasi **4 fault** sekaligus | **2** |
+
+Catatan: tugas **17 kelas** (normal + 16 kondisi fault) adalah eksperimen
+terpisah di notebook `01`/`04`, bukan S5. Identifikasi "sensor mana yang
+rusak" juga bukan S4 — itu RQ6 di notebook `11` §12.
 """),
     md("""
 ## 8 — Peta balik: tahap di sini → notebook asli
@@ -449,7 +445,7 @@ pembagian fold **dikelompokkan per blok waktu**.
 | 3 Injeksi fault | `11` §3–§3b | 9–12 |
 | 4 Segmentasi | `11` §4, `07` §5 | 13–14 |
 | 5 Entropi | `11` §5–§7b | 15–24 |
-| 6 Model | `11` §10, `04` | 33–40 |
+| 6 Model | `11` §10 | 33–40 |
 | 7 Uji | `11` §10 | 33–40 |
 
 ---
@@ -469,8 +465,9 @@ diekspor notebook penelitian, lalu memeriksa ulang angkanya dengan `assert`.
 Kalau file berubah, notebook ini langsung gagal — jadi tidak ada angka yang
 diketik manual.
 
-Urutan: performa utama → sensor mana yang rusak → jenis fault → two-stage →
-pelatih ANN → XGBoost → satu kalimat statistik → batasan.
+Urutan: performa utama → sensor mana yang rusak → catatan data → batasan →
+sumber. Semua hasil memakai klasifier **ANN-LM asli**; tidak ada pelatih lain
+di edisi ini.
 """),
     code(PRELUDE),
     md("""
@@ -537,125 +534,34 @@ show_png("11/11_sensor_f1.png", 900)
 '''),
     md("""
 **Cara membaca.** Angka di atas adalah **per skenario**, bukan per sensor
-fisik: S1 normal vs fault (0,543), S2 fault tunggal (0,622), S3 jumlah fault
-(0,635), S4 sensor mana (0,735), S5 semua kondisi (0,841).
+fisik: S1 normal vs fault (0,543), S2 fault tunggal (0,622), S3 kombinasi dua
+fault (0,635), S4 kombinasi tiga fault (0,735), S5 kombinasi empat fault (0,841).
 
 Angka pendamping: tebakan **semua empat sensor benar sekaligus** 0,307 (JSD)
 vs 0,295 (EDM). Ini lebih ketat daripada F1 rata-rata.
-
-Rincian per **sensor fisik** ada di bagian 3 (notebook `05`).
 """),
     md("""
-## 3 — Jenis fault apa, di sensor mana?
+## 3 — Catatan data: sensor 4 pernah macet di 0
 
-Notebook `05` memakai 16 label (4 sensor × 4 jenis fault). Tabel ini menjawab
-"bias-nya di sensor mana?" dan "spike-nya di mana?".
-"""),
-    code(r'''
-f5 = read_asset("05/cara_b_stage2_summary.csv")
-fault = f5[f5["Sudut pandang"] == "per jenis fault"].pivot(
-    index="Item", columns="Method", values="F1 rata-rata").round(3)
-fault["selisih"] = (fault["JSD-Fuzzy"] - fault["EDM-Fuzzy"]).round(3)
-assert abs(float(fault.loc["bias", "JSD-Fuzzy"]) - 0.448) < 0.001
-assert abs(float(fault.loc["spike", "JSD-Fuzzy"]) - 0.601) < 0.001
-display(fault.reset_index().to_string(index=False))
+Tidak ada baris yang dibuang. Yang perlu dijelaskan saat sidang: kolom
+**kelembaban4** bernilai 0 pada **11.371 sampel 30 detik (4,0 %)**, semuanya
+antara 16 dan 21 Desember 2025.
 
-per_sensor = f5[f5["Sudut pandang"] == "per sensor"].pivot(
-    index="Item", columns="Method", values="F1 rata-rata").round(3)
-per_sensor["selisih"] = (per_sensor["JSD-Fuzzy"] - per_sensor["EDM-Fuzzy"]).round(3)
-assert abs(float(per_sensor.loc["S3", "JSD-Fuzzy"]) - 0.760) < 0.001
-assert abs(float(per_sensor.loc["S4", "JSD-Fuzzy"]) - 0.669) < 0.001
-display(per_sensor.reset_index().to_string(index=False))
-show_png("05/cara_b_heatmap_f1.png", 900)
-'''),
-    md("""
-**Cara membaca.** Per **jenis fault**, urutan kesulitan: **bias 0,448 <
-spike 0,601 < drift 0,868 < hardware 0,917**. Bias dan spike adalah titik
-terlemah kedua metode; di situ JSD menolong paling besar (+0,306 dan +0,410).
-Hardware sudah mudah dikenali keduanya, jadi selisihnya praktis nol.
+| Periode | Panjang |
+|---|---|
+| 16 Des 07.37–08.01 | 49 sampel (0,4 jam) |
+| 17 Des 10.04 – 19 Des 07.03 | 5.399 sampel (45,0 jam) |
+| 19 Des 07.57 – 20 Des 21.10 | 4.468 sampel (37,2 jam) |
+| 20 Des 22.23 – 21 Des 10.30 | 1.454 sampel (12,1 jam) |
 
-Per **sensor fisik** (JSD): S3 0,760 > S1 0,724 > S2 0,682 > S4 0,669. S4
-paling sulit karena banyak periode tanah kering.
+Setelah agregasi 5 menit: 1.135 titik nol. Nilai 0 tetap dipakai karena
+**di dalam rentang fisik 0–100 %** dan justru bisa menjadi gejala fault
+(pembacaan macet). Dampaknya: **10 dari 280 window N = 200 (3,6 %)** mayoritas
+nol; N = 700: 2/79; N = 1000: 1/55. Window itu tetap masuk kelas normal karena
+data asli tidak punya label. Ini dicatat sebagai batasan, bukan dibuang.
 """),
     md("""
-## 4 — Two-stage: klasifikasi dulu, sensor kemudian
-
-Notebook `04` menguji rantai penuh: dari 17 kelas, ambil prediksi, lalu tebak
-sensor. Tabel pertama per tingkat kesulitan; tabel kedua per jumlah fault yang
-bercampur.
-"""),
-    code(r'''
-t2 = read_asset("04/tahap2_ringkas_per_tugas.csv")
-t3 = t2[t2.Tugas == "T3_17kelas"].set_index("Metode")["F1"]
-assert abs(float(t3["JSD-Fuzzy"]) - 0.902) < 0.001
-assert abs(float(t3["EDM-Fuzzy"]) - 0.846) < 0.001
-display(t2.round(3).to_string(index=False))
-
-jf = read_asset("04/tahap2_per_jumlah_fault.csv")
-all4 = jf[jf["Jumlah fault"] == 4].set_index("Metode")["Semua-4-benar"]
-assert abs(float(all4["JSD-Fuzzy"]) - 0.920) < 0.001
-assert abs(float(all4["EDM-Fuzzy"]) - 0.800) < 0.001
-display(jf.round(3).to_string(index=False))
-'''),
-    md("""
-**Cara membaca.** Tahap-2 paling sulit pada 17 kelas: F1 **0,902 (JSD)** vs
-0,846 (EDM). Kalau keempat sensor rusak sekaligus, peluang menebak keempatnya
-benar **0,920 vs 0,800**. Nilai ini lebih rendah daripada F1 per sensor, dan
-itu wajar: semua harus benar, bukan rata-rata.
-"""),
-    md("""
-## 5 — Empat algoritma pelatih ANN
-
-Notebook `09` membandingkan LM (paper), Bayesian regularization (BR), GA, dan
-Adam pada fold yang sama.
-"""),
-    code(r'''
-rk = read_asset("09/09_rq2_peringkat_pelatih.csv").set_index("Trainer").round(3)
-assert abs(float(rk.loc["BR", "mean_F1"]) - 0.429) < 0.001
-assert abs(float(rk.loc["LM", "mean_F1"]) - 0.433) < 0.001
-display(rk.reset_index().to_string(index=False))
-show_png("09/09_rq2_performa.png", 900)
-'''),
-    md("""
-**Cara membaca.** BR dan LM setara (0,429 vs 0,433; p = 0,81), keduanya di atas
-GA (0,306) dan Adam (0,268). Jadi pilihan LM pada paper tetap masuk akal,
-tetapi bukan satu-satunya yang bisa bekerja.
-"""),
-    md("""
-## 6 — ANN vs XGBoost: batasnya di mana?
-
-Notebook `06` menguji apakah keunggulan datang dari fitur atau dari classifier.
-"""),
-    code(r'''
-x6 = read_asset("06/xgb_perscenario_results.csv")
-pv = x6.pivot_table(index="Scenario", columns="FeatureSet", values="F1_macro").round(3)
-avg = pv.mean().round(3)
-assert abs(float(avg["JSD+Time"]) - 0.750) < 0.002, avg.to_dict()
-display(pv.to_string())
-display(avg.rename("rata-rata 5 skenario").to_frame().T.to_string())
-'''),
-    md("""
-**Cara membaca.** Rata-rata 5 skenario: **JSD+Time 0,750**, Time saja 0,701,
-EDM+Time 0,684, JSD saja 0,583, EDM saja 0,418. Artinya dua hal berkontribusi:
-fitur JSD lebih baik dari EDM, dan XGBoost memanfaatkan fitur waktu dengan
-baik. Di skenario tersulit (S5) angkanya 0,608 — bukan 0,750.
-
-Jangan membandingkan 0,750 (XGBoost, rata-rata) dengan 0,433 (ANN, protokol
-notebook 09). Protokol dan set fiturnya berbeda.
-"""),
-    md("""
-## 7 — Satu kalimat statistik (hanya satu)
-
-Uji berpasangan pada notebook `11`: N = 700 **p = 0,027**; gabungan tiga ukuran
-window **p = 0,076** (Wilcoxon 0,107). Artinya: selisih +0,028 konsisten, tetapi
-belum kuat secara gabungan. Rincian sengaja tidak ditampilkan di edisi sidang;
-tersedia di lampiran privat `11` §11.
-
-**Yang tidak diklaim:** "JSD terbukti lebih baik". **Yang diklaim:** "JSD
-konsisten lebih tinggi pada 11 dari 15 sel".
-"""),
-    md("""
-## 8 — Batasan yang harus disebut
+## 4 — Batasan yang harus disebut
 
 1. Fault berasal dari **simulasi** dengan rumus tetap, bukan kerusakan lapangan.
 2. Keputusan butuh window 16,7 jam → pemantauan harian, **bukan alarm real-time**.
@@ -663,19 +569,17 @@ konsisten lebih tinggi pada 11 dari 15 sel".
 4. EDM lebih **stabil** (CV lebih rendah di 56/63 pasangan), walau F1 lebih
    rendah. Ini dilaporkan apa adanya.
 5. Drift 1 poin/hari sengaja kecil; deteksi drift jangka pendek masih lemah.
+6. Sensor 4 macet di 0 selama 5 hari terakhir (11.371 sampel); tidak dibuang,
+   tetapi 10/280 window mayoritas nol.
 """),
     md("""
-## 9 — Sumber setiap blok
+## 5 — Sumber setiap blok
 
 | Blok | Notebook asli | Sel | File |
 |---|---|---|---|
 | 1 Performa | `11` §10 | 33–40 | `11_rq4_performa_ann.csv` |
 | 2 Sensor-ID | `11` §12 | 43–46 | `11_sensor_ringkas.csv` |
-| 3 Jenis fault | `05` | 13–19 | `cara_b_stage2_summary.csv` |
-| 4 Two-stage | `04` | 15–20 | `tahap2_*.csv` |
-| 5 Pelatih | `09` §10 | 29–34 | `09_rq2_peringkat_pelatih.csv` |
-| 6 XGBoost | `06` | 36–41 | `xgb_perscenario_results.csv` |
-| 7 Statistik | `11` §11 | 41–42 | `11_rq5_ttest.csv` (privat) |
+| 3 Catatan data | data mentah | — | `data_sensor.csv` |
 
 ---
 **Status:** privat · commit `27737ee` · 2026-10-26 · rujukan: `sidang/MAPPING.md`

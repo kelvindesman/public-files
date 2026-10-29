@@ -62,8 +62,12 @@ dan jumlahnya nol. Rujukan: `11` §2b sel 8.
 
 **Q9. Nilai 0 di sensor S4 diapakan?**
 Tetap dipakai dan dilabeli normal. Totalnya 11.371 sampel 30 detik (4,0 %),
-terdiri dari tiga periode panjang. Membuangnya akan menghapus kondisi tanah
-kering yang sah. Rujukan: `Ilustrasi` §2 dan `11` §2b.
+semuanya 16–21 Des 2025, berupa tiga blok macet: 45 jam, 37 jam, dan 12 jam
+(plus 49 sampel pendek). Setelah agregasi 5 menit: 1.135 titik nol. Nilainya
+masih di dalam rentang fisik 0–100 %, jadi tidak dibuang; ini justru gejala
+pembacaan macet. Dampaknya 10 dari 280 window N=200 (3,6 %) mayoritas nol
+(N=700: 2/79; N=1000: 1/55). Dicatat sebagai batasan. Rujukan: `11` §2b dan
+`data_sensor.csv`.
 
 **Q10. Kenapa fault-nya simulasi, bukan data rusak asli?**
 Karena data asli tidak punya label "rusak" dan tidak boleh merusak sensor
@@ -116,9 +120,11 @@ sisanya dibiarkan bersih. Jadi model tidak bisa menebak "semua rusak".
 Rujukan: `11` §3 dan `04` §6.
 
 **Q19. Kenapa 17 kelas, bukan 5?**
-Karena kombinasi fault memang terjadi bersamaan. 17 kelas = normal + 16 kondisi
-fault. Untuk analisis yang lebih mudah, hasilnya juga diringkas per jumlah
-fault (0–4). Rujukan: `04` dan `05`.
+17 kelas (normal + 16 kondisi fault) adalah eksperimen terpisah di notebook
+`01`/`04`, bukan S5. Ladder S1–S5 di notebook `11` justru memecah tugas itu:
+S1 2 kelas, S2 5, S3 7 (6 kombinasi 2 fault), S4 5 (4 kombinasi 3 fault),
+S5 2 (kombinasi 4 fault). Identifikasi "sensor mana yang rusak" juga terpisah
+(RQ6, `11` §12), bukan S4. Rujukan: `11` §7.
 
 **Q20. Window N = 200 itu berapa lama?**
 200 sampel × 5 menit = 1.000 menit ≈ 16,7 jam (0,69 hari). Setara N = 2000
@@ -173,8 +179,9 @@ dipilih di dalam cross-validation, bukan setelah melihat data uji. Rujukan:
 
 **Q30. Kenapa Levenberg–Marquardt, bukan Adam?**
 LM adalah metode pelatihan pada paper acuan dan cocok untuk jaringan kecil.
-Notebook 09 membandingkan empat pelatih: LM dan Bayesian setara (p = 0,81),
-keduanya di atas GA dan Adam. Rujukan: `09` §10–§12.
+Edisi sidang hanya menampilkan ANN-LM; perbandingan dengan BR, GA, dan Adam
+ada di arsip notebook `09` dan tidak ditampilkan agar protokolnya tidak
+tercampur. Rujukan: `11` §10.
 
 **Q31. Apa itu Jacobian analitik?**
 Turunan error terhadap semua bobot dihitung langsung dengan aturan rantai,
@@ -182,20 +189,22 @@ bukan didekati beda hingga. Hasilnya lebih presisi dan cepat. Kebenarannya
 diperiksa dengan membandingkan terhadap Jacobian numerik (§9a) — lolos.
 Rujukan: `11` §9a dan `09` §9.
 
-**Q32. Kenapa XGBoost ikut dibandingkan?**
-Untuk menguji apakah keunggulan datang dari fitur atau dari classifier. Ternyata
-keduanya berperan: fitur JSD lebih baik dari EDM, dan XGBoost di atas ANN pada
-sebagian skenario. Rujukan: `06`.
+**Q32. Kenapa hanya ANN-LM yang ditampilkan?**
+Karena fokus penelitian adalah perbandingan metode entropi (EDM vs JSD), bukan
+perbandingan classifier. Pelatih lain dan XGBoost sudah diuji di arsip `09`
+dan `06`, tetapi tidak dimunculkan supaya klaim tetap satu protokol: ANN-LM
+asli dengan Jacobian analitik. Rujukan: `11` §10.
 
 **Q33. Kenapa cross-validation harus dikelompokkan?**
 Window bertetangga tumpang-tindih 50 %. Kalau diacak biasa, potongan sinyal
 yang sama bisa muncul di data latih dan uji — skor jadi terlalu optimistis.
 GroupKFold per blok waktu mencegah kebocoran itu. Rujukan: `11` §10.
 
-**Q34. Apa yang dilakukan notebook 04?**
-Dua tahap: (1) klasifikasi 17 kelas, (2) dari hasil prediksi, tebak sensor mana
-yang rusak. Rantai ini penting karena saat pengujian label sensor tidak
-tersedia. Rujukan: `04` §15–§20.
+**Q34. Apakah program penelitian masih satu alur?**
+Ya. Notebook `11` tetap satu program end-to-end: muat data → broker → injeksi
+fault → segmentasi → entropi → ANN-LM → evaluasi → sensor-ID. Notebook sidang
+adalah lapisan penyaji: ia membaca CSV ekspor dan memeriksa angkanya dengan
+`assert`, tanpa melatih ulang. Rujukan: `11` §2–§13.
 
 ## G. Hasil
 
@@ -208,27 +217,30 @@ selisih F1 +0,028. Identifikasi sensor juga lebih baik: 0,675 vs 0,634
 11 dari 15 sel. Kalau dihitung per ukuran window: N = 200 menang 3/5,
 N = 700 menang 5/5, N = 1000 menang 3/5. Rujukan: `11_rq4_selisih.csv`.
 
-**Q37. Sensor mana yang paling mudah dikenali?**
-S3 (F1 0,760), lalu S1 (0,724), S2 (0,682), S4 (0,669) — angka JSD-Fuzzy.
-S4 paling sulit karena banyak periode kering. Rujukan: `11_sensor_ringkas.csv`.
+**Q37. Skenario mana yang paling mudah dikenali sensornya?**
+S5 (F1 0,841), lalu S4 (0,735), S3 (0,635), S2 (0,622), S1 (0,543) — angka
+JSD-Fuzzy per skenario. Rujukan: `11_sensor_ringkas.csv`.
 
-**Q38. Jenis fault mana yang paling sulit?**
-Bias (F1 0,448) dan spike (0,601). Drift 0,868, hardware 0,917. EDM jauh lebih
-lemah pada bias (0,142) dan spike (0,191). Rujukan: `05`.
+**Q38. Apa bedanya notebook sidang dengan notebook `11` selain drift?**
+`11` menghitung semuanya (RQ1–RQ6, CV entropi, separabilitas, statistik,
+confusion matrix, sensor-ID); notebook sidang hanya menampilkan performa utama
+dan sensor-ID. Sidang memakai bahasa sederhana + aset gambar, sedangkan `11`
+memuat kode pipeline lengkap. Angka keduanya sama karena sama-sama dari `11`
+versi v3 (setelah koreksi drift). Rujukan: `11` §10–§12.
 
-**Q39. Apakah hasilnya signifikan?**
+**Q39. Apakah hasilnya signifikan?** *(tidak ditampilkan di notebook)*
 Tidak secara gabungan: pooled p = 0,076 (Wilcoxon 0,107). Hanya N = 700 yang
 signifikan (p = 0,027). Karena itu klaim yang benar: **konsisten lebih tinggi**,
 bukan "terbukti signifikan". Rujukan: `11` §11 (lampiran privat).
 
-**Q40. Kalau begitu, kenapa tetap dipakai?**
+**Q40. Kalau begitu, kenapa tetap dipakai?** *(tidak ditampilkan di notebook)*
 Karena arahnya konsisten (11/15), keunggulan muncul di skenario sulit, dan
 biayanya sebanding. Nilainya sebagai bukti pendukung, bukan klaim kemenangan
 mutlak. Rujukan: `11` §13.
 
 ## H. Batasan dan tindak lanjut
 
-**Q41. Kenapa N = 700 signifikan tetapi gabungan tidak?**
+**Q41. Kenapa N = 700 signifikan tetapi gabungan tidak?** *(tidak ditampilkan di notebook)*
 Karena arah efek berbeda antar ukuran window (ada sel yang negatif di N = 1000).
 Menggabungkan tiga kondisi menambah varians, sehingga rasio efek/derau tidak
 naik. Uji per ukuran window lebih tepat dibaca satu per satu. Rujukan:
@@ -248,6 +260,12 @@ pelatihan ulang. Rujukan: `11` §4 dan `11_rq4_biaya_komputasi.csv`.
 (1) Uji pada data lapangan yang benar-benar rusak, (2) window adaptif untuk
 deteksi lebih cepat, (3) uji jumlah sensor lebih banyak, (4) kalibrasi ambang
 keputusan untuk operasi irigasi. Rujukan: `11` §13 dan `08` §12.
+
+**Q45. Kalau penguji menanyakan angka yang tidak ada di notebook?**
+Angka pendukung (statistik, pelatih lain, XGBoost, jenis fault, two-stage)
+tetap tersedia di `Bahan_Sidang.md` dan arsip kernel penelitian, tetapi
+sengaja tidak dimunculkan di notebook sidang supaya klaim tetap satu
+protokol: ANN-LM. Sebutkan sumbernya, jangan mengarang angka baru.
 
 ---
 

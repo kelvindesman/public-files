@@ -32,8 +32,9 @@ punya nomor sendiri di daftar isi di bawah.
 
 LINKS = """## Tautan notebook penelitian (semua sudah selesai dijalankan)
 
-Kernel di bawah adalah sumber angka. Statusnya **Private**; buka sambil login
-akun `kelvindsmn`. Notebook ini meringkasnya, bukan menggantikannya.
+Kernel di bawah adalah **arsip penelitian lengkap** — termasuk eksperimen yang
+tidak ditampilkan di edisi sidang ini. Statusnya **Private**; buka sambil login
+akun `kelvindsmn`. Notebook ini meringkas, bukan menggantikan.
 
 | # | Isi | Kernel |
 |---|---|---|
@@ -52,39 +53,6 @@ akun `kelvindsmn`. Notebook ini meringkasnya, bukan menggantikannya.
 
 Pemetaan rinci (bagian → sel → kernel) ada di `sidang/MAPPING.md`.
 """
-
-TOC = """### Daftar isi
-
-**I — Peta Program**
-1. Alur program dalam satu gambar
-2. Tiap tahap dalam bahasa sehari-hari
-3. Enam angka yang paling sering ditanya
-4. Peta notebook: sidang ↔ penelitian
-5. Glosarium 10 istilah
-6. Kalau penguji bertanya, buka ini
-
-**II — Alur Sistem**
-7. Data mentah: empat kanal, 30 detik
-8. Broker: satukan kanal, jangan rata-ratakan
-9. Injeksi fault: menempelkan kerusakan yang ada labelnya
-10. Segmentasi: satu sinyal dipotong jadi banyak jendela
-11. Dari jendela ke 60 angka
-12. Model: 60 angka masuk, kelas fault keluar
-13. Uji: kenapa harus CV berkelompok
-14. Peta balik: tahap di sini → notebook asli
-
-**III — Hasil**
-15. Performa utama: EDM-Fuzzy vs JSD-Fuzzy
-16. Sensor mana yang rusak?
-17. Jenis fault apa, di sensor mana?
-18. Two-stage: klasifikasi dulu, sensor kemudian
-19. Empat algoritma pelatih ANN
-20. ANN vs XGBoost: batasnya di mana?
-21. Satu kalimat statistik (hanya satu)
-22. Batasan yang harus disebut
-23. Sumber setiap blok
-"""
-
 
 def md(text):
     return {"cell_type": "markdown", "metadata": {}, "source": text.rstrip()}
@@ -112,8 +80,20 @@ def notebook(cells):
     }
 
 
+def toc(cells):
+    items = []
+    for c in cells:
+        if c["cell_type"] != "markdown":
+            continue
+        for line in "".join(c["source"]).splitlines():
+            m = re.match(r"^## (\d+) — (.+)$", line.strip())
+            if m:
+                items.append(f"{m.group(1)}. {m.group(2)}")
+    return "### Daftar isi\n\n" + "\n".join(items) + "\n"
+
+
 def main():
-    cells = [md(INTRO), md(LINKS), md(TOC)]
+    cells = [md(INTRO), md(LINKS)]
     seen_code = set()
     number = 0
 
@@ -133,6 +113,7 @@ def main():
                     body = re.sub(r"^## ", f"## {number} — ", body, count=1)
             cells.append({"cell_type": c["cell_type"], "metadata": {}, "source": body})
 
+    cells.insert(2, md(toc(cells)))
     TARGET.write_text(json.dumps(notebook(cells), ensure_ascii=False, indent=1), encoding="utf-8")
     print("wrote", TARGET, "|", len(cells), "cells | headings", number)
 
