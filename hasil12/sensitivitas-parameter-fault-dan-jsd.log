@@ -1,0 +1,241 @@
+[{"stream_name":"stderr","time":8.458431062,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":8.458497642,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":9.874774166,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.874813826,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.874819216,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.874822766,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":10.611764827,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":10.611825597,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":10.611830987,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":10.611834677000001,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":13.352850944,"data":"Mesin : x86_64 | CPU: 4\n"}
+,{"stream_name":"stdout","time":13.352889173,"data":"Mode: FULL | window/kelas=80 | fold=5 | iterasi LM=40 | seed=3\n"}
+,{"stream_name":"stdout","time":13.552636513,"data":"Sumber data: unduh -\u003e https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv\n"}
+,{"stream_name":"stdout","time":22.87806531,"data":"Bentuk data siap pakai: (28173, 4) | durasi hari: 97.8\n"}
+,{"stream_name":"stdout","time":22.87810859,"data":"Nol kelembaban4: 1135 sampel\n"}
+,{"stream_name":"stdout","time":25.599841,"data":"Cache fitur normal N=200 ...\n"}
+,{"stream_name":"stdout","time":37.358573156,"data":"Cache fitur normal N=700 ...\n"}
+,{"stream_name":"stdout","time":82.787612542,"data":"Normal: (80, 60) (79, 60)\n"}
+,{"stream_name":"stdout","time":82.809336668,"data":"[t+   1.2 min] Bagian A mulai\n"}
+,{"stream_name":"stdout","time":82.809402998,"data":"[t+   1.2 min] A | drift=1 | seed=0\n"}
+,{"stream_name":"stdout","time":164.643110559,"data":"[t+   2.5 min] A | drift=1 | seed=1\n"}
+,{"stream_name":"stdout","time":246.346327183,"data":"[t+   3.9 min] A | drift=1 | seed=2\n"}
+,{"stream_name":"stdout","time":327.666448588,"data":"[t+   5.2 min] A | drift=2 | seed=0\n"}
+,{"stream_name":"stdout","time":406.381274552,"data":"[t+   6.6 min] A | drift=2 | seed=1\n"}
+,{"stream_name":"stdout","time":485.90875474,"data":"[t+   7.9 min] A | drift=2 | seed=2\n"}
+,{"stream_name":"stdout","time":565.803630213,"data":"[t+   9.2 min] A | drift=5 | seed=0\n"}
+,{"stream_name":"stdout","time":646.399361275,"data":"[t+  10.6 min] A | drift=5 | seed=1\n"}
+,{"stream_name":"stdout","time":728.479524863,"data":"[t+  11.9 min] A | drift=5 | seed=2\n"}
+,{"stream_name":"stdout","time":810.885131766,"data":"[t+  13.3 min] A | drift=10 | seed=0\n"}
+,{"stream_name":"stdout","time":890.906548919,"data":"[t+  14.6 min] A | drift=10 | seed=1\n"}
+,{"stream_name":"stdout","time":970.158263817,"data":"[t+  15.9 min] A | drift=10 | seed=2\n"}
+,{"stream_name":"stdout","time":1050.430791503,"data":"[t+  17.3 min] A | drift=20 | seed=0\n"}
+,{"stream_name":"stdout","time":1131.673153614,"data":"[t+  18.6 min] A | drift=20 | seed=1\n"}
+,{"stream_name":"stdout","time":1210.81686961,"data":"[t+  20.0 min] A | drift=20 | seed=2\n"}
+,{"stream_name":"stdout","time":1290.203602016,"data":"[t+  21.3 min] A | spike=0.08 | seed=0\n"}
+,{"stream_name":"stdout","time":1378.193963906,"data":"[t+  22.7 min] A | spike=0.08 | seed=1\n"}
+,{"stream_name":"stdout","time":1469.544765222,"data":"[t+  24.3 min] A | spike=0.08 | seed=2\n"}
+,{"stream_name":"stdout","time":1560.081247967,"data":"[t+  25.8 min] A | spike=0.2 | seed=0\n"}
+,{"stream_name":"stdout","time":1648.437298793,"data":"[t+  27.3 min] A | spike=0.2 | seed=1\n"}
+,{"stream_name":"stdout","time":1736.589946316,"data":"[t+  28.7 min] A | spike=0.2 | seed=2\n"}
+,{"stream_name":"stdout","time":1824.901370038,"data":"[t+  30.2 min] A | spike=0.4 | seed=0\n"}
+,{"stream_name":"stdout","time":1913.223872481,"data":"[t+  31.7 min] A | spike=0.4 | seed=1\n"}
+,{"stream_name":"stdout","time":2001.300640835,"data":"[t+  33.1 min] A | spike=0.4 | seed=2\n"}
+,{"stream_name":"stdout","time":2088.570777086,"data":"[t+  34.6 min] A | spike=0.8 | seed=0\n"}
+,{"stream_name":"stdout","time":2179.359816921,"data":"[t+  36.1 min] A | spike=0.8 | seed=1\n"}
+,{"stream_name":"stdout","time":2269.53725426,"data":"[t+  37.6 min] A | spike=0.8 | seed=2\n"}
+,{"stream_name":"stdout","time":2359.323263385,"data":"[t+  39.1 min] A | spike=1.5 | seed=0\n"}
+,{"stream_name":"stdout","time":2449.710656781,"data":"[t+  40.6 min] A | spike=1.5 | seed=1\n"}
+,{"stream_name":"stdout","time":2541.460809462,"data":"[t+  42.1 min] A | spike=1.5 | seed=2\n"}
+,{"stream_name":"stdout","time":2630.859243889,"data":"[t+  43.6 min] A | bias=0.08 | seed=0\n"}
+,{"stream_name":"stdout","time":2721.023969595,"data":"[t+  45.1 min] A | bias=0.08 | seed=1\n"}
+,{"stream_name":"stdout","time":2810.959158832,"data":"[t+  46.6 min] A | bias=0.08 | seed=2\n"}
+,{"stream_name":"stdout","time":2903.617205959,"data":"[t+  48.2 min] A | bias=0.5 | seed=0\n"}
+,{"stream_name":"stdout","time":3005.62894195,"data":"[t+  49.9 min] A | bias=0.5 | seed=1\n"}
+,{"stream_name":"stdout","time":3102.544371395,"data":"[t+  51.5 min] A | bias=0.5 | seed=2\n"}
+,{"stream_name":"stdout","time":3197.029830633,"data":"[t+  53.1 min] A | bias=1 | seed=0\n"}
+,{"stream_name":"stdout","time":3290.807003214,"data":"[t+  54.6 min] A | bias=1 | seed=1\n"}
+,{"stream_name":"stdout","time":3383.155128812,"data":"[t+  56.2 min] A | bias=1 | seed=2\n"}
+,{"stream_name":"stdout","time":3474.5199356,"data":"[t+  57.7 min] A | bias=2 | seed=0\n"}
+,{"stream_name":"stdout","time":3566.15496407,"data":"[t+  59.2 min] A | bias=2 | seed=1\n"}
+,{"stream_name":"stdout","time":3658.895627605,"data":"[t+  60.8 min] A | bias=2 | seed=2\n"}
+,{"stream_name":"stdout","time":3752.537135403,"data":"[t+  62.3 min] A | bias=5 | seed=0\n"}
+,{"stream_name":"stdout","time":3845.832130211,"data":"[t+  63.9 min] A | bias=5 | seed=1\n"}
+,{"stream_name":"stdout","time":3938.101697619,"data":"[t+  65.4 min] A | bias=5 | seed=2\n"}
+,{"stream_name":"stdout","time":4030.222499913,"data":"[t+  66.9 min] A | hardware=(0.08, 0.05) | seed=0\n"}
+,{"stream_name":"stdout","time":4114.586423841,"data":"[t+  68.4 min] A | hardware=(0.08, 0.05) | seed=1\n"}
+,{"stream_name":"stdout","time":4192.373333316,"data":"[t+  69.7 min] A | hardware=(0.08, 0.05) | seed=2\n"}
+,{"stream_name":"stdout","time":4275.80033546,"data":"[t+  71.0 min] A | hardware=(0.15, 0.1) | seed=0\n"}
+,{"stream_name":"stdout","time":4367.271295679,"data":"[t+  72.6 min] A | hardware=(0.15, 0.1) | seed=1\n"}
+,{"stream_name":"stdout","time":4444.713859288,"data":"[t+  73.9 min] A | hardware=(0.15, 0.1) | seed=2\n"}
+,{"stream_name":"stdout","time":4502.433954898,"data":"[t+  74.8 min] A | hardware=(0.3, 0.2) | seed=0\n"}
+,{"stream_name":"stdout","time":4570.673549267,"data":"[t+  76.0 min] A | hardware=(0.3, 0.2) | seed=1\n"}
+,{"stream_name":"stdout","time":4608.476250797,"data":"[t+  76.6 min] A | hardware=(0.3, 0.2) | seed=2\n"}
+,{"stream_name":"stdout","time":4664.09396265,"data":"[t+  77.5 min] A | hardware=(0.5, 0.3) | seed=0\n"}
+,{"stream_name":"stdout","time":4717.99687807,"data":"[t+  78.4 min] A | hardware=(0.5, 0.3) | seed=1\n"}
+,{"stream_name":"stdout","time":4762.078792254,"data":"[t+  79.1 min] A | hardware=(0.5, 0.3) | seed=2\n"}
+,{"stream_name":"stdout","time":4815.888982196,"data":"[t+  80.0 min] A | hardware=(0.7, 0.5) | seed=0\n"}
+,{"stream_name":"stdout","time":4881.252784469,"data":"[t+  81.1 min] A | hardware=(0.7, 0.5) | seed=1\n"}
+,{"stream_name":"stdout","time":4975.983424359,"data":"[t+  82.7 min] A | hardware=(0.7, 0.5) | seed=2\n"}
+,{"stream_name":"stdout","time":5024.322427342,"data":"[t+  83.5 min] A | spike_p=0.005 | seed=0\n"}
+,{"stream_name":"stdout","time":5024.323428692,"data":"[t+  83.5 min] A | spike_p=0.005 | seed=1\n"}
+,{"stream_name":"stdout","time":5024.328287892,"data":"[t+  83.5 min] A | spike_p=0.005 | seed=2\n"}
+,{"stream_name":"stdout","time":5024.334969001,"data":"[t+  83.5 min] A | spike_p=0.015 | seed=0\n"}
+,{"stream_name":"stdout","time":5133.476305945,"data":"[t+  85.3 min] A | spike_p=0.015 | seed=1\n"}
+,{"stream_name":"stdout","time":5232.462881375,"data":"[t+  87.0 min] A | spike_p=0.015 | seed=2\n"}
+,{"stream_name":"stdout","time":5328.811461622,"data":"[t+  88.6 min] A | spike_p=0.05 | seed=0\n"}
+,{"stream_name":"stdout","time":5409.442634461,"data":"[t+  89.9 min] A | spike_p=0.05 | seed=1\n"}
+,{"stream_name":"stdout","time":5503.770557717,"data":"[t+  91.5 min] A | spike_p=0.05 | seed=2\n"}
+,{"stream_name":"stdout","time":5585.279391838,"data":"[t+  92.9 min] A | drift_episode=2 | seed=0\n"}
+,{"stream_name":"stdout","time":5665.699244257,"data":"[t+  94.2 min] A | drift_episode=2 | seed=1\n"}
+,{"stream_name":"stdout","time":5745.537489957,"data":"[t+  95.5 min] A | drift_episode=2 | seed=2\n"}
+,{"stream_name":"stdout","time":5826.095924736,"data":"[t+  96.9 min] A | drift_episode=3 | seed=0\n"}
+,{"stream_name":"stdout","time":5907.914319027,"data":"[t+  98.2 min] A | drift_episode=3 | seed=1\n"}
+,{"stream_name":"stdout","time":5989.522278198,"data":"[t+  99.6 min] A | drift_episode=3 | seed=2\n"}
+,{"stream_name":"stdout","time":6071.561276628,"data":"[t+ 101.0 min] A | drift_episode=7 | seed=0\n"}
+,{"stream_name":"stdout","time":6160.280374484,"data":"[t+ 102.4 min] A | drift_episode=7 | seed=1\n"}
+,{"stream_name":"stdout","time":6250.516131002,"data":"[t+ 104.0 min] A | drift_episode=7 | seed=2\n"}
+,{"stream_name":"stdout","time":6338.150178804,"data":"fault\n"}
+,{"stream_name":"stdout","time":6338.150228694,"data":"bias             15\n"}
+,{"stream_name":"stdout","time":6338.150234984,"data":"drift            15\n"}
+,{"stream_name":"stdout","time":6338.150239224,"data":"drift_episode     9\n"}
+,{"stream_name":"stdout","time":6338.150242054,"data":"hardware         15\n"}
+,{"stream_name":"stdout","time":6338.150244744,"data":"spike            15\n"}
+,{"stream_name":"stdout","time":6338.150248414,"data":"spike_p           9\n"}
+,{"stream_name":"stdout","time":6338.150251464,"data":"     AUC  F1_macro      TPR      FPR  disebut_normal  F1_fold_mean  F1_fold_std  AUC_fold_mean  AUC_fold_std     n  k_fold fault value  seed status\n"}
+,{"stream_name":"stdout","time":6338.150254384,"data":"0.658689  0.580208 0.548387 0.387097        0.451613      0.567365     0.107881       0.663194      0.183504  62.0     5.0 drift     1     0     ok\n"}
+,{"stream_name":"stdout","time":6338.150270124,"data":"0.543184  0.531160 0.580645 0.516129        0.419355      0.510048     0.132676       0.558167      0.111220  62.0     5.0 drift     1     1     ok\n"}
+,{"stream_name":"stdout","time":6338.150272304,"data":"0.574402  0.499870 0.516129 0.516129        0.483871      0.490360     0.152933       0.577566      0.210204  62.0     5.0 drift     1     2     ok\n"}
+,{"stream_name":"stdout","time":6338.150274304,"data":"0.716961  0.578892 0.516129 0.354839        0.483871      0.560957     0.149212       0.743512      0.141551  62.0     5.0 drift     2     0     ok\n"}
+,{"stream_name":"stdout","time":6338.150276264,"data":"0.612903  0.596669 0.580645 0.387097        0.419355      0.586142     0.150085       0.614444      0.144117  62.0     5.0 drift     2     1     ok\n"}
+,{"stream_name":"stdout","time":6338.150278224,"data":"0.624350  0.515625 0.483871 0.451613        0.516129      0.497958     0.121214       0.640212      0.193648  62.0     5.0 drift     2     2     ok\n"}
+,{"stream_name":"stdout","time":6338.150280194,"data":"0.797086  0.661202 0.645161 0.322581        0.354839      0.647747     0.152062       0.855317      0.087677  62.0     5.0 drift     5     0     ok\n"}
+,{"stream_name":"stdout","time":6338.150282244,"data":"0.747138  0.709375 0.677419 0.258065        0.322581      0.700388     0.079979       0.739833      0.090275  62.0     5.0 drift     5     1     ok\n"}
+,{"stream_name":"stdout","time":6338.150284254,"data":"0.715921  0.544118 0.451613 0.354839        0.548387      0.519099     0.075731       0.745873      0.131104  62.0     5.0 drift     5     2     ok\n"}
+,{"stream_name":"stdout","time":6338.150286304,"data":"0.850156  0.741935 0.741935 0.258065        0.258065      0.735696     0.120652       0.835000      0.148671  62.0     5.0 drift    10     0     ok\n"}
+,{"stream_name":"stdout","time":6338.150288324,"data":"0.837669  0.740857 0.677419 0.193548        0.322581      0.735511     0.071160       0.859722      0.116070  62.0     5.0 drift    10     1     ok\n"}
+,{"stream_name":"stdout","time":6338.150291934,"data":"0.736733  0.578892 0.516129 0.354839        0.483871      0.566600     0.130036       0.771190      0.211474  62.0     5.0 drift    10     2     ok\n"}
+,{"stream_name":"stdout","time":6338.150294004,"data":"0.854318  0.692829 0.645161 0.258065        0.354839      0.679683     0.099384       0.896012      0.083258  62.0     5.0 drift    20     0     ok\n"}
+,{"stream_name":"stdout","time":6338.150296084,"data":"0.902185  0.837185 0.741935 0.064516        0.258065      0.838457     0.077339       0.931944      0.093830  62.0     5.0 drift    20     1     ok\n"}
+,{"stream_name":"stdout","time":6338.150298074,"data":"0.788762  0.691542 0.612903 0.225806        0.387097      0.689916     0.187037       0.825714      0.196583  62.0     5.0 drift    20     2     ok\n"}
+,{"stream_name":"stdout","time":6338.150300054,"data":"0.664219  0.599437 0.562500 0.362500        0.437500      0.600795     0.047858       0.682651      0.029391 160.0     5.0 spike  0.08     0     ok\n"}
+,{"stream_name":"stdout","time":6338.150302074,"data":"0.705937  0.649781 0.625000 0.325000        0.375000      0.645424     0.036511       0.715014      0.080238 160.0     5.0 spike  0.08     1     ok\n"}
+,{"stream_name":"stdout","time":6338.150304024,"data":"0.652187  0.635449 0.562500 0.287500        0.437500      0.632116     0.063085       0.663991      0.121741 160.0     5.0 spike  0.08     2     ok\n"}
+,{"stream_name":"stdout","time":6338.150306004,"data":"0.757500  0.718651 0.737500 0.300000        0.262500      0.716846     0.084589       0.778731      0.110875 160.0     5.0 spike   0.2     0     ok\n"}
+,{"stream_name":"stdout","time":6338.150311574,"data":"0.779375  0.718739 0.725000 0.287500        0.275000      0.709358     0.069729       0.772370      0.063316 160.0     5.0 spike   0.2     1     ok\n"}
+,{"stream_name":"stdout","time":6338.346115953,"data":"   fault nilai_representatif                            status                                                   nilai_diuji  TPR_pada_representatif  FPR_pada_representatif\n"}
+,{"stream_name":"stdout","time":6338.346154004,"data":"   drift                  20 tidak terdeteksi sampai batas uji                                               1, 2, 5, 10, 20                0.666667                0.182796\n"}
+,{"stream_name":"stdout","time":6338.346160104,"data":"   spike                 1.5 tidak terdeteksi sampai batas uji                                      0.08, 0.2, 0.4, 0.8, 1.5                0.854167                0.154167\n"}
+,{"stream_name":"stdout","time":6338.346163873,"data":"    bias                 5.0 tidak terdeteksi sampai batas uji                                      0.08, 0.5, 1.0, 2.0, 5.0                0.395833                0.366667\n"}
+,{"stream_name":"stdout","time":6338.346167333,"data":"hardware          (0.3, 0.2)                        terdeteksi (0.08, 0.05), (0.15, 0.1), (0.3, 0.2), (0.5, 0.3), (0.7, 0.5)                0.908333                0.083333\n"}
+,{"stream_name":"stdout","time":6339.19870083,"data":"[t+ 105.4 min] Bagian B OAT mulai\n"}
+,{"stream_name":"stdout","time":6339.19936502,"data":"[t+ 105.4 min] B | bins=4\n"}
+,{"stream_name":"stdout","time":6443.199838,"data":"[t+ 107.2 min] B | bins=6\n"}
+,{"stream_name":"stdout","time":6545.221173871,"data":"[t+ 108.9 min] B | bins=8\n"}
+,{"stream_name":"stdout","time":6651.403650589,"data":"[t+ 110.6 min] B | bins=12\n"}
+,{"stream_name":"stdout","time":6769.228442387,"data":"[t+ 112.6 min] B | bins=16\n"}
+,{"stream_name":"stdout","time":6888.275874302,"data":"[t+ 114.6 min] B | bins=24\n"}
+,{"stream_name":"stdout","time":7009.986363772,"data":"[t+ 116.6 min] B | h_ratio=0.5\n"}
+,{"stream_name":"stdout","time":7118.770155256,"data":"[t+ 118.4 min] B | h_ratio=0.75\n"}
+,{"stream_name":"stdout","time":7222.496419251,"data":"[t+ 120.2 min] B | h_ratio=1.0\n"}
+,{"stream_name":"stdout","time":7325.964607565,"data":"[t+ 121.9 min] B | h_ratio=1.5\n"}
+,{"stream_name":"stdout","time":7431.908331137,"data":"[t+ 123.6 min] B | h_ratio=2.0\n"}
+,{"stream_name":"stdout","time":7535.327669178,"data":"[t+ 125.4 min] B | range_sd=2.0\n"}
+,{"stream_name":"stdout","time":7640.281978568,"data":"[t+ 127.1 min] B | range_sd=2.5\n"}
+,{"stream_name":"stdout","time":7743.99570763,"data":"[t+ 128.8 min] B | range_sd=3.0\n"}
+,{"stream_name":"stdout","time":7848.273411875,"data":"[t+ 130.6 min] B | range_sd=4.0\n"}
+,{"stream_name":"stdout","time":7950.798700113,"data":"[t+ 132.3 min] B | r_ratio=0.1\n"}
+,{"stream_name":"stdout","time":8053.490242054,"data":"[t+ 134.0 min] B | r_ratio=0.2\n"}
+,{"stream_name":"stdout","time":8157.194877699,"data":"[t+ 135.7 min] B | r_ratio=0.3\n"}
+,{"stream_name":"stdout","time":8266.779477485,"data":"[t+ 137.6 min] B | r_ratio=0.5\n"}
+,{"stream_name":"stdout","time":8372.110590378,"data":"parameter  nilai  F1_macro      AUC    TPR    FPR\n"}
+,{"stream_name":"stdout","time":8372.110703098,"data":"     bins   4.00  0.720635 0.749375 0.6000 0.1500\n"}
+,{"stream_name":"stdout","time":8372.110715228,"data":"     bins   6.00  0.664012 0.693125 0.5500 0.2125\n"}
+,{"stream_name":"stdout","time":8372.110719968,"data":"     bins   8.00  0.684773 0.714375 0.5250 0.1375\n"}
+,{"stream_name":"stdout","time":8372.110724608,"data":"     bins  12.00  0.711373 0.741719 0.6500 0.2250\n"}
+,{"stream_name":"stdout","time":8372.110729448,"data":"     bins  16.00  0.668737 0.664219 0.5375 0.1875\n"}
+,{"stream_name":"stdout","time":8372.110759298,"data":"     bins  24.00  0.682540 0.707188 0.5625 0.1875\n"}
+,{"stream_name":"stdout","time":8372.110762948,"data":"  h_ratio   0.50  0.696154 0.717969 0.5875 0.1875\n"}
+,{"stream_name":"stdout","time":8372.110766078,"data":"  h_ratio   0.75  0.689370 0.715781 0.5750 0.1875\n"}
+,{"stream_name":"stdout","time":8372.110769168,"data":"  h_ratio   1.00  0.684773 0.714375 0.5250 0.1375\n"}
+,{"stream_name":"stdout","time":8372.110772188,"data":"  h_ratio   1.50  0.683494 0.715312 0.5750 0.2000\n"}
+,{"stream_name":"stdout","time":8372.110775298,"data":"  h_ratio   2.00  0.646174 0.702031 0.4875 0.1750\n"}
+,{"stream_name":"stdout","time":8372.110778348,"data":" range_sd   2.00  0.696970 0.730469 0.6000 0.2000\n"}
+,{"stream_name":"stdout","time":8372.110781398,"data":" range_sd   2.50  0.696154 0.721875 0.5875 0.1875\n"}
+,{"stream_name":"stdout","time":8372.110784548,"data":" range_sd   3.00  0.684773 0.714375 0.5250 0.1375\n"}
+,{"stream_name":"stdout","time":8372.110787568,"data":" range_sd   4.00  0.646174 0.714687 0.4875 0.1750\n"}
+,{"stream_name":"stdout","time":8372.110790668,"data":"  r_ratio   0.10  0.675663 0.700625 0.5500 0.1875\n"}
+,{"stream_name":"stdout","time":8372.110793768,"data":"  r_ratio   0.20  0.684773 0.714375 0.5250 0.1375\n"}
+,{"stream_name":"stdout","time":8372.110796628,"data":"  r_ratio   0.30  0.677611 0.748594 0.5750 0.2125\n"}
+,{"stream_name":"stdout","time":8372.110799358,"data":"  r_ratio   0.50  0.689370 0.712031 0.5750 0.1875\n"}
+,{"stream_name":"stdout","time":8372.133590287,"data":"[t+ 139.3 min] Bagian B interaksi bins x h_ratio\n"}
+,{"stream_name":"stdout","time":8372.134572157,"data":"[t+ 139.3 min] B | bins=4 h=0.5\n"}
+,{"stream_name":"stdout","time":8472.910850125,"data":"[t+ 141.0 min] B | bins=4 h=1.0\n"}
+,{"stream_name":"stdout","time":8573.047689989,"data":"[t+ 142.7 min] B | bins=4 h=1.5\n"}
+,{"stream_name":"stdout","time":8674.351846368,"data":"[t+ 144.3 min] B | bins=4 h=2.0\n"}
+,{"stream_name":"stdout","time":8778.243314612,"data":"[t+ 146.1 min] B | bins=8 h=0.5\n"}
+,{"stream_name":"stdout","time":8896.01351654,"data":"[t+ 148.0 min] B | bins=8 h=1.0\n"}
+,{"stream_name":"stdout","time":9015.21340862,"data":"[t+ 150.0 min] B | bins=8 h=1.5\n"}
+,{"stream_name":"stdout","time":9146.965870035,"data":"[t+ 152.2 min] B | bins=8 h=2.0\n"}
+,{"stream_name":"stdout","time":9251.665533537,"data":"[t+ 154.0 min] B | bins=12 h=0.5\n"}
+,{"stream_name":"stdout","time":9360.289067619,"data":"[t+ 155.8 min] B | bins=12 h=1.0\n"}
+,{"stream_name":"stdout","time":9469.44614076,"data":"[t+ 157.6 min] B | bins=12 h=1.5\n"}
+,{"stream_name":"stdout","time":9577.065302174,"data":"[t+ 159.4 min] B | bins=12 h=2.0\n"}
+,{"stream_name":"stdout","time":9685.249837138,"data":"[t+ 161.2 min] B | bins=16 h=0.5\n"}
+,{"stream_name":"stdout","time":9797.985869475,"data":"[t+ 163.1 min] B | bins=16 h=1.0\n"}
+,{"stream_name":"stdout","time":9911.167854483,"data":"[t+ 165.0 min] B | bins=16 h=1.5\n"}
+,{"stream_name":"stdout","time":10026.617897541,"data":"[t+ 166.9 min] B | bins=16 h=2.0\n"}
+,{"stream_name":"stdout","time":10147.242695722,"data":"[t+ 168.9 min] Validasi N=700 | {'bins': 4, 'h_ratio': 1.0, 'range_sd': 3.0, 'r_ratio': 0.2}\n"}
+,{"stream_name":"stdout","time":10293.890911777,"data":"[t+ 171.3 min] Validasi S1 default | {'bins': 4, 'h_ratio': 1.0, 'range_sd': 3.0, 'r_ratio': 0.2}\n"}
+,{"stream_name":"stdout","time":10398.482915831,"data":"[t+ 173.1 min] Validasi N=700 | {'bins': 12, 'h_ratio': 1.0, 'range_sd': 3.0, 'r_ratio': 0.2}\n"}
+,{"stream_name":"stdout","time":10600.17909761,"data":"[t+ 176.4 min] Validasi S1 default | {'bins': 12, 'h_ratio': 1.0, 'range_sd': 3.0, 'r_ratio': 0.2}\n"}
+,{"stream_name":"stdout","time":10697.473386136,"data":"[t+ 178.1 min] Validasi N=700 | {'bins': 8, 'h_ratio': 1.0, 'range_sd': 2.0, 'r_ratio': 0.2}\n"}
+,{"stream_name":"stdout","time":10862.502789409,"data":"[t+ 180.8 min] Validasi S1 default | {'bins': 8, 'h_ratio': 1.0, 'range_sd': 2.0, 'r_ratio': 0.2}\n"}
+,{"stream_name":"stdout","time":10951.73877783,"data":" bins  h_ratio  range_sd  r_ratio        uji      AUC  F1_macro      TPR      FPR  disebut_normal  F1_fold_mean  F1_fold_std  AUC_fold_mean  AUC_fold_std   n  k_fold\n"}
+,{"stream_name":"stdout","time":10951.73883027,"data":"    4      1.0       3.0      0.2       N700 0.808063  0.765854 0.625000 0.083333        0.375000      0.768658     0.055394       0.813136      0.039536 144       5\n"}
+,{"stream_name":"stdout","time":10951.73883557,"data":"    4      1.0       3.0      0.2 S1_default 0.926563  0.843695 0.862500 0.175000        0.137500      0.842116     0.051289       0.930680      0.038279 160       5\n"}
+,{"stream_name":"stdout","time":10951.73884004,"data":"   12      1.0       3.0      0.2       N700 0.840085  0.789062 0.680556 0.097222        0.319444      0.787767     0.071848       0.855194      0.077660 144       5\n"}
+,{"stream_name":"stdout","time":10951.73884429,"data":"   12      1.0       3.0      0.2 S1_default 0.854531  0.793354 0.750000 0.162500        0.250000      0.789385     0.068147       0.861877      0.056834 160       5\n"}
+,{"stream_name":"stdout","time":10951.73884848,"data":"    8      1.0       2.0      0.2       N700 0.835069  0.780044 0.638889 0.069444        0.361111      0.782830     0.073867       0.840857      0.079149 144       5\n"}
+,{"stream_name":"stdout","time":10951.73885264,"data":"    8      1.0       2.0      0.2 S1_default 0.867656  0.824973 0.812500 0.162500        0.187500      0.824754     0.074800       0.874852      0.048164 160       5\n"}
+,{"stream_name":"stdout","time":10951.805954354,"data":"# Ringkasan sensitivitas parameter\n"}
+,{"stream_name":"stdout","time":10951.806011324,"data":"\n"}
+,{"stream_name":"stdout","time":10951.806016134,"data":"- Mode: FULL\n"}
+,{"stream_name":"stdout","time":10951.806019394,"data":"- Window/kelas: 80 | fold: 5 | iterasi LM: 40 | seed: 3\n"}
+,{"stream_name":"stdout","time":10951.806022314,"data":"- Default JSD: bins=8, h_ratio=1.0, range_sd=3.0, r_ratio=0.2\n"}
+,{"stream_name":"stdout","time":10951.806025164,"data":"\n"}
+,{"stream_name":"stdout","time":10951.806027864,"data":"## Nilai representatif fault\n"}
+,{"stream_name":"stdout","time":10951.806030604,"data":"\n"}
+,{"stream_name":"stdout","time":10951.806034124,"data":"- **drift**: 20 — tidak terdeteksi sampai batas uji (TPR 0.667; FPR 0.183)\n"}
+,{"stream_name":"stdout","time":10951.806039614,"data":"- **spike**: 1.5 — tidak terdeteksi sampai batas uji (TPR 0.854; FPR 0.154)\n"}
+,{"stream_name":"stdout","time":10951.806044644,"data":"- **bias**: 5.0 — tidak terdeteksi sampai batas uji (TPR 0.396; FPR 0.367)\n"}
+,{"stream_name":"stdout","time":10951.806049444,"data":"- **hardware**: (0.3, 0.2) — terdeteksi (TPR 0.908; FPR 0.083)\n"}
+,{"stream_name":"stdout","time":10951.806053934,"data":"\n"}
+,{"stream_name":"stdout","time":10951.806091284,"data":"## Rekomendasi soft binning\n"}
+,{"stream_name":"stdout","time":10951.806098534,"data":"\n"}
+,{"stream_name":"stdout","time":10951.806102874,"data":"- `bins`: 8.0\n"}
+,{"stream_name":"stdout","time":10951.806107164,"data":"- `h_ratio`: 0.625\n"}
+,{"stream_name":"stdout","time":10951.806111524,"data":"- `range_sd`: 2.25\n"}
+,{"stream_name":"stdout","time":10951.806115864,"data":"- `r_ratio`: 0.35\n"}
+,{"stream_name":"stdout","time":10951.806120924,"data":"\n"}
+,{"stream_name":"stdout","time":10951.806125374,"data":"- F1 default (8 bins): 0.6848; F1 terbaik grid: 0.7206\n"}
+,{"stream_name":"stdout","time":10951.806149774,"data":"\n"}
+,{"stream_name":"stdout","time":10951.806153244,"data":"## Catatan\n"}
+,{"stream_name":"stdout","time":10951.806156504,"data":"\n"}
+,{"stream_name":"stdout","time":10951.806159454,"data":"- Fault kecil (bias 0,08 poin; spike 0,08 SD; drift 3 poin/episode) memang berada di bawah ambang deteksi.\n"}
+,{"stream_name":"stdout","time":10951.806162834,"data":"- Hardware malfunction paling mudah terdeteksi karena merusak distribusi secara kasar.\n"}
+,{"stream_name":"stdout","time":10951.806166184,"data":"- Rekomendasi binning dipilih dari plateau, bukan nilai maksimum tunggal.\n"}
+,{"stream_name":"stdout","time":10951.806169354,"data":"\n"}
+,{"stream_name":"stderr","time":10957.431279415,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":10957.431317725,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":10957.654357844,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":10957.654396964,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":10958.440158947,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":10958.531117198,"data":"[NbConvertApp] Writing 337274 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":10961.625215337,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":10962.366534674,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":10962.366591484,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":10962.366783534,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":10962.367148024,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":10962.367191174,"data":"[NbConvertApp] Writing 498565 bytes to __results__.html\n"}
+]

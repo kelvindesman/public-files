@@ -267,6 +267,27 @@ tetap tersedia di `Bahan_Sidang.md` dan arsip kernel penelitian, tetapi
 sengaja tidak dimunculkan di notebook sidang supaya klaim tetap satu
 protokol: ANN-LM. Sebutkan sumbernya, jangan mengarang angka baru.
 
+**Q46. Mengapa dari uji sensitivitas hanya hardware malfunction yang terdeteksi?**
+Karena hardware merusak distribusi secara kasar: dengan parameter bawaan
+(0,08; 0,05) AUC sudah 0,897, dan pada (0,3; 0,2) TPR 0,908 dengan FPR 0,083.
+Fault halus tetap di bawah ambang: drift 20 poin/hari hanya TPR 0,667
+(FPR 0,183), spike 1,5 SD TPR 0,854 (FPR 0,154). Rujukan: `12`,
+`12_nilai_representatif.csv`.
+
+**Q47. Mengapa bias konstan tidak terdeteksi sama sekali?**
+Bukan karena nilainya kecil, tetapi karena representasi. *Centroid shifting*
+mengurangi rata-rata tiap vektor sebelum entropi dihitung, sehingga offset tetap
+hilang. AUC bias tetap sekitar 0,50 dari 0,08 sampai 5 poin. Untuk mendeteksi
+bias perlu fitur level (rata-rata window) atau tanpa centroid shifting; itu di
+luar lingkup notebook 12. Rujukan: `12_sweep_fault_param.csv`.
+
+**Q48. Setelan soft binning mana yang disarankan?**
+Yang benar-benar diuji: `bins=4`, `h_ratio=1,0`, `range_sd=3,0`,
+`r_ratio=0,2`; F1 rata-rata validasi N700/S1 = 0,805 (N700 0,766; S1 0,844).
+Di N200, `bins=4`, `h_ratio=0,5` sedikit lebih tinggi (F1 0,735), tetapi belum
+divalidasi N700. Jangan mengarang nilai interpolasi. Rujukan: `12`,
+`12_rekomendasi.csv`.
+
 ---
 
 ## Kalimat siap pakai (hafalkan tiga ini)

@@ -108,6 +108,7 @@ dihapus dari repo; file aslinya tetap ada di kernel Kaggle masing-masing.
 | 09 | `ann-lm-vs-bayesian-vs-ga-paper-pmdc` | 3 | private |
 | 10 | `jsd-vs-edm-dengan-ann-lm-asli-paper-pmdc` | 4 | private |
 | 11 | `jsd-edm-ann-lm-lengkap-q3` | 3 | private |
+| 12 | `sensitivitas-parameter-fault-dan-jsd` | 1 | private |
 | — | `ilustrasi-data-akuisisi-dan-fault` | 3 | private |
 
 Notebook sidang (semua private):
@@ -118,9 +119,15 @@ Notebook sidang (semua private):
 | `00_Peta_Program.ipynb` | `peta-program-deteksi-fault-4-sensor-kelembaban` | digantikan |
 | `01_Alur_Sistem.ipynb` | `alur-sistem-deteksi-fault-4-sensor-kelembaban` | digantikan |
 | `02_Hasil.ipynb` | `hasil-deteksi-fault-4-sensor-kelembaban` | digantikan |
+| `12_Sensitivitas_Parameter.ipynb` | `sensitivitas-parameter-fault-dan-jsd` | pendukung (bukan sidang) |
 
 Status private dan display name `Riset Deteksi Fault 4 Sensor Kelembaban`
 diverifikasi di Kaggle pada 2026-10-26.
+
+Hasil eksperimen 12 disimpan di `hasil12/exports/` (CSV + PNG + ringkasan).
+Angka pendukung: bias AUC ~0,50 (0,08–5 poin) karena centroid shifting;
+hardware (0,3; 0,2) TPR 0,908/FPR 0,083; rekomendasi binning diuji dan
+divalidasi N700/S1 (`12_rekomendasi.csv`).
 
 ## Catatan angka yang sering tertukar
 
