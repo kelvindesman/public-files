@@ -1,0 +1,535 @@
+[{"stream_name":"stderr","time":6.350168961,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":6.350217823,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":7.310440266,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.310471867,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.310477675,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.310481841,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":7.983827227,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.983886596,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.983895405,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.983899624,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":10.076003046,"data":"Mesin : x86_64 | CPU: 4\n"}
+,{"stream_name":"stdout","time":10.076031772,"data":"Mode: FULL | metode=['JSD', 'EDM'] | window/kelas=80 | fold=5 | iterasi LM=40 | seed=3\n"}
+,{"stream_name":"stdout","time":10.276082997,"data":"Sumber data: unduh -\u003e https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv\n"}
+,{"stream_name":"stdout","time":18.506984069,"data":"Bentuk data siap pakai: (28173, 4) | durasi hari: 97.8\n"}
+,{"stream_name":"stdout","time":18.507050078,"data":"Sensor disuntik S3: SD deret 12.28 poin | rentang 2.1-78.5\n"}
+,{"stream_name":"stdout","time":19.60998857,"data":"Kepadatan spike relatif: 1.52% titik (target 1.52%)\n"}
+,{"stream_name":"stdout","time":19.610021346,"data":"bias_episode=5.0: 31 window berlabel fault dari 280\n"}
+,{"stream_name":"stdout","time":19.610027819,"data":"drift=9.0: 31 window berlabel fault dari 280\n"}
+,{"stream_name":"stdout","time":19.610032504,"data":"spike_rel=0.3: 268 window berlabel fault dari 280\n"}
+,{"stream_name":"stdout","time":19.610036610999998,"data":"combo:drift+spike+bias+hardware=sedang: 27 window berlabel fault dari 280\n"}
+,{"stream_name":"stdout","time":21.420261614,"data":"[t+   0.2 min] Cache fitur normal JSD N=200\n"}
+,{"stream_name":"stdout","time":36.968513902,"data":"JSD (80, 60)\n"}
+,{"stream_name":"stdout","time":36.968560297,"data":"[t+   0.4 min] Cache fitur normal EDM N=200\n"}
+,{"stream_name":"stdout","time":43.543347283,"data":"EDM (80, 60)\n"}
+,{"stream_name":"stdout","time":43.573588561,"data":"[t+   0.6 min] Sapuan fault tunggal mulai\n"}
+,{"stream_name":"stdout","time":43.574704764,"data":"[t+   0.6 min] tunggal | JSD | bias=0.08 | seed=0\n"}
+,{"stream_name":"stdout","time":156.791118554,"data":"[t+   2.4 min] tunggal | JSD | bias=0.08 | seed=1\n"}
+,{"stream_name":"stdout","time":270.107012612,"data":"[t+   4.3 min] tunggal | JSD | bias=0.08 | seed=2\n"}
+,{"stream_name":"stdout","time":383.317098283,"data":"[t+   6.2 min] tunggal | JSD | bias=0.5 | seed=0\n"}
+,{"stream_name":"stdout","time":497.183246466,"data":"[t+   8.1 min] tunggal | JSD | bias=0.5 | seed=1\n"}
+,{"stream_name":"stdout","time":611.1909172,"data":"[t+  10.0 min] tunggal | JSD | bias=0.5 | seed=2\n"}
+,{"stream_name":"stdout","time":724.883105353,"data":"[t+  11.9 min] tunggal | JSD | bias=1.0 | seed=0\n"}
+,{"stream_name":"stdout","time":838.717308623,"data":"[t+  13.8 min] tunggal | JSD | bias=1.0 | seed=1\n"}
+,{"stream_name":"stdout","time":952.181950872,"data":"[t+  15.7 min] tunggal | JSD | bias=1.0 | seed=2\n"}
+,{"stream_name":"stdout","time":1065.224349112,"data":"[t+  17.6 min] tunggal | JSD | bias=2.0 | seed=0\n"}
+,{"stream_name":"stdout","time":1178.883193183,"data":"[t+  19.5 min] tunggal | JSD | bias=2.0 | seed=1\n"}
+,{"stream_name":"stdout","time":1292.141525372,"data":"[t+  21.4 min] tunggal | JSD | bias=2.0 | seed=2\n"}
+,{"stream_name":"stdout","time":1405.546119441,"data":"[t+  23.3 min] tunggal | JSD | bias=5.0 | seed=0\n"}
+,{"stream_name":"stdout","time":1519.269053507,"data":"[t+  25.2 min] tunggal | JSD | bias=5.0 | seed=1\n"}
+,{"stream_name":"stdout","time":1632.8990311,"data":"[t+  27.0 min] tunggal | JSD | bias=5.0 | seed=2\n"}
+,{"stream_name":"stdout","time":1746.221028919,"data":"[t+  28.9 min] tunggal | JSD | bias_episode=2.0 | seed=0\n"}
+,{"stream_name":"stdout","time":1847.060938952,"data":"[t+  30.6 min] tunggal | JSD | bias_episode=2.0 | seed=1\n"}
+,{"stream_name":"stdout","time":1948.165665319,"data":"[t+  32.3 min] tunggal | JSD | bias_episode=2.0 | seed=2\n"}
+,{"stream_name":"stdout","time":2049.393219395,"data":"[t+  34.0 min] tunggal | JSD | bias_episode=5.0 | seed=0\n"}
+,{"stream_name":"stdout","time":2150.471426336,"data":"[t+  35.7 min] tunggal | JSD | bias_episode=5.0 | seed=1\n"}
+,{"stream_name":"stdout","time":2251.779227596,"data":"[t+  37.4 min] tunggal | JSD | bias_episode=5.0 | seed=2\n"}
+,{"stream_name":"stdout","time":2352.866837204,"data":"[t+  39.0 min] tunggal | JSD | bias_episode=9.0 | seed=0\n"}
+,{"stream_name":"stdout","time":2453.842299609,"data":"[t+  40.7 min] tunggal | JSD | bias_episode=9.0 | seed=1\n"}
+,{"stream_name":"stdout","time":2555.037904426,"data":"[t+  42.4 min] tunggal | JSD | bias_episode=9.0 | seed=2\n"}
+,{"stream_name":"stdout","time":2656.041552617,"data":"[t+  44.1 min] tunggal | JSD | drift=2.0 | seed=0\n"}
+,{"stream_name":"stdout","time":2756.855075971,"data":"[t+  45.8 min] tunggal | JSD | drift=2.0 | seed=1\n"}
+,{"stream_name":"stdout","time":2857.579930336,"data":"[t+  47.5 min] tunggal | JSD | drift=2.0 | seed=2\n"}
+,{"stream_name":"stdout","time":2958.327093023,"data":"[t+  49.1 min] tunggal | JSD | drift=3.0 | seed=0\n"}
+,{"stream_name":"stdout","time":3058.670772427,"data":"[t+  50.8 min] tunggal | JSD | drift=3.0 | seed=1\n"}
+,{"stream_name":"stdout","time":3159.352156056,"data":"[t+  52.5 min] tunggal | JSD | drift=3.0 | seed=2\n"}
+,{"stream_name":"stdout","time":3259.916588183,"data":"[t+  54.2 min] tunggal | JSD | drift=5.0 | seed=0\n"}
+,{"stream_name":"stdout","time":3361.120947612,"data":"[t+  55.9 min] tunggal | JSD | drift=5.0 | seed=1\n"}
+,{"stream_name":"stdout","time":3462.207933555,"data":"[t+  57.5 min] tunggal | JSD | drift=5.0 | seed=2\n"}
+,{"stream_name":"stdout","time":3563.976589094,"data":"[t+  59.2 min] tunggal | JSD | drift=9.0 | seed=0\n"}
+,{"stream_name":"stdout","time":3665.827779583,"data":"[t+  60.9 min] tunggal | JSD | drift=9.0 | seed=1\n"}
+,{"stream_name":"stdout","time":3767.370268856,"data":"[t+  62.6 min] tunggal | JSD | drift=9.0 | seed=2\n"}
+,{"stream_name":"stdout","time":3868.997200493,"data":"[t+  64.3 min] tunggal | JSD | drift=60.0 | seed=0\n"}
+,{"stream_name":"stdout","time":3969.739072316,"data":"[t+  66.0 min] tunggal | JSD | drift=60.0 | seed=1\n"}
+,{"stream_name":"stdout","time":4070.508038425,"data":"[t+  67.7 min] tunggal | JSD | drift=60.0 | seed=2\n"}
+,{"stream_name":"stdout","time":4171.513603457,"data":"[t+  69.4 min] tunggal | JSD | spike_sd=0.08 | seed=0\n"}
+,{"stream_name":"stdout","time":4284.714551291,"data":"[t+  71.2 min] tunggal | JSD | spike_sd=0.08 | seed=1\n"}
+,{"stream_name":"stdout","time":4397.788967742,"data":"[t+  73.1 min] tunggal | JSD | spike_sd=0.08 | seed=2\n"}
+,{"stream_name":"stdout","time":4511.148192153,"data":"[t+  75.0 min] tunggal | JSD | spike_sd=0.2 | seed=0\n"}
+,{"stream_name":"stdout","time":4624.412143439,"data":"[t+  76.9 min] tunggal | JSD | spike_sd=0.2 | seed=1\n"}
+,{"stream_name":"stdout","time":4738.466777682,"data":"[t+  78.8 min] tunggal | JSD | spike_sd=0.2 | seed=2\n"}
+,{"stream_name":"stdout","time":4852.098571207,"data":"[t+  80.7 min] tunggal | JSD | spike_sd=0.4 | seed=0\n"}
+,{"stream_name":"stdout","time":4965.49825765,"data":"[t+  82.6 min] tunggal | JSD | spike_sd=0.4 | seed=1\n"}
+,{"stream_name":"stdout","time":5079.497046951,"data":"[t+  84.5 min] tunggal | JSD | spike_sd=0.4 | seed=2\n"}
+,{"stream_name":"stdout","time":5193.16678976,"data":"[t+  86.4 min] tunggal | JSD | spike_sd=0.8 | seed=0\n"}
+,{"stream_name":"stdout","time":5302.486007295,"data":"[t+  88.2 min] tunggal | JSD | spike_sd=0.8 | seed=1\n"}
+,{"stream_name":"stdout","time":5415.818181359,"data":"[t+  90.1 min] tunggal | JSD | spike_sd=0.8 | seed=2\n"}
+,{"stream_name":"stdout","time":5529.866842769,"data":"[t+  92.0 min] tunggal | JSD | spike_sd=1.5 | seed=0\n"}
+,{"stream_name":"stdout","time":5626.485431869,"data":"[t+  93.6 min] tunggal | JSD | spike_sd=1.5 | seed=1\n"}
+,{"stream_name":"stdout","time":5740.80237573,"data":"[t+  95.5 min] tunggal | JSD | spike_sd=1.5 | seed=2\n"}
+,{"stream_name":"stdout","time":5855.35870104,"data":"[t+  97.4 min] tunggal | JSD | spike_rel=0.15 | seed=0\n"}
+,{"stream_name":"stdout","time":5968.641098253,"data":"[t+  99.3 min] tunggal | JSD | spike_rel=0.15 | seed=1\n"}
+,{"stream_name":"stdout","time":6081.882798929,"data":"[t+ 101.2 min] tunggal | JSD | spike_rel=0.15 | seed=2\n"}
+,{"stream_name":"stdout","time":6195.267824647,"data":"[t+ 103.1 min] tunggal | JSD | spike_rel=0.3 | seed=0\n"}
+,{"stream_name":"stdout","time":6308.988670791,"data":"[t+ 105.0 min] tunggal | JSD | spike_rel=0.3 | seed=1\n"}
+,{"stream_name":"stdout","time":6422.367827398,"data":"[t+ 106.9 min] tunggal | JSD | spike_rel=0.3 | seed=2\n"}
+,{"stream_name":"stdout","time":6535.461223683,"data":"[t+ 108.8 min] tunggal | JSD | spike_rel=0.5 | seed=0\n"}
+,{"stream_name":"stdout","time":6649.193353389,"data":"[t+ 110.7 min] tunggal | JSD | spike_rel=0.5 | seed=1\n"}
+,{"stream_name":"stdout","time":6763.406490666,"data":"[t+ 112.6 min] tunggal | JSD | spike_rel=0.5 | seed=2\n"}
+,{"stream_name":"stdout","time":6874.559635875,"data":"[t+ 114.4 min] tunggal | JSD | hardware=(0.08; 0.05) | seed=0\n"}
+,{"stream_name":"stdout","time":6979.491289186,"data":"[t+ 116.2 min] tunggal | JSD | hardware=(0.08; 0.05) | seed=1\n"}
+,{"stream_name":"stdout","time":7076.542629631,"data":"[t+ 117.8 min] tunggal | JSD | hardware=(0.08; 0.05) | seed=2\n"}
+,{"stream_name":"stdout","time":7174.116987587,"data":"[t+ 119.4 min] tunggal | JSD | hardware=(0.15; 0.1) | seed=0\n"}
+,{"stream_name":"stdout","time":7282.237548717,"data":"[t+ 121.2 min] tunggal | JSD | hardware=(0.15; 0.1) | seed=1\n"}
+,{"stream_name":"stdout","time":7378.157148257,"data":"[t+ 122.8 min] tunggal | JSD | hardware=(0.15; 0.1) | seed=2\n"}
+,{"stream_name":"stdout","time":7449.544129717,"data":"[t+ 124.0 min] tunggal | JSD | hardware=(0.3; 0.2) | seed=0\n"}
+,{"stream_name":"stdout","time":7534.240951152,"data":"[t+ 125.4 min] tunggal | JSD | hardware=(0.3; 0.2) | seed=1\n"}
+,{"stream_name":"stdout","time":7582.325534286,"data":"[t+ 126.2 min] tunggal | JSD | hardware=(0.3; 0.2) | seed=2\n"}
+,{"stream_name":"stdout","time":7649.825963237,"data":"[t+ 127.3 min] tunggal | JSD | hardware=(0.5; 0.3) | seed=0\n"}
+,{"stream_name":"stdout","time":7717.007919872,"data":"[t+ 128.4 min] tunggal | JSD | hardware=(0.5; 0.3) | seed=1\n"}
+,{"stream_name":"stdout","time":7772.519750175,"data":"[t+ 129.4 min] tunggal | JSD | hardware=(0.5; 0.3) | seed=2\n"}
+,{"stream_name":"stdout","time":7840.001686428,"data":"[t+ 130.5 min] tunggal | JSD | hardware=(0.7; 0.5) | seed=0\n"}
+,{"stream_name":"stdout","time":7920.123374251,"data":"[t+ 131.8 min] tunggal | JSD | hardware=(0.7; 0.5) | seed=1\n"}
+,{"stream_name":"stdout","time":8019.838496972,"data":"[t+ 133.5 min] tunggal | JSD | hardware=(0.7; 0.5) | seed=2\n"}
+,{"stream_name":"stdout","time":8070.419635523,"data":"[t+ 134.3 min] tunggal | EDM | bias=0.08 | seed=0\n"}
+,{"stream_name":"stdout","time":8175.178193891,"data":"[t+ 136.1 min] tunggal | EDM | bias=0.08 | seed=1\n"}
+,{"stream_name":"stdout","time":8279.918362171,"data":"[t+ 137.8 min] tunggal | EDM | bias=0.08 | seed=2\n"}
+,{"stream_name":"stdout","time":8384.846941965,"data":"[t+ 139.6 min] tunggal | EDM | bias=0.5 | seed=0\n"}
+,{"stream_name":"stdout","time":8489.678330064,"data":"[t+ 141.3 min] tunggal | EDM | bias=0.5 | seed=1\n"}
+,{"stream_name":"stdout","time":8594.603959731,"data":"[t+ 143.1 min] tunggal | EDM | bias=0.5 | seed=2\n"}
+,{"stream_name":"stdout","time":8699.190934906,"data":"[t+ 144.8 min] tunggal | EDM | bias=1.0 | seed=0\n"}
+,{"stream_name":"stdout","time":8803.902722359,"data":"[t+ 146.6 min] tunggal | EDM | bias=1.0 | seed=1\n"}
+,{"stream_name":"stdout","time":8908.477932056,"data":"[t+ 148.3 min] tunggal | EDM | bias=1.0 | seed=2\n"}
+,{"stream_name":"stdout","time":9013.057124389,"data":"[t+ 150.0 min] tunggal | EDM | bias=2.0 | seed=0\n"}
+,{"stream_name":"stdout","time":9118.010596539,"data":"[t+ 151.8 min] tunggal | EDM | bias=2.0 | seed=1\n"}
+,{"stream_name":"stdout","time":9222.733674246,"data":"[t+ 153.5 min] tunggal | EDM | bias=2.0 | seed=2\n"}
+,{"stream_name":"stdout","time":9327.783900077,"data":"[t+ 155.3 min] tunggal | EDM | bias=5.0 | seed=0\n"}
+,{"stream_name":"stdout","time":9432.736697945,"data":"[t+ 157.0 min] tunggal | EDM | bias=5.0 | seed=1\n"}
+,{"stream_name":"stdout","time":9537.333190498,"data":"[t+ 158.8 min] tunggal | EDM | bias=5.0 | seed=2\n"}
+,{"stream_name":"stdout","time":9642.122698949,"data":"[t+ 160.5 min] tunggal | EDM | bias_episode=2.0 | seed=0\n"}
+,{"stream_name":"stdout","time":9739.436603764,"data":"[t+ 162.2 min] tunggal | EDM | bias_episode=2.0 | seed=1\n"}
+,{"stream_name":"stdout","time":9836.741641705,"data":"[t+ 163.8 min] tunggal | EDM | bias_episode=2.0 | seed=2\n"}
+,{"stream_name":"stdout","time":9933.926968768,"data":"[t+ 165.4 min] tunggal | EDM | bias_episode=5.0 | seed=0\n"}
+,{"stream_name":"stdout","time":10031.226285288,"data":"[t+ 167.0 min] tunggal | EDM | bias_episode=5.0 | seed=1\n"}
+,{"stream_name":"stdout","time":10128.161014359,"data":"[t+ 168.6 min] tunggal | EDM | bias_episode=5.0 | seed=2\n"}
+,{"stream_name":"stdout","time":10225.387812184,"data":"[t+ 170.3 min] tunggal | EDM | bias_episode=9.0 | seed=0\n"}
+,{"stream_name":"stdout","time":10322.658949992,"data":"[t+ 171.9 min] tunggal | EDM | bias_episode=9.0 | seed=1\n"}
+,{"stream_name":"stdout","time":10419.870941766,"data":"[t+ 173.5 min] tunggal | EDM | bias_episode=9.0 | seed=2\n"}
+,{"stream_name":"stdout","time":10517.398769338,"data":"[t+ 175.1 min] tunggal | EDM | drift=2.0 | seed=0\n"}
+,{"stream_name":"stdout","time":10614.548893311,"data":"[t+ 176.7 min] tunggal | EDM | drift=2.0 | seed=1\n"}
+,{"stream_name":"stdout","time":10711.889746413,"data":"[t+ 178.4 min] tunggal | EDM | drift=2.0 | seed=2\n"}
+,{"stream_name":"stdout","time":10808.866106236,"data":"[t+ 180.0 min] tunggal | EDM | drift=3.0 | seed=0\n"}
+,{"stream_name":"stdout","time":10905.474653243,"data":"[t+ 181.6 min] tunggal | EDM | drift=3.0 | seed=1\n"}
+,{"stream_name":"stdout","time":11002.540109892,"data":"[t+ 183.2 min] tunggal | EDM | drift=3.0 | seed=2\n"}
+,{"stream_name":"stdout","time":11101.12474066,"data":"[t+ 184.9 min] tunggal | EDM | drift=5.0 | seed=0\n"}
+,{"stream_name":"stdout","time":11199.660919344,"data":"[t+ 186.5 min] tunggal | EDM | drift=5.0 | seed=1\n"}
+,{"stream_name":"stdout","time":11297.734804539,"data":"[t+ 188.1 min] tunggal | EDM | drift=5.0 | seed=2\n"}
+,{"stream_name":"stdout","time":11395.164283745,"data":"[t+ 189.8 min] tunggal | EDM | drift=9.0 | seed=0\n"}
+,{"stream_name":"stdout","time":11492.775063972,"data":"[t+ 191.4 min] tunggal | EDM | drift=9.0 | seed=1\n"}
+,{"stream_name":"stdout","time":11590.086532745,"data":"[t+ 193.0 min] tunggal | EDM | drift=9.0 | seed=2\n"}
+,{"stream_name":"stdout","time":11687.369383457,"data":"[t+ 194.6 min] tunggal | EDM | drift=60.0 | seed=0\n"}
+,{"stream_name":"stdout","time":11784.83230316,"data":"[t+ 196.2 min] tunggal | EDM | drift=60.0 | seed=1\n"}
+,{"stream_name":"stdout","time":11881.901773044,"data":"[t+ 197.9 min] tunggal | EDM | drift=60.0 | seed=2\n"}
+,{"stream_name":"stdout","time":11979.110424545,"data":"[t+ 199.5 min] tunggal | EDM | spike_sd=0.08 | seed=0\n"}
+,{"stream_name":"stdout","time":12084.546920961,"data":"[t+ 201.2 min] tunggal | EDM | spike_sd=0.08 | seed=1\n"}
+,{"stream_name":"stdout","time":12189.779300717,"data":"[t+ 203.0 min] tunggal | EDM | spike_sd=0.08 | seed=2\n"}
+,{"stream_name":"stdout","time":12294.703943762,"data":"[t+ 204.7 min] tunggal | EDM | spike_sd=0.2 | seed=0\n"}
+,{"stream_name":"stdout","time":12399.463217676,"data":"[t+ 206.5 min] tunggal | EDM | spike_sd=0.2 | seed=1\n"}
+,{"stream_name":"stdout","time":12504.388259668,"data":"[t+ 208.2 min] tunggal | EDM | spike_sd=0.2 | seed=2\n"}
+,{"stream_name":"stdout","time":12608.887190187,"data":"[t+ 210.0 min] tunggal | EDM | spike_sd=0.4 | seed=0\n"}
+,{"stream_name":"stdout","time":12713.583621988,"data":"[t+ 211.7 min] tunggal | EDM | spike_sd=0.4 | seed=1\n"}
+,{"stream_name":"stdout","time":12817.925964054,"data":"[t+ 213.5 min] tunggal | EDM | spike_sd=0.4 | seed=2\n"}
+,{"stream_name":"stdout","time":12922.594806425,"data":"[t+ 215.2 min] tunggal | EDM | spike_sd=0.8 | seed=0\n"}
+,{"stream_name":"stdout","time":13027.333985351,"data":"[t+ 217.0 min] tunggal | EDM | spike_sd=0.8 | seed=1\n"}
+,{"stream_name":"stdout","time":13131.723368236,"data":"[t+ 218.7 min] tunggal | EDM | spike_sd=0.8 | seed=2\n"}
+,{"stream_name":"stdout","time":13236.258989544,"data":"[t+ 220.4 min] tunggal | EDM | spike_sd=1.5 | seed=0\n"}
+,{"stream_name":"stdout","time":13340.759755139,"data":"[t+ 222.2 min] tunggal | EDM | spike_sd=1.5 | seed=1\n"}
+,{"stream_name":"stdout","time":13445.326407268,"data":"[t+ 223.9 min] tunggal | EDM | spike_sd=1.5 | seed=2\n"}
+,{"stream_name":"stdout","time":13550.033732894,"data":"[t+ 225.7 min] tunggal | EDM | spike_rel=0.15 | seed=0\n"}
+,{"stream_name":"stdout","time":13654.615974258,"data":"[t+ 227.4 min] tunggal | EDM | spike_rel=0.15 | seed=1\n"}
+,{"stream_name":"stdout","time":13759.286452412,"data":"[t+ 229.2 min] tunggal | EDM | spike_rel=0.15 | seed=2\n"}
+,{"stream_name":"stdout","time":13863.909299631,"data":"[t+ 230.9 min] tunggal | EDM | spike_rel=0.3 | seed=0\n"}
+,{"stream_name":"stdout","time":13968.842941165,"data":"[t+ 232.6 min] tunggal | EDM | spike_rel=0.3 | seed=1\n"}
+,{"stream_name":"stdout","time":14073.447205901,"data":"[t+ 234.4 min] tunggal | EDM | spike_rel=0.3 | seed=2\n"}
+,{"stream_name":"stdout","time":14178.283255739,"data":"[t+ 236.1 min] tunggal | EDM | spike_rel=0.5 | seed=0\n"}
+,{"stream_name":"stdout","time":14283.192976484,"data":"[t+ 237.9 min] tunggal | EDM | spike_rel=0.5 | seed=1\n"}
+,{"stream_name":"stdout","time":14388.141293621,"data":"[t+ 239.6 min] tunggal | EDM | spike_rel=0.5 | seed=2\n"}
+,{"stream_name":"stdout","time":14493.341854986,"data":"[t+ 241.4 min] tunggal | EDM | hardware=(0.08; 0.05) | seed=0\n"}
+,{"stream_name":"stdout","time":14598.150212595,"data":"[t+ 243.1 min] tunggal | EDM | hardware=(0.08; 0.05) | seed=1\n"}
+,{"stream_name":"stdout","time":14703.18443666,"data":"[t+ 244.9 min] tunggal | EDM | hardware=(0.08; 0.05) | seed=2\n"}
+,{"stream_name":"stdout","time":14807.922313812,"data":"[t+ 246.6 min] tunggal | EDM | hardware=(0.15; 0.1) | seed=0\n"}
+,{"stream_name":"stdout","time":14906.932615166,"data":"[t+ 248.3 min] tunggal | EDM | hardware=(0.15; 0.1) | seed=1\n"}
+,{"stream_name":"stdout","time":15011.994293215,"data":"[t+ 250.0 min] tunggal | EDM | hardware=(0.15; 0.1) | seed=2\n"}
+,{"stream_name":"stdout","time":15111.045043667,"data":"[t+ 251.7 min] tunggal | EDM | hardware=(0.3; 0.2) | seed=0\n"}
+,{"stream_name":"stdout","time":15187.432155555,"data":"[t+ 253.0 min] tunggal | EDM | hardware=(0.3; 0.2) | seed=1\n"}
+,{"stream_name":"stdout","time":15292.013084443,"data":"[t+ 254.7 min] tunggal | EDM | hardware=(0.3; 0.2) | seed=2\n"}
+,{"stream_name":"stdout","time":15372.92872619,"data":"[t+ 256.0 min] tunggal | EDM | hardware=(0.5; 0.3) | seed=0\n"}
+,{"stream_name":"stdout","time":15436.548808165,"data":"[t+ 257.1 min] tunggal | EDM | hardware=(0.5; 0.3) | seed=1\n"}
+,{"stream_name":"stdout","time":15526.070957246,"data":"[t+ 258.6 min] tunggal | EDM | hardware=(0.5; 0.3) | seed=2\n"}
+,{"stream_name":"stdout","time":15603.465768654,"data":"[t+ 259.9 min] tunggal | EDM | hardware=(0.7; 0.5) | seed=0\n"}
+,{"stream_name":"stdout","time":15665.296972729,"data":"[t+ 260.9 min] tunggal | EDM | hardware=(0.7; 0.5) | seed=1\n"}
+,{"stream_name":"stdout","time":15733.585908345,"data":"[t+ 262.1 min] tunggal | EDM | hardware=(0.7; 0.5) | seed=2\n"}
+,{"stream_name":"stdout","time":15820.431332327,"data":"method  fault         status\n"}
+,{"stream_name":"stdout","time":15820.431373623,"data":"EDM     bias          ok        15\n"}
+,{"stream_name":"stdout","time":15820.431380193,"data":"        bias_episode  ok         9\n"}
+,{"stream_name":"stdout","time":15820.431385017,"data":"        drift         ok        15\n"}
+,{"stream_name":"stdout","time":15820.431389943,"data":"        hardware      ok        15\n"}
+,{"stream_name":"stdout","time":15820.431394554,"data":"        spike_rel     ok         9\n"}
+,{"stream_name":"stdout","time":15820.431399052,"data":"        spike_sd      ok        15\n"}
+,{"stream_name":"stdout","time":15820.431403449,"data":"JSD     bias          ok        15\n"}
+,{"stream_name":"stdout","time":15820.431407931,"data":"        bias_episode  ok         9\n"}
+,{"stream_name":"stdout","time":15820.431412183,"data":"        drift         ok        15\n"}
+,{"stream_name":"stdout","time":15820.431416629,"data":"        hardware      ok        15\n"}
+,{"stream_name":"stdout","time":15820.43142097,"data":"        spike_rel     ok         9\n"}
+,{"stream_name":"stdout","time":15820.431425483,"data":"        spike_sd      ok        15\n"}
+,{"stream_name":"stdout","time":15820.48055923,"data":"[t+ 263.5 min] Sapuan kombinasi mulai\n"}
+,{"stream_name":"stdout","time":15820.481434453,"data":"[t+ 263.5 min] kombinasi | JSD | drift+spike | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":15912.341947034,"data":"[t+ 265.0 min] kombinasi | JSD | drift+spike | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":16002.177184302,"data":"[t+ 266.5 min] kombinasi | JSD | drift+spike | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":16059.871710883,"data":"[t+ 267.5 min] kombinasi | JSD | drift+spike | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":16149.496009797,"data":"[t+ 269.0 min] kombinasi | JSD | drift+spike | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":16220.608495859,"data":"[t+ 270.2 min] kombinasi | JSD | drift+spike | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":16282.824902797,"data":"[t+ 271.2 min] kombinasi | JSD | drift+spike | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":16360.907485143,"data":"[t+ 272.5 min] kombinasi | JSD | drift+spike | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":16439.506688075,"data":"[t+ 273.8 min] kombinasi | JSD | drift+spike | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":16515.620970025,"data":"[t+ 275.1 min] kombinasi | JSD | drift+bias | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":16616.394462564,"data":"[t+ 276.8 min] kombinasi | JSD | drift+bias | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":16717.205783037,"data":"[t+ 278.5 min] kombinasi | JSD | drift+bias | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":16818.44509922,"data":"[t+ 280.1 min] kombinasi | JSD | drift+bias | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":16919.577303527,"data":"[t+ 281.8 min] kombinasi | JSD | drift+bias | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":17020.49644439,"data":"[t+ 283.5 min] kombinasi | JSD | drift+bias | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":17121.629932411,"data":"[t+ 285.2 min] kombinasi | JSD | drift+bias | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":17222.700839709,"data":"[t+ 286.9 min] kombinasi | JSD | drift+bias | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":17324.773056453,"data":"[t+ 288.6 min] kombinasi | JSD | drift+bias | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":17427.661833061,"data":"[t+ 290.3 min] kombinasi | JSD | drift+hardware | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":17513.902951717,"data":"[t+ 291.7 min] kombinasi | JSD | drift+hardware | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":17581.596766852,"data":"[t+ 292.9 min] kombinasi | JSD | drift+hardware | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":17646.80813819,"data":"[t+ 293.9 min] kombinasi | JSD | drift+hardware | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":17729.927210542,"data":"[t+ 295.3 min] kombinasi | JSD | drift+hardware | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":17809.558777045,"data":"[t+ 296.7 min] kombinasi | JSD | drift+hardware | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":17878.896959981,"data":"[t+ 297.8 min] kombinasi | JSD | drift+hardware | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":17965.507858221,"data":"[t+ 299.3 min] kombinasi | JSD | drift+hardware | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":18055.70694981,"data":"[t+ 300.8 min] kombinasi | JSD | drift+hardware | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":18121.51498698,"data":"[t+ 301.9 min] kombinasi | JSD | spike+bias | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":18174.136349975,"data":"[t+ 302.7 min] kombinasi | JSD | spike+bias | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":18268.513989139,"data":"[t+ 304.3 min] kombinasi | JSD | spike+bias | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":18315.618120659,"data":"[t+ 305.1 min] kombinasi | JSD | spike+bias | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":18382.605003034,"data":"[t+ 306.2 min] kombinasi | JSD | spike+bias | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":18440.695553967,"data":"[t+ 307.2 min] kombinasi | JSD | spike+bias | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":18516.249057454,"data":"[t+ 308.4 min] kombinasi | JSD | spike+bias | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":18595.866267926,"data":"[t+ 309.8 min] kombinasi | JSD | spike+bias | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":18661.689130317,"data":"[t+ 310.9 min] kombinasi | JSD | spike+bias | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":18712.041971083,"data":"[t+ 311.7 min] kombinasi | JSD | spike+hardware | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":18778.680962201,"data":"[t+ 312.8 min] kombinasi | JSD | spike+hardware | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":18833.61692768,"data":"[t+ 313.7 min] kombinasi | JSD | spike+hardware | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":18905.624958591,"data":"[t+ 314.9 min] kombinasi | JSD | spike+hardware | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":18946.244162201,"data":"[t+ 315.6 min] kombinasi | JSD | spike+hardware | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":19016.476956812,"data":"[t+ 316.8 min] kombinasi | JSD | spike+hardware | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":19071.788022798,"data":"[t+ 317.7 min] kombinasi | JSD | spike+hardware | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":19143.20396893,"data":"[t+ 318.9 min] kombinasi | JSD | spike+hardware | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":19195.103677594,"data":"[t+ 319.8 min] kombinasi | JSD | spike+hardware | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":19221.428371545,"data":"[t+ 320.2 min] kombinasi | JSD | bias+hardware | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":19309.942757223,"data":"[t+ 321.7 min] kombinasi | JSD | bias+hardware | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":19373.93907293,"data":"[t+ 322.7 min] kombinasi | JSD | bias+hardware | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":19452.610749785,"data":"[t+ 324.0 min] kombinasi | JSD | bias+hardware | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":19543.335036983,"data":"[t+ 325.6 min] kombinasi | JSD | bias+hardware | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":19578.268123003,"data":"[t+ 326.1 min] kombinasi | JSD | bias+hardware | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":19667.06526918,"data":"[t+ 327.6 min] kombinasi | JSD | bias+hardware | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":19740.371024733,"data":"[t+ 328.8 min] kombinasi | JSD | bias+hardware | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":19797.823293879,"data":"[t+ 329.8 min] kombinasi | JSD | bias+hardware | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":19873.962057232,"data":"[t+ 331.1 min] kombinasi | JSD | drift+spike+bias | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":19951.906982717,"data":"[t+ 332.4 min] kombinasi | JSD | drift+spike+bias | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":20022.174347884,"data":"[t+ 333.5 min] kombinasi | JSD | drift+spike+bias | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":20078.027319723,"data":"[t+ 334.5 min] kombinasi | JSD | drift+spike+bias | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":20144.078007875,"data":"[t+ 335.6 min] kombinasi | JSD | drift+spike+bias | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":20187.574992138,"data":"[t+ 336.3 min] kombinasi | JSD | drift+spike+bias | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":20229.789262639,"data":"[t+ 337.0 min] kombinasi | JSD | drift+spike+bias | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":20299.976601682,"data":"[t+ 338.2 min] kombinasi | JSD | drift+spike+bias | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":20362.221474782,"data":"[t+ 339.2 min] kombinasi | JSD | drift+spike+bias | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":20415.044952586,"data":"[t+ 340.1 min] kombinasi | JSD | drift+spike+hardware | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":20456.778912276,"data":"[t+ 340.8 min] kombinasi | JSD | drift+spike+hardware | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":20523.368701427,"data":"[t+ 341.9 min] kombinasi | JSD | drift+spike+hardware | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":20606.800361775,"data":"[t+ 343.3 min] kombinasi | JSD | drift+spike+hardware | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":20661.988265804,"data":"[t+ 344.2 min] kombinasi | JSD | drift+spike+hardware | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":20705.980078546,"data":"[t+ 344.9 min] kombinasi | JSD | drift+spike+hardware | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":20769.101943149,"data":"[t+ 346.0 min] kombinasi | JSD | drift+spike+hardware | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":20836.287773794,"data":"[t+ 347.1 min] kombinasi | JSD | drift+spike+hardware | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":20908.491573537,"data":"[t+ 348.3 min] kombinasi | JSD | drift+spike+hardware | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":20970.178743103,"data":"[t+ 349.3 min] kombinasi | JSD | drift+bias+hardware | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":21059.70875587,"data":"[t+ 350.8 min] kombinasi | JSD | drift+bias+hardware | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":21137.520850319,"data":"[t+ 352.1 min] kombinasi | JSD | drift+bias+hardware | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":21185.436137466,"data":"[t+ 352.9 min] kombinasi | JSD | drift+bias+hardware | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":21273.671449476,"data":"[t+ 354.4 min] kombinasi | JSD | drift+bias+hardware | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":21344.344561385,"data":"[t+ 355.6 min] kombinasi | JSD | drift+bias+hardware | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":21389.232984526,"data":"[t+ 356.3 min] kombinasi | JSD | drift+bias+hardware | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":21461.42695726,"data":"[t+ 357.5 min] kombinasi | JSD | drift+bias+hardware | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":21544.539950497,"data":"[t+ 358.9 min] kombinasi | JSD | drift+bias+hardware | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":21604.401480166,"data":"[t+ 359.9 min] kombinasi | JSD | spike+bias+hardware | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":21668.592881668,"data":"[t+ 361.0 min] kombinasi | JSD | spike+bias+hardware | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":21726.088082664,"data":"[t+ 361.9 min] kombinasi | JSD | spike+bias+hardware | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":21773.35744663,"data":"[t+ 362.7 min] kombinasi | JSD | spike+bias+hardware | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":21819.027995606,"data":"[t+ 363.5 min] kombinasi | JSD | spike+bias+hardware | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":21899.132635173,"data":"[t+ 364.8 min] kombinasi | JSD | spike+bias+hardware | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":21959.129123147,"data":"[t+ 365.8 min] kombinasi | JSD | spike+bias+hardware | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":22008.530975921,"data":"[t+ 366.6 min] kombinasi | JSD | spike+bias+hardware | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":22060.466118827,"data":"[t+ 367.5 min] kombinasi | JSD | spike+bias+hardware | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":22130.669931314,"data":"[t+ 368.7 min] kombinasi | JSD | drift+spike+bias+hardware | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":22194.846208593,"data":"[t+ 369.7 min] kombinasi | JSD | drift+spike+bias+hardware | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":22275.880358937,"data":"[t+ 371.1 min] kombinasi | JSD | drift+spike+bias+hardware | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":22360.980960287,"data":"[t+ 372.5 min] kombinasi | JSD | drift+spike+bias+hardware | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":22415.50896823,"data":"[t+ 373.4 min] kombinasi | JSD | drift+spike+bias+hardware | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":22469.069977019,"data":"[t+ 374.3 min] kombinasi | JSD | drift+spike+bias+hardware | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":22541.619534147,"data":"[t+ 375.5 min] kombinasi | JSD | drift+spike+bias+hardware | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":22574.307013636,"data":"[t+ 376.1 min] kombinasi | JSD | drift+spike+bias+hardware | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":22614.543268856,"data":"[t+ 376.7 min] kombinasi | JSD | drift+spike+bias+hardware | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":22668.75095893,"data":"[t+ 377.6 min] kombinasi | EDM | drift+spike | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":22761.547203175,"data":"[t+ 379.2 min] kombinasi | EDM | drift+spike | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":22857.453128618,"data":"[t+ 380.8 min] kombinasi | EDM | drift+spike | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":22944.127951667,"data":"[t+ 382.2 min] kombinasi | EDM | drift+spike | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":23037.498440383,"data":"[t+ 383.8 min] kombinasi | EDM | drift+spike | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":23130.094465863,"data":"[t+ 385.3 min] kombinasi | EDM | drift+spike | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":23202.14025155,"data":"[t+ 386.5 min] kombinasi | EDM | drift+spike | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":23290.944035792,"data":"[t+ 388.0 min] kombinasi | EDM | drift+spike | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":23381.53610496,"data":"[t+ 389.5 min] kombinasi | EDM | drift+spike | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":23461.109724023,"data":"[t+ 390.9 min] kombinasi | EDM | drift+bias | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":23558.223963379,"data":"[t+ 392.5 min] kombinasi | EDM | drift+bias | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":23655.394299133,"data":"[t+ 394.1 min] kombinasi | EDM | drift+bias | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":23752.839072645,"data":"[t+ 395.7 min] kombinasi | EDM | drift+bias | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":23850.131976474,"data":"[t+ 397.3 min] kombinasi | EDM | drift+bias | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":23948.050188616,"data":"[t+ 399.0 min] kombinasi | EDM | drift+bias | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":24045.739196712,"data":"[t+ 400.6 min] kombinasi | EDM | drift+bias | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":24143.341717204,"data":"[t+ 402.2 min] kombinasi | EDM | drift+bias | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":24240.820850589,"data":"[t+ 403.8 min] kombinasi | EDM | drift+bias | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":24338.604080657,"data":"[t+ 405.5 min] kombinasi | EDM | drift+hardware | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":24431.853820867,"data":"[t+ 407.0 min] kombinasi | EDM | drift+hardware | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":24522.643501551,"data":"[t+ 408.5 min] kombinasi | EDM | drift+hardware | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":24616.20781773,"data":"[t+ 410.1 min] kombinasi | EDM | drift+hardware | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":24701.451007649,"data":"[t+ 411.5 min] kombinasi | EDM | drift+hardware | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":24795.232292687,"data":"[t+ 413.1 min] kombinasi | EDM | drift+hardware | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":24885.504954264,"data":"[t+ 414.6 min] kombinasi | EDM | drift+hardware | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":24974.809982776,"data":"[t+ 416.1 min] kombinasi | EDM | drift+hardware | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":25057.548421167,"data":"[t+ 417.5 min] kombinasi | EDM | drift+hardware | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":25148.011959486,"data":"[t+ 419.0 min] kombinasi | EDM | spike+bias | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":25237.303608351,"data":"[t+ 420.5 min] kombinasi | EDM | spike+bias | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":25335.222325446,"data":"[t+ 422.1 min] kombinasi | EDM | spike+bias | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":25422.898735359,"data":"[t+ 423.5 min] kombinasi | EDM | spike+bias | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":25513.188412878,"data":"[t+ 425.1 min] kombinasi | EDM | spike+bias | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":25602.98900448,"data":"[t+ 426.5 min] kombinasi | EDM | spike+bias | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":25680.635441443,"data":"[t+ 427.8 min] kombinasi | EDM | spike+bias | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":25767.83619243,"data":"[t+ 429.3 min] kombinasi | EDM | spike+bias | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":25854.254167207,"data":"[t+ 430.7 min] kombinasi | EDM | spike+bias | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":25925.299950297,"data":"[t+ 431.9 min] kombinasi | EDM | spike+hardware | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":26003.374946569,"data":"[t+ 433.2 min] kombinasi | EDM | spike+hardware | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":26063.840586727,"data":"[t+ 434.2 min] kombinasi | EDM | spike+hardware | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":26153.787290356,"data":"[t+ 435.7 min] kombinasi | EDM | spike+hardware | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":26225.609897281,"data":"[t+ 436.9 min] kombinasi | EDM | spike+hardware | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":26286.136952954,"data":"[t+ 437.9 min] kombinasi | EDM | spike+hardware | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":26373.433429183,"data":"[t+ 439.4 min] kombinasi | EDM | spike+hardware | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":26443.319278482,"data":"[t+ 440.6 min] kombinasi | EDM | spike+hardware | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":26507.583085134,"data":"[t+ 441.6 min] kombinasi | EDM | spike+hardware | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":26590.838689362,"data":"[t+ 443.0 min] kombinasi | EDM | bias+hardware | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":26673.501689687,"data":"[t+ 444.4 min] kombinasi | EDM | bias+hardware | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":26764.029945414,"data":"[t+ 445.9 min] kombinasi | EDM | bias+hardware | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":26842.635770883,"data":"[t+ 447.2 min] kombinasi | EDM | bias+hardware | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":26918.397477686,"data":"[t+ 448.5 min] kombinasi | EDM | bias+hardware | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":27008.039534691,"data":"[t+ 450.0 min] kombinasi | EDM | bias+hardware | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":27095.855618698,"data":"[t+ 451.4 min] kombinasi | EDM | bias+hardware | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":27167.700033489,"data":"[t+ 452.6 min] kombinasi | EDM | bias+hardware | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":27249.020675677,"data":"[t+ 454.0 min] kombinasi | EDM | bias+hardware | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":27334.435004812,"data":"[t+ 455.4 min] kombinasi | EDM | drift+spike+bias | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":27422.08095656,"data":"[t+ 456.9 min] kombinasi | EDM | drift+spike+bias | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":27510.63440962,"data":"[t+ 458.3 min] kombinasi | EDM | drift+spike+bias | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":27596.330849286,"data":"[t+ 459.8 min] kombinasi | EDM | drift+spike+bias | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":27683.861299748,"data":"[t+ 461.2 min] kombinasi | EDM | drift+spike+bias | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":27776.141821844,"data":"[t+ 462.8 min] kombinasi | EDM | drift+spike+bias | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":27853.382362259,"data":"[t+ 464.1 min] kombinasi | EDM | drift+spike+bias | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":27937.545781242,"data":"[t+ 465.5 min] kombinasi | EDM | drift+spike+bias | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":28011.549184315,"data":"[t+ 466.7 min] kombinasi | EDM | drift+spike+bias | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":28056.421611008,"data":"[t+ 467.4 min] kombinasi | EDM | drift+spike+hardware | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":28132.455251647,"data":"[t+ 468.7 min] kombinasi | EDM | drift+spike+hardware | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":28215.259140173,"data":"[t+ 470.1 min] kombinasi | EDM | drift+spike+hardware | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":28300.193117696,"data":"[t+ 471.5 min] kombinasi | EDM | drift+spike+hardware | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":28356.720964521,"data":"[t+ 472.4 min] kombinasi | EDM | drift+spike+hardware | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":28438.264175553,"data":"[t+ 473.8 min] kombinasi | EDM | drift+spike+hardware | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":28516.912157384,"data":"[t+ 475.1 min] kombinasi | EDM | drift+spike+hardware | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":28563.922953628,"data":"[t+ 475.9 min] kombinasi | EDM | drift+spike+hardware | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":28632.345948888,"data":"[t+ 477.0 min] kombinasi | EDM | drift+spike+hardware | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":28713.1715192,"data":"[t+ 478.4 min] kombinasi | EDM | drift+bias+hardware | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":28792.82565418,"data":"[t+ 479.7 min] kombinasi | EDM | drift+bias+hardware | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":28882.232568051,"data":"[t+ 481.2 min] kombinasi | EDM | drift+bias+hardware | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":28967.463117398,"data":"[t+ 482.6 min] kombinasi | EDM | drift+bias+hardware | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":29034.291755387,"data":"[t+ 483.7 min] kombinasi | EDM | drift+bias+hardware | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":29117.750656296,"data":"[t+ 485.1 min] kombinasi | EDM | drift+bias+hardware | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":29205.946949147,"data":"[t+ 486.6 min] kombinasi | EDM | drift+bias+hardware | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":29279.833018087,"data":"[t+ 487.8 min] kombinasi | EDM | drift+bias+hardware | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":29353.736852976,"data":"[t+ 489.1 min] kombinasi | EDM | drift+bias+hardware | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":29437.108800446,"data":"[t+ 490.4 min] kombinasi | EDM | spike+bias+hardware | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":29506.046990334,"data":"[t+ 491.6 min] kombinasi | EDM | spike+bias+hardware | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":29572.928895941,"data":"[t+ 492.7 min] kombinasi | EDM | spike+bias+hardware | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":29653.936178374,"data":"[t+ 494.1 min] kombinasi | EDM | spike+bias+hardware | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":29708.924578159,"data":"[t+ 495.0 min] kombinasi | EDM | spike+bias+hardware | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":29779.696852349,"data":"[t+ 496.2 min] kombinasi | EDM | spike+bias+hardware | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":29867.347058581,"data":"[t+ 497.6 min] kombinasi | EDM | spike+bias+hardware | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":29922.739112409,"data":"[t+ 498.5 min] kombinasi | EDM | spike+bias+hardware | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":29999.849221598,"data":"[t+ 499.8 min] kombinasi | EDM | spike+bias+hardware | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":30084.194824981,"data":"[t+ 501.2 min] kombinasi | EDM | drift+spike+bias+hardware | rendah | seed=0\n"}
+,{"stream_name":"stdout","time":30148.215978586,"data":"[t+ 502.3 min] kombinasi | EDM | drift+spike+bias+hardware | rendah | seed=1\n"}
+,{"stream_name":"stdout","time":30229.675259253,"data":"[t+ 503.7 min] kombinasi | EDM | drift+spike+bias+hardware | rendah | seed=2\n"}
+,{"stream_name":"stdout","time":30314.782581152,"data":"[t+ 505.1 min] kombinasi | EDM | drift+spike+bias+hardware | sedang | seed=0\n"}
+,{"stream_name":"stdout","time":30374.468898725,"data":"[t+ 506.1 min] kombinasi | EDM | drift+spike+bias+hardware | sedang | seed=1\n"}
+,{"stream_name":"stdout","time":30444.915797438,"data":"[t+ 507.2 min] kombinasi | EDM | drift+spike+bias+hardware | sedang | seed=2\n"}
+,{"stream_name":"stdout","time":30533.35805494,"data":"[t+ 508.7 min] kombinasi | EDM | drift+spike+bias+hardware | tinggi | seed=0\n"}
+,{"stream_name":"stdout","time":30591.327318955,"data":"[t+ 509.7 min] kombinasi | EDM | drift+spike+bias+hardware | tinggi | seed=1\n"}
+,{"stream_name":"stdout","time":30666.810787538,"data":"[t+ 510.9 min] kombinasi | EDM | drift+spike+bias+hardware | tinggi | seed=2\n"}
+,{"stream_name":"stdout","time":30736.492295698,"data":"method  tingkat  status\n"}
+,{"stream_name":"stdout","time":30736.492331942,"data":"EDM     rendah   ok        33\n"}
+,{"stream_name":"stdout","time":30736.492337377,"data":"        sedang   ok        33\n"}
+,{"stream_name":"stdout","time":30736.492341932,"data":"        tinggi   ok        33\n"}
+,{"stream_name":"stdout","time":30736.4923464,"data":"JSD     rendah   ok        33\n"}
+,{"stream_name":"stdout","time":30736.492350927,"data":"        sedang   ok        33\n"}
+,{"stream_name":"stdout","time":30736.492355391,"data":"        tinggi   ok        33\n"}
+,{"stream_name":"stdout","time":30736.707653655,"data":"method        fault                            status nilai_representatif      TPR      FPR       F1      AUC                                                   nilai_diuji nilai_penelitian  TPR_penelitian  FPR_penelitian\n"}
+,{"stream_name":"stdout","time":30736.707693857,"data":"   JSD         bias tidak terdeteksi sampai batas uji                 5.0 0.395833 0.366667 0.507386 0.500521                                      0.08, 0.5, 1.0, 2.0, 5.0             0.08        0.400000        0.366667\n"}
+,{"stream_name":"stdout","time":30736.707702306,"data":"   JSD bias_episode tidak terdeteksi sampai batas uji                 9.0 0.569892 0.462366 0.553344 0.646896                                                 2.0, 5.0, 9.0                              NaN             NaN\n"}
+,{"stream_name":"stdout","time":30736.707706515,"data":"   JSD        drift tidak terdeteksi sampai batas uji                60.0 0.666667 0.182796 0.740519 0.846687                                      2.0, 3.0, 5.0, 9.0, 60.0              3.0        0.548387        0.473118\n"}
+,{"stream_name":"stdout","time":30736.707725386,"data":"   JSD     spike_sd tidak terdeteksi sampai batas uji                 1.5 0.866667 0.141667 0.862407 0.922188                                      0.08, 0.2, 0.4, 0.8, 1.5             0.08        0.658333        0.308333\n"}
+,{"stream_name":"stdout","time":30736.707729564,"data":"   JSD    spike_rel tidak terdeteksi sampai batas uji                 0.5 0.812500 0.179167 0.816603 0.864896                                                0.15, 0.3, 0.5                              NaN             NaN\n"}
+,{"stream_name":"stdout","time":30736.70773509,"data":"   JSD     hardware                        terdeteksi          (0.3; 0.2) 0.908333 0.083333 0.912486 0.962969 (0.08; 0.05), (0.15; 0.1), (0.3; 0.2), (0.5; 0.3), (0.7; 0.5)     (0.08; 0.05)        0.829167        0.175000\n"}
+,{"stream_name":"stdout","time":30736.707740104,"data":"   EDM         bias tidak terdeteksi sampai batas uji                 5.0 0.479167 0.475000 0.501144 0.511094                                      0.08, 0.5, 1.0, 2.0, 5.0             0.08        0.479167        0.466667\n"}
+,{"stream_name":"stdout","time":30736.707745436,"data":"   EDM bias_episode tidak terdeteksi sampai batas uji                 9.0 0.634409 0.365591 0.633924 0.742629                                                 2.0, 5.0, 9.0                              NaN             NaN\n"}
+,{"stream_name":"stdout","time":30736.707752201,"data":"   EDM        drift tidak terdeteksi sampai batas uji                60.0 0.688172 0.279570 0.703720 0.797780                                      2.0, 3.0, 5.0, 9.0, 60.0              3.0        0.559140        0.344086\n"}
+,{"stream_name":"stdout","time":30736.707757498,"data":"   EDM     spike_sd tidak terdeteksi sampai batas uji                 1.5 0.775000 0.258333 0.757982 0.814531                                      0.08, 0.2, 0.4, 0.8, 1.5             0.08        0.704167        0.275000\n"}
+,{"stream_name":"stdout","time":30736.707763021,"data":"   EDM    spike_rel tidak terdeteksi sampai batas uji                 0.5 0.708333 0.254167 0.726816 0.785104                                                0.15, 0.3, 0.5                              NaN             NaN\n"}
+,{"stream_name":"stdout","time":30736.707768433,"data":"   EDM     hardware                        terdeteksi          (0.3; 0.2) 0.916667 0.100000 0.908321 0.972396 (0.08; 0.05), (0.15; 0.1), (0.3; 0.2), (0.5; 0.3), (0.7; 0.5)     (0.08; 0.05)        0.779167        0.220833\n"}
+,{"stream_name":"stdout","time":30738.557829901,"data":"method                 kombinasi tingkat      TPR      FPR       F1      AUC  window_berlabel\n"}
+,{"stream_name":"stdout","time":30738.557914694,"data":"   EDM             bias+hardware  rendah 0.779829 0.177901 0.800421 0.856451        30.000000\n"}
+,{"stream_name":"stdout","time":30738.557924128,"data":"   EDM             bias+hardware  sedang 0.844321 0.189037 0.827594 0.873485        30.000000\n"}
+,{"stream_name":"stdout","time":30738.557928158,"data":"   EDM             bias+hardware  tinggi 0.844321 0.232406 0.805562 0.866004        30.000000\n"}
+,{"stream_name":"stdout","time":30738.557931784,"data":"   EDM                drift+bias  rendah 0.548387 0.333333 0.604731 0.693722        31.000000\n"}
+,{"stream_name":"stdout","time":30738.557935151,"data":"   EDM                drift+bias  sedang 0.559140 0.344086 0.605489 0.712799        31.000000\n"}
+,{"stream_name":"stdout","time":30738.557938489,"data":"   EDM                drift+bias  tinggi 0.612903 0.354839 0.628240 0.742976        31.000000\n"}
+,{"stream_name":"stdout","time":30738.557942091,"data":"   EDM            drift+hardware  rendah 0.811346 0.200890 0.805131 0.840113        30.000000\n"}
+,{"stream_name":"stdout","time":30738.557959755,"data":"   EDM            drift+hardware  sedang 0.779063 0.200173 0.789208 0.853405        30.000000\n"}
+,{"stream_name":"stdout","time":30738.557963277,"data":"   EDM            drift+hardware  tinggi 0.791682 0.254653 0.768193 0.848039        30.000000\n"}
+,{"stream_name":"stdout","time":30738.557966643,"data":"   EDM               drift+spike  rendah 0.794533 0.311728 0.739477 0.796072        27.666667\n"}
+,{"stream_name":"stdout","time":30738.557969795,"data":"   EDM               drift+spike  sedang 0.794533 0.240300 0.776566 0.815558        27.666667\n"}
+,{"stream_name":"stdout","time":30738.557973276,"data":"   EDM               drift+spike  tinggi 0.770282 0.287919 0.740017 0.841060        27.666667\n"}
+,{"stream_name":"stdout","time":30738.557976663,"data":"   EDM                spike+bias  rendah 0.782187 0.276455 0.752097 0.798142        27.666667\n"}
+,{"stream_name":"stdout","time":30738.557980329,"data":"   EDM                spike+bias  sedang 0.758377 0.276896 0.740496 0.827254        27.666667\n"}
+,{"stream_name":"stdout","time":30738.557983824,"data":"   EDM                spike+bias  tinggi 0.794533 0.251764 0.770182 0.860401        27.666667\n"}
+,{"stream_name":"stdout","time":30738.557987147,"data":"   EDM            spike+hardware  rendah 0.853616 0.291005 0.778912 0.869627        27.333333\n"}
+,{"stream_name":"stdout","time":30738.557990541,"data":"   EDM            spike+hardware  sedang 0.852734 0.253968 0.796534 0.900840        27.333333\n"}
+,{"stream_name":"stdout","time":30738.557993753,"data":"   EDM            spike+hardware  tinggi 0.828483 0.230159 0.797849 0.903455        27.333333\n"}
+,{"stream_name":"stdout","time":30738.557997123,"data":"   EDM       drift+bias+hardware  rendah 0.768694 0.200148 0.783639 0.853267        30.000000\n"}
+,{"stream_name":"stdout","time":30738.558000658,"data":"   EDM       drift+bias+hardware  sedang 0.811680 0.244642 0.783298 0.848758        30.000000\n"}
+,{"stream_name":"stdout","time":30738.558005173,"data":"   EDM       drift+bias+hardware  tinggi 0.811704 0.177185 0.817246 0.877163        30.000000\n"}
+,{"stream_name":"stdout","time":30738.558008624,"data":"   EDM          drift+spike+bias  rendah 0.781746 0.300265 0.738814 0.811483        27.666667\n"}
+,{"stream_name":"stdout","time":30738.558011992,"data":"   EDM          drift+spike+bias  sedang 0.805996 0.276455 0.763159 0.847517        27.666667\n"}
+,{"stream_name":"stdout","time":30738.558015204,"data":"   EDM          drift+spike+bias  tinggi 0.806437 0.276455 0.764119 0.849595        27.666667\n"}
+,{"stream_name":"stdout","time":30738.558018627,"data":"   EDM      drift+spike+hardware  rendah 0.865961 0.255291 0.804126 0.883481        27.333333\n"}
+,{"stream_name":"stdout","time":30738.55802202,"data":"   EDM      drift+spike+hardware  sedang 0.853175 0.254409 0.797369 0.877657        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558025341,"data":"   EDM      drift+spike+hardware  tinggi 0.877866 0.230600 0.822632 0.902236        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558028963,"data":"   EDM       spike+bias+hardware  rendah 0.854497 0.242063 0.804653 0.872924        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558032271,"data":"   EDM       spike+bias+hardware  sedang 0.817460 0.242504 0.786477 0.914558        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558035547,"data":"   EDM       spike+bias+hardware  tinggi 0.841711 0.266314 0.785901 0.903086        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558038751,"data":"   EDM drift+spike+bias+hardware  rendah 0.878748 0.254409 0.810063 0.882013        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558041974,"data":"   EDM drift+spike+bias+hardware  sedang 0.817901 0.267196 0.774068 0.881282        27.333333\n"}
+,{"stream_name":"stdout","time":30738.5580484,"data":"   EDM drift+spike+bias+hardware  tinggi 0.830247 0.266755 0.780856 0.896909        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558051744,"data":"   JSD             bias+hardware  rendah 0.778371 0.300556 0.738211 0.830458        30.000000\n"}
+,{"stream_name":"stdout","time":30738.558054991,"data":"   JSD             bias+hardware  sedang 0.833234 0.212359 0.810245 0.875154        30.000000\n"}
+,{"stream_name":"stdout","time":30738.558058642,"data":"   JSD             bias+hardware  tinggi 0.854740 0.234606 0.809626 0.902081        30.000000\n"}
+,{"stream_name":"stdout","time":30738.558061946,"data":"   JSD                drift+bias  rendah 0.548387 0.397849 0.574313 0.664932        31.000000\n"}
+,{"stream_name":"stdout","time":30738.558065297,"data":"   JSD                drift+bias  sedang 0.602151 0.430108 0.585695 0.676379        31.000000\n"}
+,{"stream_name":"stdout","time":30738.558068839,"data":"   JSD                drift+bias  tinggi 0.591398 0.408602 0.591199 0.725633        31.000000\n"}
+,{"stream_name":"stdout","time":30738.558072135,"data":"   JSD            drift+hardware  rendah 0.800235 0.267581 0.765890 0.813110        30.000000\n"}
+,{"stream_name":"stdout","time":30738.558075359,"data":"   JSD            drift+hardware  sedang 0.778705 0.300581 0.738224 0.820307        30.000000\n"}
+,{"stream_name":"stdout","time":30738.558078619,"data":"   JSD            drift+hardware  tinggi 0.778754 0.267532 0.754510 0.837919        30.000000\n"}
+,{"stream_name":"stdout","time":30738.558082177,"data":"   JSD               drift+spike  rendah 0.721781 0.360670 0.679006 0.720497        27.666667\n"}
+,{"stream_name":"stdout","time":30738.558086005,"data":"   JSD               drift+spike  sedang 0.672840 0.288801 0.690326 0.781609        27.666667\n"}
+,{"stream_name":"stdout","time":30738.558089244,"data":"   JSD               drift+spike  tinggi 0.734127 0.289242 0.721951 0.804745        27.666667\n"}
+,{"stream_name":"stdout","time":30738.558092566,"data":"   JSD                spike+bias  rendah 0.782628 0.409612 0.682639 0.750916        27.666667\n"}
+,{"stream_name":"stdout","time":30738.558095836,"data":"   JSD                spike+bias  sedang 0.770723 0.337302 0.715575 0.786839        27.666667\n"}
+,{"stream_name":"stdout","time":30738.558099166,"data":"   JSD                spike+bias  tinggi 0.769841 0.301146 0.733664 0.825682        27.666667\n"}
+,{"stream_name":"stdout","time":30738.558102457,"data":"   JSD            spike+hardware  rendah 0.828483 0.183862 0.822173 0.902092        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558105884,"data":"   JSD            spike+hardware  sedang 0.878307 0.171076 0.853275 0.922476        27.333333\n"}
+,{"stream_name":"stdout","time":30738.55810912,"data":"   JSD            spike+hardware  tinggi 0.927249 0.134480 0.896238 0.941841        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558112564,"data":"   JSD       drift+bias+hardware  rendah 0.777988 0.300915 0.737300 0.844525        30.000000\n"}
+,{"stream_name":"stdout","time":30738.558115941,"data":"   JSD       drift+bias+hardware  sedang 0.865851 0.233840 0.815452 0.894420        30.000000\n"}
+,{"stream_name":"stdout","time":30738.558119428,"data":"   JSD       drift+bias+hardware  tinggi 0.854357 0.222729 0.815498 0.880950        30.000000\n"}
+,{"stream_name":"stdout","time":30738.558122659,"data":"   JSD          drift+spike+bias  rendah 0.794974 0.398148 0.694312 0.742285        27.666667\n"}
+,{"stream_name":"stdout","time":30738.55812614,"data":"   JSD          drift+spike+bias  sedang 0.758377 0.313492 0.721410 0.787649        27.666667\n"}
+,{"stream_name":"stdout","time":30738.55812944,"data":"   JSD          drift+spike+bias  tinggi 0.817901 0.289242 0.763472 0.833624        27.666667\n"}
+,{"stream_name":"stdout","time":30738.558135254,"data":"   JSD      drift+spike+hardware  rendah 0.828483 0.207231 0.810051 0.886209        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558138559,"data":"   JSD      drift+spike+hardware  sedang 0.902116 0.183862 0.858346 0.908550        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558142186,"data":"   JSD      drift+spike+hardware  tinggi 0.914903 0.220459 0.846248 0.917398        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558145571,"data":"   JSD       spike+bias+hardware  rendah 0.841270 0.158730 0.841117 0.895482        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558148975,"data":"   JSD       spike+bias+hardware  sedang 0.878307 0.244268 0.816253 0.902822        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558152464,"data":"   JSD       spike+bias+hardware  tinggi 0.890653 0.243827 0.822611 0.903111        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558155726,"data":"   JSD drift+spike+bias+hardware  rendah 0.865520 0.206790 0.828975 0.907820        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558159389,"data":"   JSD drift+spike+bias+hardware  sedang 0.914903 0.268078 0.821926 0.896348        27.333333\n"}
+,{"stream_name":"stdout","time":30738.558162716,"data":"   JSD drift+spike+bias+hardware  tinggi 0.865961 0.231481 0.816795 0.893966        27.333333\n"}
+,{"stream_name":"stdout","time":30739.310431609,"data":"# Ringkasan uji tambahan intensitas gangguan\n"}
+,{"stream_name":"stdout","time":30739.310467281,"data":"\n"}
+,{"stream_name":"stdout","time":30739.310472743,"data":"- Mode: FULL | metode: JSD, EDM\n"}
+,{"stream_name":"stdout","time":30739.310476479,"data":"- Window N=200 | window/kelas maks 80 | fold 5 | iterasi LM 40 | seed 3\n"}
+,{"stream_name":"stdout","time":30739.310480318,"data":"- Sensor disuntik: S3; episode 3 x 3 hari di 10%, 40%, 70% deret\n"}
+,{"stream_name":"stdout","time":30739.31048428,"data":"- Aturan representatif: nilai terkecil dengan TPR \u003e= 0,80 dan FPR \u003c= 0,10 (rata-rata seed)\n"}
+,{"stream_name":"stdout","time":30739.310488665,"data":"\n"}
+,{"stream_name":"stdout","time":30739.310492089,"data":"## Fault tunggal\n"}
+,{"stream_name":"stdout","time":30739.310495932,"data":"\n"}
+,{"stream_name":"stdout","time":30739.310499438,"data":"| Metode | Fault | Status | Nilai | TPR | FPR | Nilai penelitian | TPR penelitian | FPR penelitian |\n"}
+,{"stream_name":"stdout","time":30739.310503257,"data":"|---|---|---|---|---|---|---|---|---|\n"}
+,{"stream_name":"stdout","time":30739.310507122,"data":"| JSD | bias | tidak terdeteksi sampai batas uji | 5.0 | 0.396 | 0.367 | 0.08 | 0.400 | 0.367 |\n"}
+,{"stream_name":"stdout","time":30739.310511229,"data":"| JSD | bias_episode | tidak terdeteksi sampai batas uji | 9.0 | 0.570 | 0.462 | - | - | - |\n"}
+,{"stream_name":"stdout","time":30739.310522066,"data":"| JSD | drift | tidak terdeteksi sampai batas uji | 60.0 | 0.667 | 0.183 | 3.0 | 0.548 | 0.473 |\n"}
+,{"stream_name":"stdout","time":30739.310526074,"data":"| JSD | spike_sd | tidak terdeteksi sampai batas uji | 1.5 | 0.867 | 0.142 | 0.08 | 0.658 | 0.308 |\n"}
+,{"stream_name":"stdout","time":30739.310530331,"data":"| JSD | spike_rel | tidak terdeteksi sampai batas uji | 0.5 | 0.812 | 0.179 | - | - | - |\n"}
+,{"stream_name":"stdout","time":30739.310534274,"data":"| JSD | hardware | terdeteksi | (0.3; 0.2) | 0.908 | 0.083 | (0.08; 0.05) | 0.829 | 0.175 |\n"}
+,{"stream_name":"stdout","time":30739.310538241,"data":"| EDM | bias | tidak terdeteksi sampai batas uji | 5.0 | 0.479 | 0.475 | 0.08 | 0.479 | 0.467 |\n"}
+,{"stream_name":"stdout","time":30739.310542444,"data":"| EDM | bias_episode | tidak terdeteksi sampai batas uji | 9.0 | 0.634 | 0.366 | - | - | - |\n"}
+,{"stream_name":"stdout","time":30739.310546039,"data":"| EDM | drift | tidak terdeteksi sampai batas uji | 60.0 | 0.688 | 0.280 | 3.0 | 0.559 | 0.344 |\n"}
+,{"stream_name":"stdout","time":30739.310564177,"data":"| EDM | spike_sd | tidak terdeteksi sampai batas uji | 1.5 | 0.775 | 0.258 | 0.08 | 0.704 | 0.275 |\n"}
+,{"stream_name":"stdout","time":30739.310568483,"data":"| EDM | spike_rel | tidak terdeteksi sampai batas uji | 0.5 | 0.708 | 0.254 | - | - | - |\n"}
+,{"stream_name":"stdout","time":30739.310572101,"data":"| EDM | hardware | terdeteksi | (0.3; 0.2) | 0.917 | 0.100 | (0.08; 0.05) | 0.779 | 0.221 |\n"}
+,{"stream_name":"stdout","time":30739.310575942,"data":"\n"}
+,{"stream_name":"stdout","time":30739.310579552,"data":"## Kombinasi pada episode sama\n"}
+,{"stream_name":"stdout","time":30739.310583154,"data":"\n"}
+,{"stream_name":"stdout","time":30739.310586551,"data":"| Metode | Tingkat | Kombinasi terdeteksi | F1 rata-rata | TPR rata-rata | FPR rata-rata |\n"}
+,{"stream_name":"stdout","time":30739.310590307,"data":"|---|---|---|---|---|---|\n"}
+,{"stream_name":"stdout","time":30739.310594021,"data":"| EDM | rendah | 0/11 | 0.766 | 0.793 | 0.258 |\n"}
+,{"stream_name":"stdout","time":30739.310597626,"data":"| EDM | sedang | 0/11 | 0.767 | 0.790 | 0.254 |\n"}
+,{"stream_name":"stdout","time":30739.310601342,"data":"| EDM | tinggi | 0/11 | 0.771 | 0.801 | 0.257 |\n"}
+,{"stream_name":"stdout","time":30739.310605314,"data":"| JSD | rendah | 0/11 | 0.743 | 0.779 | 0.290 |\n"}
+,{"stream_name":"stdout","time":30739.310609026,"data":"| JSD | sedang | 0/11 | 0.766 | 0.805 | 0.271 |\n"}
+,{"stream_name":"stdout","time":30739.310612779,"data":"| JSD | tinggi | 0/11 | 0.779 | 0.818 | 0.258 |\n"}
+,{"stream_name":"stdout","time":30739.310616593,"data":"\n"}
+,{"stream_name":"stdout","time":30739.310621842,"data":"## Asumsi yang perlu dicek\n"}
+,{"stream_name":"stdout","time":30739.310625625,"data":"\n"}
+,{"stream_name":"stdout","time":30739.310629321,"data":"- Tingkat kombinasi (rendah/sedang/tinggi = bias 2/5/9 poin, drift total 2/5/9 poin, spike 15/30/50%) ditetapkan di notebook ini; hardware di kombinasi tetap (0,08; 0,05).\n"}
+,{"stream_name":"stdout","time":30739.310633597,"data":"- Klasifikasi biner fault vs normal pada satu sensor (S3), sama dengan notebook 12 Bagian A; bukan klasifikasi 16 kondisi notebook 11.\n"}
+,{"stream_name":"stdout","time":30739.310637931,"data":"- Spike relatif dan hardware pada kombinasi hanya disisipkan di dalam episode.\n"}
+,{"stream_name":"stdout","time":30739.31064185,"data":"\n"}
+,{"stream_name":"stdout","time":30739.310645599,"data":"[t+ 512.2 min] selesai\n"}
+,{"stream_name":"stderr","time":30744.648900948,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":30744.648934961,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":30744.82878149,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":30744.828808619,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":30745.663297719,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":30745.819779223,"data":"[NbConvertApp] Writing 529222 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":30748.826130264,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":30749.695157736,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":30749.695191487,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":30749.695505518,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":30749.695729646,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":30749.696016237,"data":"[NbConvertApp] Writing 540361 bytes to __results__.html\n"}
+]
