@@ -1,0 +1,16 @@
+{
+ "id": "kelvindsmn/jsd-edm-lengkap-fault-baru",
+ "title": "JSD EDM Lengkap Fault Baru",
+ "code_file": "jsd-edm-lengkap-fault-baru.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": false,
+ "enable_tpu": false,
+ "enable_internet": true,
+ "keywords": [],
+ "dataset_sources": [],
+ "kernel_sources": [],
+ "competition_sources": [],
+ "model_sources": []
+}
