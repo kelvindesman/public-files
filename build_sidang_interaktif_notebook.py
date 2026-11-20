@@ -634,6 +634,57 @@ dan CV dengan purge sebagai protokol baku.
 """,
          "- `Bahan_Sidang.md` Q44; `sidang/qa/06_mock_sidang.md` (latihan).")
 
+# ============================================================== lampiran internal
+# Semua catatan persiapan ikut di salinan internal (hilang di salinan presentasi).
+md("""
+<div class="catatan-internal">
+
+## Lampiran internal — catatan persiapan lengkap
+
+Semua bahan persiapan sidang, satu blok per file, salinan apa adanya dari repo saat
+notebook dibangun. Hanya ada di salinan internal.
+
+</div>
+""")
+cells[-1].metadata["tags"] = [TAG]
+
+internal("data-hipotetik", "percobaan data hipotetik tanpa entropi (NB15)",
+         """
+NB15 terpisah dari perbandingan EDM vs JSD: fitur lag per sampel, tanpa entropi,
+untuk sistem notifikasi. Penguji bisa bertanya tentang urutan penyisipan gangguan,
+jumlah neuron output, dan ruang grid search.
+""",
+         "- `build_15_data_hipotetik_ann_lm_notebook.py`, `build_14_lengkap_fault_baru_notebook.py` (`NEW_SIM`).\n"
+         "- `hasil15/data-hipotetik-berlabel-ann-lm.log`.")
+
+LAMPIRAN = [
+    ("Bahan_Sidang.md", "Bahan sidang Q1–Q48 dan kalimat siap pakai"),
+    ("sidang/qa/08_tanya_jawab_lengkap.md", "Tanya-jawab lengkap tiga lapis T1–T57"),
+    ("sidang/qa/05_bank_pertanyaan.md", "Bank pertanyaan menyerang P1–P33"),
+    ("sidang/qa/02_kelemahan.md", "Kelemahan dan ancaman validitas"),
+    ("sidang/qa/03_algoritma_dengan_tangan.md", "Algoritma dengan tangan (LM, EDM, JSD)"),
+    ("sidang/qa/04_walkthrough_kode.md", "Walkthrough kode"),
+    ("sidang/qa/07_pustaka_dan_kebaruan.md", "Pustaka dan posisi kebaruan"),
+    ("sidang/qa/01_ringkasan_klaim.md", "Ringkasan audit klaim"),
+    ("sidang/qa/06_mock_sidang.md", "Skenario mock sidang"),
+    ("sidang/qa/10_paket_mock_sidang.md", "Paket mock sidang dan lembar skor"),
+    ("sidang/qa/11_kuis_mahasiswa_baru.md", "Kuis mahasiswa baru"),
+    ("sidang/qa/09_checklist_pembimbing.md", "Checklist tanda tangan pembimbing"),
+    ("sidang/PANDUAN_DEMO.md", "Panduan demo"),
+    ("sidang/MAPPING.md", "Peta klaim ke notebook"),
+]
+for _rel, _judul in LAMPIRAN:
+    _isi = (ROOT / _rel).read_text(encoding="utf-8").replace("<!-- bagian:", "<!-- (bagian):")
+    cells.append(nbf.v4.new_markdown_cell(
+        f'<details class="{TAG}">\n<summary><b>Lampiran — {_judul}</b> (`{_rel}`)</summary>\n\n'
+        f"{_isi.strip()}\n\n</details>"))
+    cells[-1].metadata["tags"] = [TAG]
+
+# setiap bagian di 08 harus muncul di salah satu catatan internal
+_bagian_qa = set(re.findall(r"<!-- bagian: (\S+) -->", QA.read_text(encoding="utf-8"))) - {"nama"}
+_dipakai = set(re.findall(r'internal\("([^"]+)"', Path(__file__).read_text(encoding="utf-8")))
+assert _bagian_qa <= _dipakai, f"bagian 08 belum masuk notebook: {sorted(_bagian_qa - _dipakai)}"
+
 
 def main() -> None:
     nb = nbf.v4.new_notebook()
