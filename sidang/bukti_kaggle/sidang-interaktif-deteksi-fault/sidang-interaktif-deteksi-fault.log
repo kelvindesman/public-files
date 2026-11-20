@@ -1,26 +1,26 @@
-[{"stream_name":"stderr","time":8.411203235,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
-,{"stream_name":"stderr","time":8.411269645,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
-,{"stream_name":"stderr","time":8.411275165,"data":"0.00s - to python to disable frozen modules.\n"}
-,{"stream_name":"stderr","time":8.411278885,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
-,{"stream_name":"stderr","time":9.017910875,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
-,{"stream_name":"stderr","time":9.017950465,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
-,{"stream_name":"stderr","time":9.017955425,"data":"0.00s - to python to disable frozen modules.\n"}
-,{"stream_name":"stderr","time":9.017958945,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
-,{"stream_name":"stdout","time":11.884336776,"data":"Folder kerja: /kaggle/working/bahan\n"}
-,{"stream_name":"stdout","time":12.337820696,"data":"28,173 titik 5 menit = 97.8 hari\n"}
-,{"stream_name":"stdout","time":13.450774219,"data":"10 model dimuat | dibuat 2026-11-20T02:04:57+00:00 | commit da6f6d3 | N = 700\n"}
-,{"stream_name":"stdout","time":13.870894146,"data":"JSD menang 11 dari 15 sel | rata-rata F1 EDM 0.458 vs JSD 0.486\n"}
-,{"stream_name":"stderr","time":17.366879847,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
-,{"stream_name":"stderr","time":17.366915557,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
-,{"stream_name":"stderr","time":17.535380897,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
-,{"stream_name":"stderr","time":17.535407967,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
-,{"stream_name":"stderr","time":18.260486727,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
-,{"stream_name":"stderr","time":18.372998497,"data":"[NbConvertApp] Writing 651944 bytes to __notebook__.ipynb\n"}
-,{"stream_name":"stderr","time":20.896340188,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
-,{"stream_name":"stderr","time":21.483265308,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
-,{"stream_name":"stderr","time":21.483298198,"data":"[NbConvertApp] Making directory __results___files\n"}
-,{"stream_name":"stderr","time":21.483516198,"data":"[NbConvertApp] Making directory __results___files\n"}
-,{"stream_name":"stderr","time":21.483665318,"data":"[NbConvertApp] Making directory __results___files\n"}
-,{"stream_name":"stderr","time":21.483809648,"data":"[NbConvertApp] Making directory __results___files\n"}
-,{"stream_name":"stderr","time":21.484007308,"data":"[NbConvertApp] Writing 724813 bytes to __results__.html\n"}
+[{"stream_name":"stderr","time":9.108466578,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.108582721,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.108588355,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.108591101,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":9.857677115,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.857705626,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.857711329,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.857715326,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":12.847397774000001,"data":"Folder kerja: /kaggle/working/bahan\n"}
+,{"stream_name":"stdout","time":13.158904589,"data":"28,173 titik 5 menit = 97.8 hari\n"}
+,{"stream_name":"stdout","time":14.353773465,"data":"10 model dimuat | dibuat 2026-11-20T02:04:57+00:00 | commit da6f6d3 | N = 700\n"}
+,{"stream_name":"stdout","time":14.90530652,"data":"JSD menang 11 dari 15 sel | rata-rata F1 EDM 0.458 vs JSD 0.486\n"}
+,{"stream_name":"stderr","time":18.654302463,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":18.654363411,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":18.835354497,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":18.835381413,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":19.69907993,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":19.823414093,"data":"[NbConvertApp] Writing 306138 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":22.888107323,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":23.603257532,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":23.603289774,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":23.603588217,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":23.603798801,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":23.603951944,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":23.60417081,"data":"[NbConvertApp] Writing 427704 bytes to __results__.html\n"}
 ]
