@@ -119,7 +119,7 @@ File model dicari di data yang terpasang (`/kaggle/input/...`, dataset
 `.npz` (angka numpy murni), jadi tidak bergantung pada versi scikit-learn.
 """))
 
-cells.append(code(r"""import json, glob
+cells.append(code(r"""import json
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -129,9 +129,12 @@ from IPython.display import display, Markdown
 def cari_file(nama):
     roots = [os.environ.get("MODEL_DIR", ""), "/kaggle/input", "hasil15/exports", "exports", "."]
     for r in [r for r in roots if r and os.path.isdir(r)]:
-        hits = sorted(glob.glob(os.path.join(r, "**", nama), recursive=True))
-        if hits:
-            return Path(hits[0])
+        for d, _, fs in sorted(os.walk(r, followlinks=True)):
+            for n in (nama, nama[:-3] if nama.endswith(".gz") else None):   # Kaggle membuka .csv.gz jadi .csv
+                if n and n in fs:
+                    return Path(d) / n
+    if os.path.isdir("/kaggle/input"):
+        print("isi /kaggle/input:", [d for d, _, _ in os.walk("/kaggle/input", followlinks=True)][:20])
     raise FileNotFoundError(f"{nama} tidak ditemukan. Tambahkan dataset "
                             "'kelvindsmn/data-hipotetik-fault-sensor-berlabel' lewat Add Data, "
                             "atau set MODEL_DIR ke folder berisi file model.")
