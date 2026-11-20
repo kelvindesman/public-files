@@ -647,7 +647,7 @@ tetapi sistem notifikasi di lapangan tidak tahu jenis gangguannya lebih dulu.
 Karena itu dilatih juga satu **model gabungan** per versi: data latih dari
 **semua 16 kondisi + data normal** sekaligus, label tetap fault/normal per
 sampel, pembagian blok hari yang sama. Hasil ujinya dilaporkan total dan per
-kondisi.
+kondisi. Arsitekturnya dipilih dengan grid search (F1 validasi).
 
 **Cara menyimpan.** Model disimpan sebagai file **`.npz` (numpy murni)**, bukan
 pickle scikit-learn: pickle sklearn hanya bisa dibuka dengan versi sklearn yang
@@ -672,8 +672,20 @@ Notebook ini memuat ulang setiap file yang disimpan dengan `15_muat_model.py`
 dan memastikan probabilitasnya **identik** dengan model di memori.
 """))
 
-cells.append(code(r"""GABUNGAN_ARCH = "2 layer (6,3)"
-GAB_ROWS, GAB_PER_COND = [], []
+cells.append(md(r"""## Grid search arsitektur (tanpa identifikasi sensor)
+
+Arsitektur model gabungan dipilih dengan **grid search**: setiap kandidat
+dilatih di blok hari latih, lalu yang dipilih adalah kandidat dengan **F1
+validasi** tertinggi (ambang juga disetel di validasi). Data uji tidak dipakai
+untuk memilih. Tidak ada tahap identifikasi sensor: model `4sensor` menilai
+**satu sensor sekaligus** dari deret sensor itu sendiri, jadi sensor yang
+rusak langsung terbaca dari kolom alarm sensor tersebut.
+"""))
+
+cells.append(code(r"""GABUNGAN_GRID = ({"1 layer (6)": [6], "2 layer (6,3)": [6, 3]} if SMOKE else
+                 {"1 layer (6)": [6], "1 layer (12)": [12], "2 layer (6,3)": [6, 3],
+                  "2 layer (12,6)": [12, 6], "2 layer (16,8)": [16, 8]})
+GAB_ROWS, GAB_PER_COND, GRID_ROWS, GAB_ARCH = [], [], [], {}
 for gi, version in enumerate(["rata2", "4sensor"]):
     parts = []
     # data normal (bersih) ikut sebagai contoh negatif
@@ -688,11 +700,30 @@ for gi, version in enumerate(["rata2", "4sensor"]):
     F = np.vstack([p_[1] for p_ in parts]); y = np.concatenate([p_[2] for p_ in parts])
     sp = np.concatenate([p_[3] for p_ in parts])
     cond_of = np.concatenate([np.full(len(p_[2]), p_[0], dtype=object) for p_ in parts])
-    model, p, thr, f1_val, res, tr, wall, cpu = fit_lm_model(F, y, sp, ARCHS[GABUNGAN_ARCH],
-                                                             seed=RANDOM_SEED + 100 + gi)
+    best = None
+    for arch_name, hidden in GABUNGAN_GRID.items():
+        fit = fit_lm_model(F, y, sp, hidden, seed=RANDOM_SEED + 100 + gi)
+        model_, p_, thr_, f1v_, res_ = fit[:5]
+        te_ = sp == 2; yh_ = (p_ > thr_).astype(int)
+        n_param = int(len(model_["theta"]))
+        GRID_ROWS.append({"versi": version, "arsitektur": arch_name, "n_parameter": n_param,
+                          "ambang": thr_, "F1_validasi": f1v_,
+                          "F1_uji": f1_score(y[te_], yh_[te_], zero_division=0),
+                          "AUC_uji": safe_auc(y[te_], p_[te_]),
+                          "lm_iter": res_["hist"]["iters"], "lm_status": res_["hist"]["status"],
+                          "wall_s": fit[6]})
+        print(f"[{time.time()-NOTEBOOK_START:7.0f}s] grid {version:7s} {arch_name:15s} P={n_param:4d} "
+              f"F1 val={f1v_:.3f} uji={GRID_ROWS[-1]['F1_uji']:.3f} iter={res_['hist']['iters']} "
+              f"{res_['hist']['status']} wall={fit[6]:.0f}s", flush=True)
+        if best is None or f1v_ > best[0]:
+            best = (f1v_, arch_name, fit)
+    _, GABUNGAN_ARCH, (model, p, thr, f1_val, res, tr, wall, cpu) = best
+    GAB_ARCH[version] = GABUNGAN_ARCH
+    print(f"   -> dipilih (F1 validasi tertinggi): {GABUNGAN_ARCH}")
     MODELS[(version, "gabungan", GABUNGAN_ARCH)] = model
     te = sp == 2; yhat = (p > thr).astype(int)
     GAB_ROWS.append({"versi": version, "kondisi": "gabungan (16 kondisi + normal)", "arsitektur": GABUNGAN_ARCH,
+                     "F1_validasi": f1_val,
                      "n_latih": len(tr), "n_uji": int(te.sum()), "fault_uji_%": round(100 * y[te].mean(), 2),
                      "ambang": thr, "precision": precision_score(y[te], yhat[te], zero_division=0),
                      "recall": recall_score(y[te], yhat[te], zero_division=0),
@@ -710,6 +741,9 @@ for gi, version in enumerate(["rata2", "4sensor"]):
     print(f"[{time.time()-NOTEBOOK_START:7.0f}s] gabungan {version}: F1={GAB_ROWS[-1]['F1']:.3f} "
           f"AUC={GAB_ROWS[-1]['ROC_AUC']:.3f} FPR normal={GAB_ROWS[-1]['FPR_data_normal']:.3f}", flush=True)
 
+grid_gabungan = pd.DataFrame(GRID_ROWS).round(4)
+export_df(grid_gabungan, "15_grid_search_gabungan")
+display(grid_gabungan)
 hasil_gabungan = pd.DataFrame(GAB_ROWS).round(4)
 export_df(hasil_gabungan, "15_hasil_model_gabungan")
 display(hasil_gabungan)
@@ -786,12 +820,15 @@ index_rows = []
 for (version, cond, arch), m in MODELS.items():
     fn = nama_file_model(version, cond, arch)
     target = (EXPORT_DIR if cond == "gabungan" else MODEL_DIR) / fn
-    np.savez(target, versi=version, kondisi=cond, arsitektur=arch, **m)
-    # --- muat ulang lewat 15_muat_model.py & bandingkan dengan model di memori ---
-    mm = muat_model_15.muat_model(target)
     x_cek = GEN_AVG["drift+bias"]["y"] if version == "rata2" else GEN_4S["spike+malfunc"]["Y"][:, 2]
     tpl = [[np.zeros(tuple(int(v) for v in s)), np.zeros(int(s[1]))] for s in m["shapes"]]
     p_mem = lm_predict_proba(m["theta"], tpl, (lag_features(x_cek) - m["mean"]) / m["scale"])[:, 1]
+    extra = {}
+    if cond == "gabungan":   # contoh input + prob acuan: pemakai bisa cek loader-nya memberi angka yang sama
+        extra = {"contoh_input": x_cek[:2000], "contoh_prob": p_mem[:2000]}
+    np.savez(target, versi=version, kondisi=cond, arsitektur=arch, **m, **extra)
+    # --- muat ulang lewat 15_muat_model.py & bandingkan dengan model di memori ---
+    mm = muat_model_15.muat_model(target)
     p_file, _ = muat_model_15.deteksi(mm, x_cek)
     diff = float(np.max(np.abs(p_file[valid_row] - p_mem[valid_row])))
     assert diff < 1e-9, f"{fn}: prediksi file != memori ({diff})"
@@ -817,6 +854,67 @@ MODEL_DIR.rmdir()
 export_df(model_index, "15_daftar_model")
 print(f"{len(model_index)} model disimpan & dimuat ulang; selisih prob maks = "
       f"{model_index['selisih_maks_prob_saat_muat_ulang'].max():.2e}")
+"""))
+
+cells.append(md(r"""## Kartu model (`15_model_card.json`)
+
+Ringkasan yang bisa dibaca mesin untuk setiap model gabungan: arsitektur hasil
+grid search, parameter LM, fitur, ambang, data latih, parameter fault
+injection, dan hasil uji. Notebook inferensi (model portabel, tanpa latih)
+membaca file ini dan menampilkannya.
+"""))
+
+cells.append(code(r"""import inspect, datetime, json
+_lm_sig = {k: v.default for k, v in inspect.signature(lm_fit).parameters.items()
+           if v.default is not inspect.Parameter.empty}
+MODEL_CARD = {
+    "nama": "ANN-LM deteksi gangguan sensor kelembaban tanah (tanpa entropi, per sampel)",
+    "dibuat": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+    "notebook_latih": "kaggle.com/code/kelvindsmn/data-hipotetik-berlabel-ann-lm",
+    "status_publikasi": ("Metode (ANN dilatih Levenberg-Marquardt, fitur lag tanpa entropi, skenario S1-S5) "
+                         "sudah dipublikasikan pada paper pertama (ACS). Kode pada paper itu tertinggal: masih "
+                         "memakai scipy least_squares(method='lm') dengan Jacobian numerik dan 1 keluaran sigmoid. "
+                         "Model ini dilatih ulang dengan kode yang diperbarui (LM asli, Jacobian analitik)."),
+    "label": ("Label berasal dari fault injection: gangguan disuntikkan secara sintetis ke data sensor, "
+              "sehingga setiap sampel tahu pasti fault/normal. Bukan label dari gangguan nyata di lapangan."),
+    "data_sumber": "tabel_sensor4_generated.csv (4 sensor kelembaban tanah, interval 30 detik)",
+    "fault_injection": {"drift_total_poin_per_episode": DRIFT_TOTAL_POINTS,
+                        "bias_poin_per_episode": BIAS_EPISODE_POINTS,
+                        "spike_relatif": SPIKE_REL, "spike_kepadatan": SPIKE_DENSITY,
+                        "hardware": "8% nilai macet + 5% hilang (NaN)",
+                        "episode": f"{DRIFT_N_EPISODES} episode x {DRIFT_EPISODE_DAYS:g} hari (posisi 10/40/70%)",
+                        "kondisi_latih": ["normal", *CONDITIONS]},
+    "fitur": {"lag_k": LAG_K, "nama": FEATURE_NAMES, "interval_sampel_detik": SAMPLING_SECONDS},
+    "pembagian_data": "blok hari berulang latih,latih,latih,validasi,uji",
+    "lm": {"iterasi_maks": LM_ITERS, "lambda_awal": _lm_sig.get("lam0"), "batas_waktu_s": LM_MAX_TRAIN_S,
+           "baris_latih_maks": MAX_TRAIN_ROWS, "target": "one-hot 2 kelas, keluaran linear, softmax saat prediksi",
+           "aktivasi_tersembunyi": "tanh", "redaman": "Marquardt diag(JtJ), lambda diperbarui aturan Nielsen"},
+    "grid_search": {"kandidat": {k: v for k, v in GABUNGAN_GRID.items()},
+                    "kriteria": "F1 validasi tertinggi; data uji tidak dipakai untuk memilih",
+                    "identifikasi_sensor": "tidak ada; model menilai satu deret sensor sendiri-sendiri"},
+    "model": {},
+}
+for version in ["rata2", "4sensor"]:
+    arch = GAB_ARCH[version]; m = MODELS[(version, "gabungan", arch)]
+    hg = hasil_gabungan[hasil_gabungan["versi"] == version].iloc[0]
+    MODEL_CARD["model"][version] = {
+        "file": f"15_model_gabungan_{version}.npz",
+        "masukan": ("rata-rata 4 sensor (satu deret)" if version == "rata2"
+                    else "satu sensor per panggilan (panggil untuk tiap kolom sensor)"),
+        "arsitektur": arch, "hidden": [int(h) for h in m["hidden"]], "n_parameter": int(len(m["theta"])),
+        "ambang": round(float(m["ambang"]), 4),
+        "hasil_uji": {k: (None if pd.isna(hg[k]) else float(hg[k]))
+                      for k in ["precision", "recall", "F1", "ROC_AUC", "FPR_data_normal"]},
+        "grid": grid_gabungan[grid_gabungan["versi"] == version]
+                [["arsitektur", "n_parameter", "F1_validasi", "F1_uji"]].to_dict("records"),
+    }
+MODEL_CARD["batasan"] = [
+    "Drift kecil sulit dideteksi per sampel (recall drift rendah, lihat 15_hasil_model_gabungan_per_kondisi.csv).",
+    "Dilatih pada satu set data dan fault sintetis; pada data lain ambang mungkin perlu disetel ulang.",
+    "Data harus satu deret per sensor, urut waktu, interval kira-kira 30 detik, nilai persen 0-100.",
+]
+(EXPORT_DIR / "15_model_card.json").write_text(json.dumps(MODEL_CARD, indent=1, ensure_ascii=False))
+print(json.dumps(MODEL_CARD["model"], indent=1, ensure_ascii=False))
 """))
 
 cells.append(code(r"""files = sorted(EXPORT_DIR.glob("15_*"))

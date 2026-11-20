@@ -1,0 +1,16 @@
+{
+ "id": "kelvindsmn/deteksi-fault-ann-lm-model-portabel",
+ "title": "Deteksi Fault ANN LM Model Portabel",
+ "code_file": "deteksi-fault-ann-lm-model-portabel.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": false,
+ "enable_tpu": false,
+ "enable_internet": false,
+ "keywords": [],
+ "dataset_sources": ["kelvindsmn/data-hipotetik-fault-sensor-berlabel"],
+ "kernel_sources": [],
+ "competition_sources": [],
+ "model_sources": []
+}
