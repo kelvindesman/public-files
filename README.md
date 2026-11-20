@@ -31,8 +31,9 @@ hal itu. Baca berurutan dari 01.
 
 Simulator drift versi awal menambahkan 0,2 poin **per sampel** ke seluruh seri
 (57,6 poin/hari, +5.635 poin total), sehingga nilai menembus 100 % setelah ±22
-jam. Itu tidak fisis: drift sensor kelembaban nyata 0,003–0,17 poin/hari, jadi
-versi lama 339–19.200× terlalu cepat. Versi sekarang:
+jam. Itu tidak fisis: asumsi skenario untuk drift lambat sensor kelembaban
+adalah 0,003–0,17 poin/hari (angka asumsi, belum dirujuk ke datasheet atau
+paper), jadi versi lama 339–19.200× terlalu cepat. Versi sekarang:
 
 - `DRIFT_POINTS_PER_DAY = 1,0` — laju per **waktu**, bukan per sampel;
 - tiga episode 3 hari di 10 %, 40 %, 70 % panjang seri, lalu di-reset

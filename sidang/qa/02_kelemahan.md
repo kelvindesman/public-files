@@ -240,6 +240,10 @@ Semua dibuktikan oleh `cek_cacat_kode.py` (jalankan:
 - JSD soft-histogram mengabaikan urutan nilai di dalam vektor (pola naik dan
   turun dianggap sama) → entropi JSD-Fuzzy bisa bernilai negatif
   (contoh: −0,115 pada deret 8 titik).
+  Bukti kode: `vectors_to_distributions` menjumlahkan kernel atas elemen vektor
+  (`K.sum(axis=1)`), jadi template [−1, 1] dan [1, −1] memberi JSD = 0 persis
+  (dicek 2026-11-20), sedangkan Euclidean memberi d = 2,83. JSD-Fuzzy mengukur
+  kemiripan *sebaran nilai*, bukan *bentuk pola*; tulis ini di bab metode.
 - Argumen `r_ratio` pada `jsd_fuzzy_entropy_1d` tidak dipakai.
 - Rujukan rumus dan contoh angka: `03_algoritma_dengan_tangan.md`.
 
