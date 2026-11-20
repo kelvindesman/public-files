@@ -58,8 +58,8 @@ Temuan utama:
    AUC hanya 0,59–0,70. Drift lambat dalam rentang galat kalibrasi tidak dapat
    dibedakan dari variasi alami.
 4. **Spike makin terdeteksi seiring amplitudo, dan JSD-Fuzzy lebih peka.** JSD naik
-   dari AUC 0,70 (0,08 × SD) ke 0,92 (1,5 × SD) dan dari 0,81 ke 0,87 pada spike
-   relatif 15% → 50%. EDM relatif datar (0,76–0,82 dan 0,77–0,79). Spike relatif
+   dari AUC 0,70 (0,08 × SD) ke 0,92 (1,5 × SD) dan dari 0,81 ke 0,86 pada spike
+   relatif 15% → 50%. EDM relatif datar (0,76–0,81 dan 0,77–0,79). Spike relatif
    50% pada JSD mencapai TPR 0,812, tetapi FPR 0,179 masih di atas 0,10.
 5. **Hardware malfunction tetap paling mudah dideteksi.** Kedua metode lolos
    ambang mulai (0,3; 0,2), sama dengan hasil notebook 12 v1.
@@ -83,7 +83,7 @@ kombinasi tetap (0,08; 0,05).
   spike + hardware tingkat tinggi pada JSD-Fuzzy (TPR 0,927, FPR 0,134,
   AUC 0,942).
 - Kombinasi yang memuat hardware mencapai AUC 0,81–0,94.
-  Drift + bias adalah yang terlemah (AUC 0,67–0,73 JSD, 0,69–0,74 EDM), sesuai
+  Drift + bias adalah yang terlemah (AUC 0,66–0,73 JSD, 0,69–0,74 EDM), sesuai
   dengan temuan bahwa kedua komponen itu hampir tidak terlihat sendiri-sendiri.
 - Menaikkan tingkat dari rendah ke tinggi hanya menaikkan F1 rata-rata
   0,036 (JSD) dan 0,005 (EDM). Deteksi kombinasi ditentukan oleh jenis

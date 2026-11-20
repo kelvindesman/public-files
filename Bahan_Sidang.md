@@ -62,8 +62,8 @@ dan jumlahnya nol. Rujukan: `11` §2b sel 8.
 
 **Q9. Nilai 0 di sensor S4 diapakan?**
 Tetap dipakai dan dilabeli normal. Totalnya 11.371 sampel 30 detik (4,0 %),
-semuanya 16–21 Des 2025, berupa tiga blok macet: 45 jam, 37 jam, dan 12 jam
-(plus 49 sampel pendek). Setelah agregasi 5 menit: 1.135 titik nol. Nilainya
+berupa tiga blok macet 45 jam, 37 jam, dan 12 jam (semuanya 16–21 Des 2025),
+plus 50 sampel pendek (49 di 16–21 Des dan 1 pada 8 Des 2025 pukul 14.06). Setelah agregasi 5 menit: 1.135 titik nol. Nilainya
 masih di dalam rentang fisik 0–100 %, jadi tidak dibuang; ini justru gejala
 pembacaan macet. Dampaknya 10 dari 280 window N=200 (3,6 %) mayoritas nol
 (N=700: 2/79; N=1000: 1/55). Dicatat sebagai batasan. Rujukan: `11` §2b dan
@@ -173,7 +173,8 @@ digabung. Identitas sensor dipertahankan supaya bisa dilacak. Rujukan: `11` §6.
 
 **Q29. ANN-nya seperti apa?**
 Jaringan feed-forward: 60 masukan, satu atau dua lapisan tersembunyi dari
-kisi (32,32), (64,16), (64,), aktivasi relu/tanh, keluaran softmax. Arsitektur
+kisi 8 arsitektur — (16,), (32,), (64,), (16,8), (32,8), (32,16), (32,32),
+(64,16) — aktivasi relu/tanh, keluaran softmax. Arsitektur
 dipilih di dalam cross-validation, bukan setelah melihat data uji. Rujukan:
 `11` §10.
 

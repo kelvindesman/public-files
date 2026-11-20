@@ -26,8 +26,8 @@ Karena fault kini hanya terjadi di dalam episode, lebih banyak window fault
 yang dibuang karena porsinya terlalu kecil. Jumlah yang dibuang: 26.548 dari
 36.120 (N = 200), 7.108 dari 10.191 (N = 700) dan 4.635 dari 7.095
 (N = 1000). Di notebook 11 jumlahnya 1.992, 536 dan 344. Jumlah sampel per
-kelas yang masuk classifier tetap sama dengan notebook 11 (RQ1: n = 1.700 /
-1.621 / 1.526).
+kelas yang masuk classifier (RQ1): N = 200 tetap 1.700 seperti notebook 11,
+tetapi N = 700 dan 1.000 turun menjadi 1.621 / 1.526 (notebook 11: 1.675 / 1.651).
 
 ## RQ4 — Performa deteksi (F1 makro ANN-LM, 16 kondisi)
 
@@ -85,20 +85,21 @@ EDM-Fuzzy unggul pada N = 700 S4, N = 700 S5 dan N = 1000 S3.
 | Wall total run | 610 menit | 478 menit |
 | Ekstraksi fitur JSD-Fuzzy, N = 200 / 700 / 1000 | 324 / 1.055 / 1.628 s | 345 / 922 / 1.340 s |
 | Ekstraksi fitur EDM-Fuzzy, N = 200 / 700 / 1000 | 186 / 219 / 241 s | 202 / 222 / 220 s |
-| Fit ANN-LM per fold, rata-rata EDM / JSD | 75,5 / 75,1 s | 93,2 / 98,0 s |
-| Inferensi per window, rata-rata EDM / JSD | 0,089 / 0,088 ms | 0,097 / 0,087 ms |
+| Fit ANN-LM per fold, rata-rata EDM / JSD | 93,2 / 98,0 s | 75,5 / 75,1 s |
+| Inferensi per window, rata-rata EDM / JSD | 0,097 / 0,087 ms | 0,089 / 0,088 ms |
 | Identifikasi sensor (§12) | 2.133 s | 1.114 s |
 
-Pola biayanya sama: ekstraksi JSD-Fuzzy 1,7–6 kali lebih lama daripada
+Pola biayanya sama: ekstraksi JSD-Fuzzy 1,7–6,8 kali lebih lama daripada
 EDM-Fuzzy, dan biaya inferensi per window hampir sama. Total run lebih
-singkat karena identifikasi sensor lebih cepat. Fit ANN-LM per fold lebih
-lama, dan beberapa fold berhenti karena batas waktu latih (`MAX_TRAIN_S`).
+singkat karena identifikasi sensor dan fit ANN-LM per fold sama-sama lebih
+cepat (fit 75 s vs 93–98 s per fold), walau beberapa fold tetap berhenti karena
+batas waktu latih (`MAX_TRAIN_S`).
 
 ## Temuan utama
 
 1. Dengan fault yang lebih besar dan berbentuk episode, keunggulan JSD-Fuzzy
    atas EDM-Fuzzy menjadi lebih jelas. Selisih F1 gabungan naik dari +0,028
-   (p = 0,076, tidak signifikan) menjadi +0,077 (p = 0,0006, signifikan).
+   (p = 0,076, tidak signifikan) menjadi +0,076 (p = 0,0006, signifikan).
 2. Identifikasi sensor membaik pada kedua metode, dan paling besar pada
    JSD-Fuzzy: F1 sensor naik 0,675 → 0,791, dan semua-4-benar naik
    0,307 → 0,483.

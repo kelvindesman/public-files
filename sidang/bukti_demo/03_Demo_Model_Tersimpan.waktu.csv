@@ -1,0 +1,9 @@
+sel,detik,sumber_awal
+2,2.74,"# === Setup: cari folder model + muat semua model tersimpan === import glob, jso"
+4,0.00,"HARI_MULAI = 10 SENSOR_RUSAK = [""S2""] FAULT = [""drift"", ""spike"", ""bias"", ""hardwa"
+6,0.84,"# === Potongan data asli vs setelah diberi fault === WIN = meta[""window""] df_syn"
+8,2.62,"# === Entropi multiskala untuk dua window (asli & fault), dua metode === t0 = ti"
+10,0.02,"# === Tebakan model tersimpan === n_fault = len(set(FAULT)) scen_auto = [""S1"", {"
+12,14.72,"K = 15 rng = np.random.default_rng(2026) Wb, yb, kondisi_b = [], [], [] for i in"
+14,38.50,from sklearn.model_selection import GroupShuffleSplit from sklearn.metrics impor
+TOTAL,62.56,

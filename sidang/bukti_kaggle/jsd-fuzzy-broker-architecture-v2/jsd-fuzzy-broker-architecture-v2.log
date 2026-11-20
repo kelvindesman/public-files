@@ -1,0 +1,85 @@
+[{"stream_name":"stderr","time":5.381265847,"data":"/usr/local/lib/python3.12/dist-packages/nbformat/__init__.py:96: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":5.381330147,"data":"  validate(nb)\n"}
+,{"stream_name":"stderr","time":6.1507311940000005,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.150757044,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.150761424,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.150765244,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":6.696355711,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.69638961,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.69639419,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.69639725,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":7.643001781,"data":"[t+  0.0 min] guard armed\n"}
+,{"stream_name":"stdout","time":10.1670626,"data":"config: DS 4 WIN 256 MAX_PER_CLASS 200 S 10 | profile fast\n"}
+,{"stream_name":"stdout","time":11.631953938,"data":"Combined table (broker output): (60763, 4) -\u003e downsampled (15191, 4)\n"}
+,{"stream_name":"stdout","time":11.652063565,"data":"skenario: 16\n"}
+,{"stream_name":"stdout","time":11.749040179,"data":"W_s (1979, 256, 4) | classes 17\n"}
+,{"stream_name":"stdout","time":11.773071688,"data":"entropy fns ready\n"}
+,{"stream_name":"stdout","time":11.787362533,"data":"time fns ready\n"}
+,{"stream_name":"stdout","time":11.801381288,"data":"A (4-channel): (1979, 256, 4) | B (fused 1-channel): (1979, 256, 1)\n"}
+,{"stream_name":"stdout","time":11.801402308,"data":"[t+  0.1 min] features EDM-Fuzzy / A_4channel\n"}
+,{"stream_name":"stdout","time":26.358592039,"data":"  EDM-Fuzzy  A_4channel   -\u003e (1979, 88)\n"}
+,{"stream_name":"stdout","time":26.358628328,"data":"[t+  0.3 min] features EDM-Fuzzy / B_fused_1ch\n"}
+,{"stream_name":"stderr","time":26.50107014,"data":"/tmp/ipykernel_16/2639176021.py:7: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.\n"}
+,{"stream_name":"stderr","time":26.5010988,"data":"  sk=_sstats.skew(x,axis=1,bias=False); ku=_sstats.kurtosis(x,axis=1,bias=False)\n"}
+,{"stream_name":"stderr","time":26.50110281,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1361: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":26.50110611,"data":"  nval = ((n - 1.0) * n)**0.5 / (n - 2.0) * m3 / m2**1.5\n"}
+,{"stream_name":"stderr","time":26.50110898,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1469: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":26.50111205,"data":"  nval = 1.0/(n-2)/(n-3) * ((n**2-1.0)*m4/m2**2.0 - 3*(n-1)**2.0)\n"}
+,{"stream_name":"stderr","time":26.50111486,"data":"\n"}
+,{"stream_name":"stderr","time":26.50111759,"data":"/tmp/ipykernel_16/2639176021.py:7: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.\n"}
+,{"stream_name":"stderr","time":26.50113352,"data":"  sk=_sstats.skew(x,axis=1,bias=False); ku=_sstats.kurtosis(x,axis=1,bias=False)\n"}
+,{"stream_name":"stderr","time":26.50113663,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1361: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":26.5011396,"data":"  nval = ((n - 1.0) * n)**0.5 / (n - 2.0) * m3 / m2**1.5\n"}
+,{"stream_name":"stderr","time":26.5011425,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1469: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":26.50114547,"data":"  nval = 1.0/(n-2)/(n-3) * ((n**2-1.0)*m4/m2**2.0 - 3*(n-1)**2.0)\n"}
+,{"stream_name":"stdout","time":30.165304359,"data":"  EDM-Fuzzy  B_fused_1ch  -\u003e (1979, 22)\n"}
+,{"stream_name":"stdout","time":30.165355609,"data":"[t+  0.4 min] features JSD-Fuzzy / A_4channel\n"}
+,{"stream_name":"stdout","time":53.488177284,"data":"  JSD-Fuzzy  A_4channel   -\u003e (1979, 208)\n"}
+,{"stream_name":"stdout","time":53.488207304,"data":"[t+  0.8 min] features JSD-Fuzzy / B_fused_1ch\n"}
+,{"stream_name":"stdout","time":59.535211337,"data":"  JSD-Fuzzy  B_fused_1ch  -\u003e (1979, 52)\n"}
+,{"stream_name":"stdout","time":59.550562651999996,"data":"multi-label windows: 1862 | prevalensi: {'drift': 0.5, 'spike': 0.5, 'bias': 0.5, 'hardware': 0.5}\n"}
+,{"stream_name":"stdout","time":66.919377516,"data":"[t+  1.0 min] benchmark EDM-Fuzzy done\n"}
+,{"stream_name":"stdout","time":78.934745873,"data":"[t+  1.2 min] benchmark JSD-Fuzzy done\n"}
+,{"stream_name":"stdout","time":78.970236585,"data":"\n"}
+,{"stream_name":"stdout","time":78.970263345,"data":"=== Benchmark per-fault: 4-channel (A) vs fused-1ch (B) ===\n"}
+,{"stream_name":"stdout","time":78.970269205,"data":"   Method     Variant    Fault  n_features  Accuracy  Precision  Recall    F1  ROC_AUC\n"}
+,{"stream_name":"stdout","time":78.970273825,"data":"EDM-Fuzzy  A_4channel    drift          88     0.976      0.996   0.957 0.976    0.991\n"}
+,{"stream_name":"stdout","time":78.970278425,"data":"EDM-Fuzzy  A_4channel    spike          88     0.541      0.537   0.615 0.574    0.538\n"}
+,{"stream_name":"stdout","time":78.970283436,"data":"EDM-Fuzzy  A_4channel     bias          88     0.536      0.530   0.679 0.596    0.547\n"}
+,{"stream_name":"stdout","time":78.970287646,"data":"EDM-Fuzzy  A_4channel hardware          88     0.884      0.933   0.829 0.878    0.953\n"}
+,{"stream_name":"stdout","time":78.970291716,"data":"EDM-Fuzzy B_fused_1ch    drift          22     0.957      0.991   0.922 0.955    0.982\n"}
+,{"stream_name":"stdout","time":78.970295726,"data":"EDM-Fuzzy B_fused_1ch    spike          22     0.504      0.504   0.731 0.597    0.547\n"}
+,{"stream_name":"stdout","time":78.970299826,"data":"EDM-Fuzzy B_fused_1ch     bias          22     0.517      0.512   0.838 0.635    0.531\n"}
+,{"stream_name":"stdout","time":78.970303876,"data":"EDM-Fuzzy B_fused_1ch hardware          22     0.762      0.753   0.782 0.767    0.862\n"}
+,{"stream_name":"stdout","time":78.970307916,"data":"JSD-Fuzzy  A_4channel    drift         208     0.972      0.991   0.953 0.971    0.984\n"}
+,{"stream_name":"stdout","time":78.970311906,"data":"JSD-Fuzzy  A_4channel    spike         208     0.783      0.812   0.739 0.774    0.876\n"}
+,{"stream_name":"stdout","time":78.970316006,"data":"JSD-Fuzzy  A_4channel     bias         208     0.601      0.614   0.551 0.581    0.661\n"}
+,{"stream_name":"stdout","time":78.970329686,"data":"JSD-Fuzzy  A_4channel hardware         208     0.959      0.961   0.957 0.959    0.990\n"}
+,{"stream_name":"stdout","time":78.970333146,"data":"JSD-Fuzzy B_fused_1ch    drift          52     0.972      0.987   0.957 0.972    0.992\n"}
+,{"stream_name":"stdout","time":78.970336436,"data":"JSD-Fuzzy B_fused_1ch    spike          52     0.618      0.605   0.688 0.644    0.689\n"}
+,{"stream_name":"stdout","time":78.970339706,"data":"JSD-Fuzzy B_fused_1ch     bias          52     0.543      0.536   0.675 0.597    0.568\n"}
+,{"stream_name":"stdout","time":78.970343206,"data":"JSD-Fuzzy B_fused_1ch hardware          52     0.773      0.764   0.791 0.777    0.869\n"}
+,{"stream_name":"stdout","time":78.970346736,"data":"\n"}
+,{"stream_name":"stdout","time":78.970350076,"data":"[Saved] exports/broker_channel_benchmark.csv\n"}
+,{"stream_name":"stdout","time":78.970353666,"data":"\n"}
+,{"stream_name":"stdout","time":78.970356806,"data":"=== Rata-rata per metode x variant (4 fault) ===\n"}
+,{"stream_name":"stdout","time":78.970360515,"data":"                       Accuracy     F1  ROC_AUC\n"}
+,{"stream_name":"stdout","time":78.970363995,"data":"Method    Variant                              \n"}
+,{"stream_name":"stdout","time":78.970367355,"data":"EDM-Fuzzy A_4channel      0.734  0.756    0.757\n"}
+,{"stream_name":"stdout","time":78.970370466,"data":"          B_fused_1ch     0.685  0.738    0.730\n"}
+,{"stream_name":"stdout","time":78.970373646,"data":"JSD-Fuzzy A_4channel      0.829  0.821    0.878\n"}
+,{"stream_name":"stdout","time":78.970376986,"data":"          B_fused_1ch     0.726  0.748    0.780\n"}
+,{"stream_name":"stdout","time":79.72861197,"data":"[Saved] exports/broker_channel_benchmark.png\n"}
+,{"stream_name":"stdout","time":80.059813186,"data":"[Saved] exports/broker_architecture_diagram.png\n"}
+,{"stream_name":"stderr","time":84.817980729,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":84.818025849,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":84.947917304,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":84.947953014,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":85.490815574,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":85.747902453,"data":"[NbConvertApp] Writing 194219 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":87.973108331,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":88.780890673,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":88.780918613,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":88.781058183,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":88.781339683,"data":"[NbConvertApp] Writing 430027 bytes to __results__.html\n"}
+]

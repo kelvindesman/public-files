@@ -15,15 +15,15 @@ hal itu. Baca berurutan dari 01.
 | 03 | `03_Akurasi_per_Tingkat_Kombinasi_Fault.ipynb` | Kalau dipecah menurut banyaknya fault yang bercampur, seberapa akurat? | **JSD-Fuzzy menang di 5 dari 5 tingkat** (F1 0,819 · 0,668 · 0,805 · 0,814 · 1,000 vs EDM 0,766 · 0,492 · 0,494 · 0,644 · 0,990) |
 | 04 | `04_Klasifikasi_Dulu_Baru_Sensor_Mana.ipynb` | Setelah tahu ada fault, sensor **mana** yang rusak? | **Bisa, dan dirantai dari hasil klasifikasi.** Tahap-2 F1 sensor: JSD **0,902** vs EDM 0,846 (dari 17 kelas); semua-4-benar 0,920 vs 0,800 bila 4 fault |
 | 05 | `05_Fault_Jenis_Apa_di_Sensor_Mana.ipynb` | Bias-nya di sensor mana, drift-nya di sensor mana? | **Bisa** — 16 label (4 sensor × 4 jenis fault). F1 per jenis: bias 0,448 vs 0,142 · drift 0,868 vs 0,696 · spike 0,601 vs 0,191 · hardware 0,917 vs 0,924 |
-| 06 | `06_ANN_vs_XGBoost.ipynb` | Batasnya di classifier atau di fiturnya? | **Di keduanya.** XGBoost + fitur JSD F1 0,443 (ANN-LM 0,394); tambah fitur waktu → **0,608**, terbaik di 5 skenario. Fitur EDM saja 0,254 |
+| 06 | `06_ANN_vs_XGBoost.ipynb` | Batasnya di classifier atau di fiturnya? | **Di keduanya.** Angka skenario S5: XGBoost + fitur JSD F1 0,443 (MLP sklearn notebook 01: 0,394); tambah fitur waktu → **0,608**. JSD + waktu terbaik di 3 dari 5 skenario (S1, S2, S5), fitur waktu saja terbaik di S3 dan S4; rata-rata 5 skenario JSD + waktu 0,750. Fitur EDM saja (S5) 0,254 |
 | 07 | `07_Skema_Diagram_CV_5_Skenario_dan_Sensor.ipynb` | Skema flowchart pembimbing dijalankan utuh dengan **data terbaru** dan **cross-validation**: 5 skenario, berapa ongkos komputasinya, sensor mana yang rusak? | Satu notebook mengikuti flowchart kotak per kotak (broker → sinkronisasi → segmentasi → EDM-Fuzzy 4T fitur → ANN-LM grid search), plus **§3b laporan validasi & pembersihan data**, **§11 dua uji kontrol** (data bersih & fault satu sensor), dan **§13 tanya-jawab pembimbing**. Run v23: **JSD unggul 13/15 sel** (rata-rata ΔF1 +0,063); identifikasi sensor F1 0,790 vs 0,719, semua-4-benar 0,460 vs 0,357 |
 | 08 | `08_JSD_Fuzzy_vs_EDM_Fuzzy_Paper_Q3.ipynb` | Kalau JSD-Fuzzy diuji di dalam kerangka paper (5 skenario S1..S5, 4T fitur, grouped CV), apakah tetap menang dari EDM-Fuzzy? | **JSD-Fuzzy F1 rata-rata 0,505 vs EDM 0,453** (selisih +0,052), menang di 5/5 skenario; uji-t berpasangan **p = 0,035** (Wilcoxon p = 0,0625) — ditulis "unggul konsisten", signifikansi hanya menurut uji-t |
-| 09 | `09_ANN_LM_vs_Bayesian_vs_GA.ipynb` | Dari empat algoritma pelatihan ANN — **LM, Bayesian regularization, GA, Adam** — mana yang paling cocok untuk deteksi fault? | **BR dan LM setara, keduanya jauh di atas GA dan Adam.** F1 rata-rata 10 sel (5 skenario × 2 set fitur): BR 0,429 · LM 0,433 · GA 0,306 · Adam 0,268. Juara terbanyak: BR 5 sel, LM 4, Adam 1, GA 0. LM vs BR **tidak signifikan** (p = 0,81); LM/BR vs GA (p ≤ 0,002) dan vs Adam (p ≤ 0,025) **signifikan**. Jacobian analitik lolos self-check, jadi Jacobian numerik **tidak** dipakai. Run Kaggle v3, 0 Traceback |
-| 10 | `10_JSD_Fuzzy_vs_EDM_Fuzzy_ANN_LM_Asli.ipynb` | **Permintaan pembimbing**: ulangi perbandingan JSD vs EDM (notebook 08), tapi pembelajaran ANN-LM diganti **LM asli dari paper** (bukan `lbfgs`) | **JSD-Fuzzy unggul di 10 dari 15 sel** (run v4): rata-rata selisih F1 N=200 +0,007 · N=700 +0,056 · N=1000 +0,030 · pooled +0,031. Uji berpasangan: **N=700 signifikan p = 0,016**, N=200 p = 0,64, N=1000 p = 0,48; **pooled p = 0,052** (Wilcoxon 0,041) → ditulis deskriptif. Jacobian analitik lolos self-check. **Akuntansi CPU penuh**: TOTAL 85.784 detik (~23,8 jam-CPU), wall 525 mnt, 0 Traceback |
+| 09 | `09_ANN_LM_vs_Bayesian_vs_GA.ipynb` | Dari empat algoritma pelatihan ANN — **LM, Bayesian regularization, GA, Adam** — mana yang paling cocok untuk deteksi fault? | **BR dan LM setara, keduanya jauh di atas GA dan Adam.** F1 rata-rata 10 sel (5 skenario × 2 set fitur): BR 0,429 · LM 0,433 · GA 0,306 · Adam 0,268. Juara terbanyak: BR 5 sel, LM 4, Adam 1, GA 0. LM vs BR **tidak signifikan** (p = 0,81); LM/BR vs GA (p ≤ 0,002) dan vs Adam (p ≤ 0,026) **signifikan**. Jacobian analitik lolos self-check, jadi Jacobian numerik **tidak** dipakai. Run Kaggle v3, 0 Traceback |
+| 10 | `10_JSD_Fuzzy_vs_EDM_Fuzzy_ANN_LM_Asli.ipynb` | **Permintaan pembimbing**: ulangi perbandingan JSD vs EDM (notebook 08), tapi pembelajaran ANN-LM diganti **LM asli dari paper** (bukan `lbfgs`) | **JSD-Fuzzy unggul di 11 dari 15 sel** (run v4): rata-rata selisih F1 N=200 +0,007 · N=700 +0,055 · N=1000 +0,030 · pooled +0,031. Uji berpasangan: **N=700 signifikan p = 0,016**, N=200 p = 0,64, N=1000 p = 0,48; **pooled p = 0,052** (Wilcoxon 0,041) → ditulis deskriptif. Jacobian analitik lolos self-check. **Akuntansi CPU penuh**: TOTAL 85.784 detik (~23,8 jam-CPU), wall 525 mnt, 0 Traceback |
 | 11 | `11_LM_Asli_EDM_vs_JSD_Lengkap.ipynb` | Versi **lengkap** dari 10: EDM vs JSD dengan **semua** classifier LM asli, ditambah **identifikasi sensor** (RQ6) yang dirantai end-to-end dari prediksi out-of-fold | **JSD unggul di 11 dari 15 sel**, rata-rata +0,028; N=700 p = 0,027, tapi **pooled p = 0,076** (Wilcoxon 0,107) → belum signifikan secara gabungan. Sensor-ID: F1 **0,675 vs 0,634** (menang 9/15), semua-4-benar **0,307 vs 0,295**. **Stabilitas fitur (CV): EDM lebih stabil di 56/63 pasangan (89%)** — dilaporkan apa adanya. Tidak ada `lbfgs`/`Adam`/`MLPClassifier`. Wall 610 mnt, **99.162 detik CPU (~27,5 jam-CPU)**, 0 Traceback, 0 SKIP |
-| 13 | `13_Uji_Intensitas_Fault.ipynb` | Revisi pasca-sidang: kalau intensitas gangguan dinaikkan (bias episode, spike relatif, drift total 2–60 poin, kombinasi pada episode sama), apakah JSD-Fuzzy dan EDM-Fuzzy mulai mendeteksinya? (biner fault vs normal, ANN-LM tetap) | **Hanya hardware malfunction yang lolos** (TPR ≥ 0,80, FPR ≤ 0,10) mulai (0,3; 0,2) pada kedua metode. Bias konstan AUC ≈ 0,50 berapa pun besarnya; bias episode AUC ≤ 0,74; drift baru AUC 0,80–0,85 pada total 60 poin. Spike: JSD lebih peka (AUC 0,70 → 0,92) daripada EDM (0,76–0,82). Kombinasi 0/11 lolos di semua tingkat. 354 baris ok, wall 512 mnt. Hasil di `hasil13/`, draf naskah `hasil13/13_draf_laporan.md` |
+| 13 | `13_Uji_Intensitas_Fault.ipynb` | Revisi pasca-sidang: kalau intensitas gangguan dinaikkan (bias episode, spike relatif, drift total 2–60 poin, kombinasi pada episode sama), apakah JSD-Fuzzy dan EDM-Fuzzy mulai mendeteksinya? (biner fault vs normal, ANN-LM tetap) | **Hanya hardware malfunction yang lolos** (TPR ≥ 0,80, FPR ≤ 0,10) mulai (0,3; 0,2) pada kedua metode. Bias konstan AUC ≈ 0,50 berapa pun besarnya; bias episode AUC ≤ 0,75; drift baru AUC 0,80–0,85 pada total 60 poin. Spike: JSD lebih peka (AUC 0,70 → 0,92) daripada EDM (0,76–0,81). Kombinasi 0/11 lolos di semua tingkat. 354 baris ok, wall 512 mnt. Hasil di `hasil13/`, draf naskah `hasil13/13_draf_laporan.md` |
 | 14 | `14_Lengkap_Fault_Baru.ipynb` | Revisi pasca-sidang: pipeline notebook 11 utuh (S1–S5, N 200/700/1000, CV, RQ1–RQ6, identifikasi sensor, biaya) dengan fault bentuk baru tingkat "sedang" (bias episode 5, drift total 5, spike relatif 30%) | **JSD unggul 12/15 sel**; F1 gabungan EDM 0,421 vs JSD 0,497, **p = 0,0006** (NB11: p = 0,076). Identifikasi sensor F1 0,693 vs 0,791, semua-4-benar 0,356 vs 0,483. S2–S4 tetap rendah (F1 0,21–0,53). Wall 478 mnt, 0 Traceback. Hasil di `hasil14/`, draf naskah `hasil14/14_draf_laporan.md` |
-| 15 | `15_Data_Hipotetik_Berlabel_ANN_LM.ipynb` | Permintaan dosen Bu Luh (chat 18/11/26): **data hipotetik berlabel untuk semua skenario + programnya**, untuk sistem notifikasi gangguan. Basis program pertama (`final_databaru_optimized.ipynb`, data `tabel_sensor4_generated.csv`, fitur lag tanpa entropi), ANN-LM diganti **LM asli** (Jacobian analitik), simulator fault NB14 "sedang" | 16 kondisi (S1–S5) x 2 versi (4 sensor terpisah & rata-rata), label per sampel + jenis fault + sensor rusak, kamus kolom, prediksi per sampel (prob + alarm). F1 uji 2 layer: rata-rata S1–S5 **0,90 · 0,85 · 0,83 · 0,88 · 0,96**; 4 sensor **0,98 · 0,75 · 0,75 · 0,80 · 0,90**. Kelemahan jujur: drift saja F1 0,49 (4 sensor) / 0,71 (rata-rata), FPR sensor tak terinjeksi 6 %. Kaggle `data-hipotetik-berlabel-ann-lm` v1 COMPLETE, wall 30 mnt, 0 Traceback. Hasil di `hasil15/` |
+| 15 | `15_Data_Hipotetik_Berlabel_ANN_LM.ipynb` | Permintaan dosen Bu Luh (chat 18/11/26): **data hipotetik berlabel untuk semua skenario + programnya**, untuk sistem notifikasi gangguan. Basis program pertama (`final_databaru_optimized.ipynb`, data `tabel_sensor4_generated.csv`, fitur lag tanpa entropi), ANN-LM diganti **LM asli** (Jacobian analitik), simulator fault NB14 "sedang" | 16 kondisi (S1–S5) x 2 versi (4 sensor terpisah & rata-rata), label per sampel + jenis fault + sensor rusak, kamus kolom, prediksi per sampel (prob + alarm). F1 uji 2 layer: rata-rata S1–S5 **0,90 · 0,85 · 0,83 · 0,88 · 0,96**; 4 sensor **0,98 · 0,75 · 0,75 · 0,80 · 0,90**. Kelemahan jujur: drift saja F1 0,49 (4 sensor) / 0,71 (rata-rata), FPR sensor tak terinjeksi 6 %. Kaggle `data-hipotetik-berlabel-ann-lm` v2 selesai (log `hasil15/data-hipotetik-berlabel-ann-lm.log`: wall 34 mnt, 0 Traceback). Ekspor `15_*` ada di `hasil16/exports/` |
 | — | `Ilustrasi_Data_Akuisisi_dan_Fault.ipynb` | Penjelasan 10 langkah akuisisi (nasib missing value & nilai di luar 0–100 %) dan grafik sinyal asli vs setelah injeksi fault untuk semua kelas | **Tidak ada baris dibuang karena nilainya mencurigakan**: stempel ganda 0, NaN 0, luar range 0; pembacaan macet 556/654/659/657 kejadian dan pencilan \|z\|>6 13/0/0/0 hanya **dilaporkan**. Grafik: 5 panel + grid 16 kelas per sensor, NaN dibiarkan celah + versi tertambal. Kaggle `ilustrasi-data-akuisisi-dan-fault` v2 COMPLETE |
 
 ## Koreksi simulator drift (2026-10-22)
@@ -31,7 +31,7 @@ hal itu. Baca berurutan dari 01.
 Simulator drift versi awal menambahkan 0,2 poin **per sampel** ke seluruh seri
 (57,6 poin/hari, +5.635 poin total), sehingga nilai menembus 100 % setelah ±22
 jam. Itu tidak fisis: drift sensor kelembaban nyata 0,003–0,17 poin/hari, jadi
-versi lama 300–19.000× terlalu cepat. Versi sekarang:
+versi lama 339–19.200× terlalu cepat. Versi sekarang:
 
 - `DRIFT_POINTS_PER_DAY = 1,0` — laju per **waktu**, bukan per sampel;
 - tiga episode 3 hari di 10 %, 40 %, 70 % panjang seri, lalu di-reset
@@ -57,14 +57,19 @@ jadi seluruh angka di tabel ini memakai simulator drift yang sama.
 07  skema flowchart + cross-validation -> performa + biaya komputasi + sensor mana
 08  JSD vs EDM di dalam kerangka paper -> dua set fitur pada pipeline yang sama
 09  algoritma pelatihan mana yang menang -> BR & LM setara, di atas GA & Adam
-10  ulangi 08 dengan LM asli paper      -> JSD unggul 10/15 sel, pooled p = 0,052
+10  ulangi 08 dengan LM asli paper      -> JSD unggul 11/15 sel, pooled p = 0,052
 11  10 + identifikasi sensor (RQ6)      -> JSD unggul 11/15, pooled p = 0,076
 ```
 
 Catatan: `10` dan `11` menjalankan pipeline yang sama tetapi hasil pooled-nya
-berbeda (p = 0,052 vs 0,076) karena `11` memakai protokol CV dan anggaran
-komputasi yang lebih besar. Keduanya harus ditulis apa adanya — batas
-signifikansi 0,05 tidak dilampaui dengan aman, jadi klaim tetap deskriptif.
+berbeda (p = 0,052 vs 0,076) walaupun konstanta protokolnya identik
+(LM_ITERS_SEARCH 6, LM_ITERS_REFIT 40, LM_INNER_CV 2, grid dan seed sama);
+yang beda hanya batas sesi Kaggle (10,5 vs 11,5 jam). F1 sama persis di 8
+dari 15 sel. Tujuh sel yang beda (N200 S2–S4, N700 S2/S4, N1000 S2/S4) adalah
+sel yang pelatihannya dihentikan batas waktu dinding `MAX_TRAIN_S`, sehingga
+hasilnya tidak deterministik antar-run. Jumlah sel menang sama (11/15).
+Keduanya ditulis apa adanya — batas signifikansi 0,05 tidak dilampaui
+dengan aman, jadi klaim tetap deskriptif.
 
 Notebook 04 dan 05 menjawab pertanyaan pembimbing secara berurutan: 04 menjawab
 *"sensor mana yang fault"*, 05 menjawab *"bias-nya di sensor mana, drift-nya di
@@ -93,11 +98,12 @@ dipatok 0,5.
 ## Penting: satu hasil lama yang TIDAK sah
 
 `archive/LAMA_TIDAK_VALID_Sensor_Mana_Label_Kembar.ipynb` (dulu
-"Per-Sensor Cara A") pernah melaporkan **F1 0,925** untuk identifikasi sensor.
-**Angka itu tidak boleh dipakai.** Injeksi fault-nya mengenai keempat sensor
-sekaligus, sehingga keempat kolom label identik (prevalensi 0,882 di semua
-sensor) dan ROC-AUC-nya 0,50 — setara tebak acak. Angka tinggi itu murni efek
-"selalu menebak fault". Penggantinya yang sah adalah notebook `04`.
+"Per-Sensor Cara A") pernah melaporkan F1 yang sangat tinggi untuk
+identifikasi sensor. **Angka itu tidak boleh dipakai** dan sengaja tidak
+dikutip di sini, karena notebook arsipnya tidak menyimpan output sehingga
+angkanya tidak bisa dibuktikan ulang. Injeksi fault-nya mengenai keempat
+sensor sekaligus, sehingga keempat kolom label identik: model cukup selalu
+menebak "fault" untuk mendapat F1 tinggi tanpa bisa membedakan sensor. Penggantinya yang sah adalah notebook `04`.
 
 ## Isi folder `archive/`
 

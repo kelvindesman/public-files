@@ -39,8 +39,9 @@ Kalau penguji ingin melihat sendiri, kernel bisa dibagikan lewat tombol
 2. Klik **Copy & Edit** (pojok kanan atas). Notebook terbuka di mode edit.
 3. Pastikan di panel kanan **Internet: On**.
 4. Menu **Run → Run all** sekali sebagai pemanasan. Tunggu sampai semua sel
-   selesai (di Kaggle terukur sekitar 2,5 menit termasuk menyalakan mesin;
-   di laptop 64–90 detik). Kalau tidak ada tulisan merah, siap dipakai.
+   selesai (di Kaggle waktu kernel sekitar 2,1 menit menurut log
+   `hasil16/demo-kaggle-v2.log`, belum termasuk menyalakan mesin; di laptop
+   63 detik, 21 detik tanpa Langkah 7 — bukti `sidang/bukti_demo/`). Kalau tidak ada tulisan merah, siap dipakai.
 5. Di Zoom, bagikan layar jendela browser itu saja (bukan seluruh layar).
 
 **Cadangan kalau internet bermasalah:** di laptop, buka
@@ -57,7 +58,7 @@ Kalau penguji ingin melihat sendiri, kernel bisa dibagikan lewat tombol
 | 1:00 | **Langkah 3** — grafik biru/merah | "Biru data lapangan asli. Merah data yang sama setelah sensor S2 kami beri empat kerusakan: naik pelan (drift), lonjakan, geser, dan nilai jatuh/macet." |
 | 2:00 | **Langkah 4** — kurva entropi | "Sinyal diubah jadi 60 angka keteraturan pola. Kerusakan menggeser kurvanya." |
 | 3:00 | **Langkah 5** — tabel tebakan | "Jawaban benar: window asli *fault free*, window rusak *faulty*. Satu contoh bisa benar bisa salah; peluang dekat 50 % artinya model ragu." |
-| 4:00 | **Langkah 6** — uji banyak window | "Ini yang adil: 30 potongan acak. Di run terakhir kedua metode benar 80 %." |
+| 4:00 | **Langkah 6** — uji banyak window | "Ini yang adil: 30 potongan acak. Di run uji 2026-11-20 kedua metode benar 80 % (24 dari 30)." |
 | 4:30 | (opsional) **Langkah 7** | "Kalau ingin lihat proses training: ini versi mini, loss turun tiap iterasi Levenberg–Marquardt." |
 
 ## 5. Cara mengganti contoh (sel *Konfigurasi*)
@@ -103,7 +104,7 @@ Jumlah jenis kerusakan menentukan model yang dipakai: 1 jenis → model S2,
 ## 7. Kalau model salah tebak (ini normal, jangan panik)
 
 Hasil contoh default (hari 10, empat fault di S2) pada run uji 2026-11-20:
-5 dari 8 tebakan benar (S1-EDM benar dua-duanya, S5-JSD benar dua-duanya;
+6 dari 8 tebakan benar (S1-EDM benar dua-duanya, S5-JSD benar dua-duanya;
 S1-JSD menyebut window asli *faulty*, S5-EDM melewatkan window rusak).
 Contoh ini **tidak** dipilih supaya hasilnya bagus — dipilih karena keempat
 kerusakan terlihat jelas di grafik.

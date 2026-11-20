@@ -1,0 +1,238 @@
+[{"stream_name":"stderr","time":7.797255868,"data":"/usr/local/lib/python3.12/dist-packages/nbformat/__init__.py:96: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":7.797302283,"data":"  validate(nb)\n"}
+,{"stream_name":"stderr","time":8.909612905,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.909644828,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.909650929,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.909655053,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":9.659339174,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.659413835,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.659429356,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.659433118,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":10.975797705,"data":"[t+   0.0 min] runtime guard armed | budget=10.5 h | BLAS threads=1\n"}
+,{"stream_name":"stdout","time":12.141213984,"data":"RUNTIME_PROFILE=fast | METHOD_LIST=['EDM-Fuzzy', 'JSD-Fuzzy']\n"}
+,{"stream_name":"stdout","time":12.159334137,"data":"config: {'DS': 4, 'WIN': 256, 'STRIDE': 128, 'MAX_PER_CLASS': 200, 'SENSOR_SUBSET_SIZES': [1, 2, 3, 4], 'S': 10}\n"}
+,{"stream_name":"stdout","time":12.756470456,"data":"Columns: ['kelembaban1', 'kelembaban2', 'kelembaban3', 'kelembaban4'] | Shape X: (60763, 4) -\u003e downsampled X_ds: (15191, 4)\n"}
+,{"stream_name":"stdout","time":12.862110323,"data":"Skenario: 16 + normal = 17 kelas\n"}
+,{"stream_name":"stdout","time":12.957529289,"data":"faulty                       subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":12.957566927,"data":"drift                        subset_sizes=[1, 2, 3, 4] windows_total=428\n"}
+,{"stream_name":"stdout","time":13.064000542,"data":"spike                        subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":13.064040506,"data":"bias                         subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":13.064046365,"data":"hardware                     subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":13.064050077,"data":"bias+malfunc                 subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":13.125908045,"data":"spike+malfunc                subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":13.12594399,"data":"spike+bias                   subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":13.176125042,"data":"drift+malfunc                subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":13.176158828,"data":"drift+bias                   subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":13.286923909,"data":"drift+spike                  subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":13.287022471,"data":"spike+bias+malfunc           subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":13.287050901,"data":"drift+bias+malfunc           subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":13.342591461,"data":"spike+drift+malfunc          subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":13.342626971,"data":"drift+spike+bias             subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":13.372189243,"data":"spike+bias+malfunc+drift     subset_sizes=[1, 2, 3, 4] windows_total=468\n"}
+,{"stream_name":"stdout","time":13.372225722,"data":"Total windows: (7565, 256, 4) | 17-class counts: {np.int64(0): np.int64(117), np.int64(1): np.int64(468), np.int64(2): np.int64(428), np.int64(3): np.int64(468), np.int64(4): np.int64(468), np.int64(5): np.int64(468), np.int64(6): np.int64(468), np.int64(7): np.int64(468), np.int64(8): np.int64(468), np.int64(9): np.int64(468), np.int64(10): np.int64(468), np.int64(11): np.int64(468), np.int64(12): np.int64(468), np.int64(13): np.int64(468), np.int64(14): np.int64(468), np.int64(15): np.int64(468), np.int64(16): np.int64(468)}\n"}
+,{"stream_name":"stdout","time":13.372254657,"data":"Per-sensor fault prevalence (all windows): [0.57  0.627 0.616 0.647]\n"}
+,{"stream_name":"stdout","time":13.403978908,"data":"After balanced subsample: (3317, 256, 4) | 17-class: {np.int64(0): np.int64(117), np.int64(1): np.int64(200), np.int64(2): np.int64(200), np.int64(3): np.int64(200), np.int64(4): np.int64(200), np.int64(5): np.int64(200), np.int64(6): np.int64(200), np.int64(7): np.int64(200), np.int64(8): np.int64(200), np.int64(9): np.int64(200), np.int64(10): np.int64(200), np.int64(11): np.int64(200), np.int64(12): np.int64(200), np.int64(13): np.int64(200), np.int64(14): np.int64(200), np.int64(15): np.int64(200), np.int64(16): np.int64(200)}\n"}
+,{"stream_name":"stdout","time":13.404022047,"data":"Per-sensor fault prevalence (subsampled): [0.562 0.621 0.598 0.639]\n"}
+,{"stream_name":"stdout","time":13.445802132,"data":"Using scales: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n"}
+,{"stream_name":"stdout","time":13.545520738,"data":"[t+   0.0 min] entropy features: EDM-Fuzzy (3317 windows)\n"}
+,{"stream_name":"stderr","time":62.157846791,"data":"2026-10-22 20:56:09,853 | INFO | Entropy EDM-Fuzzy | wall=48.60s cpu=46.28s peak_mem=26.11 MB\n"}
+,{"stream_name":"stderr","time":62.158096978,"data":"\n"}
+,{"stream_name":"stderr","time":62.15810671,"data":"2026-10-22 20:56:09,853 | INFO | Entropy EDM-Fuzzy | wall=48.60s cpu=46.28s peak_mem=26.11 MB\n"}
+,{"stream_name":"stdout","time":62.159019077,"data":"EDM-Fuzzy entropy feature shape: (3317, 40)\n"}
+,{"stream_name":"stdout","time":62.15904533,"data":"[t+   0.9 min] entropy features: JSD-Fuzzy (3317 windows)\n"}
+,{"stream_name":"stderr","time":122.703829085,"data":"2026-10-22 20:57:10,399 | INFO | Entropy JSD-Fuzzy | wall=60.54s cpu=41.67s peak_mem=25.96 MB\n"}
+,{"stream_name":"stderr","time":122.70386968,"data":"\n"}
+,{"stream_name":"stderr","time":122.70387591,"data":"2026-10-22 20:57:10,399 | INFO | Entropy JSD-Fuzzy | wall=60.54s cpu=41.67s peak_mem=25.96 MB\n"}
+,{"stream_name":"stdout","time":122.70494512,"data":"JSD-Fuzzy entropy feature shape: (3317, 160)\n"}
+,{"stream_name":"stderr","time":124.95368915,"data":"/tmp/ipykernel_16/441117179.py:11: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.\n"}
+,{"stream_name":"stderr","time":124.95374279,"data":"  sk = _sstats.skew(x, axis=1, bias=False); ku = _sstats.kurtosis(x, axis=1, bias=False)\n"}
+,{"stream_name":"stderr","time":124.953750364,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1361: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":124.953779982,"data":"  nval = ((n - 1.0) * n)**0.5 / (n - 2.0) * m3 / m2**1.5\n"}
+,{"stream_name":"stderr","time":124.953784334,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1469: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":124.953788554,"data":"  nval = 1.0/(n-2)/(n-3) * ((n**2-1.0)*m4/m2**2.0 - 3*(n-1)**2.0)\n"}
+,{"stream_name":"stderr","time":124.953791102,"data":"\n"}
+,{"stream_name":"stderr","time":124.953793477,"data":"/tmp/ipykernel_16/441117179.py:11: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.\n"}
+,{"stream_name":"stderr","time":124.953796263,"data":"  sk = _sstats.skew(x, axis=1, bias=False); ku = _sstats.kurtosis(x, axis=1, bias=False)\n"}
+,{"stream_name":"stderr","time":124.953798655,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1361: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":124.953801425,"data":"  nval = ((n - 1.0) * n)**0.5 / (n - 2.0) * m3 / m2**1.5\n"}
+,{"stream_name":"stderr","time":124.953803827,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1469: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":124.953806478,"data":"  nval = 1.0/(n-2)/(n-3) * ((n**2-1.0)*m4/m2**2.0 - 3*(n-1)**2.0)\n"}
+,{"stream_name":"stdout","time":124.96673783,"data":"EDM-Fuzzy hybrid feature shape: (3317, 88)\n"}
+,{"stream_name":"stdout","time":124.966790251,"data":"JSD-Fuzzy hybrid feature shape: (3317, 208)\n"}
+,{"stream_name":"stdout","time":125.75460848,"data":"\n"}
+,{"stream_name":"stdout","time":125.754660821,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":125.75466626,"data":"TUGAS T1_biner — fault vs non-fault (2 kelas) | n=234 | kelas={np.int64(0): np.int64(117), np.int64(1): np.int64(117)}\n"}
+,{"stream_name":"stdout","time":125.754671694,"data":"[t+   1.9 min] Tahap 1 | T1_biner | EDM-Fuzzy\n"}
+,{"stream_name":"stderr","time":130.595313293,"data":"2026-10-22 20:57:18,296 | INFO | Stage1 T1_biner EDM-Fuzzy | wall=4.84s cpu=1.48s peak_mem=1.31 MB\n"}
+,{"stream_name":"stderr","time":130.595365374,"data":"\n"}
+,{"stream_name":"stderr","time":130.59536997,"data":"2026-10-22 20:57:18,296 | INFO | Stage1 T1_biner EDM-Fuzzy | wall=4.84s cpu=1.48s peak_mem=1.31 MB\n"}
+,{"stream_name":"stdout","time":130.607645102,"data":"[t+   2.0 min] Tahap 2 | T1_biner | EDM-Fuzzy\n"}
+,{"stream_name":"stderr","time":131.840806359,"data":"2026-10-22 20:57:19,540 | INFO | Stage2 T1_biner EDM-Fuzzy | wall=1.24s cpu=1.47s peak_mem=1.65 MB\n"}
+,{"stream_name":"stderr","time":131.840854057,"data":"\n"}
+,{"stream_name":"stderr","time":131.841662226,"data":"2026-10-22 20:57:19,540 | INFO | Stage2 T1_biner EDM-Fuzzy | wall=1.24s cpu=1.47s peak_mem=1.65 MB\n"}
+,{"stream_name":"stdout","time":131.842473088,"data":"  EDM-Fuzzy  Tahap1 acc=0.627 F1=0.624 | Tahap2 F1-sensor rata2=0.489\n"}
+,{"stream_name":"stdout","time":131.842501405,"data":"[t+   2.0 min] Tahap 1 | T1_biner | JSD-Fuzzy\n"}
+,{"stream_name":"stderr","time":137.627095919,"data":"2026-10-22 20:57:25,328 | INFO | Stage1 T1_biner JSD-Fuzzy | wall=5.78s cpu=1.56s peak_mem=2.91 MB\n"}
+,{"stream_name":"stderr","time":137.627144961,"data":"\n"}
+,{"stream_name":"stderr","time":137.627149854,"data":"2026-10-22 20:57:25,328 | INFO | Stage1 T1_biner JSD-Fuzzy | wall=5.78s cpu=1.56s peak_mem=2.91 MB\n"}
+,{"stream_name":"stdout","time":137.630791012,"data":"[t+   2.1 min] Tahap 2 | T1_biner | JSD-Fuzzy\n"}
+,{"stream_name":"stderr","time":139.521219905,"data":"2026-10-22 20:57:27,222 | INFO | Stage2 T1_biner JSD-Fuzzy | wall=1.89s cpu=4.08s peak_mem=6.62 MB\n"}
+,{"stream_name":"stderr","time":139.521256802,"data":"\n"}
+,{"stream_name":"stderr","time":139.521261178,"data":"2026-10-22 20:57:27,222 | INFO | Stage2 T1_biner JSD-Fuzzy | wall=1.89s cpu=4.08s peak_mem=6.62 MB\n"}
+,{"stream_name":"stdout","time":139.526417819,"data":"  JSD-Fuzzy  Tahap1 acc=0.525 F1=0.525 | Tahap2 F1-sensor rata2=0.504\n"}
+,{"stream_name":"stdout","time":139.526445088,"data":"\n"}
+,{"stream_name":"stdout","time":139.526448743,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":139.52645183,"data":"TUGAS T2_single5 — normal + 4 fault tunggal (5 kelas) | n=917 | kelas={np.int64(0): np.int64(117), np.int64(1): np.int64(200), np.int64(2): np.int64(200), np.int64(3): np.int64(200), np.int64(4): np.int64(200)}\n"}
+,{"stream_name":"stdout","time":139.526455748,"data":"[t+   2.1 min] Tahap 1 | T2_single5 | EDM-Fuzzy\n"}
+,{"stream_name":"stderr","time":149.401974596,"data":"2026-10-22 20:57:37,103 | INFO | Stage1 T2_single5 EDM-Fuzzy | wall=9.87s cpu=4.81s peak_mem=4.36 MB\n"}
+,{"stream_name":"stderr","time":149.402036495,"data":"\n"}
+,{"stream_name":"stderr","time":149.402040904,"data":"2026-10-22 20:57:37,103 | INFO | Stage1 T2_single5 EDM-Fuzzy | wall=9.87s cpu=4.81s peak_mem=4.36 MB\n"}
+,{"stream_name":"stdout","time":149.40631247,"data":"[t+   2.3 min] Tahap 2 | T2_single5 | EDM-Fuzzy\n"}
+,{"stream_name":"stderr","time":152.310533452,"data":"2026-10-22 20:57:40,012 | INFO | Stage2 T2_single5 EDM-Fuzzy | wall=2.90s cpu=6.80s peak_mem=3.42 MB\n"}
+,{"stream_name":"stderr","time":152.310565593,"data":"\n"}
+,{"stream_name":"stderr","time":152.312064124,"data":"2026-10-22 20:57:40,012 | INFO | Stage2 T2_single5 EDM-Fuzzy | wall=2.90s cpu=6.80s peak_mem=3.42 MB\n"}
+,{"stream_name":"stdout","time":152.314156561,"data":"  EDM-Fuzzy  Tahap1 acc=0.457 F1=0.409 | Tahap2 F1-sensor rata2=0.655\n"}
+,{"stream_name":"stdout","time":152.314184256,"data":"[t+   2.4 min] Tahap 1 | T2_single5 | JSD-Fuzzy\n"}
+,{"stream_name":"stderr","time":177.140693468,"data":"2026-10-22 20:58:04,822 | INFO | Stage1 T2_single5 JSD-Fuzzy | wall=24.80s cpu=4.43s peak_mem=8.45 MB\n"}
+,{"stream_name":"stderr","time":177.140726841,"data":"\n"}
+,{"stream_name":"stderr","time":177.143125986,"data":"2026-10-22 20:58:04,822 | INFO | Stage1 T2_single5 JSD-Fuzzy | wall=24.80s cpu=4.43s peak_mem=8.45 MB\n"}
+,{"stream_name":"stdout","time":177.147367651,"data":"[t+   2.8 min] Tahap 2 | T2_single5 | JSD-Fuzzy\n"}
+,{"stream_name":"stderr","time":181.391126381,"data":"2026-10-22 20:58:09,091 | INFO | Stage2 T2_single5 JSD-Fuzzy | wall=4.26s cpu=7.74s peak_mem=10.76 MB\n"}
+,{"stream_name":"stderr","time":181.391180962,"data":"\n"}
+,{"stream_name":"stderr","time":181.391187305,"data":"2026-10-22 20:58:09,091 | INFO | Stage2 T2_single5 JSD-Fuzzy | wall=4.26s cpu=7.74s peak_mem=10.76 MB\n"}
+,{"stream_name":"stdout","time":181.395704018,"data":"  JSD-Fuzzy  Tahap1 acc=0.552 F1=0.483 | Tahap2 F1-sensor rata2=0.676\n"}
+,{"stream_name":"stdout","time":181.395735779,"data":"\n"}
+,{"stream_name":"stdout","time":181.395740825,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":181.39574686,"data":"TUGAS T3_17kelas — 17 kelas penuh | n=3317 | kelas={np.int64(0): np.int64(117), np.int64(1): np.int64(200), np.int64(2): np.int64(200), np.int64(3): np.int64(200), np.int64(4): np.int64(200), np.int64(5): np.int64(200), np.int64(6): np.int64(200), np.int64(7): np.int64(200), np.int64(8): np.int64(200), np.int64(9): np.int64(200), np.int64(10): np.int64(200), np.int64(11): np.int64(200), np.int64(12): np.int64(200), np.int64(13): np.int64(200), np.int64(14): np.int64(200), np.int64(15): np.int64(200), np.int64(16): np.int64(200)}\n"}
+,{"stream_name":"stdout","time":181.395782931,"data":"[t+   2.8 min] Tahap 1 | T3_17kelas | EDM-Fuzzy\n"}
+,{"stream_name":"stderr","time":220.599771633,"data":"2026-10-22 20:58:48,283 | INFO | Stage1 T3_17kelas EDM-Fuzzy | wall=39.18s cpu=8.64s peak_mem=9.79 MB\n"}
+,{"stream_name":"stderr","time":220.599821176,"data":"\n"}
+,{"stream_name":"stderr","time":220.602086714,"data":"2026-10-22 20:58:48,283 | INFO | Stage1 T3_17kelas EDM-Fuzzy | wall=39.18s cpu=8.64s peak_mem=9.79 MB\n"}
+,{"stream_name":"stdout","time":220.603503435,"data":"[t+   3.5 min] Tahap 2 | T3_17kelas | EDM-Fuzzy\n"}
+,{"stream_name":"stderr","time":236.575852017,"data":"2026-10-22 20:59:04,277 | INFO | Stage2 T3_17kelas EDM-Fuzzy | wall=15.99s cpu=31.44s peak_mem=11.18 MB\n"}
+,{"stream_name":"stderr","time":236.575895933,"data":"\n"}
+,{"stream_name":"stderr","time":236.575908555,"data":"2026-10-22 20:59:04,277 | INFO | Stage2 T3_17kelas EDM-Fuzzy | wall=15.99s cpu=31.44s peak_mem=11.18 MB\n"}
+,{"stream_name":"stdout","time":236.577502624,"data":"  EDM-Fuzzy  Tahap1 acc=0.177 F1=0.158 | Tahap2 F1-sensor rata2=0.846\n"}
+,{"stream_name":"stdout","time":236.577533298,"data":"[t+   3.8 min] Tahap 1 | T3_17kelas | JSD-Fuzzy\n"}
+,{"stream_name":"stderr","time":350.503654493,"data":"2026-10-22 21:00:58,183 | INFO | Stage1 T3_17kelas JSD-Fuzzy | wall=113.90s cpu=24.15s peak_mem=24.51 MB\n"}
+,{"stream_name":"stderr","time":350.503717679,"data":"\n"}
+,{"stream_name":"stderr","time":350.50372586,"data":"2026-10-22 21:00:58,183 | INFO | Stage1 T3_17kelas JSD-Fuzzy | wall=113.90s cpu=24.15s peak_mem=24.51 MB\n"}
+,{"stream_name":"stdout","time":350.505055758,"data":"[t+   5.7 min] Tahap 2 | T3_17kelas | JSD-Fuzzy\n"}
+,{"stream_name":"stderr","time":379.354506076,"data":"2026-10-22 21:01:27,055 | INFO | Stage2 T3_17kelas JSD-Fuzzy | wall=28.86s cpu=38.38s peak_mem=26.02 MB\n"}
+,{"stream_name":"stderr","time":379.354548007,"data":"\n"}
+,{"stream_name":"stderr","time":379.354553674,"data":"2026-10-22 21:01:27,055 | INFO | Stage2 T3_17kelas JSD-Fuzzy | wall=28.86s cpu=38.38s peak_mem=26.02 MB\n"}
+,{"stream_name":"stdout","time":379.374922377,"data":"  JSD-Fuzzy  Tahap1 acc=0.312 F1=0.298 | Tahap2 F1-sensor rata2=0.902\n"}
+,{"stream_name":"stdout","time":379.374971114,"data":"\n"}
+,{"stream_name":"stdout","time":379.374979025,"data":"\n"}
+,{"stream_name":"stdout","time":379.37498382,"data":"=== TAHAP 1 — akurasi klasifikasi per tugas ===\n"}
+,{"stream_name":"stdout","time":379.374989466,"data":"     Tugas    Metode  n_kelas  Akurasi  Macro_F1\n"}
+,{"stream_name":"stdout","time":379.374994364,"data":"  T1_biner EDM-Fuzzy        2   0.6271    0.6244\n"}
+,{"stream_name":"stdout","time":379.374999231,"data":"  T1_biner JSD-Fuzzy        2   0.5254    0.5253\n"}
+,{"stream_name":"stdout","time":379.375004241,"data":"T2_single5 EDM-Fuzzy        5   0.4565    0.4092\n"}
+,{"stream_name":"stdout","time":379.375008915,"data":"T2_single5 JSD-Fuzzy        5   0.5522    0.4834\n"}
+,{"stream_name":"stdout","time":379.375013636,"data":"T3_17kelas EDM-Fuzzy       17   0.1771    0.1581\n"}
+,{"stream_name":"stdout","time":379.375018478,"data":"T3_17kelas JSD-Fuzzy       17   0.3120    0.2976\n"}
+,{"stream_name":"stdout","time":379.412016107,"data":"=== Identifikasi sensor, dirantai dari tiap tugas Tahap 1 ===\n"}
+,{"stream_name":"stdout","time":379.412048025,"data":"     Tugas    Metode       Eval        Sensor  n_uji  Prevalensi  Akurasi  Precision  Recall    F1  ROC_AUC\n"}
+,{"stream_name":"stdout","time":379.41205427,"data":"  T1_biner EDM-Fuzzy end_to_end            S1     25       0.360    0.600      0.444   0.444 0.444    0.382\n"}
+,{"stream_name":"stdout","time":379.412073289,"data":"  T1_biner EDM-Fuzzy end_to_end            S2     25       0.400    0.520      0.455   1.000 0.625    0.533\n"}
+,{"stream_name":"stdout","time":379.412077442,"data":"  T1_biner EDM-Fuzzy end_to_end            S3     25       0.440    0.600      0.533   0.727 0.615    0.584\n"}
+,{"stream_name":"stdout","time":379.412080996,"data":"  T1_biner EDM-Fuzzy end_to_end            S4     25       0.400    0.360      0.250   0.300 0.273    0.607\n"}
+,{"stream_name":"stdout","time":379.412084648,"data":"  T1_biner EDM-Fuzzy end_to_end SEMUA-4-BENAR     25         NaN    0.080        NaN     NaN 0.489      NaN\n"}
+,{"stream_name":"stdout","time":379.412088192,"data":"  T1_biner JSD-Fuzzy end_to_end            S1     29       0.276    0.586      0.400   1.000 0.571    0.643\n"}
+,{"stream_name":"stdout","time":379.412091818,"data":"  T1_biner JSD-Fuzzy end_to_end            S2     29       0.276    0.379      0.308   1.000 0.471    0.744\n"}
+,{"stream_name":"stdout","time":379.412095309,"data":"  T1_biner JSD-Fuzzy end_to_end            S3     29       0.379    0.621      0.500   0.545 0.522    0.712\n"}
+,{"stream_name":"stdout","time":379.412098802,"data":"  T1_biner JSD-Fuzzy end_to_end            S4     29       0.310    0.414      0.318   0.778 0.452    0.622\n"}
+,{"stream_name":"stdout","time":379.41210235,"data":"  T1_biner JSD-Fuzzy end_to_end SEMUA-4-BENAR     29         NaN    0.103        NaN     NaN 0.504      NaN\n"}
+,{"stream_name":"stdout","time":379.412105697,"data":"T2_single5 EDM-Fuzzy end_to_end            S1    221       0.348    0.611      0.435   0.390 0.411    0.545\n"}
+,{"stream_name":"stdout","time":379.412109637,"data":"T2_single5 EDM-Fuzzy end_to_end            S2    221       0.529    0.534      0.536   0.880 0.667    0.459\n"}
+,{"stream_name":"stdout","time":379.412113346,"data":"T2_single5 EDM-Fuzzy end_to_end            S3    221       0.656    0.665      0.664   0.993 0.796    0.525\n"}
+,{"stream_name":"stdout","time":379.412117047,"data":"T2_single5 EDM-Fuzzy end_to_end            S4    221       0.597    0.615      0.616   0.947 0.746    0.464\n"}
+,{"stream_name":"stdout","time":379.412120941,"data":"T2_single5 EDM-Fuzzy end_to_end SEMUA-4-BENAR    221         NaN    0.199        NaN     NaN 0.655      NaN\n"}
+,{"stream_name":"stdout","time":379.412124941,"data":"T2_single5 JSD-Fuzzy end_to_end            S1    216       0.343    0.569      0.358   0.324 0.340    0.430\n"}
+,{"stream_name":"stdout","time":379.412128577,"data":"T2_single5 JSD-Fuzzy end_to_end            S2    216       0.537    0.699      0.667   0.879 0.758    0.570\n"}
+,{"stream_name":"stdout","time":379.412133778,"data":"T2_single5 JSD-Fuzzy end_to_end            S3    216       0.667    0.736      0.728   0.965 0.830    0.614\n"}
+,{"stream_name":"stdout","time":379.412137762,"data":"T2_single5 JSD-Fuzzy end_to_end            S4    216       0.606    0.667      0.656   0.947 0.775    0.539\n"}
+,{"stream_name":"stdout","time":379.412141708,"data":"T2_single5 JSD-Fuzzy end_to_end SEMUA-4-BENAR    216         NaN    0.269        NaN     NaN 0.676      NaN\n"}
+,{"stream_name":"stdout","time":379.412145266,"data":"T3_17kelas EDM-Fuzzy end_to_end            S1    829       0.586    0.800      0.849   0.800 0.824    0.512\n"}
+,{"stream_name":"stdout","time":379.412149026,"data":"T3_17kelas EDM-Fuzzy end_to_end            S2    829       0.628    0.818      0.832   0.891 0.860    0.505\n"}
+,{"stream_name":"stdout","time":379.412152866,"data":"T3_17kelas EDM-Fuzzy end_to_end            S3    829       0.612    0.803      0.826   0.860 0.843    0.695\n"}
+,{"stream_name":"stdout","time":379.412156437,"data":"T3_17kelas EDM-Fuzzy end_to_end            S4    829       0.662    0.801      0.822   0.893 0.856    0.503\n"}
+,{"stream_name":"stdout","time":379.412169684,"data":"T3_17kelas EDM-Fuzzy end_to_end SEMUA-4-BENAR    829         NaN    0.521        NaN     NaN 0.846      NaN\n"}
+,{"stream_name":"stdout","time":379.412173933,"data":"T3_17kelas JSD-Fuzzy end_to_end            S1    815       0.593    0.867      0.931   0.839 0.882    0.727\n"}
+,{"stream_name":"stdout","time":379.412177424,"data":"T3_17kelas JSD-Fuzzy end_to_end            S2    815       0.634    0.903      0.926   0.921 0.923    0.541\n"}
+,{"stream_name":"stdout","time":379.412180847,"data":"T3_17kelas JSD-Fuzzy end_to_end            S3    815       0.610    0.877      0.888   0.913 0.901    0.516\n"}
+,{"stream_name":"stdout","time":379.412184645,"data":"T3_17kelas JSD-Fuzzy end_to_end            S4    815       0.663    0.867      0.894   0.907 0.901    0.501\n"}
+,{"stream_name":"stdout","time":379.412188229,"data":"T3_17kelas JSD-Fuzzy end_to_end SEMUA-4-BENAR    815         NaN    0.659        NaN     NaN 0.902      NaN\n"}
+,{"stream_name":"stdout","time":379.434623295,"data":"\n"}
+,{"stream_name":"stdout","time":379.434651068,"data":"=== Ringkas: F1 sensor rata-rata per tugas x metode ===\n"}
+,{"stream_name":"stdout","time":379.434656176,"data":"                         F1  ROC_AUC\n"}
+,{"stream_name":"stdout","time":379.434660439,"data":"Tugas      Metode                   \n"}
+,{"stream_name":"stdout","time":379.434664011,"data":"T1_biner   EDM-Fuzzy  0.489    0.526\n"}
+,{"stream_name":"stdout","time":379.43466753,"data":"           JSD-Fuzzy  0.504    0.680\n"}
+,{"stream_name":"stdout","time":379.434670891,"data":"T2_single5 EDM-Fuzzy  0.655    0.498\n"}
+,{"stream_name":"stdout","time":379.434674324,"data":"           JSD-Fuzzy  0.676    0.538\n"}
+,{"stream_name":"stdout","time":379.434677746,"data":"T3_17kelas EDM-Fuzzy  0.846    0.554\n"}
+,{"stream_name":"stdout","time":379.434681428,"data":"           JSD-Fuzzy  0.902    0.571\n"}
+,{"stream_name":"stdout","time":380.147994588,"data":"[Saved] exports/tahap1_vs_tahap2.png\n"}
+,{"stream_name":"stdout","time":380.443114921,"data":"=== Identifikasi sensor per skenario (tugas 17 kelas, end-to-end) ===\n"}
+,{"stream_name":"stdout","time":380.443146408,"data":"   Metode                 Skenario  Jumlah fault  n_window  F1 sensor (rata2)  Semua-4-benar\n"}
+,{"stream_name":"stdout","time":380.44315167,"data":"EDM-Fuzzy                   normal             0        30              0.000          0.067\n"}
+,{"stream_name":"stdout","time":380.443155711,"data":"EDM-Fuzzy                     bias             1        50              0.555          0.020\n"}
+,{"stream_name":"stdout","time":380.443159788,"data":"EDM-Fuzzy                    drift             1        50              0.851          0.560\n"}
+,{"stream_name":"stdout","time":380.443163818,"data":"EDM-Fuzzy                   faulty             1        50              0.744          0.320\n"}
+,{"stream_name":"stdout","time":380.443167442,"data":"EDM-Fuzzy                 hardware             1        50              0.938          0.740\n"}
+,{"stream_name":"stdout","time":380.443171029,"data":"EDM-Fuzzy                    spike             1        50              0.624          0.160\n"}
+,{"stream_name":"stdout","time":380.443175287,"data":"EDM-Fuzzy             bias+malfunc             2        50              0.868          0.620\n"}
+,{"stream_name":"stdout","time":380.443177883,"data":"EDM-Fuzzy               drift+bias             2        50              0.819          0.520\n"}
+,{"stream_name":"stdout","time":380.443180657,"data":"EDM-Fuzzy            drift+malfunc             2        50              0.955          0.800\n"}
+,{"stream_name":"stdout","time":380.443195155,"data":"EDM-Fuzzy              drift+spike             2        49              0.807          0.510\n"}
+,{"stream_name":"stdout","time":380.443197613,"data":"EDM-Fuzzy               spike+bias             2        50              0.700          0.200\n"}
+,{"stream_name":"stdout","time":380.443199975,"data":"EDM-Fuzzy            spike+malfunc             2        50              0.930          0.680\n"}
+,{"stream_name":"stdout","time":380.443202391,"data":"EDM-Fuzzy       drift+bias+malfunc             3        50              0.931          0.800\n"}
+,{"stream_name":"stdout","time":380.443204708,"data":"EDM-Fuzzy         drift+spike+bias             3        50              0.859          0.440\n"}
+,{"stream_name":"stdout","time":380.443208066,"data":"EDM-Fuzzy       spike+bias+malfunc             3        50              0.923          0.640\n"}
+,{"stream_name":"stdout","time":380.443211816,"data":"EDM-Fuzzy      spike+drift+malfunc             3        50              0.959          0.800\n"}
+,{"stream_name":"stdout","time":380.443215951,"data":"EDM-Fuzzy spike+bias+malfunc+drift             4        50              0.906          0.800\n"}
+,{"stream_name":"stdout","time":380.443219358,"data":"JSD-Fuzzy                   normal             0        30              0.000          0.400\n"}
+,{"stream_name":"stdout","time":380.443223344,"data":"JSD-Fuzzy                     bias             1        44              0.570          0.205\n"}
+,{"stream_name":"stdout","time":380.443226938,"data":"JSD-Fuzzy                    drift             1        50              0.910          0.700\n"}
+,{"stream_name":"stdout","time":380.443232208,"data":"JSD-Fuzzy                   faulty             1        50              0.816          0.380\n"}
+,{"stream_name":"stdout","time":380.443236163,"data":"JSD-Fuzzy                 hardware             1        50              0.896          0.640\n"}
+,{"stream_name":"stdout","time":380.443240474,"data":"JSD-Fuzzy                    spike             1        46              0.805          0.478\n"}
+,{"stream_name":"stdout","time":380.443244292,"data":"JSD-Fuzzy             bias+malfunc             2        50              0.829          0.520\n"}
+,{"stream_name":"stdout","time":380.443248435,"data":"JSD-Fuzzy               drift+bias             2        48              0.889          0.667\n"}
+,{"stream_name":"stdout","time":380.443252227,"data":"JSD-Fuzzy            drift+malfunc             2        50              0.974          0.860\n"}
+,{"stream_name":"stdout","time":380.443256059,"data":"JSD-Fuzzy              drift+spike             2        49              0.913          0.735\n"}
+,{"stream_name":"stdout","time":380.443259913,"data":"JSD-Fuzzy               spike+bias             2        48              0.884          0.646\n"}
+,{"stream_name":"stdout","time":380.44326375,"data":"JSD-Fuzzy            spike+malfunc             2        50              0.926          0.640\n"}
+,{"stream_name":"stdout","time":380.443267574,"data":"JSD-Fuzzy       drift+bias+malfunc             3        50              0.955          0.840\n"}
+,{"stream_name":"stdout","time":380.443271374,"data":"JSD-Fuzzy         drift+spike+bias             3        50              0.903          0.640\n"}
+,{"stream_name":"stdout","time":380.443275506,"data":"JSD-Fuzzy       spike+bias+malfunc             3        50              0.956          0.820\n"}
+,{"stream_name":"stdout","time":380.443279698,"data":"JSD-Fuzzy      spike+drift+malfunc             3        50              0.974          0.940\n"}
+,{"stream_name":"stdout","time":380.44328359,"data":"JSD-Fuzzy spike+bias+malfunc+drift             4        50              0.969          0.920\n"}
+,{"stream_name":"stdout","time":380.450198576,"data":"\n"}
+,{"stream_name":"stdout","time":380.450243189,"data":"=== Rata-rata menurut BANYAKNYA fault yang bercampur ===\n"}
+,{"stream_name":"stdout","time":380.450248638,"data":"                        F1 sensor (rata2)  Semua-4-benar\n"}
+,{"stream_name":"stdout","time":380.450252483,"data":"Metode    Jumlah fault                                  \n"}
+,{"stream_name":"stdout","time":380.450256785,"data":"EDM-Fuzzy 0                         0.000          0.067\n"}
+,{"stream_name":"stdout","time":380.450260529,"data":"          1                         0.742          0.360\n"}
+,{"stream_name":"stdout","time":380.450264255,"data":"          2                         0.846          0.555\n"}
+,{"stream_name":"stdout","time":380.450267976,"data":"          3                         0.918          0.670\n"}
+,{"stream_name":"stdout","time":380.450271731,"data":"          4                         0.906          0.800\n"}
+,{"stream_name":"stdout","time":380.450275467,"data":"JSD-Fuzzy 0                         0.000          0.400\n"}
+,{"stream_name":"stdout","time":380.450279545,"data":"          1                         0.799          0.481\n"}
+,{"stream_name":"stdout","time":380.450283024,"data":"          2                         0.902          0.678\n"}
+,{"stream_name":"stdout","time":380.450286954,"data":"          3                         0.947          0.810\n"}
+,{"stream_name":"stdout","time":380.45029131,"data":"          4                         0.969          0.920\n"}
+,{"stream_name":"stderr","time":385.860939334,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":385.860996819,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":386.05546313,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":386.055500712,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":386.785265837,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":387.188261839,"data":"[NbConvertApp] Writing 119078 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":390.075384808,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":391.331272868,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":391.331308016,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":391.33168914,"data":"[NbConvertApp] Writing 502512 bytes to __results__.html\n"}
+]

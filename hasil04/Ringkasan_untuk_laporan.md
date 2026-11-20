@@ -1,3 +1,7 @@
+> **Usang (2026-11-20):** angka di file ini berasal dari run v5, sebelum koreksi
+> drift. Angka yang dipakai di README dan sidang adalah run v6, buktinya di
+> `sidang/bukti_kaggle/jsd-fuzzy-twostage-sensorid/`.
+
 # Fault Sensor Identification — bahan untuk laporan (Paper Q3)
 
 Sumber: re-run Kaggle `kelvindsmn/jsd-fuzzy-twostage-sensorid` (version 5,
