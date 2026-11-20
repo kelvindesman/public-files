@@ -1,0 +1,76 @@
+[{"stream_name":"stderr","time":7.661775479,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":7.661827952,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":8.813163077,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.813192559,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.813197705,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.813201572,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":9.553383405,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.553417919,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.553423434,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.553427657,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":10.854262915,"data":"Writing deteksi_fault_core.py\n"}
+,{"stream_name":"stdout","time":10.874154135,"data":"Writing simpan_model.py\n"}
+,{"stream_name":"stdout","time":27.157211114,"data":"Sumber data: unduh -\u003e https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv\n"}
+,{"stream_name":"stdout","time":27.157314251,"data":"[01:06:54] data tersinkron (28173, 4) (97.8 hari)\n"}
+,{"stream_name":"stdout","time":27.359862065,"data":"Sumber data: unduh -\u003e https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv\n"}
+,{"stream_name":"stdout","time":27.359899629,"data":"[01:06:54] data tersinkron (28173, 4) (97.8 hari)\n"}
+,{"stream_name":"stdout","time":28.241593241,"data":"[01:06:55] window N=700: 1675 window, 17 kondisi, 40 blok waktu\n"}
+,{"stream_name":"stdout","time":28.448504799,"data":"[01:06:55] window N=700: 1675 window, 17 kondisi, 40 blok waktu\n"}
+,{"stream_name":"stdout","time":214.246302846,"data":"[01:10:01] fitur EDM-Fuzzy: (1675, 60) dalam 186.0 s\n"}
+,{"stream_name":"stdout","time":214.456594352,"data":"[01:10:01] fitur EDM-Fuzzy: (1675, 60) dalam 186.0 s\n"}
+,{"stream_name":"stdout","time":1551.241505773,"data":"[01:32:18] fitur JSD-Fuzzy: (1675, 60) dalam 1337.0 s\n"}
+,{"stream_name":"stdout","time":1551.482948827,"data":"[01:32:18] fitur JSD-Fuzzy: (1675, 60) dalam 1337.0 s\n"}
+,{"stream_name":"stdout","time":1666.339973851,"data":"[01:34:13] S1 EDM-Fuzzy: hidden=(32, 16) act=tanh innerF1=0.682 trainAcc=0.975 -\u003e model_N700_S1_EDM.joblib (115.0 s)\n"}
+,{"stream_name":"stdout","time":1666.552822366,"data":"[01:34:13] S1 EDM-Fuzzy: hidden=(32, 16) act=tanh innerF1=0.682 trainAcc=0.975 -\u003e model_N700_S1_EDM.joblib (115.0 s)\n"}
+,{"stream_name":"stdout","time":1973.547402992,"data":"[01:39:20] S1 JSD-Fuzzy: hidden=(64, 16) act=tanh innerF1=0.693 trainAcc=0.975 -\u003e model_N700_S1_JSD.joblib (307.2 s)\n"}
+,{"stream_name":"stdout","time":1973.760084119,"data":"[01:39:20] S1 JSD-Fuzzy: hidden=(64, 16) act=tanh innerF1=0.693 trainAcc=0.975 -\u003e model_N700_S1_JSD.joblib (307.2 s)\n"}
+,{"stream_name":"stdout","time":2082.787533423,"data":"[01:41:09] S2 EDM-Fuzzy: hidden=(16,) act=tanh innerF1=0.285 trainAcc=0.962 -\u003e model_N700_S2_EDM.joblib (109.2 s)\n"}
+,{"stream_name":"stdout","time":2082.999859537,"data":"[01:41:09] S2 EDM-Fuzzy: hidden=(16,) act=tanh innerF1=0.285 trainAcc=0.962 -\u003e model_N700_S2_EDM.joblib (109.2 s)\n"}
+,{"stream_name":"stdout","time":2191.975841999,"data":"[01:42:59] S2 JSD-Fuzzy: hidden=(16,) act=relu innerF1=0.360 trainAcc=0.899 -\u003e model_N700_S2_JSD.joblib (109.2 s)\n"}
+,{"stream_name":"stdout","time":2192.190742659,"data":"[01:42:59] S2 JSD-Fuzzy: hidden=(16,) act=relu innerF1=0.360 trainAcc=0.899 -\u003e model_N700_S2_JSD.joblib (109.2 s)\n"}
+,{"stream_name":"stdout","time":2366.75626086,"data":"[01:45:53] S3 EDM-Fuzzy: hidden=(32,) act=relu innerF1=0.235 trainAcc=0.955 -\u003e model_N700_S3_EDM.joblib (174.8 s)\n"}
+,{"stream_name":"stdout","time":2366.967517133,"data":"[01:45:53] S3 EDM-Fuzzy: hidden=(32,) act=relu innerF1=0.235 trainAcc=0.955 -\u003e model_N700_S3_EDM.joblib (174.8 s)\n"}
+,{"stream_name":"stdout","time":2509.729625456,"data":"[01:48:16] S3 JSD-Fuzzy: hidden=(16,) act=tanh innerF1=0.206 trainAcc=0.799 -\u003e model_N700_S3_JSD.joblib (143.0 s)\n"}
+,{"stream_name":"stdout","time":2509.938977358,"data":"[01:48:16] S3 JSD-Fuzzy: hidden=(16,) act=tanh innerF1=0.206 trainAcc=0.799 -\u003e model_N700_S3_JSD.joblib (143.0 s)\n"}
+,{"stream_name":"stdout","time":2892.858534998,"data":"[01:54:40] S4 EDM-Fuzzy: hidden=(64, 16) act=tanh innerF1=0.313 trainAcc=0.972 -\u003e model_N700_S4_EDM.joblib (383.1 s)\n"}
+,{"stream_name":"stdout","time":2893.074251839,"data":"[01:54:40] S4 EDM-Fuzzy: hidden=(64, 16) act=tanh innerF1=0.313 trainAcc=0.972 -\u003e model_N700_S4_EDM.joblib (383.1 s)\n"}
+,{"stream_name":"stdout","time":3277.270519665,"data":"[02:01:04] S4 JSD-Fuzzy: hidden=(64, 16) act=tanh innerF1=0.367 trainAcc=0.982 -\u003e model_N700_S4_JSD.joblib (384.4 s)\n"}
+,{"stream_name":"stdout","time":3277.485117824,"data":"[02:01:04] S4 JSD-Fuzzy: hidden=(64, 16) act=tanh innerF1=0.367 trainAcc=0.982 -\u003e model_N700_S4_JSD.joblib (384.4 s)\n"}
+,{"stream_name":"stdout","time":3391.487851786,"data":"[02:02:58] S5 EDM-Fuzzy: hidden=(32, 16) act=relu innerF1=0.764 trainAcc=0.911 -\u003e model_N700_S5_EDM.joblib (114.2 s)\n"}
+,{"stream_name":"stdout","time":3391.699277835,"data":"[02:02:58] S5 EDM-Fuzzy: hidden=(32, 16) act=relu innerF1=0.764 trainAcc=0.911 -\u003e model_N700_S5_EDM.joblib (114.2 s)\n"}
+,{"stream_name":"stdout","time":3510.487851755,"data":"[02:04:57] S5 JSD-Fuzzy: hidden=(64,) act=tanh innerF1=0.921 trainAcc=1.000 -\u003e model_N700_S5_JSD.joblib (119.0 s)\n"}
+,{"stream_name":"stdout","time":3510.538895065,"data":"scenario_short    method   hidden activation  inner_cv_f1  n_train  train_acc  train_acc_sensor_all4  cv_f1_nb11      lm_status                     file  train_s\n"}
+,{"stream_name":"stdout","time":3510.53893496,"data":"            S1 EDM-Fuzzy [32, 16]       tanh     0.682168      158   0.974684               0.987342      0.5945       max_iter model_N700_S1_EDM.joblib    115.0\n"}
+,{"stream_name":"stdout","time":3510.538941674,"data":"            S1 JSD-Fuzzy [64, 16]       tanh     0.693267      158   0.974684               0.962025      0.6712       max_iter model_N700_S1_JSD.joblib    307.2\n"}
+,{"stream_name":"stdout","time":3510.538947079,"data":"            S2 EDM-Fuzzy     [16]       tanh     0.284631      395   0.962025               0.958861      0.3283       max_iter model_N700_S2_EDM.joblib    109.2\n"}
+,{"stream_name":"stdout","time":3510.538952187,"data":"            S2 JSD-Fuzzy     [16]       relu     0.360087      395   0.898734               0.832278      0.3469       max_iter model_N700_S2_JSD.joblib    109.2\n"}
+,{"stream_name":"stdout","time":3510.538957259,"data":"            S3 EDM-Fuzzy     [32]       relu     0.235238      553   0.954792               0.968354      0.1836       max_iter model_N700_S3_EDM.joblib    174.8\n"}
+,{"stream_name":"stdout","time":3510.538979902,"data":"            S3 JSD-Fuzzy     [16]       tanh     0.206041      553   0.799277               0.801688      0.1962       max_iter model_N700_S3_JSD.joblib    143.0\n"}
+,{"stream_name":"stdout","time":3510.538982916,"data":"            S4 EDM-Fuzzy [64, 16]       tanh     0.312581      395   0.972152               1.000000      0.3386       max_iter model_N700_S4_EDM.joblib    383.1\n"}
+,{"stream_name":"stdout","time":3510.538985706,"data":"            S4 JSD-Fuzzy [64, 16]       tanh     0.367196      395   0.982278               1.000000      0.4257       max_iter model_N700_S4_JSD.joblib    384.4\n"}
+,{"stream_name":"stdout","time":3510.538988235,"data":"            S5 EDM-Fuzzy [32, 16]       relu     0.764336      158   0.911392               1.000000      0.8037       max_iter model_N700_S5_EDM.joblib    114.2\n"}
+,{"stream_name":"stdout","time":3510.53899083,"data":"            S5 JSD-Fuzzy     [64]       tanh     0.920926      158   1.000000               1.000000      0.8718 converged(tol) model_N700_S5_JSD.joblib    119.0\n"}
+,{"stream_name":"stdout","time":3510.538993584,"data":"[02:04:57] selesai dalam 3496.1 s -\u003e models/\n"}
+,{"stream_name":"stdout","time":3510.699963442,"data":"[02:04:57] S5 JSD-Fuzzy: hidden=(64,) act=tanh innerF1=0.921 trainAcc=1.000 -\u003e model_N700_S5_JSD.joblib (119.0 s)\n"}
+,{"stream_name":"stdout","time":3510.699990571,"data":"scenario_short    method   hidden activation  inner_cv_f1  n_train  train_acc  train_acc_sensor_all4  cv_f1_nb11      lm_status                     file  train_s\n"}
+,{"stream_name":"stdout","time":3510.699995351,"data":"            S1 EDM-Fuzzy [32, 16]       tanh     0.682168      158   0.974684               0.987342      0.5945       max_iter model_N700_S1_EDM.joblib    115.0\n"}
+,{"stream_name":"stdout","time":3510.699999394,"data":"            S1 JSD-Fuzzy [64, 16]       tanh     0.693267      158   0.974684               0.962025      0.6712       max_iter model_N700_S1_JSD.joblib    307.2\n"}
+,{"stream_name":"stdout","time":3510.7000035,"data":"            S2 EDM-Fuzzy     [16]       tanh     0.284631      395   0.962025               0.958861      0.3283       max_iter model_N700_S2_EDM.joblib    109.2\n"}
+,{"stream_name":"stdout","time":3510.700007522,"data":"            S2 JSD-Fuzzy     [16]       relu     0.360087      395   0.898734               0.832278      0.3469       max_iter model_N700_S2_JSD.joblib    109.2\n"}
+,{"stream_name":"stdout","time":3510.700011319,"data":"            S3 EDM-Fuzzy     [32]       relu     0.235238      553   0.954792               0.968354      0.1836       max_iter model_N700_S3_EDM.joblib    174.8\n"}
+,{"stream_name":"stdout","time":3510.700015591,"data":"            S3 JSD-Fuzzy     [16]       tanh     0.206041      553   0.799277               0.801688      0.1962       max_iter model_N700_S3_JSD.joblib    143.0\n"}
+,{"stream_name":"stdout","time":3510.70001936,"data":"            S4 EDM-Fuzzy [64, 16]       tanh     0.312581      395   0.972152               1.000000      0.3386       max_iter model_N700_S4_EDM.joblib    383.1\n"}
+,{"stream_name":"stdout","time":3510.70002285,"data":"            S4 JSD-Fuzzy [64, 16]       tanh     0.367196      395   0.982278               1.000000      0.4257       max_iter model_N700_S4_JSD.joblib    384.4\n"}
+,{"stream_name":"stdout","time":3510.700026537,"data":"            S5 EDM-Fuzzy [32, 16]       relu     0.764336      158   0.911392               1.000000      0.8037       max_iter model_N700_S5_EDM.joblib    114.2\n"}
+,{"stream_name":"stdout","time":3510.700030254,"data":"            S5 JSD-Fuzzy     [64]       tanh     0.920926      158   1.000000               1.000000      0.8718 converged(tol) model_N700_S5_JSD.joblib    119.0\n"}
+,{"stream_name":"stdout","time":3510.700043963,"data":"[02:04:57] selesai dalam 3496.1 s -\u003e models/\n"}
+,{"stream_name":"stdout","time":3511.879818077,"data":"dibuat 2026-11-20T02:04:57+00:00 | commit da6f6d3 | total 3496.1 s\n"}
+,{"stream_name":"stderr","time":3515.251424801,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":3515.25148393,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":3515.448818677,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":3515.448845457,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":3516.3472499,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":3516.44029498,"data":"[NbConvertApp] Writing 61737 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":3519.37050135,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":3520.12152834,"data":"[NbConvertApp] Writing 490250 bytes to __results__.html\n"}
+]

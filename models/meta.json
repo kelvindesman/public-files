@@ -1,0 +1,198 @@
+{
+ "dibuat": "2026-11-20T02:04:57+00:00",
+ "commit": "da6f6d3",
+ "smoke": false,
+ "window": 700,
+ "sampling_detik": 300,
+ "t_scales": 15,
+ "m": 2,
+ "r_ratio": 0.2,
+ "n_ref": 128,
+ "jsd": {
+  "bins": 8,
+  "h_ratio": 1.0,
+  "range_sd": 3.0,
+  "r_jsd_ratio": 0.2
+ },
+ "max_per_class": 100,
+ "n_window": 1675,
+ "feature_seconds": {
+  "EDM-Fuzzy": 186.0,
+  "JSD-Fuzzy": 1337.0
+ },
+ "total_seconds": 3496.1,
+ "python": "3.13.18",
+ "numpy": "2.1.3",
+ "sklearn": "1.6.1",
+ "joblib": "1.6.0",
+ "mesin": "x86_64 cpu=4",
+ "catatan": "Model dilatih di semua window skenario. Akurasi data latih BUKAN ukuran generalisasi; angka resmi = cv_f1_nb11 (CV grouped notebook 11 v3).",
+ "models": [
+  {
+   "scenario_short": "S1",
+   "method": "EDM-Fuzzy",
+   "hidden": [
+    32,
+    16
+   ],
+   "activation": "tanh",
+   "inner_cv_f1": 0.6821680013434163,
+   "n_train": 158,
+   "train_acc": 0.9746835443037974,
+   "train_acc_sensor_all4": 0.9873417721518988,
+   "cv_f1_nb11": 0.5945,
+   "lm_status": "max_iter",
+   "file": "model_N700_S1_EDM.joblib",
+   "train_s": 115.0
+  },
+  {
+   "scenario_short": "S1",
+   "method": "JSD-Fuzzy",
+   "hidden": [
+    64,
+    16
+   ],
+   "activation": "tanh",
+   "inner_cv_f1": 0.6932674839051063,
+   "n_train": 158,
+   "train_acc": 0.9746835443037974,
+   "train_acc_sensor_all4": 0.9620253164556962,
+   "cv_f1_nb11": 0.6712,
+   "lm_status": "max_iter",
+   "file": "model_N700_S1_JSD.joblib",
+   "train_s": 307.2
+  },
+  {
+   "scenario_short": "S2",
+   "method": "EDM-Fuzzy",
+   "hidden": [
+    16
+   ],
+   "activation": "tanh",
+   "inner_cv_f1": 0.2846314883778586,
+   "n_train": 395,
+   "train_acc": 0.9620253164556962,
+   "train_acc_sensor_all4": 0.9588607594936709,
+   "cv_f1_nb11": 0.3283,
+   "lm_status": "max_iter",
+   "file": "model_N700_S2_EDM.joblib",
+   "train_s": 109.2
+  },
+  {
+   "scenario_short": "S2",
+   "method": "JSD-Fuzzy",
+   "hidden": [
+    16
+   ],
+   "activation": "relu",
+   "inner_cv_f1": 0.36008651826316057,
+   "n_train": 395,
+   "train_acc": 0.8987341772151899,
+   "train_acc_sensor_all4": 0.8322784810126582,
+   "cv_f1_nb11": 0.3469,
+   "lm_status": "max_iter",
+   "file": "model_N700_S2_JSD.joblib",
+   "train_s": 109.2
+  },
+  {
+   "scenario_short": "S3",
+   "method": "EDM-Fuzzy",
+   "hidden": [
+    32
+   ],
+   "activation": "relu",
+   "inner_cv_f1": 0.2352378409041882,
+   "n_train": 553,
+   "train_acc": 0.9547920433996383,
+   "train_acc_sensor_all4": 0.9683544303797469,
+   "cv_f1_nb11": 0.1836,
+   "lm_status": "max_iter",
+   "file": "model_N700_S3_EDM.joblib",
+   "train_s": 174.8
+  },
+  {
+   "scenario_short": "S3",
+   "method": "JSD-Fuzzy",
+   "hidden": [
+    16
+   ],
+   "activation": "tanh",
+   "inner_cv_f1": 0.20604097220751594,
+   "n_train": 553,
+   "train_acc": 0.7992766726943942,
+   "train_acc_sensor_all4": 0.8016877637130801,
+   "cv_f1_nb11": 0.1962,
+   "lm_status": "max_iter",
+   "file": "model_N700_S3_JSD.joblib",
+   "train_s": 143.0
+  },
+  {
+   "scenario_short": "S4",
+   "method": "EDM-Fuzzy",
+   "hidden": [
+    64,
+    16
+   ],
+   "activation": "tanh",
+   "inner_cv_f1": 0.31258074786022416,
+   "n_train": 395,
+   "train_acc": 0.9721518987341772,
+   "train_acc_sensor_all4": 1.0,
+   "cv_f1_nb11": 0.3386,
+   "lm_status": "max_iter",
+   "file": "model_N700_S4_EDM.joblib",
+   "train_s": 383.1
+  },
+  {
+   "scenario_short": "S4",
+   "method": "JSD-Fuzzy",
+   "hidden": [
+    64,
+    16
+   ],
+   "activation": "tanh",
+   "inner_cv_f1": 0.3671959751165863,
+   "n_train": 395,
+   "train_acc": 0.9822784810126582,
+   "train_acc_sensor_all4": 1.0,
+   "cv_f1_nb11": 0.4257,
+   "lm_status": "max_iter",
+   "file": "model_N700_S4_JSD.joblib",
+   "train_s": 384.4
+  },
+  {
+   "scenario_short": "S5",
+   "method": "EDM-Fuzzy",
+   "hidden": [
+    32,
+    16
+   ],
+   "activation": "relu",
+   "inner_cv_f1": 0.7643363119429946,
+   "n_train": 158,
+   "train_acc": 0.9113924050632911,
+   "train_acc_sensor_all4": 1.0,
+   "cv_f1_nb11": 0.8037,
+   "lm_status": "max_iter",
+   "file": "model_N700_S5_EDM.joblib",
+   "train_s": 114.2
+  },
+  {
+   "scenario_short": "S5",
+   "method": "JSD-Fuzzy",
+   "hidden": [
+    64
+   ],
+   "activation": "tanh",
+   "inner_cv_f1": 0.9209261755252731,
+   "n_train": 158,
+   "train_acc": 1.0,
+   "train_acc_sensor_all4": 1.0,
+   "cv_f1_nb11": 0.8718,
+   "lm_status": "converged(tol)",
+   "file": "model_N700_S5_JSD.joblib",
+   "train_s": 119.0
+  }
+ ],
+ "format_model": "SavedLM (numpy murni) \u2014 dikonversi dari pipeline sklearn 1.6.1 Kaggle v1 dengan konversi_model_portabel.py, selisih prediksi 0,0"
+}

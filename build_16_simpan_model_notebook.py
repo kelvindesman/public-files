@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build 15_Simpan_Model_Final.ipynb (dijalankan sekali di Kaggle).
+"""Build 16_Simpan_Model_Final.ipynb (dijalankan sekali di Kaggle).
 
 Notebook ini menulis `deteksi_fault_core.py` dan `simpan_model.py` dari repo ke
 folder kerja Kaggle, lalu menjalankan `simpan_model.py`. Keluarannya (folder
@@ -11,7 +11,7 @@ import subprocess
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-OUT = HERE / "15_Simpan_Model_Final.ipynb"
+OUT = HERE / "16_Simpan_Model_Final.ipynb"
 
 
 def md(src):
@@ -29,7 +29,7 @@ train_src = (HERE / "simpan_model.py").read_text()
 
 cells = [
     md(r"""
-# 15 — Simpan model final ANN-LM (untuk demo tanpa training ulang)
+# 16 — Simpan model final ANN-LM (untuk demo tanpa training ulang)
 
 Run penelitian notebook 11 makan **10,2 jam** karena mengulang ekstraksi
 entropi dan grid search di tiap lipatan CV. Untuk demo cukup **satu** model

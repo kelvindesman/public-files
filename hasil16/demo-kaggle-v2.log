@@ -1,0 +1,32 @@
+[{"stream_name":"stderr","time":9.314381019,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.314476659,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.314485909,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.314489589,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":9.99427932,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.994314770999999,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.994319371,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.994323051,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":15.711520289,"data":"Model dari: /kaggle/input/datasets/kelvindsmn/model-deteksi-fault-tersimpan/models\n"}
+,{"stream_name":"stdout","time":15.711551729,"data":"Dibuat 2026-11-20T02:04:57+00:00 | commit da6f6d3 | window N = 700 | 10 model dimuat\n"}
+,{"stream_name":"stdout","time":15.887615892,"data":"Sumber data: file lokal -\u003e /kaggle/input/datasets/kelvindsmn/model-deteksi-fault-tersimpan/data_sensor.csv\n"}
+,{"stream_name":"stdout","time":17.632212199,"data":"Kondisi: spike+bias+malfunc+drift | porsi sampel yang kena fault per sensor: {'S1': '0.0%', 'S2': '100.0%', 'S3': '0.0%', 'S4': '0.0%'}\n"}
+,{"stream_name":"stdout","time":21.712772485,"data":"Ekstraksi fitur selesai dalam 3.9 detik (tiap window: 4 sensor x 15 skala = 60 fitur)\n"}
+,{"stream_name":"stdout","time":21.768315677,"data":"Jawaban benar -\u003e window asli: 'fault free' | window diberi fault: 'faulty' (S1) dan 'drift+spike+bias+HW' (S5)\n"}
+,{"stream_name":"stdout","time":21.774817855,"data":"\n"}
+,{"stream_name":"stdout","time":21.774855275,"data":"Sensor mana yang rusak (window fault, ambang skor 0,5):\n"}
+,{"stream_name":"stdout","time":40.964107042,"data":"30 window x 2 metode dalam 19.1 detik\n"}
+,{"stream_name":"stdout","time":40.966134772,"data":"Catatan: posisi window diambil dari data yang juga dipakai melatih model (fault-nya baru), jadi angka ini ilustrasi demo, bukan pengganti CV.\n"}
+,{"stream_name":"stdout","time":118.506387364,"data":"F1 satu split acak bisa naik-turun; angka resmi = rata-rata CV 5 lipatan di notebook 11.\n"}
+,{"stream_name":"stderr","time":123.631719928,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":123.631763468,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":123.809269768,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":123.809309638,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":124.557300738,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":124.632065864,"data":"[NbConvertApp] Writing 291269 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":127.151514068,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":127.686232029,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":127.686261329,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":127.686452809,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":127.686594989,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":127.686807429,"data":"[NbConvertApp] Writing 354777 bytes to __results__.html\n"}
+]

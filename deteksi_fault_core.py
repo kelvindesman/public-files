@@ -701,3 +701,100 @@ def inject_demo(X_win, fault_names, sensor_idx, seed=0):
     for f in fault_names:
         faults += FAULT_PILIHAN[f]
     return inject_faults_multisensor(np.asarray(X_win, dtype=float), faults, sensor_idx, seed=seed)
+
+
+# --------------------------------------------------------------------------
+# Model portabel: tidak tergantung versi scikit-learn
+# --------------------------------------------------------------------------
+class SavedLM:
+    """Model ANN-LM tersimpan dalam bentuk numpy murni.
+
+    Pipeline sklearn (SimpleImputer -> StandardScaler -> LM) yang di-pickle
+    hanya bisa dibuka dengan versi scikit-learn yang sama persis (Kaggle 1.6.1
+    vs laptop 1.9.1 gagal: atribut internal SimpleImputer berubah). Kelas ini
+    menyimpan angka yang dipakai saat prediksi saja: nilai pengisi NaN (median
+    data latih), mean dan skala StandardScaler, bobot LM, dan aktivasi.
+    Hasil prediksinya identik dengan pipeline asal.
+
+    kind = "kelas"  -> predict_proba / predict (softmax atas keluaran linear)
+    kind = "sensor" -> decision_function / predict (ambang 0,5 per sensor)
+    """
+
+    def __init__(self, kind, fill, mean, scale, theta, shapes, activation, classes=None):
+        self.kind = kind
+        self.fill = np.asarray(fill, dtype=float)
+        self.mean = np.asarray(mean, dtype=float)
+        self.scale = np.asarray(scale, dtype=float)
+        self.theta = np.asarray(theta, dtype=float)
+        self.shapes = [tuple(map(int, s)) for s in shapes]
+        self.activation = activation
+        self.classes = None if classes is None else np.asarray(classes)
+
+    @classmethod
+    def from_pipeline(cls, pipe, kind):
+        imp, sc, lm = pipe.named_steps["imp"], pipe.named_steps["sc"], pipe.named_steps["lm"]
+        return cls(kind=kind, fill=imp.statistics_, mean=sc.mean_, scale=sc.scale_,
+                   theta=lm.theta_, shapes=[W.shape for W, _ in lm.template_],
+                   activation=lm.activation,
+                   classes=getattr(lm, "classes_", None))
+
+    def _template(self):
+        return [[np.zeros(s), np.zeros(s[1])] for s in self.shapes]
+
+    def _prep(self, X):
+        X = np.array(X, dtype=float, copy=True)
+        if X.ndim == 1:
+            X = X[None, :]
+        nan = np.isnan(X)
+        if nan.any():
+            X[nan] = np.broadcast_to(self.fill, X.shape)[nan]
+        return (X - self.mean) / self.scale
+
+    def decision_function(self, X):
+        out, _ = lm_forward(lm_unpack(self.theta, self._template()), self._prep(X), self.activation)
+        return out
+
+    def predict_proba(self, X):
+        out = self.decision_function(X)
+        e = out - out.max(axis=1, keepdims=True)
+        P = np.exp(e)
+        return P / P.sum(axis=1, keepdims=True)
+
+    def predict(self, X):
+        if self.kind == "sensor":
+            return (self.decision_function(X) > 0.5).astype(int)
+        return self.classes[self.predict_proba(X).argmax(axis=1)]
+
+
+# --------------------------------------------------------------------------
+# Demo: injeksi PERSIS seperti saat training
+# --------------------------------------------------------------------------
+_KOMPONEN = {"malfunc": "hardware"}
+
+
+def condition_for(fault_names):
+    """{"spike", "hardware"} -> "spike+malfunc" (nama kondisi di SCENARIOS)."""
+    want = set(fault_names)
+    for name in SCENARIOS:
+        if name == "faulty":
+            continue
+        parts = {_KOMPONEN.get(p, p) for p in name.split("+")}
+        if parts == want:
+            return name
+    raise KeyError(f"Kombinasi fault {sorted(want)} tidak ada. Pilihan: drift, spike, bias, hardware")
+
+
+def inject_like_training(X_full, fault_names, sensor_idx, seed=0):
+    """Beri fault ke SELURUH deret (seperti segment_and_label), urutan komponen sama
+    dengan definisi kondisi di SCENARIOS. Window demo dipotong SESUDAH ini, jadi
+    bentuk fault (mis. hardware menyalin nilai dari hari lain, drift hanya di
+    episode 3 hari) sama dengan data latih."""
+    cond = condition_for(fault_names)
+    Y, M = inject_faults_multisensor(np.asarray(X_full, dtype=float), SCENARIOS[cond], sensor_idx, seed=seed)
+    return cond, Y, M
+
+
+def drift_episode_days(n_samples):
+    ep = int(round(DRIFT_EPISODE_DAYS * 86400.0 / DRIFT_SAMPLE_SECONDS))
+    return [(s * SAMPLING_SECONDS / 86400, (s + ep) * SAMPLING_SECONDS / 86400)
+            for s in (np.linspace(0.10, 0.70, DRIFT_N_EPISODES) * n_samples).astype(int)]

@@ -120,6 +120,12 @@ Notebook sidang (semua private):
 | `01_Alur_Sistem.ipynb` | `alur-sistem-deteksi-fault-4-sensor-kelembaban` | digantikan |
 | `02_Hasil.ipynb` | `hasil-deteksi-fault-4-sensor-kelembaban` | digantikan |
 | `12_Sensitivitas_Parameter.ipynb` | `sensitivitas-parameter-fault-dan-jsd` | pendukung (bukan sidang) |
+| `03_Demo_Model_Tersimpan.ipynb` | `demo-model-tersimpan-deteksi-fault` | **demo** (v2, input dataset `model-deteksi-fault-tersimpan`) |
+| `16_Simpan_Model_Final.ipynb` | `simpan-model-final-deteksi-fault` | melatih + menyimpan model demo (v1, 58 menit) |
+
+Demo memakai model tersimpan (N = 700, 5 skenario × 2 metode) dari
+`simpan_model.py`; panduan dan naskah: `sidang/PANDUAN_DEMO.md`. Angka resmi
+tetap dari notebook 11 v3 — akurasi di demo hanya ilustrasi.
 
 Status private dan display name `Riset Deteksi Fault 4 Sensor Kelembaban`
 diverifikasi di Kaggle pada 2026-10-26.

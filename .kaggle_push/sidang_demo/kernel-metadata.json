@@ -1,0 +1,16 @@
+{
+ "id": "kelvindsmn/demo-model-tersimpan-deteksi-fault",
+ "title": "Demo Model Tersimpan Deteksi Fault",
+ "code_file": "demo-model-tersimpan-deteksi-fault.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": false,
+ "enable_tpu": false,
+ "enable_internet": true,
+ "keywords": [],
+ "dataset_sources": ["kelvindsmn/model-deteksi-fault-tersimpan"],
+ "kernel_sources": [],
+ "competition_sources": [],
+ "model_sources": []
+}

@@ -129,7 +129,9 @@ def main():
                 "class_names": [c[0] for c in classes],
                 "hidden": list(best_h), "activation": best_a,
                 "inner_cv_f1": best_f1, "grid_ranking": ranking,
-                "detektor": det, "sensor_id": sens,
+                # simpan bentuk numpy murni supaya bisa dibuka di versi scikit-learn mana pun
+                "detektor": core.SavedLM.from_pipeline(det, "kelas"),
+                "sensor_id": None if sens is None else core.SavedLM.from_pipeline(sens, "sensor"),
                 "n_train": int(len(yy)), "n_train_sensor": int(fault.sum()),
                 "train_acc": train_acc, "train_acc_sensor_all4": sens_acc,
                 "cv_f1_nb11": CV_F1_NB11.get((short, meth)),
