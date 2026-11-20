@@ -23,8 +23,21 @@ ditemukan saat menyusun bahan ini dan belum ada di laporan.
   untuk EDM dan JSD karena keduanya memakai window, grup, dan fold yang
   identik, sehingga **selisih** keduanya tetap sah; perbaikannya adalah memberi
   celah (purge) satu window di setiap batas fold."
-- Tindak lanjut: kalau ada waktu, jalankan ulang satu sel (mis. N=700) dengan
-  purge dan laporkan selisih F1.
+- **Diukur (2026-11-20)**, `uji_purge_permutasi_N700.py` → `hasil_uji/efek_purge_permutasi.csv`
+  (N = 700, S1–S5, 5 lipatan, arsitektur tetap dari `models/meta.json`,
+  jendela latih yang tumpang-tindih dengan jendela uji dibuang):
+  - Purge mengubah F1 antara −0,072 (S1 EDM) dan +0,012 (S5 JSD); 7 dari 10
+    sel turun. Purge juga membuang ±20 % data latih (S1: 126 → 100 jendela),
+    jadi penurunan itu batas atas efek kebocoran, bukan efek murninya.
+  - Arah perbandingan tidak berubah: setelah purge JSD ≥ EDM di 5 dari 5
+    skenario (tanpa purge 4 dari 5; S3 EDM sedikit lebih tinggi). Per skenario
+    hanya S1 purge yang signifikan setelah koreksi Nadeau–Bengio dan Holm
+    (p = 0,039); lainnya p_NB ≥ 0,41.
+  - Kontrol label acak (S1, S5): F1 0,446–0,508, setara tebakan 0,5 → pipeline
+    tidak belajar dari artefak.
+- Jawaban dengan angka: "Saya ukur dengan purge: F1 turun paling banyak 0,07,
+  dan JSD tetap tidak kalah dari EDM di kelima skenario. Dengan label acak F1
+  jatuh ke 0,5, tingkat tebakan."
 
 **A2. Satu sinyal bersih dipakai berulang di semua kondisi**
 - Bukti: `segment_and_label` (`build_11…:556–595`) menyuntik fault ke salinan

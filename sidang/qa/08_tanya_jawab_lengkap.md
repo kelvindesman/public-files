@@ -433,16 +433,22 @@ ditulis di akhir judul, misalnya (Q1, P9).
 - *Untuk mahasiswa baru:* purge = membuang soal latihan yang isinya beririsan
   dengan soal ujian. Kalau skor turun banyak setelah purge, berarti skor lama
   terbantu kebocoran.
+- *Hasil:* purge mengubah F1 −0,072 sampai +0,012 (7 dari 10 sel turun);
+  JSD ≥ EDM tetap di 5 dari 5 skenario. Purge juga mengurangi data latih ±20 %
+  (S1: 126 → 100 jendela), jadi penurunan skor tidak seluruhnya akibat
+  kebocoran.
 - *Bukti:* `sidang/qa/uji_purge_permutasi_N700.py`,
-  `hasil_uji/efek_purge_permutasi.csv`. Catatan: purge juga mengurangi data
-  latih ±20 %, jadi penurunan skor tidak seluruhnya akibat kebocoran.
+  `hasil_uji/efek_purge_permutasi.csv`, `hasil_uji/statistik_lipatan.csv`;
+  `02_kelemahan.md` A1.
 
 **T48. Bagaimana tahu model tidak belajar artefak? (kontrol negatif)**
 - *30 detik:* "Label saya acak lalu model dilatih ulang dengan protokol sama.
   Kalau pipeline jujur, F1-nya turun ke tingkat tebak-tebakan."
 - *Untuk mahasiswa baru:* untuk 2 kelas, tebakan acak memberi F1 sekitar 0,5.
   Kalau model dengan label acak masih jauh di atas itu, ada yang bocor.
-- *Bukti:* `hasil_uji/efek_purge_permutasi.csv` varian `permutasi` (S1, S5).
+- *Hasil:* F1 dengan label acak 0,446–0,508 (S1 dan S5, kedua metode),
+  setara tebakan 0,5; model asli 0,64–0,83.
+- *Bukti:* `hasil_uji/efek_purge_permutasi.csv` kolom `F1_permutasi`.
 
 **T49. Validitas eksternal? (D)**
 - *30 detik:* "Satu lokasi, satu musim, empat sensor, gangguan disimulasikan.
