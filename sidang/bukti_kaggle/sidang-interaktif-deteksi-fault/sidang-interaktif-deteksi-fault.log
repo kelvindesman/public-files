@@ -1,0 +1,26 @@
+[{"stream_name":"stderr","time":9.177513172,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.177633183,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.177638753,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.177642153,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":10.000972626,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":10.001027556,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":10.001032146,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":10.001035516,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":13.26597566,"data":"Folder kerja: /kaggle/working/bahan\n"}
+,{"stream_name":"stdout","time":13.562275457,"data":"28,173 titik 5 menit = 97.8 hari\n"}
+,{"stream_name":"stdout","time":14.856397119,"data":"10 model dimuat | dibuat 2026-11-20T02:04:57+00:00 | commit da6f6d3 | N = 700\n"}
+,{"stream_name":"stdout","time":15.256046903,"data":"JSD menang 11 dari 15 sel | rata-rata F1 EDM 0.458 vs JSD 0.486\n"}
+,{"stream_name":"stderr","time":19.558936702,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":19.558991002,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":19.74004231,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":19.74008586,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":20.528716648,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":20.62729847,"data":"[NbConvertApp] Writing 352880 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":23.8883157,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":24.524749609,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":24.524796959,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":24.52523361,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":24.52528283,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":24.52529905,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":24.52550854,"data":"[NbConvertApp] Writing 466896 bytes to __results__.html\n"}
+]
