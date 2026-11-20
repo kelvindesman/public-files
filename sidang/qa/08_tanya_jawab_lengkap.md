@@ -488,3 +488,72 @@ ditulis di akhir judul, misalnya (Q1, P9).
 **T54. Kalau ditanya angka yang tidak ada di layar? (Q45)**
 - "Saya cek di `01_klaim_bukti.csv` atau notebook sumbernya." Jangan mengarang
   angka baru.
+
+<!-- bagian: data-hipotetik -->
+
+Bagian ini untuk percobaan data hipotetik tanpa entropi (NB15,
+`build_15_data_hipotetik_ann_lm_notebook.py`). Belum dipakai di notebook
+interaktif.
+
+**T55. Gangguan disisipkan bersamaan atau bertahap?**
+- *30 detik:* "Ada dua arti. Antar skenario bertahap: S1 satu fault, S2 tiap
+  fault tunggal, S3 dua fault, S4 tiga, S5 keempatnya. Ada 16 kondisi dan
+  masing-masing punya salinan datanya sendiri. Di dalam satu kondisi kombinasi,
+  semua fault disisipkan pada interval waktu yang sama, yaitu tiga episode
+  tiga hari. Secara waktu fault-nya bersamaan; secara kode diterapkan
+  berurutan pada sinyal yang sama."
+- *Untuk mahasiswa baru:* kondisi `spike+bias` diproses begini. Ambil
+  sinyal bersih. Kalikan 1,52 % titik di dalam episode dengan 1,3 (spike).
+  Tambahkan +5 poin ke seluruh episode (bias). Terakhir potong nilainya ke
+  0–100 %. Label tiap sampel berupa bitmask: drift 1, spike 2, bias 4,
+  hardware 8. Titik yang kena spike dan bias berlabel 6.
+- *Detail yang harus bisa dijelaskan:*
+  - fault tunggal: spike dan hardware tersebar di seluruh deret; drift dan
+    bias selalu di dalam episode;
+  - kombinasi: semua komponen dibatasi ke episode yang sama
+    (`simulate_multiple_faults`, `within = _episode_mask`);
+  - urutan kode S5: spike, bias, hardware, lalu drift. Nilai macet disalin dari
+    deret yang sudah diberi spike dan bias. Drift ditambahkan terakhir, dan
+    titik NaN tetap NaN;
+  - versi 4 sensor: fault masuk ke 1, 2, 3, atau 4 sensor, bergiliran antar
+    kondisi; sensor dipilih acak dengan seed tetap. Episode sama untuk semua
+    sensor. Posisi spike dan hardware berbeda per sensor karena seed-nya
+    berbeda. Di S1 jenis fault diundi per sensor;
+  - model per kondisi dilatih terpisah per kondisi. Model gabungan dilatih
+    sekaligus pada 16 kondisi ditambah data normal.
+- *Bukti:* `build_14_lengkap_fault_baru_notebook.py` `NEW_SIM`
+  (`_episode_mask`, `simulate_multiple_faults`, `simulate_choose_one`);
+  `build_15_…py` `CONDITIONS` dan §3 `GEN_4S` / `GEN_AVG`.
+
+**T56. Berapa neuron output ANN-LM?**
+- *30 detik:* "Dua neuron output linear, untuk normal dan fault, dengan target
+  one-hot. Saat prediksi, softmax mengubahnya jadi peluang. Peluang fault
+  adalah unit kedua, lalu alarm menyala kalau peluang itu di atas ambang yang
+  disetel di data validasi. Program pertama (Des 2025) memakai satu output
+  sigmoid."
+- *Untuk mahasiswa baru:* masukan berisi 13 fitur per sampel: lag1–lag10,
+  selisih dengan sampel sebelumnya, penanda NaN, dan jumlah NaN dalam
+  10 sampel terakhir. Contoh arsitektur (16, 8):
+  13 → 16 → 8 → 2, aktivasi tanh. Jumlah parameternya
+  13·16 + 16 + 16·8 + 8 + 8·2 + 2 = 378.
+- *Bukti:* `build_15_…py` `fit_lm_model` (`lm_fit(..., 2, activation="tanh")`,
+  `np.eye(2)[y]`), `FEATURE_NAMES`, `best_threshold` (ambang 0,05–0,95, langkah
+  0,01).
+
+**T57. Grid search-nya mencari di ruang apa?**
+- *30 detik:* "Hanya arsitektur lapisan tersembunyi, lima kandidat: (6), (12),
+  (6,3), (12,6), (16,8). Yang lain tetap: tanh, 60 iterasi LM, maksimum
+  120 ribu baris latih, seed tetap. Kriteria pemilihannya F1 validasi; data
+  uji tidak dipakai. Grid ini hanya untuk model gabungan. Model per kondisi
+  memakai dua arsitektur program pertama, (6) dan (6,3), dan keduanya
+  dilaporkan."
+- *Hasil (log Kaggle v3):* F1 validasi rata-rata 0,702–0,709, terpilih (16,8),
+  F1 uji 0,753. Pada 4 sensor F1 validasi 0,547–0,560, terpilih (12,6),
+  F1 uji 0,640.
+- *Jujur:* selisih antar kandidat ≤ 0,013, dan semua berhenti di batas
+  60 iterasi (`max_iter`). Pemilihan arsitektur praktis tidak berpengaruh.
+  Di versi rata-rata, kandidat terpilih justru F1 ujinya terendah (0,753 vs
+  0,754–0,765). Itu tanda pemilihan memang tidak mengintip data uji.
+- *Bukti:* `build_15_…py` `GABUNGAN_GRID`, `LM_ITERS`, `MAX_TRAIN_ROWS`;
+  `hasil15/data-hipotetik-berlabel-ann-lm.log` baris `grid …`; ekspor
+  `15_grid_search_gabungan.csv`; `15_model_card.json` kunci `grid_search`.
