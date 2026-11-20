@@ -6,7 +6,7 @@ Satu notebook untuk dua pemakaian:
                   pertama, atau salinan `*_presentasi.ipynb` yang catatan internalnya
                   sudah dibuang lewat ekspor_notebook_sidang.py);
   * internal    — tiap bagian punya catatan lipat (<details>) berisi penjelasan untuk
-                  mahasiswa baru, tanya-jawab penguji, dan penunjuk bukti.
+                  orang awam, tanya-jawab penguji, dan penunjuk bukti.
 
 Aturan isi:
   * Tidak ada pelatihan model. Fitur widget dibaca dari sidang/assets/cache_interaktif.npz
@@ -55,7 +55,7 @@ def internal(bagian: str, judul: str, penjelasan: str, bukti: str):
     """Sel markdown bertanda catatan-internal: lipat, hilang di mode/salinan presentasi."""
     isi = (f'<details class="{TAG}">\n<summary><b>Catatan internal — {judul}</b> '
            f'(klik untuk buka; tidak tampil saat presentasi)</summary>\n\n'
-           f"#### Penjelasan untuk mahasiswa baru\n\n{penjelasan.strip()}\n\n"
+           f"#### Penjelasan untuk orang awam\n\n{penjelasan.strip()}\n\n"
            f"#### Tanya-jawab penguji\n\n{qa_bagian(bagian)}\n\n"
            f"#### Bukti\n\n{bukti.strip()}\n\n</details>")
     c = nbf.v4.new_markdown_cell(isi)
@@ -668,7 +668,7 @@ LAMPIRAN = [
     ("sidang/qa/01_ringkasan_klaim.md", "Ringkasan audit klaim"),
     ("sidang/qa/06_mock_sidang.md", "Skenario mock sidang"),
     ("sidang/qa/10_paket_mock_sidang.md", "Paket mock sidang dan lembar skor"),
-    ("sidang/qa/11_kuis_mahasiswa_baru.md", "Kuis mahasiswa baru"),
+    ("sidang/qa/11_kuis_orang_awam.md", "Kuis orang awam"),
     ("sidang/qa/09_checklist_pembimbing.md", "Checklist tanda tangan pembimbing"),
     ("sidang/PANDUAN_DEMO.md", "Panduan demo"),
     ("sidang/MAPPING.md", "Peta klaim ke notebook"),

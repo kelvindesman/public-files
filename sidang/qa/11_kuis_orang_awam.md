@@ -1,13 +1,13 @@
-# 11 — Kuis 10 soal untuk mahasiswa ilmu komputer tahun pertama
+# 11 — Kuis 10 soal untuk orang awam
 
 Tujuan: membuktikan bahwa penjelasan di notebook interaktif (salinan
 internal) bisa dipahami orang yang belum pernah belajar entropi atau jaringan
-saraf. Yang diuji adalah **penjelasannya**, bukan mahasiswanya.
+saraf. Yang diuji adalah **penjelasannya**, bukan pesertanya.
 
 Cara pakai:
-1. Beri mahasiswa `sidang/04_Sidang_Interaktif.ipynb` (salinan internal) dan
+1. Beri peserta awam (orang di luar bidang ini) `sidang/04_Sidang_Interaktif.ipynb` (salinan internal) dan
    20 menit membaca serta memainkan panel. Kandidat tidak boleh menjelaskan.
-2. Mahasiswa mengerjakan kuis tanpa membuka notebook, 15 menit.
+2. Peserta mengerjakan kuis tanpa membuka notebook, 15 menit.
 3. Nilai dengan kunci. Target: ≥ 8/10. Soal yang salah menunjukkan bagian
    notebook yang penjelasannya perlu diperbaiki (kolom "Bagian").
 
@@ -71,6 +71,6 @@ Cara pakai:
 
 ## Hasil
 
-| Mahasiswa (inisial) | Tanggal | Skor /10 | Soal salah | Bagian yang diperbaiki |
+| Peserta (inisial) | Tanggal | Skor /10 | Soal salah | Bagian yang diperbaiki |
 |---|---|---|---|---|
 | | | | | |

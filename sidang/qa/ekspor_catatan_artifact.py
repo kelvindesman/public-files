@@ -41,6 +41,26 @@ def bongkar(src: str) -> tuple[str, str, str] | None:
     return "Lampiran: file persiapan", judul, isi
 
 
+MILIKKU = r"utama|persiapan|klaim|laporan|penelitian|skripsi|jawaban|catatan|metode|hasil|skenario|buatan|CV|F1|paper|baseline"
+
+
+def _ku(m: re.Match) -> str:
+    kata = m.group(1)
+    return kata + ("-ku" if kata[-1].isupper() or kata[-1].isdigit() else "ku")
+
+
+def gaya_aku(t: str) -> str:
+    """Ubah sudut pandang ke monolog orang pertama: 'aku', tanpa sapaan Bapak/Ibu."""
+    t = t.replace("Bapak/Ibu bisa", "Penguji bisa").replace("Bu Luh", "pembimbing").replace("Label saya acak", "Labelnya aku acak")
+    # kepemilikan: "hasil Anda" / "klaim saya" / "paper kami" -> "hasilku", "klaimku", "paperku"
+    t = re.sub(rf"\b({MILIKKU}) (?:Anda|saya|kami|kita)\b", _ku, t)
+    t = re.sub(r"\bmembuat Anda\b", "membuatku", t)
+    for lama, baru in [("Anda", "aku"), ("saya", "aku"), ("kami", "aku"), ("kita", "aku")]:
+        t = re.sub(rf"\b{lama}\b", baru, t)
+        t = re.sub(rf"\b{lama.capitalize()}\b", baru.capitalize(), t)
+    return t
+
+
 def main() -> int:
     keluar = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "sidang" / "artifact_catatan"
     keluar.mkdir(parents=True, exist_ok=True)
@@ -53,6 +73,7 @@ def main() -> int:
         if b is None:
             continue
         grup, judul, isi = b
+        isi, judul = gaya_aku(isi), gaya_aku(judul)
         docs.append({"id": f"c{len(docs) + 1:02d}", "grup": grup, "judul": judul, "md": isi})
     n_sel = sum(TAG in c.metadata.get("tags", []) for c in nb.cells)
     assert len(docs) == n_sel - 1, f"{len(docs)} dokumen dari {n_sel} sel catatan (1 sel judul)"
