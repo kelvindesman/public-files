@@ -512,8 +512,8 @@ def build_xy(version, cond):
     return (np.vstack(Fs), np.concatenate(ys), np.concatenate(sp),
             np.concatenate(sid), np.concatenate(ti))
 
-def train_eval(version, cond, arch_name, hidden, seed):
-    F, y, sp, sid, ti = build_xy(version, cond)
+def fit_lm_model(F, y, sp, hidden, seed):
+    # latih di split latih, pilih ambang di validasi; kembalikan model (angka murni) + prediksi semua baris
     tr = np.flatnonzero(sp == 0)
     if len(tr) > MAX_TRAIN_ROWS:
         tr = np.sort(np.random.default_rng(seed).choice(tr, MAX_TRAIN_ROWS, replace=False))
@@ -524,8 +524,17 @@ def train_eval(version, cond, arch_name, hidden, seed):
                  iters=LM_ITERS, seed=seed, max_train_s=LM_MAX_TRAIN_S)
     wall = _time.perf_counter() - t0; cpu = _time.process_time() - c0
     p = lm_predict_proba(res["theta"], res["template"], Z)[:, 1]
-    va, te = sp == 1, sp == 2
+    va = sp == 1
     thr, f1_val = best_threshold(p[va], y[va])
+    model = {"theta": res["theta"], "shapes": np.array([W.shape for W, _ in res["template"]]),
+             "mean": scaler.mean_, "scale": scaler.scale_, "ambang": thr, "activation": "tanh",
+             "hidden": np.array(hidden), "lag_k": LAG_K, "feature_names": np.array(FEATURE_NAMES)}
+    return model, p, thr, f1_val, res, tr, wall, cpu
+
+def train_eval(version, cond, arch_name, hidden, seed):
+    F, y, sp, sid, ti = build_xy(version, cond)
+    model, p, thr, f1_val, res, tr, wall, cpu = fit_lm_model(F, y, sp, hidden, seed)
+    te = sp == 2
     yhat = (p > thr).astype(int)
     row = {"versi": version, "skenario": CONDITIONS[cond][0], "kondisi": cond, "arsitektur": arch_name,
            "n_latih": len(tr), "n_uji": int(te.sum()), "fault_uji_%": round(100 * y[te].mean(), 2),
@@ -551,15 +560,15 @@ def train_eval(version, cond, arch_name, hidden, seed):
                                "F1": f1_score(yt, yh, zero_division=0) if yt.sum() else np.nan,
                                "FPR": float(yh[neg].mean()) if neg.any() else np.nan})
     pred = {"t": ti, "sensor": sid, "split": sp, "label": y, "prob": p, "alarm": yhat, "thr": thr}
-    return row, per_sensor, pred, res["hist"]
+    return row, per_sensor, pred, res["hist"], model
 """))
 
-cells.append(code(r"""RESULTS, PER_SENSOR, PREDS, HISTS = [], [], {}, {}
+cells.append(code(r"""RESULTS, PER_SENSOR, PREDS, HISTS, MODELS = [], [], {}, {}, {}
 for version in ["rata2", "4sensor"]:
     for ci, cond in enumerate(CONDITIONS):
         for arch_name, hidden in ARCHS.items():
-            row, ps, pred, hist = train_eval(version, cond, arch_name, hidden, seed=RANDOM_SEED + ci)
-            RESULTS.append(row); PER_SENSOR.extend(ps)
+            row, ps, pred, hist, model = train_eval(version, cond, arch_name, hidden, seed=RANDOM_SEED + ci)
+            RESULTS.append(row); PER_SENSOR.extend(ps); MODELS[(version, cond, arch_name)] = model
             PREDS[(version, cond, arch_name)] = pred; HISTS[(version, cond, arch_name)] = hist
             print(f"[{time.time()-NOTEBOOK_START:7.0f}s] {version:7s} {row['skenario']} {cond:26s} {arch_name:14s} "
                   f"F1={row['F1']:.3f} AUC={row['ROC_AUC']:.3f} iter={row['lm_iter']} {row['lm_status']} "
@@ -629,6 +638,185 @@ for version in ["rata2", "4sensor"]:
                 part.insert(3, "sensor", pr["sensor"] + 1)
             parts.append(part)
         export_df(pd.concat(parts, ignore_index=True), f"15_prediksi_{version}_{scen}", gz=True)
+"""))
+
+cells.append(md(r"""# §7 — Model gabungan & menyimpan model
+
+Model di §5 dilatih **per kondisi** — berguna untuk membandingkan skenario,
+tetapi sistem notifikasi di lapangan tidak tahu jenis gangguannya lebih dulu.
+Karena itu dilatih juga satu **model gabungan** per versi: data latih dari
+**semua 16 kondisi + data normal** sekaligus, label tetap fault/normal per
+sampel, pembagian blok hari yang sama. Hasil ujinya dilaporkan total dan per
+kondisi.
+
+**Cara menyimpan.** Model disimpan sebagai file **`.npz` (numpy murni)**, bukan
+pickle scikit-learn: pickle sklearn hanya bisa dibuka dengan versi sklearn yang
+sama persis (sudah terbukti gagal antara Kaggle 1.6.1 dan laptop 1.9.1).
+Isi tiap file: bobot LM (`theta`, `shapes`), `mean` & `scale` StandardScaler,
+`ambang` alarm, nama fitur, dan `lag_k`.
+
+* `15_model_gabungan_rata2.npz`, `15_model_gabungan_4sensor.npz` — model untuk sistem notifikasi
+* `15_model_ann_lm_semua.zip` — semua model per kondisi (16 kondisi × 2 versi × 2 arsitektur) + daftar + loader
+* `15_muat_model.py` — pemuat model, hanya butuh numpy + pandas
+
+**Cara memuat:**
+
+```python
+from muat_model_15 import muat_model, deteksi   # salin 15_muat_model.py -> muat_model_15.py
+m = muat_model("15_model_gabungan_rata2.npz")
+prob, alarm = deteksi(m, nilai_sensor)            # nilai_sensor: array 1 sensor, urut waktu, interval 30 detik, NaN boleh
+```
+
+Model `4sensor` dipakai per sensor: panggil `deteksi` untuk tiap kolom sensor.
+Notebook ini memuat ulang setiap file yang disimpan dengan `15_muat_model.py`
+dan memastikan probabilitasnya **identik** dengan model di memori.
+"""))
+
+cells.append(code(r"""GABUNGAN_ARCH = "2 layer (6,3)"
+GAB_ROWS, GAB_PER_COND = [], []
+for gi, version in enumerate(["rata2", "4sensor"]):
+    parts = []
+    # data normal (bersih) ikut sebagai contoh negatif
+    if version == "rata2":
+        Fn = lag_features(avg_clean)[valid_row]; n_sens = 1
+    else:
+        Fn = np.vstack([lag_features(X_clean[:, s])[valid_row] for s in range(4)]); n_sens = 4
+    parts.append(("normal", Fn, np.zeros(len(Fn), int), np.tile(split_of[valid_row], n_sens)))
+    for cond in CONDITIONS:
+        F, y, sp, sid, ti = build_xy(version, cond)
+        parts.append((cond, F, y, sp))
+    F = np.vstack([p_[1] for p_ in parts]); y = np.concatenate([p_[2] for p_ in parts])
+    sp = np.concatenate([p_[3] for p_ in parts])
+    cond_of = np.concatenate([np.full(len(p_[2]), p_[0], dtype=object) for p_ in parts])
+    model, p, thr, f1_val, res, tr, wall, cpu = fit_lm_model(F, y, sp, ARCHS[GABUNGAN_ARCH],
+                                                             seed=RANDOM_SEED + 100 + gi)
+    MODELS[(version, "gabungan", GABUNGAN_ARCH)] = model
+    te = sp == 2; yhat = (p > thr).astype(int)
+    GAB_ROWS.append({"versi": version, "kondisi": "gabungan (16 kondisi + normal)", "arsitektur": GABUNGAN_ARCH,
+                     "n_latih": len(tr), "n_uji": int(te.sum()), "fault_uji_%": round(100 * y[te].mean(), 2),
+                     "ambang": thr, "precision": precision_score(y[te], yhat[te], zero_division=0),
+                     "recall": recall_score(y[te], yhat[te], zero_division=0),
+                     "F1": f1_score(y[te], yhat[te], zero_division=0), "ROC_AUC": safe_auc(y[te], p[te]),
+                     "FPR_data_normal": float(yhat[te & (cond_of == "normal")].mean()),
+                     "lm_iter": res["hist"]["iters"], "wall_s": wall, "cpu_s": cpu})
+    for cond in ["normal", *CONDITIONS]:
+        mk = te & (cond_of == cond); yt, yh = y[mk], yhat[mk]
+        GAB_PER_COND.append({"versi": version, "skenario": "S0" if cond == "normal" else CONDITIONS[cond][0],
+                             "kondisi": cond, "n_fault_uji": int(yt.sum()),
+                             "precision": precision_score(yt, yh, zero_division=0) if yt.sum() else np.nan,
+                             "recall": recall_score(yt, yh, zero_division=0) if yt.sum() else np.nan,
+                             "F1": f1_score(yt, yh, zero_division=0) if yt.sum() else np.nan,
+                             "FPR": float(yh[yt == 0].mean()) if (yt == 0).any() else np.nan})
+    print(f"[{time.time()-NOTEBOOK_START:7.0f}s] gabungan {version}: F1={GAB_ROWS[-1]['F1']:.3f} "
+          f"AUC={GAB_ROWS[-1]['ROC_AUC']:.3f} FPR normal={GAB_ROWS[-1]['FPR_data_normal']:.3f}", flush=True)
+
+hasil_gabungan = pd.DataFrame(GAB_ROWS).round(4)
+export_df(hasil_gabungan, "15_hasil_model_gabungan")
+display(hasil_gabungan)
+gab_per_kondisi = pd.DataFrame(GAB_PER_COND).round(4)
+export_df(gab_per_kondisi, "15_hasil_model_gabungan_per_kondisi")
+display(gab_per_kondisi.pivot_table(index=["skenario", "kondisi"], columns="versi", values=["F1", "FPR"]))
+"""))
+
+cells.append(code(r"""MUAT_MODEL_PY = '''# Muat dan pakai model ANN-LM notebook 15 (hanya numpy + pandas).
+#
+#     from muat_model_15 import muat_model, deteksi
+#     m = muat_model("15_model_gabungan_rata2.npz")
+#     prob, alarm = deteksi(m, nilai_sensor)
+#
+# nilai_sensor: array nilai SATU sensor (atau rata-rata 4 sensor untuk model
+# "rata2"), urut waktu, interval +-30 detik, NaN boleh (data hilang).
+# prob[t] = probabilitas gangguan pada sampel t; alarm[t] = prob[t] > ambang.
+# 10 sampel pertama belum punya lag lengkap (prob tetap dihitung, abaikan saja).
+import numpy as np
+import pandas as pd
+
+
+def muat_model(path):
+    z = np.load(path, allow_pickle=False)
+    return {k: z[k] for k in z.files}
+
+
+def fitur_lag(x, lag_k=10):
+    x = np.asarray(x, dtype=float)
+    na = np.isnan(x)
+    xf = pd.Series(x).ffill().bfill().to_numpy()
+    cols = [np.roll(xf, k) for k in range(1, lag_k + 1)]
+    cols.append(xf - np.roll(xf, 1))
+    cols.append(na.astype(float))
+    cols.append(pd.Series(na.astype(float)).rolling(lag_k, min_periods=1).sum().shift(1).fillna(0).to_numpy())
+    return np.column_stack(cols)
+
+
+def prob_fault(m, F):
+    a = (np.asarray(F, dtype=float) - m["mean"]) / m["scale"]
+    shapes = [tuple(int(v) for v in s) for s in m["shapes"]]
+    theta = m["theta"]
+    i = 0                                          # urutan theta = lm_unpack: W1, b1, W2, b2, ...
+    for li, (r, c) in enumerate(shapes):
+        W = theta[i:i + r * c].reshape(r, c); i += r * c
+        b = theta[i:i + c]; i += c
+        a = a @ W + b
+        if li < len(shapes) - 1:
+            a = np.tanh(a)
+    e = a - a.max(axis=1, keepdims=True)
+    P = np.exp(e); P /= P.sum(axis=1, keepdims=True)
+    return P[:, 1]
+
+
+def deteksi(m, nilai_sensor, ambang=None):
+    p = prob_fault(m, fitur_lag(nilai_sensor, int(m["lag_k"])))
+    thr = float(m["ambang"]) if ambang is None else float(ambang)
+    return p, (p > thr).astype(int)
+'''
+(EXPORT_DIR / "15_muat_model.py").write_text(MUAT_MODEL_PY)
+
+import importlib.util, zipfile
+_spec = importlib.util.spec_from_file_location("muat_model_15", EXPORT_DIR / "15_muat_model.py")
+muat_model_15 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(muat_model_15)
+
+def nama_file_model(version, cond, arch):
+    if cond == "gabungan":
+        return f"15_model_gabungan_{version}.npz"
+    a = "2layer" if arch.startswith("2") else "1layer"
+    return f"15_model_{cond.replace('+', '_')}_{version}_{a}.npz"
+
+MODEL_DIR = EXPORT_DIR / "model_15"; MODEL_DIR.mkdir(exist_ok=True)
+index_rows = []
+for (version, cond, arch), m in MODELS.items():
+    fn = nama_file_model(version, cond, arch)
+    target = (EXPORT_DIR if cond == "gabungan" else MODEL_DIR) / fn
+    np.savez(target, versi=version, kondisi=cond, arsitektur=arch, **m)
+    # --- muat ulang lewat 15_muat_model.py & bandingkan dengan model di memori ---
+    mm = muat_model_15.muat_model(target)
+    x_cek = GEN_AVG["drift+bias"]["y"] if version == "rata2" else GEN_4S["spike+malfunc"]["Y"][:, 2]
+    tpl = [[np.zeros(tuple(int(v) for v in s)), np.zeros(int(s[1]))] for s in m["shapes"]]
+    p_mem = lm_predict_proba(m["theta"], tpl, (lag_features(x_cek) - m["mean"]) / m["scale"])[:, 1]
+    p_file, _ = muat_model_15.deteksi(mm, x_cek)
+    diff = float(np.max(np.abs(p_file[valid_row] - p_mem[valid_row])))
+    assert diff < 1e-9, f"{fn}: prediksi file != memori ({diff})"
+    if cond != "gabungan":   # cek juga terhadap prediksi yang diekspor di §6
+        pr = PREDS[(version, cond, arch)]
+        sel = pr["sensor"] == (0 if version == "4sensor" else -1)
+        x_own = GEN_AVG[cond]["y"] if version == "rata2" else GEN_4S[cond]["Y"][:, 0]
+        p_own, _ = muat_model_15.deteksi(mm, x_own)
+        diff = max(diff, float(np.max(np.abs(p_own[pr["t"][sel]] - pr["prob"][sel]))))
+        assert diff < 1e-9, f"{fn}: prediksi file != prediksi §6 ({diff})"
+    index_rows.append({"file": fn, "versi": version, "kondisi": cond, "arsitektur": arch,
+                       "ambang": round(float(m["ambang"]), 3), "selisih_maks_prob_saat_muat_ulang": diff})
+
+model_index = pd.DataFrame(index_rows)
+model_index.to_csv(MODEL_DIR / "15_daftar_model.csv", index=False)
+(MODEL_DIR / "15_muat_model.py").write_text(MUAT_MODEL_PY)
+with zipfile.ZipFile(EXPORT_DIR / "15_model_ann_lm_semua.zip", "w", zipfile.ZIP_DEFLATED) as zf:
+    for f in sorted(MODEL_DIR.iterdir()):
+        zf.write(f, f.name)
+for f in sorted(MODEL_DIR.iterdir()):
+    f.unlink()
+MODEL_DIR.rmdir()
+export_df(model_index, "15_daftar_model")
+print(f"{len(model_index)} model disimpan & dimuat ulang; selisih prob maks = "
+      f"{model_index['selisih_maks_prob_saat_muat_ulang'].max():.2e}")
 """))
 
 cells.append(code(r"""files = sorted(EXPORT_DIR.glob("15_*"))

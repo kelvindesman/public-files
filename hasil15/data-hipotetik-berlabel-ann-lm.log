@@ -1,104 +1,107 @@
-[{"stream_name":"stderr","time":9.544981021,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
-,{"stream_name":"stderr","time":9.545112109,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
-,{"stream_name":"stderr","time":10.848615511,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
-,{"stream_name":"stderr","time":10.848653752,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
-,{"stream_name":"stderr","time":10.848661172,"data":"0.00s - to python to disable frozen modules.\n"}
-,{"stream_name":"stderr","time":10.848665689,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
-,{"stream_name":"stderr","time":11.715571984,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
-,{"stream_name":"stderr","time":11.71563122,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
-,{"stream_name":"stderr","time":11.715637898,"data":"0.00s - to python to disable frozen modules.\n"}
-,{"stream_name":"stderr","time":11.71564223,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
-,{"stream_name":"stdout","time":16.736102883,"data":"SMOKE = False\n"}
-,{"stream_name":"stdout","time":18.153894727,"data":"S1    1\n"}
-,{"stream_name":"stdout","time":18.153933174,"data":"S2    4\n"}
-,{"stream_name":"stdout","time":18.153938599,"data":"S3    6\n"}
-,{"stream_name":"stdout","time":18.153944202,"data":"S4    4\n"}
-,{"stream_name":"stdout","time":18.153948068,"data":"S5    1\n"}
-,{"stream_name":"stdout","time":18.153951831,"data":"Name: count, dtype: int64\n"}
-,{"stream_name":"stdout","time":18.665381199,"data":"Asersi label lolos untuk 16 kondisi x 2 versi.\n"}
-,{"stream_name":"stdout","time":70.467322275,"data":"latih       37712\n"}
-,{"stream_name":"stdout","time":70.467367559,"data":"validasi    11520\n"}
-,{"stream_name":"stdout","time":70.467375805,"data":"uji         11520\n"}
-,{"stream_name":"stdout","time":70.467381202,"data":"Name: count, dtype: int64\n"}
-,{"stream_name":"stdout","time":70.80852291,"data":"hidden=[6]: max |rel err| Jacobian = 1.30e-05\n"}
-,{"stream_name":"stdout","time":70.808561916,"data":"hidden=[6, 3]: max |rel err| Jacobian = 4.29e-09\n"}
-,{"stream_name":"stdout","time":70.808568698,"data":"Jacobian analitik LOLOS self-check.\n"}
-,{"stream_name":"stdout","time":82.048486045,"data":"[     65s] rata2   S1 faulty                     1 layer (6)    F1=0.895 AUC=0.969 iter=60 max_iter wall=10.8s\n"}
-,{"stream_name":"stdout","time":96.28374482,"data":"[     80s] rata2   S1 faulty                     2 layer (6,3)  F1=0.897 AUC=0.967 iter=60 max_iter wall=13.9s\n"}
-,{"stream_name":"stdout","time":107.456630928,"data":"[     91s] rata2   S2 drift                      1 layer (6)    F1=0.716 AUC=0.765 iter=60 max_iter wall=10.8s\n"}
-,{"stream_name":"stdout","time":121.899015202,"data":"[    105s] rata2   S2 drift                      2 layer (6,3)  F1=0.709 AUC=0.754 iter=60 max_iter wall=14.1s\n"}
-,{"stream_name":"stdout","time":133.046688936,"data":"[    116s] rata2   S2 spike                      1 layer (6)    F1=0.989 AUC=0.994 iter=60 max_iter wall=10.8s\n"}
-,{"stream_name":"stdout","time":147.694443466,"data":"[    131s] rata2   S2 spike                      2 layer (6,3)  F1=0.994 AUC=1.000 iter=60 max_iter wall=14.3s\n"}
-,{"stream_name":"stdout","time":158.777590239,"data":"[    142s] rata2   S2 bias                       1 layer (6)    F1=0.802 AUC=0.898 iter=60 max_iter wall=10.8s\n"}
-,{"stream_name":"stdout","time":173.402384095,"data":"[    157s] rata2   S2 bias                       2 layer (6,3)  F1=0.809 AUC=0.897 iter=60 max_iter wall=14.3s\n"}
-,{"stream_name":"stdout","time":185.450167539,"data":"[    169s] rata2   S2 hardware                   1 layer (6)    F1=0.895 AUC=0.976 iter=60 max_iter wall=11.7s\n"}
-,{"stream_name":"stdout","time":199.93622942,"data":"[    183s] rata2   S2 hardware                   2 layer (6,3)  F1=0.901 AUC=0.976 iter=60 max_iter wall=14.2s\n"}
-,{"stream_name":"stdout","time":212.162302763,"data":"[    195s] rata2   S3 bias+malfunc               1 layer (6)    F1=0.883 AUC=0.937 iter=60 max_iter wall=11.9s\n"}
-,{"stream_name":"stdout","time":226.825214676,"data":"[    210s] rata2   S3 bias+malfunc               2 layer (6,3)  F1=0.883 AUC=0.939 iter=60 max_iter wall=14.3s\n"}
-,{"stream_name":"stdout","time":238.804167534,"data":"[    222s] rata2   S3 spike+malfunc              1 layer (6)    F1=0.877 AUC=0.970 iter=60 max_iter wall=11.7s\n"}
-,{"stream_name":"stdout","time":253.368097945,"data":"[    237s] rata2   S3 spike+malfunc              2 layer (6,3)  F1=0.884 AUC=0.984 iter=60 max_iter wall=14.2s\n"}
-,{"stream_name":"stdout","time":265.362010786,"data":"[    249s] rata2   S3 spike+bias                 1 layer (6)    F1=0.820 AUC=0.913 iter=60 max_iter wall=11.7s\n"}
-,{"stream_name":"stdout","time":279.850001629,"data":"[    263s] rata2   S3 spike+bias                 2 layer (6,3)  F1=0.822 AUC=0.910 iter=60 max_iter wall=14.2s\n"}
-,{"stream_name":"stdout","time":291.753920909,"data":"[    275s] rata2   S3 drift+malfunc              1 layer (6)    F1=0.716 AUC=0.845 iter=60 max_iter wall=11.6s\n"}
-,{"stream_name":"stdout","time":306.398029845,"data":"[    289s] rata2   S3 drift+malfunc              2 layer (6,3)  F1=0.716 AUC=0.864 iter=60 max_iter wall=14.0s\n"}
-,{"stream_name":"stdout","time":318.317717068,"data":"[    302s] rata2   S3 drift+bias                 1 layer (6)    F1=0.949 AUC=0.977 iter=60 max_iter wall=11.9s\n"}
-,{"stream_name":"stdout","time":332.95169097,"data":"[    316s] rata2   S3 drift+bias                 2 layer (6,3)  F1=0.947 AUC=0.976 iter=60 max_iter wall=14.3s\n"}
-,{"stream_name":"stdout","time":345.32477773,"data":"[    329s] rata2   S3 drift+spike                1 layer (6)    F1=0.717 AUC=0.762 iter=60 max_iter wall=12.0s\n"}
-,{"stream_name":"stdout","time":359.966076196,"data":"[    343s] rata2   S3 drift+spike                2 layer (6,3)  F1=0.725 AUC=0.778 iter=60 max_iter wall=14.3s\n"}
-,{"stream_name":"stdout","time":372.335100736,"data":"[    356s] rata2   S4 spike+bias+malfunc         1 layer (6)    F1=0.903 AUC=0.954 iter=60 max_iter wall=12.1s\n"}
-,{"stream_name":"stdout","time":386.916054291,"data":"[    370s] rata2   S4 spike+bias+malfunc         2 layer (6,3)  F1=0.909 AUC=0.957 iter=60 max_iter wall=14.2s\n"}
-,{"stream_name":"stdout","time":399.21695991,"data":"[    382s] rata2   S4 drift+bias+malfunc         1 layer (6)    F1=0.963 AUC=0.987 iter=60 max_iter wall=12.0s\n"}
-,{"stream_name":"stdout","time":414.228705017,"data":"[    397s] rata2   S4 drift+bias+malfunc         2 layer (6,3)  F1=0.948 AUC=0.989 iter=60 max_iter wall=14.7s\n"}
-,{"stream_name":"stdout","time":426.619210697,"data":"[    410s] rata2   S4 spike+drift+malfunc        1 layer (6)    F1=0.709 AUC=0.876 iter=60 max_iter wall=12.1s\n"}
-,{"stream_name":"stdout","time":441.459670224,"data":"[    425s] rata2   S4 spike+drift+malfunc        2 layer (6,3)  F1=0.736 AUC=0.878 iter=60 max_iter wall=14.5s\n"}
-,{"stream_name":"stdout","time":453.702178668,"data":"[    437s] rata2   S4 drift+spike+bias           1 layer (6)    F1=0.960 AUC=0.982 iter=60 max_iter wall=11.9s\n"}
-,{"stream_name":"stdout","time":468.524600984,"data":"[    452s] rata2   S4 drift+spike+bias           2 layer (6,3)  F1=0.933 AUC=0.969 iter=60 max_iter wall=14.5s\n"}
-,{"stream_name":"stdout","time":480.783839106,"data":"[    464s] rata2   S5 spike+bias+malfunc+drift   1 layer (6)    F1=0.969 AUC=0.989 iter=60 max_iter wall=12.0s\n"}
-,{"stream_name":"stdout","time":495.606222482,"data":"[    479s] rata2   S5 spike+bias+malfunc+drift   2 layer (6,3)  F1=0.958 AUC=0.988 iter=60 max_iter wall=14.5s\n"}
-,{"stream_name":"stdout","time":530.822571418,"data":"[    514s] 4sensor S1 faulty                     1 layer (6)    F1=0.910 AUC=1.000 iter=60 max_iter wall=34.5s\n"}
-,{"stream_name":"stdout","time":573.647907933,"data":"[    557s] 4sensor S1 faulty                     2 layer (6,3)  F1=0.976 AUC=1.000 iter=60 max_iter wall=42.1s\n"}
-,{"stream_name":"stdout","time":608.370641837,"data":"[    592s] 4sensor S2 drift                      1 layer (6)    F1=0.481 AUC=0.652 iter=60 max_iter wall=34.1s\n"}
-,{"stream_name":"stdout","time":651.373860383,"data":"[    635s] 4sensor S2 drift                      2 layer (6,3)  F1=0.494 AUC=0.644 iter=60 max_iter wall=42.3s\n"}
-,{"stream_name":"stdout","time":686.480470369,"data":"[    670s] 4sensor S2 spike                      1 layer (6)    F1=0.962 AUC=0.998 iter=60 max_iter wall=34.4s\n"}
-,{"stream_name":"stdout","time":730.111689782,"data":"[    713s] 4sensor S2 spike                      2 layer (6,3)  F1=0.979 AUC=1.000 iter=60 max_iter wall=42.8s\n"}
-,{"stream_name":"stdout","time":766.158874005,"data":"[    749s] 4sensor S2 bias                       1 layer (6)    F1=0.738 AUC=0.730 iter=60 max_iter wall=35.4s\n"}
-,{"stream_name":"stdout","time":810.072788985,"data":"[    793s] 4sensor S2 bias                       2 layer (6,3)  F1=0.702 AUC=0.727 iter=60 max_iter wall=43.2s\n"}
-,{"stream_name":"stdout","time":845.625996557,"data":"[    829s] 4sensor S2 hardware                   1 layer (6)    F1=0.852 AUC=0.962 iter=60 max_iter wall=34.8s\n"}
-,{"stream_name":"stdout","time":888.386586097,"data":"[    872s] 4sensor S2 hardware                   2 layer (6,3)  F1=0.842 AUC=0.961 iter=60 max_iter wall=42.0s\n"}
-,{"stream_name":"stdout","time":922.903185112,"data":"[    906s] 4sensor S3 bias+malfunc               1 layer (6)    F1=0.806 AUC=0.945 iter=60 max_iter wall=33.8s\n"}
-,{"stream_name":"stdout","time":965.023255863,"data":"[    948s] 4sensor S3 bias+malfunc               2 layer (6,3)  F1=0.803 AUC=0.945 iter=60 max_iter wall=41.4s\n"}
-,{"stream_name":"stdout","time":999.693820651,"data":"[    983s] 4sensor S3 spike+malfunc              1 layer (6)    F1=0.857 AUC=0.964 iter=60 max_iter wall=34.0s\n"}
-,{"stream_name":"stdout","time":1042.49600139,"data":"[   1026s] 4sensor S3 spike+malfunc              2 layer (6,3)  F1=0.881 AUC=0.973 iter=60 max_iter wall=42.1s\n"}
-,{"stream_name":"stdout","time":1076.652192121,"data":"[   1060s] 4sensor S3 spike+bias                 1 layer (6)    F1=0.734 AUC=0.766 iter=60 max_iter wall=33.5s\n"}
-,{"stream_name":"stdout","time":1119.955233013,"data":"[   1103s] 4sensor S3 spike+bias                 2 layer (6,3)  F1=0.727 AUC=0.768 iter=60 max_iter wall=42.6s\n"}
-,{"stream_name":"stdout","time":1154.483990162,"data":"[   1138s] 4sensor S3 drift+malfunc              1 layer (6)    F1=0.631 AUC=0.796 iter=60 max_iter wall=33.9s\n"}
-,{"stream_name":"stdout","time":1197.093668398,"data":"[   1180s] 4sensor S3 drift+malfunc              2 layer (6,3)  F1=0.611 AUC=0.801 iter=60 max_iter wall=41.9s\n"}
-,{"stream_name":"stdout","time":1231.062038548,"data":"[   1214s] 4sensor S3 drift+bias                 1 layer (6)    F1=0.836 AUC=0.970 iter=60 max_iter wall=33.3s\n"}
-,{"stream_name":"stdout","time":1273.336609437,"data":"[   1257s] 4sensor S3 drift+bias                 2 layer (6,3)  F1=0.840 AUC=0.963 iter=60 max_iter wall=41.6s\n"}
-,{"stream_name":"stdout","time":1307.218651648,"data":"[   1290s] 4sensor S3 drift+spike                1 layer (6)    F1=0.652 AUC=0.728 iter=60 max_iter wall=33.2s\n"}
-,{"stream_name":"stdout","time":1350.082716889,"data":"[   1333s] 4sensor S3 drift+spike                2 layer (6,3)  F1=0.656 AUC=0.754 iter=60 max_iter wall=42.1s\n"}
-,{"stream_name":"stdout","time":1384.971486801,"data":"[   1368s] 4sensor S4 spike+bias+malfunc         1 layer (6)    F1=0.789 AUC=0.872 iter=60 max_iter wall=34.2s\n"}
-,{"stream_name":"stdout","time":1428.174846894,"data":"[   1411s] 4sensor S4 spike+bias+malfunc         2 layer (6,3)  F1=0.791 AUC=0.874 iter=60 max_iter wall=42.5s\n"}
-,{"stream_name":"stdout","time":1462.679873134,"data":"[   1446s] 4sensor S4 drift+bias+malfunc         1 layer (6)    F1=0.892 AUC=0.961 iter=60 max_iter wall=33.9s\n"}
-,{"stream_name":"stdout","time":1505.543238395,"data":"[   1489s] 4sensor S4 drift+bias+malfunc         2 layer (6,3)  F1=0.884 AUC=0.984 iter=60 max_iter wall=42.1s\n"}
-,{"stream_name":"stdout","time":1540.166752789,"data":"[   1523s] 4sensor S4 spike+drift+malfunc        1 layer (6)    F1=0.724 AUC=0.766 iter=60 max_iter wall=33.9s\n"}
-,{"stream_name":"stdout","time":1583.207324966,"data":"[   1566s] 4sensor S4 spike+drift+malfunc        2 layer (6,3)  F1=0.736 AUC=0.777 iter=60 max_iter wall=42.3s\n"}
-,{"stream_name":"stdout","time":1617.743649974,"data":"[   1601s] 4sensor S4 drift+spike+bias           1 layer (6)    F1=0.781 AUC=0.888 iter=60 max_iter wall=33.9s\n"}
-,{"stream_name":"stdout","time":1661.019466564,"data":"[   1644s] 4sensor S4 drift+spike+bias           2 layer (6,3)  F1=0.768 AUC=0.885 iter=60 max_iter wall=42.5s\n"}
-,{"stream_name":"stdout","time":1695.584005442,"data":"[   1679s] 4sensor S5 spike+bias+malfunc+drift   1 layer (6)    F1=0.893 AUC=0.949 iter=60 max_iter wall=33.9s\n"}
-,{"stream_name":"stdout","time":1739.334755126,"data":"[   1723s] 4sensor S5 spike+bias+malfunc+drift   2 layer (6,3)  F1=0.897 AUC=0.949 iter=60 max_iter wall=43.0s\n"}
-,{"stream_name":"stdout","time":1739.520572878,"data":"FPR rata-rata pada sensor yang TIDAK disuntik fault:\n"}
-,{"stream_name":"stdout","time":1820.241564777,"data":"Selesai. Wall total 1804 s, 30 file di exports/\n"}
-,{"stream_name":"stderr","time":1824.551356036,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
-,{"stream_name":"stderr","time":1824.551400988,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
-,{"stream_name":"stderr","time":1824.797710015,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
-,{"stream_name":"stderr","time":1824.797746463,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
-,{"stream_name":"stderr","time":1825.887990176,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
-,{"stream_name":"stderr","time":1826.04382976,"data":"[NbConvertApp] Writing 1450588 bytes to __notebook__.ipynb\n"}
-,{"stream_name":"stderr","time":1829.444202846,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
-,{"stream_name":"stderr","time":1830.402820063,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
-,{"stream_name":"stderr","time":1830.402861031,"data":"[NbConvertApp] Making directory __results___files\n"}
-,{"stream_name":"stderr","time":1830.403473165,"data":"[NbConvertApp] Making directory __results___files\n"}
-,{"stream_name":"stderr","time":1830.403956054,"data":"[NbConvertApp] Making directory __results___files\n"}
-,{"stream_name":"stderr","time":1830.404279104,"data":"[NbConvertApp] Writing 524478 bytes to __results__.html\n"}
+[{"stream_name":"stderr","time":10.179427468,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":10.179483434,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":11.672277532,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":11.672316619,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":11.672322655,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":11.672327957,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":12.570952655,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":12.570996568,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":12.571003024,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":12.571007358,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":17.914923434,"data":"SMOKE = False\n"}
+,{"stream_name":"stdout","time":19.505903204,"data":"S1    1\n"}
+,{"stream_name":"stdout","time":19.505942597,"data":"S2    4\n"}
+,{"stream_name":"stdout","time":19.50594761,"data":"S3    6\n"}
+,{"stream_name":"stdout","time":19.505950724,"data":"S4    4\n"}
+,{"stream_name":"stdout","time":19.505953696,"data":"S5    1\n"}
+,{"stream_name":"stdout","time":19.505956739,"data":"Name: count, dtype: int64\n"}
+,{"stream_name":"stdout","time":20.026473824,"data":"Asersi label lolos untuk 16 kondisi x 2 versi.\n"}
+,{"stream_name":"stdout","time":76.930570183,"data":"latih       37712\n"}
+,{"stream_name":"stdout","time":76.930613532,"data":"validasi    11520\n"}
+,{"stream_name":"stdout","time":76.930620686,"data":"uji         11520\n"}
+,{"stream_name":"stdout","time":76.930626699,"data":"Name: count, dtype: int64\n"}
+,{"stream_name":"stdout","time":77.237972136,"data":"hidden=[6]: max |rel err| Jacobian = 1.30e-05\n"}
+,{"stream_name":"stdout","time":77.245113476,"data":"hidden=[6, 3]: max |rel err| Jacobian = 4.29e-09\n"}
+,{"stream_name":"stdout","time":77.245155154,"data":"Jacobian analitik LOLOS self-check.\n"}
+,{"stream_name":"stdout","time":89.313245183,"data":"[     71s] rata2   S1 faulty                     1 layer (6)    F1=0.895 AUC=0.969 iter=60 max_iter wall=11.6s\n"}
+,{"stream_name":"stdout","time":105.034223127,"data":"[     87s] rata2   S1 faulty                     2 layer (6,3)  F1=0.897 AUC=0.967 iter=60 max_iter wall=15.4s\n"}
+,{"stream_name":"stdout","time":117.016903488,"data":"[     99s] rata2   S2 drift                      1 layer (6)    F1=0.716 AUC=0.765 iter=60 max_iter wall=11.5s\n"}
+,{"stream_name":"stdout","time":132.547307404,"data":"[    115s] rata2   S2 drift                      2 layer (6,3)  F1=0.709 AUC=0.754 iter=60 max_iter wall=15.3s\n"}
+,{"stream_name":"stdout","time":144.68653046,"data":"[    127s] rata2   S2 spike                      1 layer (6)    F1=0.989 AUC=0.994 iter=60 max_iter wall=11.8s\n"}
+,{"stream_name":"stdout","time":160.322968353,"data":"[    142s] rata2   S2 spike                      2 layer (6,3)  F1=0.994 AUC=1.000 iter=60 max_iter wall=15.3s\n"}
+,{"stream_name":"stdout","time":173.399891569,"data":"[    155s] rata2   S2 bias                       1 layer (6)    F1=0.802 AUC=0.898 iter=60 max_iter wall=12.8s\n"}
+,{"stream_name":"stdout","time":188.823941989,"data":"[    171s] rata2   S2 bias                       2 layer (6,3)  F1=0.809 AUC=0.897 iter=60 max_iter wall=15.1s\n"}
+,{"stream_name":"stdout","time":201.849415964,"data":"[    184s] rata2   S2 hardware                   1 layer (6)    F1=0.895 AUC=0.976 iter=60 max_iter wall=12.7s\n"}
+,{"stream_name":"stdout","time":217.275185463,"data":"[    199s] rata2   S2 hardware                   2 layer (6,3)  F1=0.901 AUC=0.976 iter=60 max_iter wall=15.1s\n"}
+,{"stream_name":"stdout","time":230.217904691,"data":"[    212s] rata2   S3 bias+malfunc               1 layer (6)    F1=0.883 AUC=0.937 iter=60 max_iter wall=12.6s\n"}
+,{"stream_name":"stdout","time":245.773323913,"data":"[    228s] rata2   S3 bias+malfunc               2 layer (6,3)  F1=0.883 AUC=0.939 iter=60 max_iter wall=15.2s\n"}
+,{"stream_name":"stdout","time":258.743123162,"data":"[    241s] rata2   S3 spike+malfunc              1 layer (6)    F1=0.877 AUC=0.970 iter=60 max_iter wall=12.6s\n"}
+,{"stream_name":"stdout","time":274.353347838,"data":"[    256s] rata2   S3 spike+malfunc              2 layer (6,3)  F1=0.884 AUC=0.984 iter=60 max_iter wall=15.2s\n"}
+,{"stream_name":"stdout","time":287.151120227,"data":"[    269s] rata2   S3 spike+bias                 1 layer (6)    F1=0.820 AUC=0.913 iter=60 max_iter wall=12.4s\n"}
+,{"stream_name":"stdout","time":302.719796221,"data":"[    285s] rata2   S3 spike+bias                 2 layer (6,3)  F1=0.822 AUC=0.910 iter=60 max_iter wall=15.2s\n"}
+,{"stream_name":"stdout","time":315.760532497,"data":"[    298s] rata2   S3 drift+malfunc              1 layer (6)    F1=0.716 AUC=0.845 iter=60 max_iter wall=12.7s\n"}
+,{"stream_name":"stdout","time":331.573456422,"data":"[    314s] rata2   S3 drift+malfunc              2 layer (6,3)  F1=0.716 AUC=0.864 iter=60 max_iter wall=15.4s\n"}
+,{"stream_name":"stdout","time":344.667809128,"data":"[    327s] rata2   S3 drift+bias                 1 layer (6)    F1=0.949 AUC=0.977 iter=60 max_iter wall=12.8s\n"}
+,{"stream_name":"stdout","time":360.385386889,"data":"[    342s] rata2   S3 drift+bias                 2 layer (6,3)  F1=0.947 AUC=0.976 iter=60 max_iter wall=15.4s\n"}
+,{"stream_name":"stdout","time":373.643655758,"data":"[    356s] rata2   S3 drift+spike                1 layer (6)    F1=0.717 AUC=0.762 iter=60 max_iter wall=12.9s\n"}
+,{"stream_name":"stdout","time":389.334805416,"data":"[    371s] rata2   S3 drift+spike                2 layer (6,3)  F1=0.725 AUC=0.778 iter=60 max_iter wall=15.4s\n"}
+,{"stream_name":"stdout","time":402.581598364,"data":"[    385s] rata2   S4 spike+bias+malfunc         1 layer (6)    F1=0.903 AUC=0.954 iter=60 max_iter wall=12.9s\n"}
+,{"stream_name":"stdout","time":418.349912293,"data":"[    400s] rata2   S4 spike+bias+malfunc         2 layer (6,3)  F1=0.909 AUC=0.957 iter=60 max_iter wall=15.4s\n"}
+,{"stream_name":"stdout","time":431.158785549,"data":"[    413s] rata2   S4 drift+bias+malfunc         1 layer (6)    F1=0.963 AUC=0.987 iter=60 max_iter wall=12.5s\n"}
+,{"stream_name":"stdout","time":446.844908176,"data":"[    429s] rata2   S4 drift+bias+malfunc         2 layer (6,3)  F1=0.948 AUC=0.989 iter=60 max_iter wall=15.3s\n"}
+,{"stream_name":"stdout","time":459.6873639,"data":"[    442s] rata2   S4 spike+drift+malfunc        1 layer (6)    F1=0.709 AUC=0.876 iter=60 max_iter wall=12.5s\n"}
+,{"stream_name":"stdout","time":475.493294497,"data":"[    458s] rata2   S4 spike+drift+malfunc        2 layer (6,3)  F1=0.736 AUC=0.878 iter=60 max_iter wall=15.5s\n"}
+,{"stream_name":"stdout","time":488.62422649,"data":"[    471s] rata2   S4 drift+spike+bias           1 layer (6)    F1=0.960 AUC=0.982 iter=60 max_iter wall=12.8s\n"}
+,{"stream_name":"stdout","time":504.361910656,"data":"[    486s] rata2   S4 drift+spike+bias           2 layer (6,3)  F1=0.933 AUC=0.969 iter=60 max_iter wall=15.4s\n"}
+,{"stream_name":"stdout","time":517.332113158,"data":"[    499s] rata2   S5 spike+bias+malfunc+drift   1 layer (6)    F1=0.969 AUC=0.989 iter=60 max_iter wall=12.7s\n"}
+,{"stream_name":"stdout","time":533.068431346,"data":"[    515s] rata2   S5 spike+bias+malfunc+drift   2 layer (6,3)  F1=0.958 AUC=0.988 iter=60 max_iter wall=15.4s\n"}
+,{"stream_name":"stdout","time":569.681820044,"data":"[    552s] 4sensor S1 faulty                     1 layer (6)    F1=0.910 AUC=1.000 iter=60 max_iter wall=35.8s\n"}
+,{"stream_name":"stdout","time":615.363209077,"data":"[    597s] 4sensor S1 faulty                     2 layer (6,3)  F1=0.976 AUC=1.000 iter=60 max_iter wall=44.9s\n"}
+,{"stream_name":"stdout","time":652.225882219,"data":"[    634s] 4sensor S2 drift                      1 layer (6)    F1=0.481 AUC=0.652 iter=60 max_iter wall=36.1s\n"}
+,{"stream_name":"stdout","time":698.335933241,"data":"[    680s] 4sensor S2 drift                      2 layer (6,3)  F1=0.494 AUC=0.644 iter=60 max_iter wall=45.3s\n"}
+,{"stream_name":"stdout","time":735.035171617,"data":"[    717s] 4sensor S2 spike                      1 layer (6)    F1=0.962 AUC=0.998 iter=60 max_iter wall=35.9s\n"}
+,{"stream_name":"stdout","time":781.094555074,"data":"[    763s] 4sensor S2 spike                      2 layer (6,3)  F1=0.979 AUC=1.000 iter=60 max_iter wall=45.2s\n"}
+,{"stream_name":"stdout","time":817.571551805,"data":"[    800s] 4sensor S2 bias                       1 layer (6)    F1=0.738 AUC=0.730 iter=60 max_iter wall=35.7s\n"}
+,{"stream_name":"stdout","time":863.597251808,"data":"[    846s] 4sensor S2 bias                       2 layer (6,3)  F1=0.702 AUC=0.727 iter=60 max_iter wall=45.2s\n"}
+,{"stream_name":"stdout","time":900.014502895,"data":"[    882s] 4sensor S2 hardware                   1 layer (6)    F1=0.852 AUC=0.962 iter=60 max_iter wall=35.7s\n"}
+,{"stream_name":"stdout","time":946.103201768,"data":"[    928s] 4sensor S2 hardware                   2 layer (6,3)  F1=0.842 AUC=0.961 iter=60 max_iter wall=45.3s\n"}
+,{"stream_name":"stdout","time":982.5602647,"data":"[    965s] 4sensor S3 bias+malfunc               1 layer (6)    F1=0.806 AUC=0.945 iter=60 max_iter wall=35.7s\n"}
+,{"stream_name":"stdout","time":1028.73926453,"data":"[   1011s] 4sensor S3 bias+malfunc               2 layer (6,3)  F1=0.803 AUC=0.945 iter=60 max_iter wall=45.4s\n"}
+,{"stream_name":"stdout","time":1065.221453186,"data":"[   1047s] 4sensor S3 spike+malfunc              1 layer (6)    F1=0.857 AUC=0.964 iter=60 max_iter wall=35.7s\n"}
+,{"stream_name":"stdout","time":1111.53253155,"data":"[   1094s] 4sensor S3 spike+malfunc              2 layer (6,3)  F1=0.881 AUC=0.973 iter=60 max_iter wall=45.4s\n"}
+,{"stream_name":"stdout","time":1147.902387725,"data":"[   1130s] 4sensor S3 spike+bias                 1 layer (6)    F1=0.734 AUC=0.766 iter=60 max_iter wall=35.6s\n"}
+,{"stream_name":"stdout","time":1194.392313284,"data":"[   1176s] 4sensor S3 spike+bias                 2 layer (6,3)  F1=0.727 AUC=0.768 iter=60 max_iter wall=45.7s\n"}
+,{"stream_name":"stdout","time":1231.093317973,"data":"[   1213s] 4sensor S3 drift+malfunc              1 layer (6)    F1=0.631 AUC=0.796 iter=60 max_iter wall=36.0s\n"}
+,{"stream_name":"stdout","time":1277.362834598,"data":"[   1259s] 4sensor S3 drift+malfunc              2 layer (6,3)  F1=0.611 AUC=0.801 iter=60 max_iter wall=45.5s\n"}
+,{"stream_name":"stdout","time":1313.822817787,"data":"[   1296s] 4sensor S3 drift+bias                 1 layer (6)    F1=0.836 AUC=0.970 iter=60 max_iter wall=35.7s\n"}
+,{"stream_name":"stdout","time":1360.025324369,"data":"[   1342s] 4sensor S3 drift+bias                 2 layer (6,3)  F1=0.840 AUC=0.963 iter=60 max_iter wall=45.4s\n"}
+,{"stream_name":"stdout","time":1396.631553249,"data":"[   1379s] 4sensor S3 drift+spike                1 layer (6)    F1=0.652 AUC=0.728 iter=60 max_iter wall=35.9s\n"}
+,{"stream_name":"stdout","time":1442.915476312,"data":"[   1425s] 4sensor S3 drift+spike                2 layer (6,3)  F1=0.656 AUC=0.754 iter=60 max_iter wall=45.5s\n"}
+,{"stream_name":"stdout","time":1479.476952383,"data":"[   1462s] 4sensor S4 spike+bias+malfunc         1 layer (6)    F1=0.789 AUC=0.872 iter=60 max_iter wall=35.8s\n"}
+,{"stream_name":"stdout","time":1525.977920247,"data":"[   1508s] 4sensor S4 spike+bias+malfunc         2 layer (6,3)  F1=0.791 AUC=0.874 iter=60 max_iter wall=45.7s\n"}
+,{"stream_name":"stdout","time":1562.685877294,"data":"[   1545s] 4sensor S4 drift+bias+malfunc         1 layer (6)    F1=0.892 AUC=0.961 iter=60 max_iter wall=36.0s\n"}
+,{"stream_name":"stdout","time":1609.135560846,"data":"[   1591s] 4sensor S4 drift+bias+malfunc         2 layer (6,3)  F1=0.884 AUC=0.984 iter=60 max_iter wall=45.6s\n"}
+,{"stream_name":"stdout","time":1645.799567295,"data":"[   1628s] 4sensor S4 spike+drift+malfunc        1 layer (6)    F1=0.724 AUC=0.766 iter=60 max_iter wall=35.9s\n"}
+,{"stream_name":"stdout","time":1692.19482567,"data":"[   1674s] 4sensor S4 spike+drift+malfunc        2 layer (6,3)  F1=0.736 AUC=0.777 iter=60 max_iter wall=45.6s\n"}
+,{"stream_name":"stdout","time":1728.802809584,"data":"[   1711s] 4sensor S4 drift+spike+bias           1 layer (6)    F1=0.781 AUC=0.888 iter=60 max_iter wall=35.8s\n"}
+,{"stream_name":"stdout","time":1775.187938307,"data":"[   1757s] 4sensor S4 drift+spike+bias           2 layer (6,3)  F1=0.768 AUC=0.885 iter=60 max_iter wall=45.6s\n"}
+,{"stream_name":"stdout","time":1811.7993111,"data":"[   1794s] 4sensor S5 spike+bias+malfunc+drift   1 layer (6)    F1=0.893 AUC=0.949 iter=60 max_iter wall=35.8s\n"}
+,{"stream_name":"stdout","time":1857.944850765,"data":"[   1840s] 4sensor S5 spike+bias+malfunc+drift   2 layer (6,3)  F1=0.897 AUC=0.949 iter=60 max_iter wall=45.3s\n"}
+,{"stream_name":"stdout","time":1858.13528535,"data":"FPR rata-rata pada sensor yang TIDAK disuntik fault:\n"}
+,{"stream_name":"stdout","time":1994.975458525,"data":"[   1977s] gabungan rata2: F1=0.754 AUC=0.876 FPR normal=0.007\n"}
+,{"stream_name":"stdout","time":2051.207882039,"data":"[   2033s] gabungan 4sensor: F1=0.616 AUC=0.835 FPR normal=0.064\n"}
+,{"stream_name":"stdout","time":2065.82457836,"data":"66 model disimpan \u0026 dimuat ulang; selisih prob maks = 6.66e-16\n"}
+,{"stream_name":"stdout","time":2066.119524072,"data":"Selesai. Wall total 2048 s, 37 file di exports/\n"}
+,{"stream_name":"stderr","time":2070.371314846,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":2070.371354537,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":2070.607955422,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":2070.60799027,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":2071.653919735,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":2071.822418234,"data":"[NbConvertApp] Writing 1477296 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":2075.310264784,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":2076.377165294,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":2076.377198347,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2076.377711801,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2076.378022054,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2076.378324014,"data":"[NbConvertApp] Writing 577466 bytes to __results__.html\n"}
 ]
