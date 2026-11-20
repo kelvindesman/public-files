@@ -92,9 +92,24 @@ from IPython.display import display, HTML, Markdown
 code(r"""
 # === Setup 3/3: lokasi file, mode presentasi ===
 
-ROOT = next(p for p in [Path(".."), Path("."), Path("/kaggle/input/sidang-bahan")]
-            if (p / "sidang" / "assets" / "cache_interaktif.npz").exists())
-sys.path.insert(0, str((ROOT / "models").resolve()))
+# Lokal: repo penelitian. Kaggle: file dataset `sidang-bahan` (datar) disusun ulang
+# ke struktur folder repo di /kaggle/working/bahan memakai symlink.
+BERKAS = {"cache_interaktif.npz": "sidang/assets", "model_sidang.npz": "sidang/assets",
+          "11_rq5_f1_berpasangan.csv": "hasil11/exports", "11_sensor_ringkas.csv": "hasil11/exports",
+          "statistik_sel.csv": "sidang/qa/hasil_uji", "statistik_lipatan.csv": "sidang/qa/hasil_uji",
+          "efek_purge_permutasi.csv": "sidang/qa/hasil_uji"}
+ROOT = next((p for p in [Path(".."), Path(".")]
+             if (p / "sidang" / "assets" / "cache_interaktif.npz").exists()), None)
+if ROOT is None:
+    import glob
+    ROOT = Path("/kaggle/working/bahan")
+    for nama, folder in BERKAS.items():
+        asal = glob.glob(f"/kaggle/input/**/{nama}", recursive=True)
+        if asal:
+            (ROOT / folder).mkdir(parents=True, exist_ok=True)
+            tujuan = ROOT / folder / nama
+            if not tujuan.exists():
+                tujuan.symlink_to(asal[0])
 C = np.load(ROOT / "sidang" / "assets" / "cache_interaktif.npz")
 pd.set_option("display.precision", 3)
 plt.rcParams.update({"figure.dpi": 90, "axes.spines.top": False, "axes.spines.right": False})
