@@ -9,7 +9,7 @@ catatan internal yang sesuai, jadi **ubah di sini, lalu bangun ulang notebook**
 Tiap pertanyaan punya tiga lapis:
 
 - **30 detik** — kalimat yang diucapkan di depan penguji.
-- **Untuk orang awam** — penjelasan dari nol, dengan contoh angka kecil
+- **Penjelasan** — dari nol, dengan contoh angka kecil
   yang bisa dihitung di kertas.
 - **Bukti** — tempat membuka angka/kode di layar (notebook §, file:baris,
   CSV, pustaka). Angka hanya boleh disebut kalau berstatus COCOK di
@@ -29,7 +29,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
   sudah dihitung, jadi setiap sel selesai di bawah dua detik. Bapak/Ibu bisa
   memilih hari, sensor, jenis gangguan, dan intensitasnya, lalu melihat sinyal,
   kurva entropi, dan tebakan model berubah."
-- *Untuk orang awam:* melatih ulang model butuh jam (NB11 di Kaggle
+- *Penjelasan:* melatih ulang model butuh jam (NB11 di Kaggle
   ±10 jam). Saat presentasi kita tidak melatih; kita **memuat** bobot jaringan
   yang sudah tersimpan, lalu hanya melakukan perkalian matriks (forward pass).
   Itu seperti memakai kalkulator yang rumusnya sudah jadi.
@@ -40,7 +40,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 **T2. Apakah model di notebook ini sama dengan model penelitian?**
 - *30 detik:* "Sama persis. Bobotnya diekspor dari model tersimpan N = 700 dan
   prediksinya dibandingkan dengan model asli: selisih maksimum nol."
-- *Untuk orang awam:* model asli disimpan sebagai objek Python yang butuh
+- *Penjelasan:* model asli disimpan sebagai objek Python yang butuh
   scikit-learn (lambat diimpor, ±3–6 detik). Kita ambil angka-angkanya saja
   (bobot W, bias b, rata-rata dan skala normalisasi) ke file `.npz`, lalu
   menulis ulang forward pass dengan numpy. Supaya yakin tidak ada salah salin,
@@ -63,7 +63,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
   entropi multiskala, lalu jaringan saraf yang dilatih Levenberg–Marquardt
   menebak jenis gangguan dan sensor yang rusak. Yang saya uji: mengganti ukuran
   kemiripan Euclidean (EDM-Fuzzy) dengan Jensen–Shannon (JSD-Fuzzy)."
-- *Untuk orang awam:* bayangkan empat termometer di satu kebun. Kalau satu
+- *Penjelasan:* bayangkan empat termometer di satu kebun. Kalau satu
   mulai "melantur", angka rata-ratanya mungkin tetap wajar, tetapi *polanya*
   berubah: terlalu rata (macet), tiba-tiba melonjak (spike), atau pelan-pelan
   bergeser (drift). Entropi adalah angka yang mengukur seberapa "rumit" pola
@@ -76,7 +76,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
   dalam fuzzy entropy. Penelusuran pustaka tidak menemukan karya yang sama;
   yang ada memakai jarak geometris di dalam entropi, atau memakai JSD pada level
   seluruh sinyal."
-- *Untuk orang awam:* fuzzy entropy membandingkan setiap potongan pendek
+- *Penjelasan:* fuzzy entropy membandingkan setiap potongan pendek
   sinyal (template) dengan potongan lain. Biasanya "beda" diukur dengan
   penggaris (jarak Euclidean). Di sini setiap potongan diubah dulu menjadi
   histogram kecil, lalu dua histogram dibandingkan dengan JSD — ukuran beda dua
@@ -92,7 +92,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 **T7. Kenapa empat sensor, bukan satu, dan kenapa tidak dirata-rata? (Q2, Q13)**
 - *30 detik:* "Rata-rata menyembunyikan sensor mana yang rusak dan menurunkan
   skor: F1 0,821 untuk empat kanal terpisah vs 0,748 setelah dirata-rata."
-- *Untuk orang awam:* kalau sensor A naik 10 dan sensor B turun 10,
+- *Penjelasan:* kalau sensor A naik 10 dan sensor B turun 10,
   rata-ratanya tidak berubah — gangguannya hilang dari pandangan.
 - *Bukti:* NB02.
 
@@ -102,7 +102,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 - *30 detik:* "Empat sensor kelembaban tanah, 14 September–21 Desember 2025,
   sampel tiap 30 detik, 281.721 baris. Saya rata-ratakan per 5 menit menjadi
   28.173 baris, 97,8 hari."
-- *Untuk orang awam:* 30 detik → 5 menit artinya setiap 10 angka diganti
+- *Penjelasan:* 30 detik → 5 menit artinya setiap 10 angka diganti
   rata-ratanya. Contoh: 40, 41, 40, 42, 41, 40, 41, 40, 42, 41 → 40,8. Derau
   kecil teredam, pola harian tetap.
 - *Bukti:* NB11 §1–§2; `data_sensor.csv`.
@@ -111,7 +111,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 - *30 detik:* "Tidak dibuang, dilabeli normal, dan dilaporkan sebagai batasan:
   11.371 sampel (4,0 %), tiga blok macet di 16–21 Desember plus 50 sampel
   pendek."
-- *Untuk orang awam:* nol masih di rentang fisik 0–100 %, jadi tidak bisa
+- *Penjelasan:* nol masih di rentang fisik 0–100 %, jadi tidak bisa
   disebut "salah ketik". Pembacaan macet di nol justru gejala gangguan; kalau
   dibuang, kita menyembunyikan kasus sulit.
 - *Bukti:* NB11 §2b; Bahan Q9.
@@ -134,7 +134,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 - *30 detik:* "Data asli tidak berlabel rusak dan saya tidak boleh merusak
   sensor. Simulasi memberi label pasti dan bisa diulang dengan seed tetap.
   Batasnya: hasil berlaku untuk gangguan yang dimodelkan."
-- *Untuk orang awam:* ini seperti latihan pemadam kebakaran dengan api
+- *Penjelasan:* ini seperti latihan pemadam kebakaran dengan api
   buatan: kita tahu persis di mana apinya, jadi bisa menilai apakah petugas
   menemukannya.
 - *Bukti:* NB11 §3; `02_kelemahan.md` B (validitas konstruk).
@@ -143,7 +143,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 - *30 detik:* "Drift: tambahan yang naik linear 1 poin/hari selama episode
   3 hari. Spike: lonjakan sesaat dengan peluang 1,5 %. Bias: geser tetap.
   Hardware: sebagian titik macet atau hilang."
-- *Untuk orang awam:* sinyal 40, 40, 40, 40.
+- *Penjelasan:* sinyal 40, 40, 40, 40.
   Bias +2 → 42, 42, 42, 42. Spike di titik ke-3 → 40, 40, 47, 40.
   Drift → 40, 40,003, 40,007, 40,010 (1 poin/hari = 0,00347 poin per 5 menit).
   Macet → 40, 41, 41, 41 (nilai terakhir diulang).
@@ -156,7 +156,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
   menembus 100 % dalam sehari. Rentang 0,003–0,17 poin/hari yang saya pakai
   sebagai pembanding adalah **asumsi skenario**; saya tidak menemukan sumber
   terbit yang mengukur laju drift sensor kelembaban tanah per hari."
-- *Untuk orang awam:* dalam jendela N = 200 (16,7 jam) drift hanya
+- *Penjelasan:* dalam jendela N = 200 (16,7 jam) drift hanya
   menambah ±0,7 poin, lebih kecil dari ayunan harian sinyal. Karena itu drift
   memang paling sulit dideteksi, dan itu dilaporkan.
 - *Bukti:* README "Koreksi simulator drift"; `07_pustaka_dan_kebaruan.md` (e).
@@ -175,7 +175,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 - *30 detik:* "Karena setiap template dikurangi rata-ratanya sebelum
   dibandingkan. Geser tetap ikut hilang. AUC bias sekitar 0,50 dari 0,08 sampai
   5 poin."
-- *Untuk orang awam:* template [42, 43] dikurangi rata-rata 42,5 menjadi
+- *Penjelasan:* template [42, 43] dikurangi rata-rata 42,5 menjadi
   [−0,5, 0,5]; template tanpa bias [40, 41] juga menjadi [−0,5, 0,5]. Entropi
   melihat keduanya identik. Panel fault "bias" di notebook menunjukkan kurva
   entropi hampir tidak bergerak.
@@ -192,7 +192,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 - *30 detik:* "Fuzzy entropy mengukur seberapa sering pola pendek yang mirip
   tetap mirip ketika diperpanjang satu titik. Sinyal teratur: entropi kecil.
   Sinyal acak: entropi besar."
-- *Untuk orang awam:* rumusnya FE = ln(φ_m / φ_{m+1}). φ_m adalah rata-rata
+- *Penjelasan:* rumusnya FE = ln(φ_m / φ_{m+1}). φ_m adalah rata-rata
   "kemiripan" antar semua pasangan template sepanjang m = 2. Kalau pasangan yang
   mirip di panjang 2 tetap mirip di panjang 3, φ hampir sama dan ln-nya dekat 0.
   Contoh angka pada deret x = [3, 5, 4, 6, 5, 7, 6, 4]: r = 0,2 · sd =
@@ -204,7 +204,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 **T19. Kenapa multiskala τ = 1..15 dan 60 fitur? (Q24, Q28)**
 - *30 detik:* "Gangguan berbeda tampak di skala berbeda: spike di skala halus,
   drift di skala kasar. 15 skala × 4 sensor = 60 fitur."
-- *Untuk orang awam:* skala τ = 2 artinya rata-ratakan tiap dua titik:
+- *Penjelasan:* skala τ = 2 artinya rata-ratakan tiap dua titik:
   [3, 5, 4, 6] → [4, 5]. Komposit: hitung juga dengan geseran awal (mulai dari
   titik kedua) lalu rata-ratakan hasilnya, supaya tidak bergantung pada titik
   awal.
@@ -214,7 +214,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 - *30 detik:* "Hanya di jarak d antar template. EDM: jarak Euclidean. JSD:
   tiap template diubah jadi histogram lunak 8 bin, jarak = akar JSD. Embedding,
   centroid shifting, fungsi keanggotaan, dan rumus entropi identik."
-- *Untuk orang awam:* EDM seperti membandingkan dua foto piksel demi
+- *Penjelasan:* EDM seperti membandingkan dua foto piksel demi
   piksel. JSD seperti membandingkan dua foto dari histogram warnanya saja.
   Contoh JSD dari hitungan tangan: d = √0,011811 = 0,108678, ambang
   r_JSD = 0,2·√ln2 = 0,166511, sehingga μ = 1/(1 + 0,108678/0,166511) = 0,605078.
@@ -238,7 +238,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
   [1, −1] menghasilkan histogram sama, jadi JSD = 0 persis, padahal Euclidean
   memberi 2,83. JSD-Fuzzy mengukur kemiripan sebaran nilai, bukan bentuk pola.
   Akibat lain: nilainya bisa negatif pada deret pendek."
-- *Untuk orang awam:* kata "TAS" dan "SAT" punya huruf yang sama. Kalau
+- *Penjelasan:* kata "TAS" dan "SAT" punya huruf yang sama. Kalau
   hanya menghitung huruf, keduanya dianggap kembar.
 - *Bukti:* `02_kelemahan.md` F7 (dicek 2026-11-20 dengan
   `vectors_to_distributions` + `pairwise_jsd`); `07_pustaka_dan_kebaruan.md`
@@ -272,7 +272,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
   cepat dekat minimum. λ besar: langkah kecil searah gradien, aman. Galat naik:
   langkah ditolak, λ dikali 2. Galat turun: diterima, λ dikecilkan menurut
   rasio ρ (aturan Nielsen)."
-- *Untuk orang awam:* LM seperti menuruni bukit dalam kabut. Kalau
+- *Penjelasan:* LM seperti menuruni bukit dalam kabut. Kalau
   langkah besar membuat Anda naik (galat bertambah), Anda mundur dan mencoba
   langkah lebih kecil. Di contoh mainan: iterasi 1 ditolak (ρ = −0,58),
   λ 0,001 → 0,002; pada iterasi 9 galat turun dari 1,453047 ke 0,194302.
@@ -282,7 +282,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 **T28. Bagaimana Jacobian analitik dihitung dan dibuktikan? (Q31, P4)**
 - *30 detik:* "Backpropagation per keluaran. Dibuktikan dengan membandingkan
   terhadap Jacobian numerik beda hingga."
-- *Untuk orang awam:* turunan numerik: geser satu bobot sedikit (ε), lihat
+- *Penjelasan:* turunan numerik: geser satu bobot sedikit (ε), lihat
   berapa keluaran berubah, bagi ε. Kalau rumus analitik dan cara numerik
   memberi angka sama sampai ±10⁻¹⁰, rumusnya benar.
 - *Bukti:* NB11 §9a; `03` (d); `cek_algoritma_tangan.py` (Jacobian tangan vs
@@ -307,7 +307,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 - *30 detik:* "Luar: StratifiedGroupKFold 5 lipatan, grup = blok waktu. Dalam:
   2 lipatan untuk memilih arsitektur dengan macro-F1. Model terpilih dilatih
   ulang di data latih luar dan dinilai di data uji luar."
-- *Untuk orang awam:* jendela bertetangga berbagi 50 % isi. Kalau satu di
+- *Penjelasan:* jendela bertetangga berbagi 50 % isi. Kalau satu di
   latih dan tetangganya di uji, model "sudah pernah melihat" separuh soal ujian.
   Mengelompokkan per blok waktu memisahkan soal latihan dan soal ujian.
 - *Bukti:* NB11 §10; Roberts dkk. 2017, Bergmeir & Benítez 2012.
@@ -315,7 +315,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 **T33. Kenapa macro-F1? (P23)**
 - *30 detik:* "Kelas tidak seimbang; macro-F1 memberi bobot sama pada tiap
   kelas, sehingga kelas sulit tidak tertutup kelas mudah."
-- *Untuk orang awam:* 90 jendela normal dan 10 rusak. Model yang selalu
+- *Penjelasan:* 90 jendela normal dan 10 rusak. Model yang selalu
   menjawab "normal" akurasinya 90 %, tetapi F1 kelas rusak 0. Macro-F1 =
   rata-rata (F1 normal ≈ 0,95, F1 rusak 0) ≈ 0,47 — angka itu jujur.
 
@@ -333,7 +333,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
   atau S5 jenis gangguan) untuk jendela asli dan jendela yang diberi gangguan,
   EDM dan JSD berdampingan, dengan tingkat keyakinan. Tabel kedua: skor tiap
   sensor; skor > 0,5 berarti sensor itu ditebak rusak."
-- *Untuk orang awam:* softmax mengubah skor mentah menjadi peluang yang
+- *Penjelasan:* softmax mengubah skor mentah menjadi peluang yang
   jumlahnya 1. Skor [2, 0] → e²/(e² + e⁰) = 7,39/8,39 = 0,88 untuk kelas
   pertama.
 - *Bukti:* `maju` di `buat_cache_interaktif.py`; sel prediksi notebook.
@@ -356,7 +356,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 - *30 detik:* "JSD-Fuzzy lebih tinggi di 11 dari 15 sel, rata-rata selisih
   F1 +0,028. Per ukuran jendela: N = 200 menang 3/5, N = 700 5/5,
   N = 1000 3/5."
-- *Untuk orang awam:* satu sel = satu skenario (S1–S5) × satu ukuran
+- *Penjelasan:* satu sel = satu skenario (S1–S5) × satu ukuran
   jendela (200/700/1000). Di tiap sel kedua metode dilatih dengan protokol yang
   sama; kita catat selisih F1-nya.
 - *Bukti:* NB11 §10; `11_rq4_selisih.csv`; `statistik_sel.csv` baris NB11.
@@ -386,7 +386,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
   +0,058] tidak memuat nol. Jadi saya menyebutnya konsisten lebih tinggi, bukan
   terbukti. NB14 gabungan signifikan: p = 0,0006, d_z = 1,13, CI [+0,043;
   +0,108]."
-- *Untuk orang awam:* p menjawab "kalau sebenarnya tidak ada beda,
+- *Penjelasan:* p menjawab "kalau sebenarnya tidak ada beda,
   seberapa sering kita melihat beda sebesar ini karena kebetulan?". p = 0,076
   berarti sekitar 7,6 %, di atas batas 5 %. Bootstrap: ambil ulang 15 selisih
   secara acak dengan pengembalian 10.000 kali, hitung rata-rata tiap kali, lalu
@@ -400,7 +400,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 **T43. N = 700 signifikan, kan? (Q41)**
 - *30 detik:* "Tanpa koreksi p = 0,027; setelah koreksi Holm untuk tiga ukuran
   jendela p = 0,081. Jadi tidak saya klaim signifikan setelah koreksi."
-- *Untuk orang awam:* menguji tiga hal sekaligus menaikkan peluang satu
+- *Penjelasan:* menguji tiga hal sekaligus menaikkan peluang satu
   'beruntung'. Holm: urutkan p, kalikan yang terkecil dengan 3, berikutnya
   dengan 2, dan seterusnya (dengan aturan tidak boleh turun).
 - *Bukti:* `statistik_sel.csv` kolom `p_t_holm_3N`; Holm 1979.
@@ -409,7 +409,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 - *30 detik:* "Ya, lipatan berbagi data latih sehingga varians diremehkan.
   Saya menambahkan uji-t terkoreksi Nadeau–Bengio. Uji utama saya per sel
   (skenario × N), bukan per lipatan."
-- *Untuk orang awam:* koreksi Nadeau–Bengio memperbesar varians dengan
+- *Penjelasan:* koreksi Nadeau–Bengio memperbesar varians dengan
   faktor (1/k + n_uji/n_latih); hasilnya |t| selalu lebih kecil.
 - *Bukti:* `statistik_tambahan.py` `t_nadeau_bengio`, keluaran per lipatan
   `hasil_uji/statistik_lipatan.csv` (dari run purge N = 700); Nadeau & Bengio
@@ -430,7 +430,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
   tumpang-tindih dengan jendela pertama blok tetangga. Sama untuk kedua metode.
   Saya ukur dengan purge: jendela latih yang tumpang-tindih dengan jendela uji
   dibuang, lalu model N = 700 dilatih ulang."
-- *Untuk orang awam:* purge = membuang soal latihan yang isinya beririsan
+- *Penjelasan:* purge = membuang soal latihan yang isinya beririsan
   dengan soal ujian. Kalau skor turun banyak setelah purge, berarti skor lama
   terbantu kebocoran.
 - *Hasil:* purge mengubah F1 −0,072 sampai +0,012 (7 dari 10 sel turun);
@@ -444,7 +444,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 **T48. Bagaimana tahu model tidak belajar artefak? (kontrol negatif)**
 - *30 detik:* "Label saya acak lalu model dilatih ulang dengan protokol sama.
   Kalau pipeline jujur, F1-nya turun ke tingkat tebak-tebakan."
-- *Untuk orang awam:* untuk 2 kelas, tebakan acak memberi F1 sekitar 0,5.
+- *Penjelasan:* untuk 2 kelas, tebakan acak memberi F1 sekitar 0,5.
   Kalau model dengan label acak masih jauh di atas itu, ada yang bocor.
 - *Hasil:* F1 dengan label acak 0,446–0,508 (S1 dan S5, kedua metode),
   setara tebakan 0,5; model asli 0,64–0,83.
@@ -502,7 +502,7 @@ interaktif.
   semua fault disisipkan pada interval waktu yang sama, yaitu tiga episode
   tiga hari. Secara waktu fault-nya bersamaan; secara kode diterapkan
   berurutan pada sinyal yang sama."
-- *Untuk orang awam:* kondisi `spike+bias` diproses begini. Ambil
+- *Penjelasan:* kondisi `spike+bias` diproses begini. Ambil
   sinyal bersih. Kalikan 1,52 % titik di dalam episode dengan 1,3 (spike).
   Tambahkan +5 poin ke seluruh episode (bias). Terakhir potong nilainya ke
   0–100 %. Label tiap sampel berupa bitmask: drift 1, spike 2, bias 4,
@@ -531,7 +531,7 @@ interaktif.
   adalah unit kedua, lalu alarm menyala kalau peluang itu di atas ambang yang
   disetel di data validasi. Program pertama (Des 2025) memakai satu output
   sigmoid."
-- *Untuk orang awam:* masukan berisi 13 fitur per sampel: lag1–lag10,
+- *Penjelasan:* masukan berisi 13 fitur per sampel: lag1–lag10,
   selisih dengan sampel sebelumnya, penanda NaN, dan jumlah NaN dalam
   10 sampel terakhir. Contoh arsitektur (16, 8):
   13 → 16 → 8 → 2, aktivasi tanh. Jumlah parameternya

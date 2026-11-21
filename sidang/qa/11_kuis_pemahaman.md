@@ -1,11 +1,11 @@
-# 11 — Kuis 10 soal untuk orang awam
+# 11 — Kuis pemahaman 10 soal
 
 Tujuan: membuktikan bahwa penjelasan di notebook interaktif (salinan
 internal) bisa dipahami orang yang belum pernah belajar entropi atau jaringan
 saraf. Yang diuji adalah **penjelasannya**, bukan pesertanya.
 
 Cara pakai:
-1. Beri peserta awam (orang di luar bidang ini) `sidang/04_Sidang_Interaktif.ipynb` (salinan internal) dan
+1. Beri peserta dari luar bidang ini `sidang/04_Sidang_Interaktif.ipynb` (salinan internal) dan
    20 menit membaca serta memainkan panel. Kandidat tidak boleh menjelaskan.
 2. Peserta mengerjakan kuis tanpa membuka notebook, 15 menit.
 3. Nilai dengan kunci. Target: ≥ 8/10. Soal yang salah menunjukkan bagian
