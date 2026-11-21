@@ -88,6 +88,85 @@ def gaya_netral(t: str) -> str:
     return t
 
 
+# ---------------------------------------------------------------- tautan bukti ke Kaggle
+KAGGLE = "https://www.kaggle.com/code/"
+NAMA_SIDANG = {"sidang_satu": "00_Sidang_Deteksi_Fault", "sidang_peta": "00_Peta_Program",
+               "sidang_alur": "01_Alur_Sistem", "sidang_hasil": "02_Hasil",
+               "sidang_demo": "03_Demo_Model_Tersimpan", "sidang_interaktif": "04_Sidang_Interaktif"}
+
+
+def peta_kaggle() -> tuple[dict[str, dict], dict[str, dict]]:
+    """({kunci NB: kernel}, {nama notebook sidang: kernel}) dari .kaggle_push/*/kernel-metadata.json."""
+    nb, sidang = {}, {}
+    for f in sorted((ROOT / ".kaggle_push").glob("*/kernel-metadata.json")):
+        meta = json.loads(f.read_text())
+        k = {"folder": f.parent.name, "id": meta["id"], "judul": meta["title"],
+             "url": KAGGLE + meta["id"]}
+        folder = f.parent.name
+        if folder in NAMA_SIDANG:
+            sidang[NAMA_SIDANG[folder]] = k
+        elif re.fullmatch(r"\d\d[a-z]?", folder):
+            nb[folder] = k
+        elif folder == "sens12":
+            nb["12"] = k
+        else:
+            k["lain"] = True
+            nb.setdefault(folder, k)
+    return nb, sidang
+
+
+def tautkan(md: str, nb: dict, sidang: dict) -> str:
+    """Ubah rujukan NBxx / "notebook xx" / `hasilxx/...` / `sidang/0x_*.ipynb` jadi tautan Kaggle.
+
+    Blok kode, tautan yang sudah ada, dan isi span kode lain dibiarkan.
+    """
+    def kunci(no, b=""):
+        return f"{int(no):02d}{(b or '').lower()}"
+
+    def ganti_teks(t):
+        def f(m):
+            k = kunci(m.group(2) or m.group(4), m.group(3) or m.group(5))
+            return f"[{m.group(0)}]({nb[k]['url']})" if k in nb else m.group(0)
+        return re.sub(r"\b(NB ?(\d\d)([b])?|[Nn]otebook (\d\d?)([b])?)\b", f, t)
+
+    def ganti_kode(span):
+        isi = span[1:-1]
+        m = re.match(r"hasil_?(\d\d)([b])?/", isi)
+        if m and kunci(*m.groups()) in nb:
+            return f"[{span}]({nb[kunci(*m.groups())]['url']}/output)"
+        m = re.match(r"sidang/(0\d_[A-Za-z_]+?)(?:_presentasi)?\.ipynb$", isi)
+        if m and m.group(1) in sidang:
+            return f"[{span}]({sidang[m.group(1)]['url']})"
+        return span
+
+    keluar = []
+    for i, blok in enumerate(re.split(r"(```.*?```)", md, flags=re.S)):
+        if i % 2:
+            keluar.append(blok); continue
+        for j, bag in enumerate(re.split(r"(\[[^\]\n]*\]\([^)\s]*\))", blok)):
+            if j % 2:
+                keluar.append(bag); continue
+            for h, pot in enumerate(re.split(r"(`[^`\n]+`)", bag)):
+                keluar.append(ganti_kode(pot) if h % 2 else ganti_teks(pot))
+    return "".join(keluar)
+
+
+def dok_peta_kaggle(nb: dict, sidang: dict) -> str:
+    baris = ["Semua notebook Kaggle (akun kelvindsmn, private). Rujukan NBxx, `hasilxx/...` dan "
+             "`sidang/0x_*.ipynb` di catatan lain sudah tertaut ke halaman ini atau ke tab Output kernel. "
+             "File `sidang/qa/hasil_uji/*` dihitung skrip lokal di `sidang/qa/`, tidak ada di Kaggle.", "",
+             "## Notebook sidang", "", "| Notebook | Kaggle |", "|---|---|"]
+    baris += [f"| `sidang/{n}.ipynb` | [{k['judul']}]({k['url']}) |" for n, k in sorted(sidang.items())]
+    baris += ["", "## Notebook penelitian", "", "| NB | Kaggle | Keluaran (log, CSV) |", "|---|---|---|"]
+    for key, k in sorted(nb.items()):
+        baris.append(f"| {key} | [{k['judul']}]({k['url']}) | [Output]({k['url']}/output) |")
+    baris += ["", "## Dataset", "",
+              "- [sidang-bahan](https://www.kaggle.com/datasets/kelvindsmn/sidang-bahan): cache dan bobot model untuk notebook sidang",
+              "- [model-deteksi-fault-tersimpan](https://www.kaggle.com/datasets/kelvindsmn/model-deteksi-fault-tersimpan): model tersimpan N = 700 (NB16)",
+              "- [data-hipotetik-fault-sensor-berlabel](https://www.kaggle.com/datasets/kelvindsmn/data-hipotetik-fault-sensor-berlabel): data dan model NB15"]
+    return "\n".join(baris)
+
+
 def main() -> int:
     keluar = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "sidang" / "artifact_catatan"
     keluar.mkdir(parents=True, exist_ok=True)
@@ -107,6 +186,11 @@ def main() -> int:
     assert not sisa, f"masih ada kata ganti orang: {sisa[:10]}"
     n_sel = sum(TAG in c.metadata.get("tags", []) for c in nb.cells)
     assert len(docs) == n_sel - 1, f"{len(docs)} dokumen dari {n_sel} sel catatan (1 sel judul)"
+    peta_nb, peta_sidang = peta_kaggle()
+    for d in docs:
+        d["md"] = tautkan(d["md"], peta_nb, peta_sidang)
+    docs.append({"id": "kaggle", "grup": "Bukti di Kaggle", "judul": "Peta link Kaggle",
+                 "md": tautkan(dok_peta_kaggle(peta_nb, peta_sidang), peta_nb, peta_sidang)})
     commit = subprocess.run(["git", "-C", str(ROOT), "log", "-1", "--format=%h %cs"],
                             capture_output=True, text=True).stdout.strip()
     (keluar / "catatan.json").write_text(json.dumps({"commit": commit, "docs": docs}, ensure_ascii=False),
