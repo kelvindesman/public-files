@@ -67,13 +67,16 @@ def test_semua_pilihan_panel_jalan_dan_cepat():
     assert hasil["t_widget_7_ubah"] < 20.0
 
 
-# source: Kelvin, chat 2026-11-21 — "make sure sidang-interaktif-deteksi-fault all adjustable for demo purpose"
+# source: Kelvin, chat 2026-11-21 — "make sure sidang-interaktif-deteksi-fault all adjustable for demo purpose";
+# default N = 1000: Kelvin chat 2026-11-21 pasted checklist "3. Model demo sidang (...), data 1000"
 def test_panel_mencakup_semua_parameter_demo():
-    nb = _jalankan(NB_INTERNAL, "print('KONTROL=' + json.dumps(sorted(KONTROL)) + ' N=' + json.dumps(sorted(META)))")
+    nb = _jalankan(NB_INTERNAL, "print('BAWAAN_N=' + str(pil_N.value))\n"
+                                "print('KONTROL=' + json.dumps(sorted(KONTROL)) + ' N=' + json.dumps(sorted(META)))")
     teks = "".join(o.get("text", "") for o in nb.cells[-1].outputs if o.output_type == "stream")
     assert json.loads(teks.split("KONTROL=")[1].split(" N=")[0]) == sorted(
         ["n", "hari", "sensor", "fault", "k", "seed", "lihat"])
     assert json.loads(teks.split(" N=")[1].splitlines()[0]) == [200, 700, 1000]
+    assert teks.split("BAWAAN_N=")[1].splitlines()[0] == "1000"
 
 
 # source: deteksi_fault_core.segment_and_label + simpan_model.py — the panel computes features live from

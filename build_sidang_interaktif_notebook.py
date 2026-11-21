@@ -74,7 +74,7 @@ diekspor; tidak ada model yang dilatih ulang di sini, jadi tiap sel selesai dala
 hitungan detik.
 
 Cara pakai: **Run All** sekali, lalu ubah pilihan di panel kontrol: panjang jendela
-(N = 200/700/1000), hari mulai, sensor yang dirusak, kombinasi fault, intensitas,
+(N = 200/700/1000, bawaan 1000), hari mulai, sensor yang dirusak, kombinasi fault, intensitas,
 dan seed. Fault dan entropi dihitung langsung dengan fungsi penelitian yang sama;
 grafik dan tebakan model ikut berubah.
 """)
@@ -233,7 +233,7 @@ X5 = np.asarray(C["X5"], float); PER_HARI = int(86400 / core.SAMPLING_SECONDS)
 METODE = [str(m) for m in C["metode"]]
 FAULT4 = ["drift", "spike", "bias", "hardware"]
 
-pil_N = w.Dropdown(options=[(f"N = {n} ({n * 300 / 3600:.0f} jam)", n) for n in META], value=700,
+pil_N = w.Dropdown(options=[(f"N = {n} ({n * 300 / 3600:.0f} jam)", n) for n in META], value=1000,
                    description="Panjang")
 pil_hari = w.FloatSlider(value=10, min=0, max=round((len(X5) - max(META)) / PER_HARI, 1), step=0.5,
                          description="Mulai hari", continuous_update=False, readout_format=".1f")

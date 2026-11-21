@@ -1,0 +1,15 @@
+sel,detik,sumber_awal
+1,0.63,"import os, io, re, json, time, shutil, subprocess, sys, zipfile from pathlib imp"
+3,0.14,"DATA_NAME = ""tabel_sensor4_generated.csv"" REPO_RAW = ""https://raw.githubusercont"
+5,0.17,DRIFT_EPISODE_DAYS = 0.5          # notebook 15: 3.0 (tidak muat di 10.000 baris
+6,0.45,"fig, axs = plt.subplots(4, 1, figsize=(13, 9), sharex=True) t = np.arange(N_BARI"
+7,0.01,"KAMUS = pd.DataFrame([     (""timestamp"", ""waktu pembacaan (UTC), interval ±30 de"
+9,0.01,"def cari_file(nama):     roots = [os.environ.get(""MODEL_DIR"", """"), ""/kaggle/inpu"
+10,0.01,# muat_model.py — teks sama persis dengan 15_muat_model.py notebook 15 MUAT_MODE
+11,0.01,"# satu sampel dihitung manual: sensor 4, sampel pertama yang punya data hilang d"
+13,0.01,"shapes = [tuple(int(v) for v in s) for s in m[""shapes""]] a, i = z[None, :], 0 fo"
+15,0.06,"PRED = pd.DataFrame({""timestamp"": data[""timestamp""]}) P_FULL = np.zeros((N_BARIS"
+16,0.21,"fig, axs = plt.subplots(2, 1, figsize=(13, 5.5), sharex=True) w = slice(900, 260"
+18,26.45,"CONTOH_BACKEND_PY = r'''""""""Contoh integrasi backend: satu pembacaan sensor masuk"
+20,0.07,"card = json.loads(json.dumps(CARD15)) card[""status_publikasi""] = (""Metode (ANN d"
+TOTAL,29.06,

@@ -52,12 +52,13 @@ notebook 15 dimuat dari file, lalu dipakai untuk mendeteksi gangguan pada
 ## Status publikasi
 
 Metode ini (ANN dilatih Levenberg–Marquardt, fitur lag tanpa entropi,
-skenario gangguan S1–S5) **sudah dipublikasikan pada paper pertama (ACS)**.
-Kode yang dipakai saat paper itu **tertinggal**: masih memakai
+skenario gangguan S1–S5) berasal dari **program pertama** (Des 2025). Judul dan
+DOI publikasinya belum terverifikasi; konfirmasi ke pembimbing sebelum
+disitasi. Kode program pertama **tertinggal**: masih memakai
 `scipy.optimize.least_squares(method='lm')` dengan Jacobian numerik dan satu
 keluaran sigmoid. Model di notebook ini dilatih ulang dengan kode yang
 diperbarui (LM asli, Jacobian analitik yang dicek terhadap Jacobian numerik),
-sehingga angka di sini **tidak sama persis** dengan angka di paper.
+sehingga angka di sini **tidak sama persis** dengan angka program pertama.
 
 ## Dari mana labelnya? — fault injection
 

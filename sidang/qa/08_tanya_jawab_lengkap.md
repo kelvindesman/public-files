@@ -27,7 +27,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 **T1. Bagaimana memakai notebook ini saat sidang?**
 - *30 detik:* "Notebook ini memuat model yang sudah dilatih, jadi tidak ada
   pelatihan saat presentasi. Penguji bisa memilih panjang jendela (N = 200, 700,
-  atau 1000), hari mulai, sensor yang dirusak, kombinasi fault, intensitas, dan
+  atau 1000; bawaan 1000), hari mulai, sensor yang dirusak, kombinasi fault, intensitas, dan
   seed. Sinyal, kurva entropi, dan tebakan model langsung berubah."
 - *Penjelasan:* melatih ulang model butuh jam (NB11 di Kaggle ±10 jam). Saat
   presentasi tidak ada pelatihan; yang dilakukan hanya **memuat** bobot jaringan
@@ -332,7 +332,7 @@ ditulis di akhir judul, misalnya (Q1, P9).
 <!-- bagian: prediksi -->
 
 **T35. Bagaimana membaca tebakan di panel?**
-- *30 detik:* "Tabel pertama: tebakan model N = 700 (S1 normal/rusak dan S2
+- *30 detik:* "Tabel pertama: tebakan model sesuai N yang dipilih (bawaan 1000; S1 normal/rusak dan S2
   atau S5 jenis gangguan) untuk jendela asli dan jendela yang diberi gangguan,
   EDM dan JSD berdampingan, dengan tingkat keyakinan. Tabel kedua: skor tiap
   sensor; skor > 0,5 berarti sensor itu ditebak rusak."

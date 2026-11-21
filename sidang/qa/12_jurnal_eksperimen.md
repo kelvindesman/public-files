@@ -212,6 +212,19 @@ notebook, builder, dan `hasil09/`/`hasil10/` tidak pernah di-commit.
   4866,4 s, log di `hasil16/`). Bobot numpy sama dengan `SavedLM` (selisih 0,00e+00) untuk
   ketiga N. Fitur langsung cocok dengan fitur latih Kaggle sampai < 2e-3 (beda pembulatan
   x86_64 vs arm64 di binning JSD).
+- Checklist "Pindahin ke Kaggle / untuk mhs S1" (2026-11-21):
+  - Panel demo sidang kini bawaan **N = 1000** (klasifikasi S1/S2/S5 + identifikasi sensor).
+  - **NB18** `kelvindsmn/paket-s1-data-hipotetik-10000` (Kaggle v1 COMPLETE, keluaran identik
+    dengan run lokal): data hipotetik berlabel **tepat 10.000 baris** (4 sensor, tiap sensor
+    skenario berbeda S2/S3/S4/S5, semua jenis fault muncul), model ANN-LM program 1 (NB15),
+    preprocessing (13 fitur lag + mean/scale), forward pass dihitung lapis demi lapis, dan
+    `contoh_backend.py` (satu pembacaan masuk, JSON keluar; sama dengan prediksi batch).
+  - Satu-satunya perubahan simulator: episode 0,5 hari (1.440 sampel), bukan 3 hari, agar
+    3 episode muat di 10.000 sampel. Skor model di data ini bukan skor resmi (F1 0,34 drift
+    sampai 0,91 S5; alarm palsu 0,35–11,3 %).
+  - Kalimat "sudah dipublikasikan pada paper pertama (ACS)" di NB15b dan model card diganti
+    "judul/DOI belum terverifikasi" (NB15b v4 COMPLETE; NB15 belum dijalankan ulang, jadi
+    model card di dataset NB15 masih memuat kalimat lama, paket S1 memakai versi baru).
 
 ---
 
@@ -442,8 +455,8 @@ turun tetapi dapat dipertanggungjawabkan."
 2. **Asal-usul data belum dikonfirmasi:** apa yang "generated" pada
    `tabel_sensor4_generated.csv`, dan siapa yang menginterpolasi `data_sensor.csv`.
    Keduanya mulai di stempel yang sama (2025-09-14 14:50:07). Checklist pembimbing A1/A2.
-3. **Paper ACS:** judul/DOI tidak ditemukan di Crossref/OpenAlex, padahal 15b menyebutnya
-   terbit. Checklist A3.
+3. **Paper ACS:** judul/DOI tidak ditemukan di Crossref/OpenAlex. Klaim "sudah terbit" di 15b
+   dan paket S1 sudah diganti "belum terverifikasi" (2026-11-21). Checklist A3.
 4. **Sumber laju drift:** tidak ada; 1 poin/hari juga asumsi. Checklist A4.
 5. **Arah dan signifikansi berganti-ganti:** JSD terburuk (Jan) → terbaik (Jun); p 0,157 →
    0,0046 → 0,028 → tidak signifikan → 0,035 → 0,048/0,052 → 0,0511/0,0504/0,076 → 0,0006

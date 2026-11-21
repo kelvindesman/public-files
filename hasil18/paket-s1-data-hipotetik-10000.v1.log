@@ -1,0 +1,46 @@
+[{"stream_name":"stderr","time":7.157820174,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":7.157876216,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":8.137035155,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.137065955,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.137071112,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.137074927,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":8.834815033,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.834853712,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.834859717,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.834864087,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":11.146742386,"data":"folder paket: /kaggle/working/paket_s1\n"}
+,{"stream_name":"stdout","time":13.994983471,"data":"label_fault = 1 pada 43.2% baris; episode = 43.2% waktu\n"}
+,{"stream_name":"stdout","time":15.117402651,"data":"model disalin dari: /kaggle/input/datasets/kelvindsmn/data-hipotetik-fault-sensor-berlabel\n"}
+,{"stream_name":"stdout","time":15.159593719,"data":"selisih prob pemuat vs acuan notebook 15 (2.000 sampel): 0.0e+00\n"}
+,{"stream_name":"stdout","time":15.19339426,"data":"sampel t = 1028, waktu 2025-09-15 07:20:55, 12 nilai mentah terakhir:\n"}
+,{"stream_name":"stdout","time":15.193430313,"data":"[54.062 54.066 54.069 54.073 54.076 54.08  54.083 53.119    nan 51.094\n"}
+,{"stream_name":"stdout","time":15.193436275,"data":" 53.097 53.101]\n"}
+,{"stream_name":"stdout","time":15.246508594,"data":"lapis 1: W 13x12 + b 12 -\u003e tanh [-0.971 -0.922 -1.     0.953  0.189  1.    -0.047  1.     0.619 -0.724\n"}
+,{"stream_name":"stdout","time":15.246543379,"data":"  0.887 -0.903]\n"}
+,{"stream_name":"stdout","time":15.24654784,"data":"lapis 2: W 12x6 + b 6 -\u003e tanh [ 0.999 -0.682  1.    -0.959 -0.952  0.846]\n"}
+,{"stream_name":"stdout","time":15.246551909,"data":"lapis 3: W 6x2 + b 2 -\u003e keluaran linear [0.014 0.986]\n"}
+,{"stream_name":"stdout","time":15.246555669,"data":"softmax [normal, fault] = [0.2744 0.7256]\n"}
+,{"stream_name":"stdout","time":15.246559426,"data":"prob_fault = 0.7256  ambang = 0.38  -\u003e alarm = 1   (label sebenarnya: drift+bias)\n"}
+,{"stream_name":"stdout","time":15.246563336,"data":"parameter: 260  arsitektur: 2 layer (12,6)\n"}
+,{"stream_name":"stdout","time":53.174749861,"data":"40.000 panggilan proses() dalam 36.9 s; baris \u003e= 10: selisih prob maks 5.0e-05 (JSON dibulatkan 4 desimal), alarm berbeda 0\n"}
+,{"stream_name":"stdout","time":90.559335819,"data":"{\"sensor\": \"kelembaban1\", \"nilai\": 65.0, \"prob_fault\": 0.5473, \"alarm\": true, \"siap\": true, \"timestamp\": \"2025-09-14 14:57:46\"}\n"}
+,{"stream_name":"stdout","time":90.559371348,"data":"{\"sensor\": \"kelembaban2\", \"nilai\": 61.0, \"prob_fault\": 0.5657, \"alarm\": true, \"siap\": true, \"timestamp\": \"2025-09-14 14:57:46\"}\n"}
+,{"stream_name":"stdout","time":90.559385644,"data":"{\"sensor\": \"kelembaban3\", \"nilai\": 58.0, \"prob_fault\": 0.5976, \"alarm\": true, \"siap\": true, \"timestamp\": \"2025-09-14 14:57:46\"}\n"}
+,{"stream_name":"stdout","time":90.559388959,"data":"{\"sensor\": \"kelembaban4\", \"nilai\": 62.0, \"prob_fault\": 0.5446, \"alarm\": true, \"siap\": true, \"timestamp\": \"2025-09-14 14:57:46\"}\n"}
+,{"stream_name":"stdout","time":90.559391934,"data":"{\"sensor\": \"kelembaban2\", \"nilai\": 60.0, \"prob_fault\": 0.3977, \"alarm\": true, \"siap\": true, \"timestamp\": \"2025-09-14 14:59:18\"}\n"}
+,{"stream_name":"stdout","time":90.559394618,"data":"{\"baris\": 10000, \"jumlah_alarm\": {\"kelembaban1\": 1043, \"kelembaban2\": 1501, \"kelembaban3\": 2875, \"kelembaban4\": 4783}}\n"}
+,{"stream_name":"stdout","time":90.559397504,"data":"\n"}
+,{"stream_name":"stdout","time":90.559399937,"data":"jumlah alarm contoh_backend.py == prediksi batch untuk ke-4 sensor\n"}
+,{"stream_name":"stdout","time":90.796283439,"data":"paket_s1.zip 0.54 MB; total waktu 80 s\n"}
+,{"stream_name":"stderr","time":94.02962549,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":94.029663044,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":94.197005782,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":94.197035754,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":95.029573292,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":95.141685917,"data":"[NbConvertApp] Writing 425766 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":98.201758186,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":98.954731899,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":98.954766254,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":98.955114667,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":98.9553806,"data":"[NbConvertApp] Writing 452660 bytes to __results__.html\n"}
+]

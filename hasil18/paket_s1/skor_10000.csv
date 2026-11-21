@@ -1,0 +1,5 @@
+sensor,kondisi,precision,recall,F1,alarm_palsu_% (baris normal),recall_drift,recall_spike,recall_bias,recall_hardware
+kelembaban1,drift,0.8849,0.2137,0.3442,2.12,0.214,,,
+kelembaban2,spike+bias,0.9614,0.334,0.4958,1.02,,1.0,0.334,
+kelembaban3,drift+bias+malfunc,0.993,0.6609,0.7936,0.35,0.661,,0.661,0.927
+kelembaban4,spike+bias+malfunc+drift,0.8656,0.9583,0.9096,11.34,0.958,0.985,0.958,0.997

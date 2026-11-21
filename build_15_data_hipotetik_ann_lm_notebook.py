@@ -872,7 +872,8 @@ MODEL_CARD = {
     "dibuat": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
     "notebook_latih": "kaggle.com/code/kelvindsmn/data-hipotetik-berlabel-ann-lm",
     "status_publikasi": ("Metode (ANN dilatih Levenberg-Marquardt, fitur lag tanpa entropi, skenario S1-S5) "
-                         "sudah dipublikasikan pada paper pertama (ACS). Kode pada paper itu tertinggal: masih "
+                         "berasal dari program pertama (Des 2025); judul/DOI publikasinya belum terverifikasi, "
+                         "konfirmasi ke pembimbing sebelum disitasi. Kode program pertama tertinggal: masih "
                          "memakai scipy least_squares(method='lm') dengan Jacobian numerik dan 1 keluaran sigmoid. "
                          "Model ini dilatih ulang dengan kode yang diperbarui (LM asli, Jacobian analitik)."),
     "label": ("Label berasal dari fault injection: gangguan disuntikkan secara sintetis ke data sensor, "
