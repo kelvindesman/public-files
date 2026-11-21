@@ -207,6 +207,122 @@ notebook, builder, dan `hasil09/`/`hasil10/` tidak pernah di-commit.
 
 ---
 
+## Perbedaan parameter: versi 2025 → versi terbaru
+
+Perbandingan per parameter antara program pertama (`48966f8`, Des 2025,
+`final_databaru_optimized.ipynb`) dan pipeline hasil utama (NB11, `deteksi_fault_core.py`,
+`build_11_annlm_real_notebook.py`), plus varian fault NB14 (`build_14_lengkap_fault_baru_notebook.py`).
+Angka dampak hanya yang tercatat di commit/file; perbandingan lintas pipeline yang tidak
+sebanding ditandai.
+
+### A. Data dan sinyal
+
+| Parameter | 2025 | Terbaru |
+|---|---|---|
+| File data | `tabel_sensor4_generated.csv`, 60.763 baris | `data_sensor.csv`, 281.721 baris |
+| Laju sampel | 30 detik (mentah) | rata-rata 5 menit (`RESAMPLE_RULE = "5min"`), 28.173 baris |
+| Sinyal | 4 sensor dirata-rata jadi `kelembaban_tanah_persen` | 4 kanal terpisah (`kelembaban1..4`) |
+| Unit analisis | per sampel (classifier); panjang 2000/4000/10000 untuk tabel CV entropi | window N = 200/700/1000, stride N/2 (overlap 50 %) |
+
+- **Kenapa:** rata-rata 4 sensor tidak bisa menunjuk sensor yang rusak (permintaan pembimbing
+  WA 2026-07-17); laju 5 menit membuat N = 1000 sama durasinya dengan 10.000 sampel 30 detik
+  (3,47 hari) tetapi masih menyisakan 55 window per kondisi untuk CV.
+- **Dampak:** NB02 setelah koreksi drift: broker 4 kanal F1 0,821 vs rata-rata 0,748. Sensor
+  yang rusak bisa ditunjuk (NB11 sensor-ID F1 EDM 0,634 / JSD 0,675).
+- **Pro:** lokalisasi sensor; CV berkelompok bisa jalan; durasi window setara diagram.
+- **Kontra:** rata-rata 5 menit menghaluskan spike sangat singkat; overlap 50 % membuat window
+  bertetangga berbagi data (bocoran di batas grup, diukur dengan purge, lihat F).
+
+### B. Simulator fault
+
+| Fault | 2025 | Terbaru NB11 | NB14 (uji tambahan) |
+|---|---|---|---|
+| Drift | rampa 0,15–0,2 **per sampel** di seluruh deret (≈ 432–576 poin/hari pada 30 s) | 1 poin/hari, 3 episode × 3 hari (10/40/70 % deret), clip 0–100 | linear, total 5 poin per episode |
+| Spike | `intensity` 0,3–0,5 × SD, `p` 0,07–0,2, periodik | 0,08 × SD, p = 0,015 (tiap 66 sampel), periodik | relatif x(t)·(1 + 0,30), posisi acak, kepadatan 1,52 % |
+| Bias | +0,35 konstan seluruh deret | +0,08 konstan seluruh deret | 5 poin selama episode, lalu normal |
+| Hardware | stuck 0,2–0,3, loss 0,1–0,2 | stuck 0,08, loss 0,05 | sama dengan NB11 |
+| Kombinasi | S1 satu fault acak tanpa seed; S2–S5 ditumpuk | 16 kondisi + normal, seed tetap | semua komponen pada episode yang sama |
+
+- **Kenapa:** drift lama tidak fisis (catatan `9963cd2`: 0,2/sampel = 57,6 poin/hari pada laju
+  5 menit, +5.635 poin, tembus 100 % setelah ±22 jam), sehingga terdeteksi karena artefak.
+  Intensitas diturunkan ke tingkat yang mungkin terjadi; NB14 menguji bentuk episode karena
+  NB12/13 menunjukkan bias konstan tak terlihat oleh entropi.
+- **Dampak:** koreksi drift NB11 v2 → v3: JSD menang 12/15 → 11/15, p 0,0504 → 0,076, sensor-ID
+  0,765/0,721 → 0,675/0,634; NB09 LM 0,504 → 0,433. Bentuk NB14: F1 EDM/JSD 0,458/0,486
+  (p = 0,076) → 0,421/0,497 (p = 0,0006).
+- **Pro:** fault fisis dan berlabel pasti; hasil bisa direproduksi (seed tetap).
+- **Kontra:** semua angka turun; laju 1 poin/hari dan tingkat "sedang" adalah asumsi tanpa
+  sumber (Gap 4); bias konstan 0,08 secara struktural tidak terlihat (NB12 AUC ±0,50).
+
+### C. Label
+
+| Parameter | 2025 | Terbaru |
+|---|---|---|
+| Label grid search | `label_auto`: 20 % deviasi terbesar (persentil 80), bukan mask fault | mask fault yang disuntikkan |
+| Mask bias/drift | seluruh deret True | hanya sampel yang benar-benar terganggu |
+| Label window | tidak ada (per sampel) | fault kalau porsi sampel fault > 1 % (`FAULT_RATIO_THR = 0.01`); NB14: semua komponen ada |
+| Kelas | biner fault/normal | 17 kelas + biner per sensor; subsampel `MAX_PER_CLASS = 100` |
+
+- **Kenapa:** `label_auto` mengukur level sinyal, bukan fault, sehingga akurasi semu.
+- **Dampak:** grid search 2025 akurasi 0,980–0,999, tetapi dengan label mask F1 S2 = 0,000,
+  S4 = 0,496. Versi per sensor Juli 2026 (label kembar) F1 0,925 dinyatakan tidak sah
+  (`175333c`).
+- **Pro:** angka jujur dan bisa dibandingkan antar metode.
+- **Kontra:** angka absolut jauh lebih rendah (F1 S2–S4 0,21–0,53).
+
+### D. Fitur entropi
+
+| Parameter | 2025 | Terbaru |
+|---|---|---|
+| Peran entropi | hanya tabel CV; classifier memakai fitur lag (satu percobaan EDM skala [1]) | fitur utama classifier |
+| Skala τ | [1, 5, 9, 13, 17] (CV); [1, 3, …, 20] (contoh) | 1..15 (`T_SCALES = 15`) → 4 sensor × 15 = 60 fitur |
+| m, r | m = 2, r = 0,15 · SD | m = 2, r = 0,2 · SD |
+| Titik acuan | `MAX_VECTORS_FUZZY = 140`, downsample ke 2048 | `n_ref = 128` acak per skala, tanpa downsample |
+| JSD | histogram 50 bin + Laplace smoothing, satu skalar per skala | jarak JSD menggantikan Euclidean di similarity fuzzy; soft-binning Gaussian 8 bin, rentang ±3 SD |
+
+- **Kenapa:** metode yang dibandingkan harus masuk ke model; JSD "rich" Juni 2026 memberi
+  160 vs 40 fitur sehingga tidak setara (`461b17e`). Alasan perubahan r 0,15 → 0,2 · SD
+  tidak tercatat di commit (tidak ditemukan bukti).
+- **Dampak:** JSD rich → drop-in: F1 EDM/JSD 0,454/0,655 → 0,541/0,624 (p = 0,028, N = 200).
+  Softmax ditolak karena korelasi 0,98 dengan Euclidean; soft-binning 0,75.
+- **Pro:** EDM dan JSD hanya beda di ukuran jarak, jadi perbandingan adil.
+- **Kontra:** JSD ±2× lebih lambat (tidak ada klaim efisiensi); JSD buta urutan; `n_ref`
+  acak menambah variasi.
+
+### E. ANN dan pelatihan
+
+| Parameter | 2025 | Terbaru |
+|---|---|---|
+| Solver | `scipy.optimize.least_squares(method="lm")`, Jacobian numerik, `max_nfev = 60` | LM asli: Gauss-Newton terdamping, Jacobian analitik (self-check), redaman Nielsen, `lam0 = 1e-3` |
+| Arsitektur | 1 lapis 6 neuron (atau 2 lapis), tanh + sigmoid | grid 8 arsitektur (16) … (64, 16) × tanh/relu, dipilih di dalam fold |
+| Init / keluaran | `randn`, 1 keluaran sigmoid, L2 | Xavier, 2 keluaran softmax |
+| Iterasi / waktu | 60 evaluasi fungsi; 484–849 s per skenario | 6 iterasi saat search, 40 saat refit; batas 40 s / 150 s; NB11 v3 total 610 menit |
+
+- **Kenapa:** permintaan pembimbing memakai LM sesuai paper; Juli–Agustus 2026 sempat memakai
+  `lbfgs` sklearn yang bukan LM.
+- **Dampak:** NB09 (setelah koreksi drift): LM 0,433, BR 0,429, GA 0,306, Adam 0,268. NB08
+  (`lbfgs`) p = 0,035 vs NB11 (LM) p = 0,076 — pipeline tidak identik, jadi selisih ini
+  bukan efek solver murni.
+- **Pro:** sesuai metode yang diusulkan; Jacobian analitik cepat dan terverifikasi.
+- **Kontra:** mahal (10 jam per run); tujuh sel terpotong batas waktu; bobot keluaran mulai
+  nol dan langkah ditolak menghabiskan iterasi (Gap 8).
+
+### F. Evaluasi dan statistik
+
+| Parameter | 2025 | Terbaru |
+|---|---|---|
+| Pembagian | train/val/test berurutan waktu, satu kali | StratifiedGroupKFold 5 luar / 2 dalam, grup = blok waktu, seed 42 |
+| Ambang | dipilih di validasi | dipilih di dalam fold |
+| Uji | tidak ada | uji-t berpasangan, Wilcoxon, Nadeau–Bengio, Holm (3 N), Cohen dz, bootstrap 10.000×, purge, label acak |
+
+- **Kenapa:** satu split berurutan tidak memberi variasi; uji-t biasa pada fold yang
+  tumpang-tindih terlalu optimis.
+- **Dampak:** NB11 N = 700 p 0,027 → Holm 0,081; gabungan dz = 0,49, CI95 [+0,0023; +0,0584];
+  purge: JSD ≥ EDM 4/5 → 5/5; label acak F1 0,446–0,508 (tingkat tebakan).
+- **Pro:** klaim tahan uji penguji; kebocoran diukur, bukan diasumsikan.
+- **Kontra:** klaim akhir hanya "konsisten", bukan "terbukti"; Wilcoxon n = 5 tidak bisa di
+  bawah 0,0625; belum ada ulangan multi-seed (Gap 7).
+
 ## Tabel ringkas sebelum → sesudah
 
 | Titik balik | Metrik | Sebelum | Sesudah | Sumber |
