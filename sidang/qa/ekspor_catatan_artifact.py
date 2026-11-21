@@ -41,23 +41,50 @@ def bongkar(src: str) -> tuple[str, str, str] | None:
     return "Lampiran: file persiapan", judul, isi
 
 
-MILIKKU = r"utama|persiapan|klaim|laporan|penelitian|skripsi|jawaban|catatan|metode|hasil|skenario|buatan|CV|F1|paper|baseline"
+PRONOMINA = r"saya|Saya|Anda|kami|Kami|kita|Kita|aku|Aku"
+
+# Frasa yang perlu ditulis ulang utuh supaya tetap wajar tanpa kata ganti orang.
+FRASA = [
+    ("Bapak/Ibu bisa", "Penguji bisa"), ("Bu Luh", "pembimbing"),
+    ("hasil Anda", "hasil penelitian ini"), ("F1 Anda", "F1-nya"),
+    ("paper kami", "paper sebelumnya"), ("buatan Anda", "buatan sendiri"),
+    ("skenario Anda", "skenarionya"), ("nested grouped CV Anda", "nested grouped CV yang dipakai"),
+    ("persiapan saya", "persiapan sidang"),
+    ("membuat Anda naik", "membuat posisi naik"), ("Anda mundur", "algoritma mundur"),
+    ("Saat presentasi kita tidak melatih; kita **memuat**", "Saat presentasi tidak ada pelatihan; yang dilakukan hanya **memuat**"),
+    ("seberapa sering kita melihat beda sebesar ini", "seberapa sering beda sebesar ini muncul"),
+    ("kita curiga termometer itu rusak", "termometer itu patut dicurigai rusak"),
+    ("kita tahu persis", "diketahui persis"), ("kami mengukurnya", "sudah diukur"),
+    ("kita menyembunyikan kasus sulit", "kasus sulit ikut tersembunyi"),
+    ("saya tidak boleh merusak sensor", "sensor sungguhan tidak boleh dirusak"),
+    ("lalu menulis ulang forward pass", "lalu forward pass ditulis ulang"),
+    ("Saran saya", "Sarannya:"), ("dan menyebut hasilnya deskriptif", "dan hasilnya disebut deskriptif"),
+    ("Saya memakainya sebagai pembanding dan mengganti hanya", "Metode itu dipakai sebagai pembanding; yang diganti hanya"),
+    ("saya tunjukkan", "akan ditunjukkan"), ("saya cek", "akan dicek"), ("Saya cek", "Akan dicek"),
+    ("saya tidak menemukan", "belum ditemukan"), ("saya punya", "tersedia"),
+    ("saya menyebutnya", "hasil ini disebut"), ("Saya memakainya", "Pustaka ini dipakai"),
+    ("Saya menambahkan", "Ditambahkan"), ("Saya memakai", "Dipakai"),
+    ("saya membaca", "yang dipakai adalah"), ("saya menekankan", "yang ditekankan adalah"),
+]
+# Kata kerja dasar yang dipasifkan: "saya tampilkan" -> "ditampilkan".
+PASIF = (r"tampilkan|perbaiki|klaim|koreksi|tulis|laporkan|catat|uji|cek|tunjukkan|ukur|"
+         r"rata-ratakan|ambil|beri|acak|baca|ralat|pakai|masukkan")
 
 
-def _ku(m: re.Match) -> str:
-    kata = m.group(1)
-    return kata + ("-ku" if kata[-1].isupper() or kata[-1].isdigit() else "ku")
+def gaya_netral(t: str) -> str:
+    """Hapus semua kata ganti orang (saya/Anda/kami/kita/aku) dan sapaan Bapak/Ibu."""
+    for lama, baru in FRASA:
+        t = re.sub(r"\s+".join(map(re.escape, lama.split())), baru, t)
 
-
-def gaya_aku(t: str) -> str:
-    """Ubah sudut pandang ke monolog orang pertama: 'aku', tanpa sapaan Bapak/Ibu."""
-    t = t.replace("Bapak/Ibu bisa", "Penguji bisa").replace("Bu Luh", "pembimbing").replace("Label saya acak", "Labelnya aku acak")
-    # kepemilikan: "hasil Anda" / "klaim saya" / "paper kami" -> "hasilku", "klaimku", "paperku"
-    t = re.sub(rf"\b({MILIKKU}) (?:Anda|saya|kami|kita)\b", _ku, t)
-    t = re.sub(r"\bmembuat Anda\b", "membuatku", t)
-    for lama, baru in [("Anda", "aku"), ("saya", "aku"), ("kami", "aku"), ("kita", "aku")]:
-        t = re.sub(rf"\b{lama}\b", baru, t)
-        t = re.sub(rf"\b{lama.capitalize()}\b", baru.capitalize(), t)
+    def pasif(m: re.Match) -> str:
+        kata = "di" + m.group(2)
+        return kata.capitalize() if m.group(1)[0].isupper() else kata
+    t = re.sub(rf"\b({PRONOMINA})\s+({PASIF})\b", pasif, t)
+    # sisa subjek aktif -> "penelitian ini"; sisa kepemilikan ("Saran saya") -> dibuang
+    t = re.sub(r"(^|[.!?:\"]\s*|\*\s*)(Saya|Kami|Kita|Aku)\s+(?=me|ber|men|tidak)",
+               lambda m: m.group(1) + "Penelitian ini ", t, flags=re.M)
+    t = re.sub(r"\b(saya|kami|kita|aku)\s+(?=me|ber|tidak)", "penelitian ini ", t)
+    t = re.sub(rf"\s+\b({PRONOMINA})\b", "", t)
     return t
 
 
@@ -73,8 +100,11 @@ def main() -> int:
         if b is None:
             continue
         grup, judul, isi = b
-        isi, judul = gaya_aku(isi), gaya_aku(judul)
+        isi, judul = gaya_netral(isi), gaya_netral(judul)
         docs.append({"id": f"c{len(docs) + 1:02d}", "grup": grup, "judul": judul, "md": isi})
+    sisa = [(d["id"], m.group(0)) for d in docs
+            for m in re.finditer(r"\b(saya|Saya|Anda|kami|Kami|kita|Kita|aku|Aku|Bapak|Ibu)\b|\w+-?ku\b(?<!laku)(?<!baku)(?<!buku)", d["judul"] + " " + d["md"])]
+    assert not sisa, f"masih ada kata ganti orang: {sisa[:10]}"
     n_sel = sum(TAG in c.metadata.get("tags", []) for c in nb.cells)
     assert len(docs) == n_sel - 1, f"{len(docs)} dokumen dari {n_sel} sel catatan (1 sel judul)"
     commit = subprocess.run(["git", "-C", str(ROOT), "log", "-1", "--format=%h %cs"],
