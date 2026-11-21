@@ -225,6 +225,35 @@ notebook, builder, dan `hasil09/`/`hasil10/` tidak pernah di-commit.
 | NB15 v2 → v3 | F1 4 sensor | 0,616 | 0,640 | `2b43aea`, `01cb43a` |
 | Runtime NB11 | wall | 525 menit (v1) | 610 menit (v3) | `131cdfb`, Ringkasan v3 |
 
+## Bukti panjang data 10.000 sampel
+
+Pertanyaan yang mungkin muncul: apakah panjang data 10.000 titik sampel pernah benar-benar
+dijalankan? Jawabannya ya untuk versi awal, dan setara-durasi untuk versi terbaru.
+
+**Versi awal (2025-12-14, `48966f8`, `final_databaru_optimized.ipynb` sel 23)** — dijalankan
+langsung pada data 30 detik:
+
+- Kode: `TARGET_LENGTHS=[2000,4000,10000]  # Updated sesuai permintaan Bu Luh`.
+- Output tersimpan: `Processing [3/450]: Normal (N=10000)` dan tabel nilai untuk enam kondisi
+  (Normal, Spike, Drift, Bias, Malfunction, gabungan) × lima metode (MSE, CMSE, FME,
+  EDM-Fuzzy, JSD-Fuzzy). Contoh: Normal N = 10000 MSE 0,464874; Drift N = 10000 MSE 0,366655.
+- Batas: hanya tabel CV entropi, belum masuk classifier; sinyal adalah rata-rata 4 sensor.
+  Panjang tengah di versi ini **4000**, bukan 7000 seperti diagram pembimbing.
+
+**Versi terbaru (NB07–NB16)** — tidak dijalankan 10.000 sampel mentah:
+
+- Data dirata-rata 5 menit, sehingga diagram "N = 2000/7000/10000 pada laju 30 detik"
+  dijalankan sebagai **N = 200/700/1000** dengan durasi identik 0,69 / 2,43 / 3,47 hari
+  (tabel konversi `build_cv_5skenario_notebook.py` bagian "Tabel konversi panjang window").
+- N = 1000 benar-benar dijalankan: baris N = 1000 di `statistik_sel.csv`, sel NB11 N1000 S1–S5.
+- Alasan tidak dipaksa 10.000 pada laju 5 menit, tercetak di log Kaggle
+  `hasil07/jsd-fuzzy-cv-5skenario.log` baris 53: `[andai] N=10000 sampel pada laju 300s ->
+  34.7 hari/window, 4 window untuk SELURUH rekaman (28173 sampel) -> CV 5-fold TIDAK bisa`.
+
+**Kalimat siap pakai:** panjang 10.000 sampel pernah dihitung pada versi awal (tabel CV
+entropi). Pada versi akhir, panjang itu diwakili N = 1000 pada laju 5 menit dengan durasi yang
+sama; model akhir tidak pernah dilatih pada window 10.000 sampel mentah 30 detik.
+
 ## Gap, inkonsistensi, dan yang belum selesai
 
 1. **Jeda kosong:** 2026-01-06 → 06-26 (±5,5 bulan) dan 2026-08-03 → 10-15. NB09/NB10 dari
@@ -258,3 +287,5 @@ notebook, builder, dan `hasil09/`/`hasil10/` tidak pernah di-commit.
 13. **Artefak di luar git:** `hasil*/exports/` di-gitignore; sebagian bukti hanya di Kaggle.
 14. **Pesan commit 2025 tidak informatif** ("add", "fix", "wip"); alasan perubahan Desember
     2025 hanya bisa direkonstruksi dari diff.
+15. **Panjang data tidak seragam:** versi awal 2000/4000/10000 sampel (30 detik), diagram
+    pembimbing 2000/7000/10000, versi akhir 200/700/1000 (5 menit, durasi sama dengan diagram).
