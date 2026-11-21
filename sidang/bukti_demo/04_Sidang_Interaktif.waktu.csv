@@ -1,15 +1,15 @@
 sel,detik,sumber_awal
-1,0.22,"# === Setup 1/3: pustaka angka === import json, sys, time from pathlib import Pa"
-2,0.26,# === Setup 2/3: grafik dan widget === import matplotlib.pyplot as plt import ip
-3,0.01,"# === Setup 3/3: lokasi file, mode presentasi ===  # Lokal: repo penelitian. Kag"
-8,0.12,"jam = C[""ringkas_per_jam""] hari = np.arange(len(jam)) / 24 fig, ax = plt.subplot"
-10,0.01,"# === Panel kontrol (dipakai bagian 3, 4, dan 6) === pil_hari = w.Dropdown(optio"
-12,0.10,"_t_jam = np.arange(int(C[""win""])) * 300 / 3600 FIG_F, AX_F = plt.subplots(1, 2, "
-15,0.12,"T_SK = C[""fit_fault""].shape[-1]; _tau = np.arange(1, T_SK + 1) FIG_E, AX_E = plt"
-18,0.20,"rng_toy = np.random.default_rng(0) x_toy = np.linspace(0, 4, 30); y_toy = 2.0 * "
-21,0.01,# Bobot 10 model N = 700 dari models/ (diekspor ke numpy oleh sidang/qa/buat_cac
-22,0.02,"def tebak(hi, s, fi, ki):     T = C[""fit_fault""].shape[-1]     sken = ""S5"" if C["
-25,0.04,"f1 = pd.read_csv(ROOT / ""hasil11"" / ""exports"" / ""11_rq5_f1_berpasangan.csv"") f1 "
+1,0.28,"# === Setup 1/3: pustaka angka === import json, sys, time from functools import "
+2,0.27,# === Setup 2/3: grafik dan widget === import matplotlib.pyplot as plt import ip
+3,0.98,"# === Setup 3/3: lokasi file, mode presentasi ===  # Lokal: repo penelitian. Kag"
+8,0.14,"jam = C[""ringkas_per_jam""] hari = np.arange(len(jam)) / 24 fig, ax = plt.subplot"
+10,0.03,"# === Panel kontrol (dipakai bagian 3, 4, dan 6) === # Model tersimpan dimuat di"
+12,1.13,"FIG_F, AX_F = plt.subplots(1, 2, figsize=(11, 2.8), gridspec_kw={""width_ratios"":"
+15,0.11,"T_SK = core.T_SCALES; _tau = np.arange(1, T_SK + 1) FIG_E, AX_E = plt.subplots(1"
+18,0.24,"rng_toy = np.random.default_rng(0) x_toy = np.linspace(0, 4, 30); y_toy = 2.0 * "
+21,0.01,# Bobot model N = 200/700/1000 dari models/ (diekspor ke numpy oleh sidang/qa/bu
+22,0.02,"def tebak(**p):     j, n = jendela(**p), p[""n""]     sken = [""S1"", ""S2"", ""S3"", ""S"
+25,0.06,"f1 = pd.read_csv(ROOT / ""hasil11"" / ""exports"" / ""11_rq5_f1_berpasangan.csv"") f1 "
 28,0.01,"st = pd.read_csv(ROOT / ""sidang"" / ""qa"" / ""hasil_uji"" / ""statistik_sel.csv"") kol"
 31,0.01,"p_ef = ROOT / ""sidang"" / ""qa"" / ""hasil_uji"" / ""efek_purge_permutasi.csv"" if p_ef"
-TOTAL,1.88,
+TOTAL,5.18,

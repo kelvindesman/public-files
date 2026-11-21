@@ -204,6 +204,14 @@ notebook, builder, dan `hasil09/`/`hasil10/` tidak pernah di-commit.
   numpy; 540 kombinasi < 1 s; Kaggle COMPLETE 23,6–24,5 s; widget terbukti berubah langsung
   di editor Kaggle (`sidang/bukti_kaggle/widget_editor_2026-11-21/`); Q&A T1–T57; catatan
   internal dipindah ke Artifact. Tidak ada angka model baru.
+- Panel dibuat bisa diatur penuh untuk demo (2026-11-21): panjang jendela N = 200/700/1000,
+  hari mulai (geser 0,5 hari), sensor rusak (1–4 sekaligus), kombinasi fault (15 + tanpa
+  fault), intensitas ×0,1–×100, dan seed. Fault dan entropi dihitung langsung dengan
+  `deteksi_fault_core`. Model N = 200 dan N = 1000 dilatih dengan `simpan_model.py` (env
+  `WIN`) di Kaggle (`kelvindsmn/simpan-model-final-deteksi-fault-n200`/`-n1000`, 2714,6 s dan
+  4866,4 s, log di `hasil16/`). Bobot numpy sama dengan `SavedLM` (selisih 0,00e+00) untuk
+  ketiga N. Fitur langsung cocok dengan fitur latih Kaggle sampai < 2e-3 (beda pembulatan
+  x86_64 vs arm64 di binning JSD).
 
 ---
 
@@ -370,6 +378,63 @@ langsung pada data 30 detik:
 entropi). Pada versi akhir, panjang itu diwakili N = 1000 pada laju 5 menit dengan durasi yang
 sama; model akhir tidak pernah dilatih pada window 10.000 sampel mentah 30 detik.
 
+## Rekonstruksi paper JITK 2026 (Tabel 1 dan Tabel 2)
+
+Paper: Wardhani, Buono, Wahjuni, Syukur (2026), *Evaluation of ANN-Levenberg Marquardt
+Models for Fault Detection in Smart Farming System*, JITK 11(4):1053–1060,
+doi:10.33480/jitk.v11i4.7481. Tabel 1 (hlm. 1056) memuat akurasi/presisi/recall/F1
+0,987–1,000 untuk tiga "arsitektur" per skenario; Tabel 2 (hlm. 1057) memuat waktu,
+CPU, dan memori.
+
+**Cara rekonstruksi.** Notebook `17_Rekonstruksi_Paper_JITK.ipynb` (builder
+`build_17_rekonstruksi_paper_jitk_notebook.py`, Kaggle privat
+`kelvindsmn/rekonstruksi-paper-jitk-ann-lm`) menjalankan ulang kode grid search Des 2025
+(`final_databaru_optimized.ipynb` commit `48966f8`, sel 5, 8–16, 18, 21) pada 10.000
+baris pertama `tabel_sensor4_generated.csv`. Perbaikan minimum supaya bisa jalan
+didokumentasikan di notebook: koma yang tertelan komentar, `base_col` tak terdefinisi,
+kolom rata-rata yang ditimpa `None`, grid serial, dan seed untuk fault acak S1. Data
+persis paper (10.000 titik hipotetik, rentang 60–80 %) tidak ada di repositori,
+jadi yang diuji adalah **pola** tabel, bukan angka persis.
+
+**Hasil.** Run lokal (`hasil17/17_Rekonstruksi_Paper_JITK.executed.ipynb`, 579 s,
+`HASIL: LULUS`): akurasi 0,9298–0,9995, F1 0,9956–1,0000. Run Kaggle
+(`hasil17/rekonstruksi-paper-jitk-ann-lm.v3.log`, versi 3, COMPLETE, 0 Traceback, grid 1757,0 s):
+akurasi 0,9295–0,9995, F1 0,9903–1,0000. Di kedua run, metrik A/B/C identik di setiap
+skenario, dan waktu/CPU/memori juga identik dalam satu skenario, sama seperti paper.
+
+**Tujuh sidik jari yang menjelaskan tabel paper** (semua diperiksa dengan sel kode):
+
+| # | Sifat kode Des 2025 | Akibat di tabel paper | Bukti di NB17 |
+|---|---|---|---|
+| S1 | `use_two_layers=False` selalu; h2 hanya dicatat | `[1 12]`, `[1 12 4]`, `[1 12 8]` = jaringan yang sama (493 parameter, prediksi identik) | §3 S1 |
+| S2 | waktu/CPU/memori diukur sekali per skenario untuk seluruh grid | Tabel 2 identik untuk A/B/C; klaim "arsitektur besar lebih lama" tidak didukung | §3 S2 |
+| S3 | CPU % = waktu CPU proses / waktu dinding / jumlah core; memori % = RSS proses / RAM | CPU % mengukur mesin dan jumlah thread: kode sama memberi ±16 % di laptop 6 core, 50,8–75,2 % di Kaggle 4 core, paper 50,50–86,00 %; memori 4,80–4,81 % = ukuran proses Python (run Des 2025: 4,7252–4,7304 %) | §3 S3 |
+| S4 | tidak ada kolom `label`, jadi dipakai `label_auto` = 20 % level tertinggi sinyal bersih; `kelembaban1..4` ikut menjadi fitur | label bisa ditebak 100 % oleh satu aturan dari fitur; yang diukur bukan deteksi fault | §3 S4 |
+| S5 | ambang dipilih dengan `precision_recall_curve` di data uji | metrik optimistis | §3 S5 |
+| S6 | akurasi memakai `p > t`, presisi/recall memakai `p >= t` | presisi = recall = 1,000 dengan akurasi 0,997 (paper S5 A/B), mustahil pada satu ambang | §3 S6 |
+| S7 | mask bias = seluruh deret | `label_fault` = 1 di semua baris S2–S5 (satu kelas), sehingga label fault asli tidak terpakai | §3 S7 |
+
+**Kontrol negatif (§4).** Grid yang sama pada sinyal **tanpa fault** memberi F1 0,9991
+(lokal) dan 0,9550 (Kaggle), dengan akurasi 0,93/0,9262 karena aturan ambang S6. Angka
+setinggi itu muncul tanpa fault sama sekali, jadi Tabel 1 tidak mengukur deteksi fault.
+
+**Sebelum → sesudah.** Setiap sidik jari dijawab oleh versi terbaru:
+- label fault yang benar (episode, ada kelas normal);
+- grid 8 arsitektur yang benar-benar dilatih di dalam fold;
+- ambang dari validasi;
+- biaya per model;
+- CV berkelompok blok waktu + uji statistik + purge + label acak;
+- simulator fisis;
+- LM asli.
+
+Harganya: F1 turun ke tingkat realistis. Contoh: NB15 v3 F1 4 sensor 0,640, NB11 F1
+0,458 → 0,486. Klaim dibatasi menjadi "konsisten".
+
+**Catatan untuk sidang.** Temuan ini menyangkut paper pembimbing yang sudah terbit.
+Bahas dengan pembimbing sebelum sidang. Kalimat aman: "Versi awal memakai label
+otomatis dan ambang dari data uji; versi tesis mengganti keduanya, sehingga angka
+turun tetapi dapat dipertanggungjawabkan."
+
 ## Gap, inkonsistensi, dan yang belum selesai
 
 1. **Jeda kosong:** 2026-01-06 → 06-26 (±5,5 bulan) dan 2026-08-03 → 10-15. NB09/NB10 dari
@@ -405,3 +470,6 @@ sama; model akhir tidak pernah dilatih pada window 10.000 sampel mentah 30 detik
     2025 hanya bisa direkonstruksi dari diff.
 15. **Panjang data tidak seragam:** versi awal 2000/4000/10000 sampel (30 detik), diagram
     pembimbing 2000/7000/10000, versi akhir 200/700/1000 (5 menit, durasi sama dengan diagram).
+16. **Rekonstruksi paper JITK tidak deterministik:** simulator hardware kode Des 2025 memakai
+    `default_rng(None)`, sehingga angka per skenario berubah antar run (pola tetap). Data
+    10.000 titik hipotetik paper tidak ada di repositori.

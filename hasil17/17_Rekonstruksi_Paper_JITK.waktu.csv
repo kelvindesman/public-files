@@ -1,0 +1,19 @@
+sel,detik,sumber_awal
+2,0.65,"import pandas as pd pd.set_option(""display.width"", 200)  paper_t1 = pd.DataFrame"
+5,1.54,"import os, time, platform os.environ.setdefault(""OMP_NUM_THREADS"", ""1""); os.envi"
+6,0.01,"# ---- sel 5 asli: simulator fault ---- def simulate_drift_fault(x, intensity=0."
+7,0.02,"# ---- sel 8-16 asli: skenario S1-S5 (tanpa plot) ---- def bangun_skenario(df, b"
+8,0.01,# ---- sel 18 asli: neural_network_detection (perbaikan sintaks minimum) ---- de
+9,0.01,# ---- sel 21 asli: grid search dua tahap (dijalankan serial) ---- POS_FRAC = 0.
+10,452.72,"t_mulai = time.perf_counter() LB = {} for k, dsk in SKENARIO.items():     print("
+12,0.04,"rek = [] for k, lb in LB.items():     for huruf, (_, r) in zip(""ABC"", lb.head(3)"
+15,29.61,"dfe1, lab1 = _prepare_df_for_grid(SKENARIO[1], n_lags=FINAL_LAGS) hasil = {} for"
+17,0.01,"print(rek.groupby(""skenario"")[[""waktu_s"", ""cpu_persen"", ""memori_persen""]].nuniqu"
+19,0.01,"print(f""mesin ini: {N_CPUS} core logis, RAM {TOTAL_RAM_MB/1024:.1f} GB"") print(f"
+21,0.04,"d5, lab5 = _prepare_df_for_grid(SKENARIO[5], n_lags=FINAL_LAGS) thr = SKENARIO[5"
+23,0.88,"def tak_konsisten(t, desimal):     # Presisi = recall = 1 (pada presisi yang dil"
+25,0.00,"for k, d in SKENARIO.items():     print(f""S{k}: porsi label_fault=1 = {d['label_"
+27,52.81,"bersih = df.copy() _global_best_f1[""v""] = 0.0 lb_bersih, _ = run_grid_two_stage("
+29,0.01,"evolusi = pd.DataFrame([     (""Label (S4, S7)"", ""label_auto = 20 % level terting"
+31,0.01,"kandidat = [Path(""/kaggle/input/sidang-bahan/statistik_sel.csv""), Path("".kaggle_"
+TOTAL,539.59,

@@ -21,19 +21,27 @@ PY = sys.executable
 GERAK_PANEL = r"""
 import time, json, itertools, traceback
 err, lambat, n = [], [], 0
-for hi, s, fi, ki in itertools.product(range(len(C["hari"])), range(4), range(len(C["fault"])), range(len(C["intensitas"]))):
+kombinasi_fault = [c for r in range(5) for c in itertools.combinations(FAULT4, r)]   # 16, termasuk kosong
+sensor_pilihan = [(1,), (0, 3), (0, 1, 2), (0, 1, 2, 3), ()]
+hari_pilihan = [0.0, 10.0, 39.5, 69.0, pil_hari.max]
+for i, (nn, fault) in enumerate(itertools.product(META, kombinasi_fault)):
+    p = dict(n=nn, hari=hari_pilihan[i % 5], sensor=sensor_pilihan[i % 5], fault=fault,
+             k=[0.1, 1.0, 50.0][i % 3], seed=2026 + i, lihat=i % 4)
+    t0 = time.time()
     for fn in (gambar_fault, gambar_entropi, tebak):
-        t0 = time.time()
         try:
-            isi = fn(hi=hi, s=s, fi=fi, ki=ki); plt.close("all")
+            isi = fn(**p); plt.close("all")
         except Exception:
-            err.append((fn.__name__, hi, s, fi, ki, traceback.format_exc(limit=1)))
-        dt = time.time() - t0; n += 1
-        if dt > 1.0: lambat.append((fn.__name__, round(dt, 2)))
-t0 = time.time(); pil_fault.value = 0; pil_sensor.value = 3; pil_int.value = 2; pil_hari.value = 1
+            err.append((fn.__name__, p, traceback.format_exc(limit=2)))
+    dt = time.time() - t0; n += 1
+    if dt > 4.0: lambat.append((nn, len(p["sensor"]), round(dt, 2)))
+t0 = time.time()
+pil_fault.value = ("spike", "bias"); pil_sensor.value = (0, 3); pil_int.value = 10.0
+pil_hari.value = 40.0; pil_N.value = max(META); pil_seed.value = 7; pil_lihat.value = 3
 t_widget = time.time() - t0
-print("HASIL_GERAK=" + json.dumps({"n": n, "error": err[:3], "n_error": len(err), "lambat": lambat[:5],
-                                   "n_lambat": len(lambat), "t_widget_4_ubah": round(t_widget, 2)}))
+print("HASIL_GERAK=" + json.dumps({"n": n, "n_N": len(META), "error": [str(e)[:400] for e in err[:3]],
+                                   "n_error": len(err), "lambat": lambat[:5], "n_lambat": len(lambat),
+                                   "t_widget_7_ubah": round(t_widget, 2)}))
 """
 
 
@@ -53,9 +61,38 @@ def test_semua_pilihan_panel_jalan_dan_cepat():
     hasil = json.loads(teks.split("HASIL_GERAK=")[1].splitlines()[0])
     print(hasil)
     assert hasil["n_error"] == 0, hasil["error"]
-    assert hasil["n"] == 3 * 4 * 5 * 3 * 3
+    assert hasil["n"] == hasil["n_N"] * 16
+    # satu perubahan panel = fault + entropi baru untuk semua sensor yang dirusak (N = 1000: ±0,4 s/sensor/metode)
     assert hasil["n_lambat"] == 0, hasil["lambat"]
-    assert hasil["t_widget_4_ubah"] < 4.0
+    assert hasil["t_widget_7_ubah"] < 20.0
+
+
+# source: Kelvin, chat 2026-11-21 — "make sure sidang-interaktif-deteksi-fault all adjustable for demo purpose"
+def test_panel_mencakup_semua_parameter_demo():
+    nb = _jalankan(NB_INTERNAL, "print('KONTROL=' + json.dumps(sorted(KONTROL)) + ' N=' + json.dumps(sorted(META)))")
+    teks = "".join(o.get("text", "") for o in nb.cells[-1].outputs if o.output_type == "stream")
+    assert json.loads(teks.split("KONTROL=")[1].split(" N=")[0]) == sorted(
+        ["n", "hari", "sensor", "fault", "k", "seed", "lihat"])
+    assert json.loads(teks.split(" N=")[1].splitlines()[0]) == [200, 700, 1000]
+
+
+# source: deteksi_fault_core.segment_and_label + simpan_model.py — the panel computes features live from
+# sidang/assets/cache_interaktif.npz X5; normal windows must reproduce the stored training features exactly.
+def test_fitur_langsung_sama_dengan_fitur_latih():
+    sys.path.insert(0, str(ROOT))
+    import deteksi_fault_core as core
+    X5 = np.load(ROOT / "sidang" / "assets" / "cache_interaktif.npz")["X5"]
+    for f in sorted((ROOT / "models").glob("fitur_N*.npz")):
+        N = int(f.stem.split("_N")[1])
+        d = np.load(f)
+        idx = np.where(d["y_cond"] == 0)[0][:3]
+        for i in idx:
+            Wi = X5[d["starts"][i]:d["starts"][i] + N].astype(np.float32)
+            for F, met in [(d["F_edm"], "EDM-Fuzzy"), (d["F_jsd"], "JSD-Fuzzy")]:
+                # Training features were computed on Kaggle (x86_64), this check runs on the laptop (arm64):
+                # float rounding moves a few JSD histogram bin edges (max seen 8.6e-4). A wrong seed or a
+                # window shifted by one day differs by 0.019-0.039, so 2e-3 still catches real mismatches.
+                assert np.abs(core._one_window(Wi, met, 7 + 1000 * i) - F[i]).max() < 2e-3, (N, i, met)
 
 
 # source: Kelvin, permintaan sidang 2026-11-20 — "when presentation hide detailed note cheatsheet but for internal show notes"
@@ -79,15 +116,17 @@ def test_bobot_numpy_sama_dengan_model_tersimpan():
     sys.path.insert(0, str(ROOT / "models"))
     import joblib
     sys.path.insert(0, str(ROOT / "sidang" / "qa"))
-    from buat_cache_interaktif import maju
+    from buat_cache_interaktif import daftar_meta, maju
     import deteksi_fault_core as core
-    d = np.load(ROOT / "models" / "fitur_N700.npz")
-    meta = json.loads((ROOT / "models" / "meta.json").read_text())
-    for row in meta["models"]:
-        b = joblib.load(ROOT / "models" / row["file"])
-        X = d["F_edm"] if b["method"] == "EDM-Fuzzy" else d["F_jsd"]
-        m = b["detektor"]
-        lay = core.lm_unpack(m.theta, m._template())
-        p = {"fill": m.fill, "mean": m.mean, "scale": m.scale, "act": m.activation,
-             "W": [W for W, _ in lay], "b": [bb for _, bb in lay]}
-        assert np.abs(maju(p, X, "kelas") - m.predict_proba(X)).max() < 1e-9
+    semua = daftar_meta()
+    assert 700 in semua
+    for N, meta in semua.items():
+        d = np.load(ROOT / "models" / f"fitur_N{N}.npz")
+        for row in meta["models"]:
+            b = joblib.load(ROOT / "models" / row["file"])
+            X = d["F_edm"] if b["method"] == "EDM-Fuzzy" else d["F_jsd"]
+            m = b["detektor"]
+            lay = core.lm_unpack(m.theta, m._template())
+            p = {"fill": m.fill, "mean": m.mean, "scale": m.scale, "act": m.activation,
+                 "W": [W for W, _ in lay], "b": [bb for _, bb in lay]}
+            assert np.abs(maju(p, X, "kelas") - m.predict_proba(X)).max() < 1e-9

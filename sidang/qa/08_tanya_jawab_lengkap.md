@@ -25,28 +25,31 @@ ditulis di akhir judul, misalnya (Q1, P9).
 <!-- bagian: pembuka -->
 
 **T1. Bagaimana memakai notebook ini saat sidang?**
-- *30 detik:* "Notebook ini memuat model yang sudah dilatih dan fitur yang
-  sudah dihitung, jadi setiap sel selesai di bawah dua detik. Bapak/Ibu bisa
-  memilih hari, sensor, jenis gangguan, dan intensitasnya, lalu melihat sinyal,
-  kurva entropi, dan tebakan model berubah."
-- *Penjelasan:* melatih ulang model butuh jam (NB11 di Kaggle
-  ±10 jam). Saat presentasi kita tidak melatih; kita **memuat** bobot jaringan
-  yang sudah tersimpan, lalu hanya melakukan perkalian matriks (forward pass).
-  Itu seperti memakai kalkulator yang rumusnya sudah jadi.
-- *Bukti:* `sidang/bukti_demo/04_Sidang_Interaktif.waktu.csv` (13 sel kode,
-  total 9,7 s, sel terlama 1,7 s); `sidang/qa/test_notebook_sidang.py`
-  (540 kombinasi panel tanpa galat, tiap panggilan < 1 s).
+- *30 detik:* "Notebook ini memuat model yang sudah dilatih, jadi tidak ada
+  pelatihan saat presentasi. Penguji bisa memilih panjang jendela (N = 200, 700,
+  atau 1000), hari mulai, sensor yang dirusak, kombinasi fault, intensitas, dan
+  seed. Sinyal, kurva entropi, dan tebakan model langsung berubah."
+- *Penjelasan:* melatih ulang model butuh jam (NB11 di Kaggle ±10 jam). Saat
+  presentasi tidak ada pelatihan; yang dilakukan hanya **memuat** bobot jaringan
+  yang sudah tersimpan, lalu perkalian matriks (forward pass). Fault dan entropi
+  jendela pilihan dihitung langsung dengan fungsi penelitian yang sama
+  (`deteksi_fault_core`). Satu jendela N = 1000 butuh ±0,4 detik per sensor
+  per metode.
+- *Bukti:* `sidang/bukti_demo/04_Sidang_Interaktif.waktu.csv` (waktu tiap sel);
+  `sidang/qa/test_notebook_sidang.py` (`test_semua_pilihan_panel_jalan_dan_cepat`:
+  16 kombinasi fault × 3 panjang jendela tanpa galat, tiap perubahan < 4 detik).
 
 **T2. Apakah model di notebook ini sama dengan model penelitian?**
-- *30 detik:* "Sama persis. Bobotnya diekspor dari model tersimpan N = 700 dan
-  prediksinya dibandingkan dengan model asli: selisih maksimum nol."
+- *30 detik:* "Sama persis. Bobotnya diekspor dari model tersimpan N = 200/700/1000,
+  dan prediksinya dibandingkan dengan model asli: selisih maksimum nol."
 - *Penjelasan:* model asli disimpan sebagai objek Python yang butuh
-  scikit-learn (lambat diimpor, ±3–6 detik). Kita ambil angka-angkanya saja
-  (bobot W, bias b, rata-rata dan skala normalisasi) ke file `.npz`, lalu
-  menulis ulang forward pass dengan numpy. Supaya yakin tidak ada salah salin,
-  keluaran kedua versi dibandingkan pada semua jendela uji.
+  scikit-learn. Angka-angkanya saja (bobot W, bias b, rata-rata dan skala
+  normalisasi) diambil ke file `.npz`, lalu forward pass ditulis ulang dengan
+  numpy. Keluaran kedua versi dibandingkan pada semua jendela latih supaya tidak
+  ada salah salin. Fitur yang dihitung langsung di panel juga dicek sama dengan
+  fitur latih (`test_fitur_langsung_sama_dengan_fitur_latih`).
 - *Bukti:* `sidang/qa/buat_cache_interaktif.py` fungsi `ekspor_model`
-  (assert selisih < 1e-9, terukur 0,00e+00); uji
+  (assert selisih < 1e-9 untuk setiap N); uji
   `test_bobot_numpy_sama_dengan_model_tersimpan`.
 
 **T3. Kenapa catatan ini tidak tampil saat presentasi?**

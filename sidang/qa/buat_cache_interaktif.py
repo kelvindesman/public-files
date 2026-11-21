@@ -1,106 +1,53 @@
 #!/usr/bin/env python3
-"""buat_cache_interaktif.py — hitung sekali semua fitur yang dipakai widget notebook sidang.
+"""buat_cache_interaktif.py — siapkan bahan notebook sidang interaktif.
 
-Notebook interaktif harus responsif (< 2 detik per sel), sedangkan entropi
-multiskala satu window butuh beberapa detik. Karena pilihan widget terbatas,
-semua kombinasinya dihitung di sini sekali lalu disimpan ke
-`sidang/assets/cache_interaktif.npz`.
+Notebook interaktif menghitung fault dan entropi LANGSUNG dari pilihan panel
+(panjang jendela, hari mulai, sensor, kombinasi fault, intensitas, seed), memakai
+fungsi penelitian `deteksi_fault_core` yang sama. Satu jendela N = 1000 butuh
+±0,4 s per sensor per metode, jadi tidak perlu tabel pilihan yang dihitung di muka.
 
-Pilihan: hari mulai {10, 40, 69} (ketiganya di dalam episode drift) × sensor
-{S1..S4} × fault {drift, spike, bias, hardware, semua} × intensitas {×1, ×10, ×50}.
-×1 = parameter simulator penelitian (deteksi_fault_core.SCENARIOS). Intensitas
-mengalikan amplitudo drift/spike/bias; peluang hardware dikali min(k, 5) dan
-dibatasi 0,6 (supaya tetap peluang).
+File ini menyiapkan dua hal:
 
-Fitur dihitung dengan fungsi yang sama persis dengan penelitian
-(`deteksi_fault_core.entropy_1d`), seed per sensor = 7 + 19·s seperti
-`concat_multisensor_features(..., seed=7)` untuk window pertama. Sensor yang tidak
-dirusak memakai fitur window bersih (identik karena data dan seed-nya sama).
+1. `sidang/assets/cache_interaktif.npz` — data lapangan yang sudah disinkronkan ke
+   5 menit (`X5`, sama dengan masukan `segment_and_label` di simpan_model.py),
+   ringkasan per jam untuk grafik besar, dan waktu awal rekaman. Dengan ini notebook
+   tidak perlu membaca `data_sensor.csv` (70 MB).
+2. `sidang/assets/model_sidang.npz` — bobot semua model tersimpan untuk setiap
+   panjang jendela yang tersedia di `models/` (N = 200/700/1000), sebagai numpy
+   murni. Prediksi dicek sama dengan `SavedLM` asli pada fitur latih
+   `models/fitur_N{N}.npz` (selisih < 1e-9).
+
+Jalankan: ./venv/bin/python sidang/qa/buat_cache_interaktif.py
 """
 from __future__ import annotations
 
+import json
 import sys
 import time
 from pathlib import Path
 
 import numpy as np
-from joblib import Parallel, delayed
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 import deteksi_fault_core as core  # noqa: E402
 
 OUT = ROOT / "sidang" / "assets" / "cache_interaktif.npz"
-WIN = 700
-HARI = [10, 40, 69]
-FAULT = ["drift", "spike", "bias", "hardware", "semua"]
-INTENS = [1, 10, 50]
-METODE = ["EDM-Fuzzy", "JSD-Fuzzy"]
-SEED = 7
-
-
-def daftar_fault(nama: str, k: float):
-    D = {"intensity": core.DRIFT_PER_SAMPLE * k}
-    S = {"intensity": 0.08 * k, "p": 0.015}
-    B = {"bias": 0.08 * k}
-    H = {"stuck_prob": min(0.6, 0.08 * min(k, 5)), "loss_prob": min(0.6, 0.05 * min(k, 5))}
-    peta = {"drift": [(core.simulate_drift_fault, D)], "spike": [(core.simulate_spike_fault, S)],
-            "bias": [(core.simulate_bias_fault, B)], "hardware": [(core.simulate_hardware_fault, H)]}
-    if nama == "semua":   # urutan sama dengan kondisi "spike+bias+malfunc+drift"
-        return peta["spike"] + peta["bias"] + peta["hardware"] + peta["drift"]
-    return peta[nama]
-
-
-def fitur_sensor(x, metode, s):
-    return core.entropy_1d(np.asarray(x, float), metode, sd=SEED + 19 * s)
+OUT_MODEL = ROOT / "sidang" / "assets" / "model_sidang.npz"
+MODELS = ROOT / "models"
 
 
 def main() -> int:
     t0 = time.time()
-    X = core.sync_broker(core.load_sensor_data([str(ROOT / "data_sensor.csv")])).to_numpy(float)
-    per_hari = int(86400 / core.SAMPLING_SECONDS)
-    starts = [h * per_hari for h in HARI]
-    sig_bersih = np.stack([X[s:s + WIN] for s in starts])                       # (3, WIN, 4)
-
-    sig_fault = np.zeros((len(FAULT), len(INTENS), 4, len(HARI), WIN))
-    porsi = np.zeros((len(FAULT), len(INTENS), 4, len(HARI)))
-    jobs = []
-    for fi, fn in enumerate(FAULT):
-        for ki, k in enumerate(INTENS):
-            for s in range(4):
-                Y, M = core.inject_faults_multisensor(X, daftar_fault(fn, k), [s], seed=2026 + 31 * fi + s)
-                for hi, st in enumerate(starts):
-                    sig_fault[fi, ki, s, hi] = Y[st:st + WIN, s]
-                    porsi[fi, ki, s, hi] = M[st:st + WIN, s].mean()
-                    for mi, met in enumerate(METODE):
-                        jobs.append(((fi, ki, s, hi, mi), sig_fault[fi, ki, s, hi].copy(), met, s))
-    for hi in range(len(HARI)):
-        for s in range(4):
-            for mi, met in enumerate(METODE):
-                jobs.append((("bersih", hi, s, mi), sig_bersih[hi, :, s].copy(), met, s))
-    print(f"{len(jobs)} perhitungan entropi", flush=True)
-    hasil = Parallel(n_jobs=2)(delayed(fitur_sensor)(x, met, s) for _, x, met, s in jobs)
-
-    T = core.T_SCALES
-    fit_bersih = np.zeros((len(METODE), len(HARI), 4 * T))
-    fit_fault = np.zeros((len(METODE), len(FAULT), len(INTENS), 4, len(HARI), T))
-    for (key, _, _, _), f in zip(jobs, hasil):
-        if key[0] == "bersih":
-            _, hi, s, mi = key
-            fit_bersih[mi, hi, s * T:(s + 1) * T] = f
-        else:
-            fi, ki, s, hi, mi = key
-            fit_fault[mi, fi, ki, s, hi] = f
-
+    df = core.sync_broker(core.load_sensor_data([str(ROOT / "data_sensor.csv")]))
+    X = df.to_numpy(float)
     # ringkasan seluruh data per jam untuk grafik gambaran besar
     jam = X[: (len(X) // 12) * 12].reshape(-1, 12, 4).mean(axis=1)
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(OUT, hari=np.array(HARI), fault=np.array(FAULT), intensitas=np.array(INTENS),
-                        metode=np.array(METODE), sig_bersih=sig_bersih, sig_fault=sig_fault, porsi=porsi,
-                        fit_bersih=fit_bersih, fit_fault=fit_fault, ringkas_per_jam=jam,
-                        n_sampel_5menit=len(X), win=WIN)
+    np.savez_compressed(OUT, X5=X, ringkas_per_jam=jam, n_sampel_5menit=len(X),
+                        mulai=str(df.index[0]), metode=np.array(["EDM-Fuzzy", "JSD-Fuzzy"]))
     print(f"Tersimpan {OUT.relative_to(ROOT)} ({OUT.stat().st_size / 1e6:.1f} MB) dalam {time.time() - t0:.0f} s")
-    ekspor_model(fit_bersih, fit_fault)
+    ekspor_model()
     return 0
 
 
@@ -122,54 +69,59 @@ def maju(p: dict, X: np.ndarray, kind: str) -> np.ndarray:
     return e / e.sum(axis=1, keepdims=True)
 
 
-def ekspor_model(fit_bersih, fit_fault):
-    """Simpan bobot 10 model N=700 sebagai npz biasa (tanpa sklearn) + cek kesamaan prediksi.
+def daftar_meta() -> dict[int, dict]:
+    """{N: meta} untuk setiap panjang jendela yang modelnya ada di models/."""
+    hasil = {}
+    for f in sorted(MODELS.glob("meta_N*.json")):
+        meta = json.loads(f.read_text())
+        hasil[int(meta["window"])] = meta
+    if 700 not in hasil and (MODELS / "meta.json").exists():
+        hasil[700] = json.loads((MODELS / "meta.json").read_text())
+    return dict(sorted(hasil.items()))
 
-    Mengimpor deteksi_fault_core memuat scikit-learn (±3–6 s), terlalu lambat untuk
-    notebook sidang. Di sini bobot SavedLM dibongkar; notebook cukup numpy. Prediksi
-    dibandingkan dengan SavedLM asli pada semua fitur cache; selisih harus < 1e-9.
+
+def ekspor_model():
+    """Simpan bobot semua model (tanpa sklearn) + cek kesamaan prediksi per N.
+
+    Mengimpor deteksi_fault_core memuat scikit-learn; bobot dibongkar di sini supaya
+    forward pass di notebook cukup numpy. Kunci: "N{N}|{skenario}|{metode}|...".
     """
-    import json
     import joblib
-    meta = json.loads((ROOT / "models" / "meta.json").read_text())
-    simpan, uji = {}, np.vstack([fit_bersih.reshape(-1, fit_bersih.shape[-1])])
-    T = core.T_SCALES
-    # tambahkan semua jendela fault (sensor rusak diganti) sebagai data uji kesamaan
-    rows = []
-    for mi in range(fit_fault.shape[0]):
-        for fi in range(fit_fault.shape[1]):
-            for ki in range(fit_fault.shape[2]):
-                for s in range(4):
-                    for hi in range(fit_fault.shape[4]):
-                        f = fit_bersih[mi, hi].copy(); f[s * T:(s + 1) * T] = fit_fault[mi, fi, ki, s, hi]
-                        rows.append(f)
-    uji = np.vstack([uji, np.array(rows)])
-    selisih = 0.0
-    for row in meta["models"]:
-        b = joblib.load(ROOT / "models" / row["file"])
-        kunci = f"{b['scenario_short']}|{b['method']}"
-        for bagian, mdl in [("det", b["detektor"]), ("sen", b["sensor_id"])]:
-            lay = core.lm_unpack(mdl.theta, mdl._template())
-            p = {"fill": mdl.fill, "mean": mdl.mean, "scale": mdl.scale, "act": mdl.activation,
-                 "W": [W for W, _ in lay], "b": [bb for _, bb in lay]}
-            kind = "sensor" if bagian == "sen" else "kelas"
-            asli = mdl.decision_function(uji) if kind == "sensor" else mdl.predict_proba(uji)
-            selisih = max(selisih, float(np.abs(maju(p, uji, kind) - asli).max()))
-            simpan[f"{kunci}|{bagian}|fill"] = mdl.fill
-            simpan[f"{kunci}|{bagian}|mean"] = mdl.mean
-            simpan[f"{kunci}|{bagian}|scale"] = mdl.scale
-            simpan[f"{kunci}|{bagian}|act"] = np.array(mdl.activation)
-            simpan[f"{kunci}|{bagian}|n"] = np.array(len(lay))
-            for i, (W, bb) in enumerate(lay):
-                simpan[f"{kunci}|{bagian}|W{i}"] = W
-                simpan[f"{kunci}|{bagian}|b{i}"] = bb
-        simpan[f"{kunci}|kelas"] = np.array(b["class_names"])
-        simpan[f"{kunci}|cv_f1_nb11"] = np.array(b["cv_f1_nb11"])
-    assert selisih < 1e-9, f"forward numpy berbeda dari SavedLM: {selisih}"
-    simpan["_meta"] = np.array(json.dumps({k: meta[k] for k in ["dibuat", "commit", "window"]}))
-    out = ROOT / "sidang" / "assets" / "model_sidang.npz"
-    np.savez_compressed(out, **simpan)
-    print(f"Tersimpan {out.relative_to(ROOT)}; selisih maks vs SavedLM pada {len(uji)} jendela = {selisih:.2e}")
+    simpan, info = {}, {}
+    for N, meta in daftar_meta().items():
+        fitur = np.load(MODELS / f"fitur_N{N}.npz")
+        selisih = 0.0
+        for row in meta["models"]:
+            b = joblib.load(MODELS / row["file"])
+            assert int(b["window"]) == N, (row["file"], b["window"])
+            kunci = f"N{N}|{b['scenario_short']}|{b['method']}"
+            uji = fitur["F_edm"] if b["method"] == "EDM-Fuzzy" else fitur["F_jsd"]
+            for bagian, mdl in [("det", b["detektor"]), ("sen", b["sensor_id"])]:
+                if mdl is None:
+                    continue
+                lay = core.lm_unpack(mdl.theta, mdl._template())
+                p = {"fill": mdl.fill, "mean": mdl.mean, "scale": mdl.scale, "act": mdl.activation,
+                     "W": [W for W, _ in lay], "b": [bb for _, bb in lay]}
+                kind = "sensor" if bagian == "sen" else "kelas"
+                asli = mdl.decision_function(uji) if kind == "sensor" else mdl.predict_proba(uji)
+                selisih = max(selisih, float(np.abs(maju(p, uji, kind) - asli).max()))
+                simpan[f"{kunci}|{bagian}|fill"] = mdl.fill
+                simpan[f"{kunci}|{bagian}|mean"] = mdl.mean
+                simpan[f"{kunci}|{bagian}|scale"] = mdl.scale
+                simpan[f"{kunci}|{bagian}|act"] = np.array(mdl.activation)
+                simpan[f"{kunci}|{bagian}|n"] = np.array(len(lay))
+                for i, (W, bb) in enumerate(lay):
+                    simpan[f"{kunci}|{bagian}|W{i}"] = W
+                    simpan[f"{kunci}|{bagian}|b{i}"] = bb
+            simpan[f"{kunci}|kelas"] = np.array(b["class_names"])
+            simpan[f"{kunci}|cv_f1_nb11"] = np.array(b["cv_f1_nb11"])
+        assert selisih < 1e-9, f"N={N}: forward numpy berbeda dari SavedLM: {selisih}"
+        info[N] = {k: meta[k] for k in ["dibuat", "commit", "window"]}
+        print(f"N = {N}: {len(meta['models'])} model, selisih maks vs SavedLM pada "
+              f"{len(fitur['F_edm'])} jendela latih = {selisih:.2e}")
+    simpan["_meta"] = np.array(json.dumps(info))
+    np.savez_compressed(OUT_MODEL, **simpan)
+    print(f"Tersimpan {OUT_MODEL.relative_to(ROOT)} (N = {list(info)})")
 
 
 if __name__ == "__main__":

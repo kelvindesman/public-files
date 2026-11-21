@@ -9,8 +9,10 @@ Satu notebook untuk dua pemakaian:
                   penjelasan dari nol, tanya-jawab penguji, dan penunjuk bukti.
 
 Aturan isi:
-  * Tidak ada pelatihan model. Fitur widget dibaca dari sidang/assets/cache_interaktif.npz
-    (sidang/qa/buat_cache_interaktif.py), model dari models/ (simpan_model.py).
+  * Tidak ada pelatihan model. Panel menghitung fault dan entropi langsung dengan
+    deteksi_fault_core (fungsi penelitian yang sama) dari data 5 menit di
+    sidang/assets/cache_interaktif.npz; model N = 200/700/1000 dibaca dari
+    sidang/assets/model_sidang.npz (keduanya dibuat sidang/qa/buat_cache_interaktif.py).
   * Angka hasil dibaca dari file ekspor saat notebook dijalankan, tidak diketik di
     markdown. Catatan internal menunjuk id ledger (sidang/qa/01_klaim_bukti.csv).
   * Tanya-jawab di catatan internal diambil dari sidang/qa/08_tanya_jawab_lengkap.md
@@ -71,13 +73,16 @@ md("""
 diekspor; tidak ada model yang dilatih ulang di sini, jadi tiap sel selesai dalam
 hitungan detik.
 
-Cara pakai: **Run All** sekali, lalu ubah pilihan di panel kontrol (hari, sensor,
-jenis fault, intensitas). Grafik dan tebakan model ikut berubah.
+Cara pakai: **Run All** sekali, lalu ubah pilihan di panel kontrol: panjang jendela
+(N = 200/700/1000), hari mulai, sensor yang dirusak, kombinasi fault, intensitas,
+dan seed. Fault dan entropi dihitung langsung dengan fungsi penelitian yang sama;
+grafik dan tebakan model ikut berubah.
 """)
 
 code(r"""
 # === Setup 1/3: pustaka angka ===
 import json, sys, time
+from functools import lru_cache
 from pathlib import Path
 import numpy as np, pandas as pd
 """)
@@ -95,6 +100,7 @@ code(r"""
 # Lokal: repo penelitian. Kaggle: file dataset `sidang-bahan` (datar) disusun ulang
 # ke struktur folder repo di /kaggle/working/bahan memakai symlink.
 BERKAS = {"cache_interaktif.npz": "sidang/assets", "model_sidang.npz": "sidang/assets",
+          "deteksi_fault_core.py": ".",
           "11_rq5_f1_berpasangan.csv": "hasil11/exports", "11_sensor_ringkas.csv": "hasil11/exports",
           "statistik_sel.csv": "sidang/qa/hasil_uji", "statistik_lipatan.csv": "sidang/qa/hasil_uji",
           "efek_purge_permutasi.csv": "sidang/qa/hasil_uji"}
@@ -111,6 +117,8 @@ if ROOT is None:
             if not tujuan.exists():
                 tujuan.symlink_to(asal[0])
 C = np.load(ROOT / "sidang" / "assets" / "cache_interaktif.npz")
+sys.path.insert(0, str(ROOT.resolve()))
+import deteksi_fault_core as core   # rumus entropi dan simulator fault penelitian (notebook 11)
 pd.set_option("display.precision", 3)
 plt.rcParams.update({"figure.dpi": 90, "axes.spines.top": False, "axes.spines.right": False})
 
@@ -192,10 +200,10 @@ hari = np.arange(len(jam)) / 24
 fig, ax = plt.subplots(figsize=(11, 3))
 for j in range(4):
     ax.plot(hari, jam[:, j], lw=0.8, label=f"S{j+1}")
-for h0 in C["hari"]:
-    ax.axvspan(h0, h0 + int(C["win"]) * 300 / 86400, color="0.85", zorder=0)
+for h0, h1 in core.drift_episode_days(int(C["n_sampel_5menit"])):
+    ax.axvspan(h0, h1, color="0.85", zorder=0)
 ax.set_xlabel("hari sejak awal rekaman"); ax.set_ylabel("kelembaban (%)")
-ax.set_title("Data lapangan (abu-abu = tiga jendela yang dipakai di panel interaktif)")
+ax.set_title("Data lapangan (abu-abu = tiga episode drift simulator, 3 hari per episode)")
 ax.legend(ncol=4, fontsize=8); plt.tight_layout(); plt.show()
 print(f"{int(C['n_sampel_5menit']):,} titik 5 menit = {int(C['n_sampel_5menit']) * 300 / 86400:.1f} hari")
 """)
@@ -218,13 +226,71 @@ internal("data", "data, sinkronisasi, nilai nol S4",
 # ============================================================== kontrol bersama
 code(r"""
 # === Panel kontrol (dipakai bagian 3, 4, dan 6) ===
-pil_hari = w.Dropdown(options=[(f"hari {int(h)}", i) for i, h in enumerate(C["hari"])], description="Jendela")
-pil_sensor = w.Dropdown(options=[(f"S{s+1}", s) for s in range(4)], value=1, description="Sensor rusak")
-pil_fault = w.Dropdown(options=[(f, i) for i, f in enumerate(C["fault"])], value=4, description="Fault")
-pil_int = w.Dropdown(options=[(f"×{int(k)}" + (" (penelitian)" if k == 1 else ""), i)
-                              for i, k in enumerate(C["intensitas"])], description="Intensitas")
-PANEL = w.HBox([pil_hari, pil_sensor, pil_fault, pil_int])
-KONTROL = dict(hi=pil_hari, s=pil_sensor, fi=pil_fault, ki=pil_int)
+# Model tersimpan dimuat di sini supaya pilihan panjang jendela = N yang modelnya ada.
+MZ = np.load(ROOT / "sidang" / "assets" / "model_sidang.npz")
+META = {int(k): v for k, v in json.loads(str(MZ["_meta"])).items()}
+X5 = np.asarray(C["X5"], float); PER_HARI = int(86400 / core.SAMPLING_SECONDS)
+METODE = [str(m) for m in C["metode"]]
+FAULT4 = ["drift", "spike", "bias", "hardware"]
+
+pil_N = w.Dropdown(options=[(f"N = {n} ({n * 300 / 3600:.0f} jam)", n) for n in META], value=700,
+                   description="Panjang")
+pil_hari = w.FloatSlider(value=10, min=0, max=round((len(X5) - max(META)) / PER_HARI, 1), step=0.5,
+                         description="Mulai hari", continuous_update=False, readout_format=".1f")
+pil_sensor = w.SelectMultiple(options=[(f"S{s+1}", s) for s in range(4)], value=(1,), rows=4,
+                              description="Sensor rusak")
+pil_fault = w.SelectMultiple(options=FAULT4, value=tuple(FAULT4), rows=4, description="Fault")
+pil_int = w.FloatLogSlider(value=1, base=10, min=-1, max=2, step=0.1, description="Intensitas ×",
+                           continuous_update=False, readout_format=".2g")
+pil_seed = w.BoundedIntText(value=2026, min=0, max=10**6, description="Seed")
+pil_lihat = w.Dropdown(options=[(f"S{s+1}", s) for s in range(4)], value=1, description="Gambar sensor")
+PANEL = w.VBox([w.HBox([pil_N, pil_hari, pil_int]), w.HBox([pil_sensor, pil_fault, w.VBox([pil_seed, pil_lihat])])])
+KONTROL = dict(n=pil_N, hari=pil_hari, sensor=pil_sensor, fault=pil_fault, k=pil_int, seed=pil_seed, lihat=pil_lihat)
+
+
+def _skala(fn, kw, k):
+    # Intensitas mengalikan amplitudo drift/spike/bias; peluang hardware dikali min(k, 5), maks 0,6.
+    kw = dict(kw)
+    if fn is core.simulate_bias_fault:
+        kw["bias"] *= k
+    elif fn is core.simulate_hardware_fault:
+        kw = {a: min(0.6, v * min(k, 5)) for a, v in kw.items()}
+    else:
+        kw["intensity"] *= k
+    return kw
+
+
+@lru_cache(maxsize=32)
+def deret_rusak(sensor, fault, k, seed):
+    # Fault disuntikkan ke SELURUH deret lalu jendela dipotong, persis seperti data latih
+    # (core.segment_and_label); urutan komponen = definisi kondisi di core.SCENARIOS.
+    if not sensor or not fault:
+        return X5, np.zeros(X5.shape, bool), "normal"
+    kondisi = core.condition_for(fault)
+    faults = [(fn, _skala(fn, kw, k)) for fn, kw in core.SCENARIOS[kondisi]]
+    Y, M = core.inject_faults_multisensor(X5, faults, list(sensor), seed=seed)
+    return Y, M, kondisi
+
+
+@lru_cache(maxsize=2048)
+def fitur_sensor(n, mulai, s, mi, kunci):
+    # Entropi multiskala 1 sensor (15 skala). float32 seperti core.make_windows; seed 7 + 19·s
+    # seperti core.concat_multisensor_features(seed=7) untuk jendela pertama.
+    Y = X5 if kunci is None else deret_rusak(*kunci)[0]
+    x = Y[mulai:mulai + n, s].astype(np.float32).astype(float)
+    return core.entropy_1d(x, METODE[mi], sd=7 + 19 * s)
+
+
+def jendela(n, hari, sensor, fault, k, seed, **_):
+    sensor, fault = tuple(sorted(sensor)), tuple(f for f in FAULT4 if f in fault)
+    mulai = min(int(round(hari * PER_HARI)), len(X5) - n)
+    kunci = (sensor, fault, float(k), int(seed)) if sensor and fault else None
+    Y, M, kondisi = deret_rusak(*kunci) if kunci else (X5, np.zeros(X5.shape, bool), "normal")
+    F = {mi: (np.concatenate([fitur_sensor(n, mulai, s, mi, None) for s in range(4)]),
+              np.concatenate([fitur_sensor(n, mulai, s, mi, kunci if s in sensor else None) for s in range(4)]))
+         for mi in range(len(METODE))}
+    return dict(mulai=mulai, bersih=X5[mulai:mulai + n], rusak=Y[mulai:mulai + n], mask=M[mulai:mulai + n],
+                kondisi=kondisi, sensor=sensor, fault=fault, F=F)
 
 def hidupkan(fn, kontrol=None, panel=None):
     # Tampilkan hasil fn(**pilihan) sebagai output sel biasa (terlihat juga di tampilan
@@ -258,24 +324,27 @@ keempatnya sekaligus.
 """)
 
 code(r"""
-_t_jam = np.arange(int(C["win"])) * 300 / 3600
 FIG_F, AX_F = plt.subplots(1, 2, figsize=(11, 2.8), gridspec_kw={"width_ratios": [3, 1]})
-L_asli, = AX_F[0].plot(_t_jam, _t_jam * 0, color="tab:blue", lw=1, label="asli")
-L_rusak, = AX_F[0].plot(_t_jam, _t_jam * 0, color="tab:red", lw=0.9, alpha=0.8, label="diberi fault")
-L_beda, = AX_F[1].plot(_t_jam, _t_jam * 0, color="tab:red", lw=0.8)
-AX_F[0].set_xlabel("jam dalam jendela (N = 700 = 58 jam)"); AX_F[0].legend(fontsize=8)
+L_asli, = AX_F[0].plot([], [], color="tab:blue", lw=1, label="asli")
+L_rusak, = AX_F[0].plot([], [], color="tab:red", lw=0.9, alpha=0.8, label="diberi fault")
+L_beda, = AX_F[1].plot([], [], color="tab:red", lw=0.8)
+AX_F[0].legend(fontsize=8)
 AX_F[1].set_title("selisih (fault − asli)", fontsize=9); AX_F[1].set_xlabel("jam")
 FIG_F.tight_layout(); plt.close(FIG_F)
 
-def gambar_fault(hi, s, fi, ki):
+def gambar_fault(**p):
     # satu figur dipakai ulang; hanya data garis yang diganti (respons cepat)
-    bersih, rusak = C["sig_bersih"][hi][:, s], C["sig_fault"][fi, ki, s, hi]
-    L_asli.set_ydata(bersih); L_rusak.set_ydata(rusak); L_beda.set_ydata(rusak - bersih)
+    j, s, n = jendela(**p), p["lihat"], p["n"]
+    t = np.arange(n) * 300 / 3600
+    bersih, rusak = j["bersih"][:, s], j["rusak"][:, s]
+    L_asli.set_data(t, bersih); L_rusak.set_data(t, rusak); L_beda.set_data(t, rusak - bersih)
     AX_F[0].set_ylabel(f"S{s+1} (%)")
+    AX_F[0].set_xlabel(f"jam sejak hari {j['mulai'] / PER_HARI:.1f} (N = {n} = {n * 300 / 3600:.0f} jam)")
     for ax in AX_F:
         ax.relim(); ax.autoscale_view()
-    return [FIG_F, Markdown(f"Porsi sampel S{s+1} yang kena fault di jendela ini: "
-                            f"**{C['porsi'][fi, ki, s, hi]:.0%}**")]
+    porsi = " · ".join(f"S{q+1} **{j['mask'][:, q].mean():.0%}**" for q in range(4))
+    return [FIG_F, Markdown(f"Kondisi simulator: **{j['kondisi']}** · porsi sampel yang kena fault di "
+                            f"jendela ini: {porsi}")]
 
 hidupkan(gambar_fault)
 """)
@@ -291,8 +360,11 @@ internal("fault", "simulator fault",
   hardware = ±3 % sampel diganti nilai dari waktu lain (macet) dan 5 % hilang
   (NaN, lalu diisi nilai sebelumnya). Parameter tertulis 8 %, tetapi sampel yang
   hilang menimpa sebagian sampel macet (kelemahan F4).
-- Intensitas ×10 dan ×50 di panel hanya untuk **melihat**; model dilatih dengan ×1.
-  Uji intensitas yang sebenarnya ada di notebook 13.
+- Intensitas di panel bisa digeser ×0,1 sampai ×100 hanya untuk **melihat**; model
+  dilatih dengan ×1. Uji intensitas yang sebenarnya ada di notebook 13.
+- Fault dan entropi di panel dihitung langsung dengan `deteksi_fault_core` (fungsi
+  yang sama dengan notebook 11 dan model tersimpan): fault disuntikkan ke seluruh
+  deret lalu jendela dipotong, persis seperti data latih.
 - Pertanyaan jebakan: "bias 0,08 poin itu kecil sekali?" — ya, dan itu sebabnya
   bias hampir tidak terdeteksi (lihat bagian 4 dan kelemahan B2).
 """,
@@ -309,7 +381,7 @@ fitur** per jendela. Garis putus-putus = setelah fault.
 """)
 
 code(r"""
-T_SK = C["fit_fault"].shape[-1]; _tau = np.arange(1, T_SK + 1)
+T_SK = core.T_SCALES; _tau = np.arange(1, T_SK + 1)
 FIG_E, AX_E = plt.subplots(1, 2, figsize=(11, 2.8), sharex=True)
 L_E = [(ax.plot(_tau, _tau * 0.0, "o-", ms=3, label="asli")[0],
         ax.plot(_tau, _tau * 0.0, "s--", ms=3, label="fault")[0]) for ax in AX_E]
@@ -317,17 +389,17 @@ for ax in AX_E:
     ax.set_xlabel("skala τ"); ax.legend(fontsize=8)
 AX_E[0].set_ylabel("entropi"); FIG_E.tight_layout(); plt.close(FIG_E)
 
-def gambar_entropi(hi, s, fi, ki):
+def gambar_entropi(**p):
+    j, s = jendela(**p), p["lihat"]
     beda = []
     for mi, ax in enumerate(AX_E):
-        asli = C["fit_bersih"][mi, hi, s * T_SK:(s + 1) * T_SK]
-        rusak = C["fit_fault"][mi, fi, ki, s, hi]
+        asli, rusak = (f[s * T_SK:(s + 1) * T_SK] for f in j["F"][mi])
         L_E[mi][0].set_ydata(asli); L_E[mi][1].set_ydata(rusak)
-        ax.set_title(f"{C['metode'][mi]} — S{s+1}", fontsize=10)
+        ax.set_title(f"{METODE[mi]} — S{s+1}, N = {p['n']}", fontsize=10)
         ax.relim(); ax.autoscale_view()
         beda.append(np.abs(rusak - asli).mean())
-    return [FIG_E, Markdown("Rata-rata perubahan entropi akibat fault: " +
-                            " · ".join(f"{C['metode'][mi]} **{beda[mi]:.3f}**" for mi in range(2)))]
+    return [FIG_E, Markdown(f"Rata-rata perubahan entropi S{s+1} akibat fault: " +
+                            " · ".join(f"{METODE[mi]} **{beda[mi]:.3f}**" for mi in range(2)))]
 
 hidupkan(gambar_entropi)
 """)
@@ -424,16 +496,15 @@ internal("model", "ANN-LM dan cara evaluasi",
 md("""
 ## 6. Tebakan model tersimpan untuk jendela pilihan
 
-Model N = 700 yang disimpan (`models/`) dipakai langsung: **S1** menjawab "normal
-atau rusak", model skenario sesuai jumlah fault menjawab jenisnya, dan model
-sensor-ID menunjuk sensor yang rusak (skor > 0,5).
+Model tersimpan (`models/`, satu set per panjang jendela N = 200/700/1000) dipakai
+langsung: **S1** menjawab "normal atau rusak", model skenario sesuai jumlah jenis
+fault menjawab jenis/kombinasinya, dan model sensor-ID menunjuk sensor yang rusak
+(skor > 0,5).
 """)
 
 code(r"""
-# Bobot 10 model N = 700 dari models/ (diekspor ke numpy oleh sidang/qa/buat_cache_interaktif.py,
-# prediksinya sudah dicek sama dengan model asli; selisih < 1e-9).
-MZ = np.load(ROOT / "sidang" / "assets" / "model_sidang.npz")
-META = json.loads(str(MZ["_meta"]))
+# Bobot model N = 200/700/1000 dari models/ (diekspor ke numpy oleh sidang/qa/buat_cache_interaktif.py,
+# prediksinya sudah dicek sama dengan model asli; selisih < 1e-9). MZ dan META dimuat di panel kontrol.
 
 def maju(kunci, X, sensor=False):
     X = np.array(X, float, copy=True)
@@ -452,39 +523,51 @@ def maju(kunci, X, sensor=False):
     return e / e.sum(axis=1, keepdims=True)
 
 MODELS = {}
-for k in sorted({"|".join(x.split("|")[:2]) for x in MZ.files if not x.startswith("_")}):
-    sc, met = k.split("|")
-    MODELS[(sc, met)] = {"class_names": [str(c) for c in MZ[k + "|kelas"]],
-                         "detektor": lambda X, k=k: maju(k + "|det", X),
-                         "sensor_id": lambda X, k=k: maju(k + "|sen", X, sensor=True),
-                         "cv_f1_nb11": float(MZ[k + "|cv_f1_nb11"])}
-print(f"{len(MODELS)} model dimuat | dibuat {META['dibuat']} | commit {META['commit']} | N = {META['window']}")
+for k in sorted({"|".join(x.split("|")[:3]) for x in MZ.files if not x.startswith("_")}):
+    nn, sc, met = k.split("|")
+    MODELS[(int(nn[1:]), sc, met)] = {"class_names": [str(c) for c in MZ[k + "|kelas"]],
+                                      "detektor": lambda X, k=k: maju(k + "|det", X),
+                                      "sensor_id": (lambda X, k=k: maju(k + "|sen", X, sensor=True))
+                                                   if k + "|sen|n" in MZ.files else None,
+                                      "cv_f1_nb11": float(MZ[k + "|cv_f1_nb11"])}
+SKEN_KELAS = {core.SCEN_SHORT[sc]: cls for sc, cls in core.LADDER.items()}
+def kelas_benar(sc, kondisi):
+    return next(nama for nama, kond in SKEN_KELAS[sc] if kondisi in kond or (sc == "S1" and kondisi != "normal"
+                                                                                and nama == "faulty"))
+for n, m in META.items():
+    print(f"N = {n}: {sum(k[0] == n for k in MODELS)} model | dibuat {m['dibuat']} | commit {m['commit']}")
 """)
 
 code(r"""
-def tebak(hi, s, fi, ki):
-    T = C["fit_fault"].shape[-1]
-    sken = "S5" if C["fault"][fi] == "semua" else "S2"
+def tebak(**p):
+    j, n = jendela(**p), p["n"]
+    sken = ["S1", "S2", "S3", "S4", "S5"][len(j["fault"])] if j["sensor"] else "S1"
     baris, sens = [], []
-    for mi, met in enumerate(C["metode"]):
-        f_asli = C["fit_bersih"][mi, hi].copy()
-        f_rusak = f_asli.copy(); f_rusak[s * T:(s + 1) * T] = C["fit_fault"][mi, fi, ki, s, hi]
-        X2 = np.vstack([f_asli, f_rusak])
-        for sc in ["S1", sken]:
-            b = MODELS[(sc, met)]; P = b["detektor"](X2)
+    for mi, met in enumerate(METODE):
+        X2 = np.vstack(j["F"][mi])
+        for sc in dict.fromkeys(["S1", sken]):
+            b = MODELS[(n, sc, met)]; P = b["detektor"](X2)
             for wi, nama in enumerate(["asli", "diberi fault"]):
-                k = int(P[wi].argmax())
-                baris.append({"Jendela": nama, "Model": sc, "Metode": met,
-                              "Tebakan": b["class_names"][k], "Yakin": f"{P[wi, k]:.0%}"})
-        skor = MODELS[(sken, met)]["sensor_id"](f_rusak[None])[0]
-        sens.append({"Metode": met, **{f"S{j+1}": round(float(v), 2) for j, v in enumerate(skor)},
-                     "Ditebak rusak": ", ".join(f"S{j+1}" for j, v in enumerate(skor) if v > 0.5) or "-",
-                     "Benar": f"S{s+1}"})
-    benar_s = "drift+spike+bias+HW" if sken == "S5" else str(C["fault"][fi])
-    return [Markdown(f"**Jawaban benar:** jendela asli = *fault free*; jendela fault = *faulty* (S1) "
-                     f"dan *{benar_s}* ({sken}). Intensitas latih = ×1."),
-            pd.DataFrame(baris), Markdown("**Sensor mana yang rusak** (skor > 0,5 = rusak):"),
-            pd.DataFrame(sens)]
+                kk = int(P[wi].argmax())
+                baris.append({"Jendela": nama, "Model": sc, "Metode": met, "Tebakan": b["class_names"][kk],
+                              "Yakin": f"{P[wi, kk]:.0%}",
+                              "Benar": kelas_benar(sc, "normal" if wi == 0 else j["kondisi"]),
+                              "F1 CV (NB11)": round(b["cv_f1_nb11"], 3)})
+        if j["sensor"] and MODELS[(n, sken, met)]["sensor_id"] is not None:
+            skor = MODELS[(n, sken, met)]["sensor_id"](j["F"][mi][1][None])[0]
+            sens.append({"Metode": met, **{f"S{q+1}": round(float(v), 2) for q, v in enumerate(skor)},
+                         "Ditebak rusak": ", ".join(f"S{q+1}" for q, v in enumerate(skor) if v > 0.5) or "-",
+                         "Benar": ", ".join(f"S{q+1}" for q in j["sensor"])})
+    isi = [Markdown(f"**N = {n}, hari {j['mulai'] / PER_HARI:.1f}, kondisi `{j['kondisi']}`, intensitas "
+                    f"×{p['k']:.2g}.** Model {sken} dipilih sesuai jumlah jenis fault (1 → S2, 2 → S3, "
+                    f"3 → S4, 4 → S5). Intensitas latih = ×1."),
+           pd.DataFrame(baris)]
+    if sens:
+        isi += [Markdown("**Sensor mana yang rusak** (skor > 0,5 = rusak):"), pd.DataFrame(sens)]
+    else:
+        isi += [Markdown("Tidak ada sensor yang dirusak: hanya model S1 (normal vs rusak) yang relevan."),
+                pd.DataFrame()]
+    return isi
 
 hidupkan(tebak)
 """)
