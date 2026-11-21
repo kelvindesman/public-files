@@ -669,6 +669,7 @@ LAMPIRAN = [
     ("sidang/qa/06_mock_sidang.md", "Skenario mock sidang"),
     ("sidang/qa/10_paket_mock_sidang.md", "Paket mock sidang dan lembar skor"),
     ("sidang/qa/11_kuis_pemahaman.md", "Kuis pemahaman"),
+    ("sidang/qa/12_jurnal_eksperimen.md", "Jurnal eksperimen 2025 sampai versi terbaru"),
     ("sidang/qa/09_checklist_pembimbing.md", "Checklist tanda tangan pembimbing"),
     ("sidang/PANDUAN_DEMO.md", "Panduan demo"),
     ("sidang/MAPPING.md", "Peta klaim ke notebook"),
