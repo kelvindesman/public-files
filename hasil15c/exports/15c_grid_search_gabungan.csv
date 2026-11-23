@@ -1,0 +1,6 @@
+arsitektur,n_parameter,ambang,F1_validasi,F1_uji,AUC_uji,lm_iter,lm_status,wall_s
+1 layer (6),98,0.43,0.3918,0.4083,0.6673,60,max_iter,29.706
+1 layer (12),194,0.45,0.4103,0.4193,0.6879,60,max_iter,56.1269
+"2 layer (6,3)",113,0.43,0.402,0.398,0.6525,60,max_iter,36.3588
+"2 layer (12,6)",260,0.44,0.4142,0.4313,0.6847,60,max_iter,81.9519
+"2 layer (16,8)",378,0.44,0.3982,0.4108,0.68,60,max_iter,123.275

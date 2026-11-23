@@ -448,6 +448,34 @@ Bahas dengan pembimbing sebelum sidang. Kalimat aman: "Versi awal memakai label
 otomatis dan ambang dari data uji; versi tesis mengganti keduanya, sehingga angka
 turun tetapi dapat dipertanggungjawabkan."
 
+## Data gist 10.000 titik (final-2, 3 Sept 2025) dijalankan dengan program notebook 15
+
+Permintaan Bu Luh (chat 22/11/26): jalankan *data-hipotetik-berlabel-ann-lm* memakai data
+10.000 titik yang dipakai di `final-2_3_sept_2025.ipynb`, yaitu `gistfile1.txt`
+(gist `814fc8bc…`; pemilik gist sekarang `kelvindesman`, SHA-256 `23d39c08…2871`).
+Notebook: `15c_Data_Hipotetik_Gist_10000_ANN_LM.ipynb`, kernel Kaggle
+`kelvindsmn/data-hipotetik-berlabel-ann-lm-data-gist-10000` v1 COMPLETE, output di `hasil15c/`.
+
+- **Isi data:** 10.000 baris, satu kolom `kelembaban_tanah_persen`, nilai −0,5 sampai 103,5 %
+  (rata-rata 55,0). Hanya 21,8 % titik berada di 60–80 %, jadi data ini **bukan** data dengan
+  rentang 60–80 %. Kolom `label` semuanya 0. Baris tidak urut waktu (1.154 stempel waktu kembar).
+  Di 15c, data diurutkan menurut `timestamp`, dan 116 nilai di luar 0–100 dipotong ke 0–100.
+- **Angka lama final-2 (F1 0,992–1,000) bukan deteksi fault.** Kolom `label` hanya punya satu
+  kelas, sehingga sel grid search membuat `label_auto` = nilai ≥ kuantil 80 %
+  (`thr=83.3450`). Model menebak "nilai tinggi", bukan "sampel terkena fault".
+- **Hasil 15c (target `label_fault`, LM 60 iterasi, F1 uji rata-rata per skenario):**
+
+| Arsitektur | S1 | S2 | S3 | S4 | S5 |
+|---|---|---|---|---|---|
+| 1 layer (6) | 0,923 | 0,649 | 0,583 | 0,676 | 0,637 |
+| 2 layer (6,3) | 0,840 | 0,623 | 0,603 | 0,679 | 0,691 |
+
+  Model gabungan (grid search memilih 2 layer (12,6)): F1 uji 0,431, AUC 0,685, FPR pada data
+  normal 0,209. Drift dan bias +5 poin hampir tidak terdeteksi per sampel (F1 ±0,47 dengan
+  recall ±0,93–1,00, artinya model membunyikan alarm hampir di semua sampel). Penyebabnya,
+  sinyal gist naik-turun ±27 poin (std), sehingga offset 5 poin tenggelam. Spike dan
+  hardware terdeteksi (F1 0,69–0,89).
+
 ## Gap, inkonsistensi, dan yang belum selesai
 
 1. **Jeda kosong:** 2026-01-06 → 06-26 (±5,5 bulan) dan 2026-08-03 → 10-15. NB09/NB10 dari
@@ -485,4 +513,5 @@ turun tetapi dapat dipertanggungjawabkan."
     pembimbing 2000/7000/10000, versi akhir 200/700/1000 (5 menit, durasi sama dengan diagram).
 16. **Rekonstruksi paper JITK tidak deterministik:** simulator hardware kode Des 2025 memakai
     `default_rng(None)`, sehingga angka per skenario berubah antar run (pola tetap). Data
-    10.000 titik hipotetik paper tidak ada di repositori.
+    10.000 titik final-2 ditemukan (gist `814fc8bc…`) dan dijalankan di notebook 15c; rentangnya
+    bukan 60–80 %, lihat bagian "Data gist 10.000 titik".

@@ -1,0 +1,2 @@
+arsitektur,F1_validasi,n_latih,n_uji,fault_uji_%,ambang,precision,recall,F1,ROC_AUC,FPR_data_normal,lm_iter,wall_s
+"2 layer (12,6)",0.4142,101830,34000,22.29,0.44,0.3675,0.5219,0.4313,0.6847,0.2085,60,81.9519
