@@ -72,10 +72,37 @@ def read_asset(rel):
     r = requests_get(f"{ASSET_BASE}/{rel}")
     return pd.read_csv(io.BytesIO(r))
 
+def _ambil_cermin(url, timeout=180):
+    # Unduh url; bila raw.githubusercontent.com diblokir (gagal 443), coba cermin jsDelivr.
+    # Urutan: GitHub raw -> jsDelivr -> jsDelivr versi .xz (untuk file > 20 MB).
+    # Hasil: objek dengan .text dan .content, seperti requests.Response.
+    import lzma, types, requests
+    asal = "https://raw.githubusercontent.com/kelvindesman/public-files/"
+    calon = [(url, False)]
+    if url.startswith(asal):
+        jalur = url[len(asal):]
+        for awalan in ("refs/heads/main/", "main/"):
+            if jalur.startswith(awalan):
+                jalur = jalur[len(awalan):]
+        cdn = "https://cdn.jsdelivr.net/gh/kelvindesman/public-files@main/" + jalur
+        calon += [(cdn, False), (cdn + ".xz", True)]
+    galat = []
+    for u, xz in calon:
+        try:
+            r = requests.get(u, timeout=timeout)
+            r.raise_for_status()
+            isi = lzma.decompress(r.content) if xz else r.content
+            if u != url:
+                print("Sumber cadangan dipakai ->", u)
+            return types.SimpleNamespace(content=isi, text=isi.decode("utf-8"))
+        except Exception as e:
+            galat.append(f"{u}: {e}")
+    raise RuntimeError("Data tidak bisa diunduh dari semua sumber: " + " | ".join(galat))
+
+
 def requests_get(url):
     import requests
-    r = requests.get(url, timeout=120)
-    r.raise_for_status()
+    r = _ambil_cermin(url, 120)
     return r.content
 
 def show_png(rel, width=900):
@@ -261,7 +288,7 @@ def load_raw():
             return pd.read_csv(p, index_col=0)
     print("Sumber: unduh dari GitHub (67 MB, sekali saja)")
     import requests
-    r = requests.get(DATA_URL, timeout=300); r.raise_for_status()
+    r = _ambil_cermin(DATA_URL, 300)
     return pd.read_csv(io.StringIO(r.text), index_col=0)
 
 df_raw = load_raw()
