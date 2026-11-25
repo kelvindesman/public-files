@@ -143,11 +143,39 @@ from sklearn.metrics import precision_recall_curve, precision_score, recall_scor
 N_TITIK = int(os.environ.get("N_TITIK", 10000))   # paper: "Ten thousand data points"
 URL = "https://raw.githubusercontent.com/kelvindesman/public-files/refs/heads/main/tabel_sensor4_generated.csv"
 lokal = Path("tabel_sensor4_generated.csv")
+def _ambil_cermin(url, timeout=180):
+    # Unduh url; bila raw.githubusercontent.com diblokir (gagal 443), coba cermin jsDelivr.
+    # Urutan: GitHub raw -> jsDelivr -> jsDelivr versi .xz (untuk file > 20 MB).
+    # Hasil: objek dengan .text dan .content, seperti requests.Response.
+    import lzma, types, requests
+    asal = "https://raw.githubusercontent.com/kelvindesman/public-files/"
+    calon = [(url, False)]
+    if url.startswith(asal):
+        jalur = url[len(asal):]
+        for awalan in ("refs/heads/main/", "main/"):
+            if jalur.startswith(awalan):
+                jalur = jalur[len(awalan):]
+        cdn = "https://cdn.jsdelivr.net/gh/kelvindesman/public-files@main/" + jalur
+        calon += [(cdn, False), (cdn + ".xz", True)]
+    galat = []
+    for u, xz in calon:
+        try:
+            r = requests.get(u, timeout=timeout)
+            r.raise_for_status()
+            isi = lzma.decompress(r.content) if xz else r.content
+            if u != url:
+                print("Sumber cadangan dipakai ->", u)
+            return types.SimpleNamespace(content=isi, text=isi.decode("utf-8"))
+        except Exception as e:
+            galat.append(f"{u}: {e}")
+    raise RuntimeError("Data tidak bisa diunduh dari semua sumber: " + " | ".join(galat))
+
+
 if lokal.exists():
     df_raw = pd.read_csv(lokal)
 else:
     import requests
-    r = requests.get(URL, timeout=180); r.raise_for_status()
+    r = _ambil_cermin(URL, 180)
     df_raw = pd.read_csv(StringIO(r.text))
 
 kelembaban_cols = ["kelembaban1", "kelembaban2", "kelembaban3", "kelembaban4"]

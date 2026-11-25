@@ -106,6 +106,34 @@ from io import StringIO
 DATA_URL = "https://raw.githubusercontent.com/kelvindesman/public-files/refs/heads/main/data_sensor.csv"
 DATA_NAME = "data_sensor.csv"
 
+def _ambil_cermin(url, timeout=180):
+    # Unduh url; bila raw.githubusercontent.com diblokir (gagal 443), coba cermin jsDelivr.
+    # Urutan: GitHub raw -> jsDelivr -> jsDelivr versi .xz (untuk file > 20 MB).
+    # Hasil: objek dengan .text dan .content, seperti requests.Response.
+    import lzma, types, requests
+    asal = "https://raw.githubusercontent.com/kelvindesman/public-files/"
+    calon = [(url, False)]
+    if url.startswith(asal):
+        jalur = url[len(asal):]
+        for awalan in ("refs/heads/main/", "main/"):
+            if jalur.startswith(awalan):
+                jalur = jalur[len(awalan):]
+        cdn = "https://cdn.jsdelivr.net/gh/kelvindesman/public-files@main/" + jalur
+        calon += [(cdn, False), (cdn + ".xz", True)]
+    galat = []
+    for u, xz in calon:
+        try:
+            r = requests.get(u, timeout=timeout)
+            r.raise_for_status()
+            isi = lzma.decompress(r.content) if xz else r.content
+            if u != url:
+                print("Sumber cadangan dipakai ->", u)
+            return types.SimpleNamespace(content=isi, text=isi.decode("utf-8"))
+        except Exception as e:
+            galat.append(f"{u}: {e}")
+    raise RuntimeError("Data tidak bisa diunduh dari semua sumber: " + " | ".join(galat))
+
+
 def load_sensor_data():
     cands = [DATA_NAME, f"../input/{DATA_NAME}"] + glob.glob(f"/kaggle/input/**/{DATA_NAME}", recursive=True)
     for p in cands:
@@ -113,7 +141,7 @@ def load_sensor_data():
             print("Sumber data: file lokal ->", p)
             return pd.read_csv(p, index_col=0)
     print("Sumber data: unduh ->", DATA_URL)
-    r = requests.get(DATA_URL, timeout=180); r.raise_for_status()
+    r = _ambil_cermin(DATA_URL, 180)
     return pd.read_csv(StringIO(r.text), index_col=0)
 
 df_raw = load_sensor_data()
