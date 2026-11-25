@@ -75,8 +75,10 @@ def _ambil_cermin(url, timeout=180):
         for awalan in ("refs/heads/main/", "main/"):
             if jalur.startswith(awalan):
                 jalur = jalur[len(awalan):]
-        cdn = "https://cdn.jsdelivr.net/gh/kelvindesman/public-files@main/" + jalur
-        calon += [(cdn, False), (cdn + ".xz", True)]
+        cdn = "https://cdn.jsdelivr.net/gh/kelvindesman/public-files@"
+        # .xz dipatok ke commit: jsDelivr @main menolak file ini (batas ukuran paket)
+        calon += [(cdn + "main/" + jalur, False),
+                  (cdn + "010770339060a00277a6021f802d54df1608c2c8/" + jalur + ".xz", True)]
     galat = []
     for u, xz in calon:
         try:
