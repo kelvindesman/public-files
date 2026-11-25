@@ -55,7 +55,7 @@ from IPython.display import display, Image, Markdown
 warnings.filterwarnings("ignore")
 pd.set_option("display.width", 160)
 
-ASSET_BASE = "https://raw.githubusercontent.com/vousmeevoyez/public-files/main/sidang/assets"
+ASSET_BASE = "https://raw.githubusercontent.com/kelvindesman/public-files/main/sidang/assets"
 LOCAL_DIRS = ["assets", "sidang/assets", "../sidang/assets"]
 
 def asset_path(rel):
@@ -251,7 +251,7 @@ Yang dicek: jumlah baris, rentang waktu, dan apakah keempat kolom ada. Kalau
 kolom tidak lengkap, program berhenti dengan pesan yang jelas.
 """),
     code(r'''
-DATA_URL = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv"
+DATA_URL = "https://raw.githubusercontent.com/kelvindesman/public-files/refs/heads/main/data_sensor.csv"
 RAW_CAND = ["data_sensor.csv", "../data_sensor.csv"] + glob.glob("/kaggle/input/**/data_sensor.csv", recursive=True)
 
 def load_raw():

@@ -19,7 +19,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "15_Data_Hipotetik_Berlabel_ANN_LM.ipynb"
-REPO_RAW = ("https://raw.githubusercontent.com/vousmeevoyez/public-files/"
+REPO_RAW = ("https://raw.githubusercontent.com/kelvindesman/public-files/"
             "refs/heads/main/tabel_sensor4_generated.csv")
 
 SRC11 = (HERE / "build_11_annlm_real_notebook.py").read_text()

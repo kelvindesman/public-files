@@ -13,7 +13,7 @@ import json
 import notebook_fault_figures as nff
 
 OUT = "/Users/kelvin/apps/public-files/Ilustrasi_Data_Akuisisi_dan_Fault.ipynb"
-DATA_URL = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv"
+DATA_URL = "https://raw.githubusercontent.com/kelvindesman/public-files/refs/heads/main/data_sensor.csv"
 
 
 def md(src):

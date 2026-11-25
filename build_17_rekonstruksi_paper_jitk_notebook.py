@@ -141,7 +141,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import precision_recall_curve, precision_score, recall_score, f1_score
 
 N_TITIK = int(os.environ.get("N_TITIK", 10000))   # paper: "Ten thousand data points"
-URL = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/tabel_sensor4_generated.csv"
+URL = "https://raw.githubusercontent.com/kelvindesman/public-files/refs/heads/main/tabel_sensor4_generated.csv"
 lokal = Path("tabel_sensor4_generated.csv")
 if lokal.exists():
     df_raw = pd.read_csv(lokal)

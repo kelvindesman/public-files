@@ -29,7 +29,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "18_Paket_S1_Data_Hipotetik_10000.ipynb"
-REPO_RAW = ("https://raw.githubusercontent.com/vousmeevoyez/public-files/"
+REPO_RAW = ("https://raw.githubusercontent.com/kelvindesman/public-files/"
             "refs/heads/main/tabel_sensor4_generated.csv")
 
 SRC14 = (HERE / "build_14_lengkap_fault_baru_notebook.py").read_text()

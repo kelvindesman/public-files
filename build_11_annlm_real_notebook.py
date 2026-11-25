@@ -44,7 +44,7 @@ Data: data_sensor.csv (281.721 baris, 2025-09-14 .. 2025-12-21, interval 30 deti
 import json
 import notebook_fault_figures as nff
 
-REPO_RAW = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv"
+REPO_RAW = "https://raw.githubusercontent.com/kelvindesman/public-files/refs/heads/main/data_sensor.csv"
 OUT = "/Users/kelvin/apps/public-files/11_LM_Asli_EDM_vs_JSD_Lengkap.ipynb"
 
 

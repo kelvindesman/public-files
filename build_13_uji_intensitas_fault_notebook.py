@@ -14,7 +14,7 @@ Notebook 11 (hasil utama) dan notebook 12 tidak diubah.
 import json
 
 OUT = "13_Uji_Intensitas_Fault.ipynb"
-REPO_RAW = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv"
+REPO_RAW = "https://raw.githubusercontent.com/kelvindesman/public-files/refs/heads/main/data_sensor.csv"
 
 
 def md(src):

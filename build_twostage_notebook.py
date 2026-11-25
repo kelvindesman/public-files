@@ -142,7 +142,7 @@ cells.append(code("""import requests
 from io import StringIO
 
 def load_default_data():
-    url = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/tabel_sensor4_generated.csv"
+    url = "https://raw.githubusercontent.com/kelvindesman/public-files/refs/heads/main/tabel_sensor4_generated.csv"
     r = requests.get(url); r.raise_for_status()
     return pd.read_csv(StringIO(r.text))
 

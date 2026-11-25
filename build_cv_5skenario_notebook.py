@@ -36,7 +36,7 @@ Tambahan atas permintaan pembimbing (24/07):
 import json
 import notebook_fault_figures as nff
 
-REPO_RAW = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv"
+REPO_RAW = "https://raw.githubusercontent.com/kelvindesman/public-files/refs/heads/main/data_sensor.csv"
 OUT = "/Users/kelvin/apps/public-files/07_Skema_Diagram_CV_5_Skenario_dan_Sensor.ipynb"
 
 
