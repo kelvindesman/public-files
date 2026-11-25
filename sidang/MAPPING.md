@@ -56,8 +56,10 @@ Catatan supersesi:
 
 - `11` = versi lengkap dari `10` (10 tanpa identifikasi sensor).
 - `10` = `08` dengan LM asli menggantikan `lbfgs`.
-- Karena protokol/anggaran beda, **jumlah sel menang juga beda**: `10` 10/15,
-  `11` 11/15. Yang dipakai di sidang: **11/15** (notebook 11).
+- Protokol CV `10` dan `11` identik; yang beda hanya batas sesi Kaggle
+  (10,5 vs 11,5 jam). Jumlah sel menang **sama**: `10` 11/15, `11` 11/15.
+  p gabungan beda (0,052 vs 0,076) karena 7 sel S2/S4 dihentikan batas waktu
+  latih dinding. Yang dipakai di sidang: notebook 11.
 - `07` dan `08` tetap dirujuk untuk **diagram/alur**, bukan untuk angka akhir.
 
 ## Tabel C — jenis pelatih (sumber salah klaim paling sering)

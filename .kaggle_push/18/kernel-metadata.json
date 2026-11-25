@@ -1,0 +1,16 @@
+{
+ "id": "kelvindsmn/paket-s1-data-hipotetik-10000",
+ "title": "Paket S1 Data Hipotetik 10000",
+ "code_file": "paket-s1-data-hipotetik-10000.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": false,
+ "enable_tpu": false,
+ "enable_internet": true,
+ "keywords": [],
+ "dataset_sources": ["kelvindsmn/data-hipotetik-fault-sensor-berlabel"],
+ "kernel_sources": [],
+ "competition_sources": [],
+ "model_sources": []
+}

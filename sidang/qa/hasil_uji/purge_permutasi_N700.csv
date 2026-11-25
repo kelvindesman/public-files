@@ -1,0 +1,121 @@
+skenario,metode,varian,lipatan,f1,n_latih,n_uji,n_dibuang_purge,hidden,aktivasi,status_lm,detik
+S1,EDM-Fuzzy,standar,0,0.581463,125,33,0,"(32, 16)",tanh,max_iter,6.4
+S1,EDM-Fuzzy,purge,0,0.519597,96,33,29,"(32, 16)",tanh,max_iter,8.3
+S1,EDM-Fuzzy,permutasi,0,0.600186,125,33,0,"(32, 16)",tanh,max_iter,8.8
+S1,EDM-Fuzzy,standar,1,0.675776,129,29,0,"(32, 16)",tanh,max_iter,8.3
+S1,EDM-Fuzzy,purge,1,0.581731,98,29,31,"(32, 16)",tanh,max_iter,7.6
+S1,EDM-Fuzzy,permutasi,1,0.272401,129,29,0,"(32, 16)",tanh,max_iter,8.2
+S1,EDM-Fuzzy,standar,2,0.636029,125,33,0,"(32, 16)",tanh,max_iter,6.9
+S1,EDM-Fuzzy,purge,2,0.484848,105,33,20,"(32, 16)",tanh,max_iter,7.7
+S1,EDM-Fuzzy,permutasi,2,0.604608,125,33,0,"(32, 16)",tanh,max_iter,9.5
+S1,EDM-Fuzzy,standar,3,0.781036,126,32,0,"(32, 16)",tanh,max_iter,9.0
+S1,EDM-Fuzzy,purge,3,0.653202,102,32,24,"(32, 16)",tanh,max_iter,8.6
+S1,EDM-Fuzzy,permutasi,3,0.333333,126,32,0,"(32, 16)",tanh,max_iter,8.0
+S1,EDM-Fuzzy,standar,4,0.536325,127,31,0,"(32, 16)",tanh,max_iter,10.0
+S1,EDM-Fuzzy,purge,4,0.612500,99,31,28,"(32, 16)",tanh,max_iter,8.9
+S1,EDM-Fuzzy,permutasi,4,0.418750,127,31,0,"(32, 16)",tanh,max_iter,9.0
+S1,JSD-Fuzzy,standar,0,0.655271,125,33,0,"(64, 16)",tanh,max_iter,98.9
+S1,JSD-Fuzzy,purge,0,0.633333,96,33,29,"(64, 16)",tanh,max_iter,100.4
+S1,JSD-Fuzzy,permutasi,0,0.665438,125,33,0,"(64, 16)",tanh,max_iter,79.4
+S1,JSD-Fuzzy,standar,1,0.651442,129,29,0,"(64, 16)",tanh,max_iter,87.0
+S1,JSD-Fuzzy,purge,1,0.688172,98,29,31,"(64, 16)",tanh,max_iter,78.9
+S1,JSD-Fuzzy,permutasi,1,0.378571,129,29,0,"(64, 16)",tanh,max_iter,69.8
+S1,JSD-Fuzzy,standar,2,0.627820,125,33,0,"(64, 16)",tanh,max_iter,84.1
+S1,JSD-Fuzzy,purge,2,0.627820,105,33,20,"(64, 16)",tanh,max_iter,91.5
+S1,JSD-Fuzzy,permutasi,2,0.572222,125,33,0,"(64, 16)",tanh,max_iter,102.5
+S1,JSD-Fuzzy,standar,3,0.746032,126,32,0,"(64, 16)",tanh,max_iter,108.6
+S1,JSD-Fuzzy,purge,3,0.716256,102,32,24,"(64, 16)",tanh,max_iter,174.7
+S1,JSD-Fuzzy,permutasi,3,0.481781,126,32,0,"(64, 16)",tanh,max_iter,182.6
+S1,JSD-Fuzzy,standar,4,0.704762,127,31,0,"(64, 16)",tanh,max_iter,212.5
+S1,JSD-Fuzzy,purge,4,0.704762,99,31,28,"(64, 16)",tanh,max_iter,218.2
+S2,EDM-Fuzzy,standar,0,0.309338,313,82,0,"(16,)",tanh,max_iter,2.4
+S2,EDM-Fuzzy,purge,0,0.187710,224,82,89,"(16,)",tanh,max_iter,1.7
+S2,EDM-Fuzzy,standar,1,0.210687,311,84,0,"(16,)",tanh,max_iter,1.9
+S2,EDM-Fuzzy,purge,1,0.186481,265,84,46,"(16,)",tanh,max_iter,2.1
+S2,EDM-Fuzzy,standar,2,0.262515,317,78,0,"(16,)",tanh,max_iter,2.4
+S2,EDM-Fuzzy,purge,2,0.189666,250,78,67,"(16,)",tanh,max_iter,2.7
+S2,EDM-Fuzzy,standar,3,0.417172,318,77,0,"(16,)",tanh,max_iter,2.5
+S2,EDM-Fuzzy,purge,3,0.352186,240,77,78,"(16,)",tanh,max_iter,1.9
+S2,EDM-Fuzzy,standar,4,0.313461,321,74,0,"(16,)",tanh,max_iter,2.7
+S2,EDM-Fuzzy,purge,4,0.381397,249,74,72,"(16,)",tanh,max_iter,2.3
+S2,JSD-Fuzzy,standar,0,0.323809,313,82,0,"(16,)",relu,max_iter,2.3
+S2,JSD-Fuzzy,purge,0,0.214938,224,82,89,"(16,)",relu,max_iter,2.0
+S2,JSD-Fuzzy,standar,1,0.235923,311,84,0,"(16,)",relu,max_iter,2.4
+S2,JSD-Fuzzy,purge,1,0.278592,265,84,46,"(16,)",relu,max_iter,1.9
+S2,JSD-Fuzzy,standar,2,0.308650,317,78,0,"(16,)",relu,max_iter,4.0
+S2,JSD-Fuzzy,purge,2,0.390272,250,78,67,"(16,)",relu,max_iter,2.4
+S2,JSD-Fuzzy,standar,3,0.325755,318,77,0,"(16,)",relu,max_iter,3.7
+S2,JSD-Fuzzy,purge,3,0.186943,240,77,78,"(16,)",relu,max_iter,2.4
+S2,JSD-Fuzzy,standar,4,0.428361,321,74,0,"(16,)",relu,max_iter,3.2
+S2,JSD-Fuzzy,purge,4,0.298065,249,74,72,"(16,)",relu,max_iter,3.3
+S3,EDM-Fuzzy,standar,0,0.215742,442,111,0,"(32,)",relu,max_iter,26.0
+S3,EDM-Fuzzy,purge,0,0.199219,322,111,120,"(32,)",relu,max_iter,13.4
+S1,JSD-Fuzzy,permutasi,4,0.442328,127,31,0,"(64, 16)",tanh,max_iter,134.4
+S3,EDM-Fuzzy,standar,1,0.294180,438,115,0,"(32,)",relu,max_iter,12.9
+S3,EDM-Fuzzy,purge,1,0.226174,337,115,101,"(32,)",relu,max_iter,11.0
+S3,EDM-Fuzzy,standar,2,0.202661,445,108,0,"(32,)",relu,max_iter,12.2
+S3,EDM-Fuzzy,purge,2,0.292736,359,108,86,"(32,)",relu,max_iter,13.4
+S3,EDM-Fuzzy,standar,3,0.221032,443,110,0,"(32,)",relu,max_iter,20.6
+S3,EDM-Fuzzy,purge,3,0.219982,328,110,115,"(32,)",relu,max_iter,16.7
+S3,EDM-Fuzzy,standar,4,0.244575,444,109,0,"(32,)",relu,max_iter,18.6
+S3,EDM-Fuzzy,purge,4,0.181165,364,109,80,"(32,)",relu,max_iter,15.7
+S3,JSD-Fuzzy,standar,0,0.220369,442,111,0,"(16,)",tanh,max_iter,4.3
+S3,JSD-Fuzzy,purge,0,0.207095,322,111,120,"(16,)",tanh,max_iter,3.7
+S3,JSD-Fuzzy,standar,1,0.245733,438,115,0,"(16,)",tanh,max_iter,4.8
+S3,JSD-Fuzzy,purge,1,0.218037,337,115,101,"(16,)",tanh,max_iter,4.1
+S3,JSD-Fuzzy,purge,2,0.323600,359,108,86,"(16,)",tanh,max_iter,3.8
+S3,JSD-Fuzzy,standar,2,0.177910,445,108,0,"(16,)",tanh,max_iter,4.3
+S3,JSD-Fuzzy,purge,3,0.205967,328,110,115,"(16,)",tanh,max_iter,3.6
+S3,JSD-Fuzzy,standar,3,0.226881,443,110,0,"(16,)",tanh,max_iter,4.4
+S3,JSD-Fuzzy,purge,4,0.216208,364,109,80,"(16,)",tanh,max_iter,2.8
+S3,JSD-Fuzzy,standar,4,0.271121,444,109,0,"(16,)",tanh,max_iter,3.6
+S4,EDM-Fuzzy,purge,0,0.349867,259,78,58,"(64, 16)",tanh,max_iter,139.5
+S4,EDM-Fuzzy,standar,0,0.394303,317,78,0,"(64, 16)",tanh,max_iter,141.0
+S4,EDM-Fuzzy,purge,1,0.323167,264,77,54,"(64, 16)",tanh,max_iter,145.2
+S4,EDM-Fuzzy,standar,1,0.200706,318,77,0,"(64, 16)",tanh,max_iter,169.3
+S4,EDM-Fuzzy,standar,2,0.422071,315,80,0,"(64, 16)",tanh,max_iter,121.1
+S4,EDM-Fuzzy,purge,2,0.387576,241,80,74,"(64, 16)",tanh,max_iter,100.1
+S4,EDM-Fuzzy,purge,3,0.300178,268,75,52,"(64, 16)",tanh,max_iter,107.3
+S4,EDM-Fuzzy,standar,3,0.348683,320,75,0,"(64, 16)",tanh,max_iter,110.8
+S4,EDM-Fuzzy,purge,4,0.365081,245,85,65,"(64, 16)",tanh,converged(tol),83.4
+S4,EDM-Fuzzy,standar,4,0.397649,310,85,0,"(64, 16)",tanh,max_iter,93.9
+S4,JSD-Fuzzy,standar,0,0.369867,317,78,0,"(64, 16)",tanh,max_iter,84.4
+S4,JSD-Fuzzy,purge,0,0.368905,259,78,58,"(64, 16)",tanh,max_iter,78.4
+S4,JSD-Fuzzy,standar,1,0.326758,318,77,0,"(64, 16)",tanh,max_iter,78.1
+S4,JSD-Fuzzy,purge,1,0.311264,264,77,54,"(64, 16)",tanh,max_iter,76.0
+S4,JSD-Fuzzy,purge,2,0.391207,241,80,74,"(64, 16)",tanh,max_iter,75.9
+S4,JSD-Fuzzy,standar,2,0.485752,315,80,0,"(64, 16)",tanh,max_iter,78.6
+S4,JSD-Fuzzy,standar,3,0.360621,320,75,0,"(64, 16)",tanh,max_iter,77.3
+S4,JSD-Fuzzy,purge,3,0.372184,268,75,52,"(64, 16)",tanh,max_iter,76.3
+S4,JSD-Fuzzy,purge,4,0.333011,245,85,65,"(64, 16)",tanh,max_iter,69.5
+S4,JSD-Fuzzy,standar,4,0.436770,310,85,0,"(64, 16)",tanh,max_iter,73.8
+S5,EDM-Fuzzy,standar,0,0.793939,124,34,0,"(32, 16)",relu,max_iter,8.7
+S5,EDM-Fuzzy,purge,0,0.733217,102,34,22,"(32, 16)",relu,max_iter,9.5
+S5,EDM-Fuzzy,permutasi,0,0.468750,124,34,0,"(32, 16)",relu,max_iter,9.6
+S5,EDM-Fuzzy,standar,1,0.842365,126,32,0,"(32, 16)",relu,max_iter,8.4
+S5,EDM-Fuzzy,purge,1,0.842365,96,32,30,"(32, 16)",relu,max_iter,8.8
+S5,EDM-Fuzzy,permutasi,1,0.405670,126,32,0,"(32, 16)",relu,max_iter,8.3
+S5,EDM-Fuzzy,standar,2,0.843597,126,32,0,"(32, 16)",relu,max_iter,8.5
+S5,EDM-Fuzzy,purge,2,0.811765,105,32,21,"(32, 16)",relu,max_iter,8.7
+S5,EDM-Fuzzy,permutasi,2,0.653202,126,32,0,"(32, 16)",relu,max_iter,8.2
+S5,EDM-Fuzzy,standar,3,0.696970,128,30,0,"(32, 16)",relu,max_iter,9.0
+S5,EDM-Fuzzy,purge,3,0.796380,98,30,30,"(32, 16)",relu,max_iter,8.8
+S5,EDM-Fuzzy,permutasi,3,0.360269,128,30,0,"(32, 16)",relu,max_iter,8.7
+S5,EDM-Fuzzy,standar,4,0.800000,128,30,0,"(32, 16)",relu,max_iter,7.9
+S5,EDM-Fuzzy,purge,4,0.799107,100,30,28,"(32, 16)",relu,max_iter,7.6
+S5,EDM-Fuzzy,permutasi,4,0.592760,128,30,0,"(32, 16)",relu,max_iter,10.5
+S5,JSD-Fuzzy,purge,0,0.785005,102,34,22,"(64,)",tanh,converged(tol),30.2
+S5,JSD-Fuzzy,standar,0,0.789567,124,34,0,"(64,)",tanh,converged(tol),47.2
+S5,JSD-Fuzzy,standar,1,0.875000,126,32,0,"(64,)",tanh,converged(tol),11.9
+S5,JSD-Fuzzy,permutasi,0,0.488948,124,34,0,"(64,)",tanh,max_iter,34.0
+S5,JSD-Fuzzy,purge,1,0.843597,96,32,30,"(64,)",tanh,converged(tol),26.4
+S5,JSD-Fuzzy,standar,2,0.906158,126,32,0,"(64,)",tanh,converged(tol),14.0
+S5,JSD-Fuzzy,permutasi,1,0.312500,126,32,0,"(64,)",tanh,max_iter,34.8
+S5,JSD-Fuzzy,purge,2,0.937500,105,32,21,"(64,)",tanh,converged(tol),18.2
+S5,JSD-Fuzzy,standar,3,0.766407,128,30,0,"(64,)",tanh,converged(tol),16.6
+S5,JSD-Fuzzy,permutasi,2,0.611336,126,32,0,"(64,)",tanh,max_iter,41.1
+S5,JSD-Fuzzy,purge,3,0.799107,98,30,30,"(64,)",tanh,converged(tol),23.4
+S5,JSD-Fuzzy,standar,4,0.766407,128,30,0,"(64,)",tanh,converged(tol),15.8
+S5,JSD-Fuzzy,permutasi,3,0.531250,128,30,0,"(64,)",tanh,max_iter,41.2
+S5,JSD-Fuzzy,purge,4,0.799107,100,30,28,"(64,)",tanh,converged(tol),29.5
+S5,JSD-Fuzzy,permutasi,4,0.499444,128,30,0,"(64,)",tanh,max_iter,25.5

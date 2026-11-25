@@ -58,7 +58,7 @@ N_REPEAT_SUBSET = 8
 FAULT_RATIO_THR = 0.01
 
 COLS = ["kelembaban1", "kelembaban2", "kelembaban3", "kelembaban4"]
-DATA_URL = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv"
+DATA_URL = "https://raw.githubusercontent.com/kelvindesman/public-files/refs/heads/main/data_sensor.csv"
 DATA_NAME = "data_sensor.csv"
 
 EPS = 1e-12

@@ -1,0 +1,81 @@
+[{"stream_name":"stderr","time":7.648932504,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":7.648997155,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":8.825361678,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.825398385,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.825422326,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.825427605,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":9.602857823,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.602896813,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.602907686,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.60291091,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":13.928142865,"data":"SMOKE = False\n"}
+,{"stream_name":"stdout","time":14.429079187,"data":"sumber : https://gist.githubusercontent.com/kelvindesman/814fc8bcde1d9768ca0cffa0f248e567/raw/e4cf96a4f31440968706048c98d2df456816e63c/gistfile1.txt\n"}
+,{"stream_name":"stdout","time":14.429123002,"data":"sha256 : 23d39c08d38b4028b548dd13c3636f0432586637a2f77c75b9f5666d08452871\n"}
+,{"stream_name":"stdout","time":15.125996268,"data":"S1    1\n"}
+,{"stream_name":"stdout","time":15.126030784,"data":"S2    4\n"}
+,{"stream_name":"stdout","time":15.126035779,"data":"S3    6\n"}
+,{"stream_name":"stdout","time":15.126039593,"data":"S4    4\n"}
+,{"stream_name":"stdout","time":15.126043411,"data":"S5    1\n"}
+,{"stream_name":"stdout","time":15.126047196,"data":"Name: count, dtype: int64\n"}
+,{"stream_name":"stdout","time":15.327805524,"data":"Asersi label lolos untuk 16 kondisi.\n"}
+,{"stream_name":"stdout","time":21.822886293,"data":"latih       5990\n"}
+,{"stream_name":"stdout","time":21.822935747,"data":"validasi    2000\n"}
+,{"stream_name":"stdout","time":21.822959601,"data":"uji         2000\n"}
+,{"stream_name":"stdout","time":21.822964304,"data":"Name: count, dtype: int64\n"}
+,{"stream_name":"stdout","time":21.822969108,"data":"sampel episode per bagian: {'latih': 3120, 'validasi': 600, 'uji': 600}\n"}
+,{"stream_name":"stdout","time":21.921546295,"data":"hidden=[6]: max |rel err| Jacobian = 1.30e-05\n"}
+,{"stream_name":"stdout","time":21.921585584,"data":"hidden=[6, 3]: max |rel err| Jacobian = 4.29e-09\n"}
+,{"stream_name":"stdout","time":21.921591736,"data":"Jacobian analitik LOLOS self-check.\n"}
+,{"stream_name":"stdout","time":23.735441136,"data":"[    10s] S1 faulty                     1 layer (6)    F1=0.923 AUC=0.986 FPR=0.009 iter=60 wall=1.5s\n"}
+,{"stream_name":"stdout","time":25.853877277,"data":"[    12s] S1 faulty                     2 layer (6,3)  F1=0.840 AUC=0.986 FPR=0.024 iter=60 wall=1.9s\n"}
+,{"stream_name":"stdout","time":27.563963903,"data":"[    14s] S2 drift                      1 layer (6)    F1=0.475 AUC=0.531 FPR=0.898 iter=60 wall=1.5s\n"}
+,{"stream_name":"stdout","time":29.68413058,"data":"[    16s] S2 drift                      2 layer (6,3)  F1=0.463 AUC=0.563 FPR=0.993 iter=60 wall=1.9s\n"}
+,{"stream_name":"stdout","time":31.537670326,"data":"[    18s] S2 spike                      1 layer (6)    F1=0.755 AUC=0.951 FPR=0.002 iter=60 wall=1.6s\n"}
+,{"stream_name":"stdout","time":33.666768349,"data":"[    20s] S2 spike                      2 layer (6,3)  F1=0.727 AUC=0.963 FPR=0.003 iter=60 wall=1.9s\n"}
+,{"stream_name":"stdout","time":35.397065541,"data":"[    21s] S2 bias                       1 layer (6)    F1=0.477 AUC=0.554 FPR=0.847 iter=60 wall=1.5s\n"}
+,{"stream_name":"stdout","time":37.515400066,"data":"[    24s] S2 bias                       2 layer (6,3)  F1=0.464 AUC=0.514 FPR=0.941 iter=60 wall=1.9s\n"}
+,{"stream_name":"stdout","time":39.247935054,"data":"[    25s] S2 hardware                   1 layer (6)    F1=0.888 AUC=0.958 FPR=0.004 iter=60 wall=1.5s\n"}
+,{"stream_name":"stdout","time":41.409815482,"data":"[    27s] S2 hardware                   2 layer (6,3)  F1=0.838 AUC=0.969 FPR=0.004 iter=60 wall=1.9s\n"}
+,{"stream_name":"stdout","time":43.14183664,"data":"[    29s] S3 bias+malfunc               1 layer (6)    F1=0.639 AUC=0.777 FPR=0.012 iter=60 wall=1.5s\n"}
+,{"stream_name":"stdout","time":45.25501764,"data":"[    31s] S3 bias+malfunc               2 layer (6,3)  F1=0.680 AUC=0.778 FPR=0.008 iter=60 wall=1.9s\n"}
+,{"stream_name":"stdout","time":46.999533939,"data":"[    33s] S3 spike+malfunc              1 layer (6)    F1=0.755 AUC=0.920 FPR=0.006 iter=60 wall=1.5s\n"}
+,{"stream_name":"stdout","time":49.10004435,"data":"[    35s] S3 spike+malfunc              2 layer (6,3)  F1=0.805 AUC=0.901 FPR=0.002 iter=60 wall=1.9s\n"}
+,{"stream_name":"stdout","time":50.844974517,"data":"[    37s] S3 spike+bias                 1 layer (6)    F1=0.469 AUC=0.555 FPR=0.844 iter=60 wall=1.5s\n"}
+,{"stream_name":"stdout","time":53.108451796,"data":"[    39s] S3 spike+bias                 2 layer (6,3)  F1=0.476 AUC=0.572 FPR=0.938 iter=60 wall=2.0s\n"}
+,{"stream_name":"stdout","time":54.817946844,"data":"[    41s] S3 drift+malfunc              1 layer (6)    F1=0.674 AUC=0.809 FPR=0.052 iter=60 wall=1.5s\n"}
+,{"stream_name":"stdout","time":56.929662868,"data":"[    43s] S3 drift+malfunc              2 layer (6,3)  F1=0.706 AUC=0.818 FPR=0.055 iter=60 wall=1.9s\n"}
+,{"stream_name":"stdout","time":58.717889785,"data":"[    45s] S3 drift+bias                 1 layer (6)    F1=0.494 AUC=0.591 FPR=0.763 iter=60 wall=1.6s\n"}
+,{"stream_name":"stdout","time":60.868265261,"data":"[    47s] S3 drift+bias                 2 layer (6,3)  F1=0.489 AUC=0.570 FPR=0.853 iter=60 wall=1.9s\n"}
+,{"stream_name":"stdout","time":62.748017014,"data":"[    49s] S3 drift+spike                1 layer (6)    F1=0.467 AUC=0.588 FPR=0.979 iter=60 wall=1.7s\n"}
+,{"stream_name":"stdout","time":64.888962314,"data":"[    51s] S3 drift+spike                2 layer (6,3)  F1=0.462 AUC=0.531 FPR=1.000 iter=60 wall=1.9s\n"}
+,{"stream_name":"stdout","time":66.638201716,"data":"[    53s] S4 spike+bias+malfunc         1 layer (6)    F1=0.732 AUC=0.812 FPR=0.009 iter=60 wall=1.5s\n"}
+,{"stream_name":"stdout","time":68.743224395,"data":"[    55s] S4 spike+bias+malfunc         2 layer (6,3)  F1=0.748 AUC=0.822 FPR=0.029 iter=60 wall=1.9s\n"}
+,{"stream_name":"stdout","time":70.485816312,"data":"[    57s] S4 drift+bias+malfunc         1 layer (6)    F1=0.759 AUC=0.843 FPR=0.046 iter=60 wall=1.5s\n"}
+,{"stream_name":"stdout","time":72.724854196,"data":"[    59s] S4 drift+bias+malfunc         2 layer (6,3)  F1=0.754 AUC=0.837 FPR=0.044 iter=60 wall=2.0s\n"}
+,{"stream_name":"stdout","time":74.463578831,"data":"[    61s] S4 spike+drift+malfunc        1 layer (6)    F1=0.722 AUC=0.820 FPR=0.021 iter=60 wall=1.5s\n"}
+,{"stream_name":"stdout","time":76.579584588,"data":"[    63s] S4 spike+drift+malfunc        2 layer (6,3)  F1=0.724 AUC=0.826 FPR=0.039 iter=60 wall=1.9s\n"}
+,{"stream_name":"stdout","time":78.314550569,"data":"[    64s] S4 drift+spike+bias           1 layer (6)    F1=0.490 AUC=0.606 FPR=0.860 iter=60 wall=1.5s\n"}
+,{"stream_name":"stdout","time":80.465726071,"data":"[    67s] S4 drift+spike+bias           2 layer (6,3)  F1=0.490 AUC=0.595 FPR=0.884 iter=60 wall=1.9s\n"}
+,{"stream_name":"stdout","time":82.326903256,"data":"[    68s] S5 spike+bias+malfunc+drift   1 layer (6)    F1=0.637 AUC=0.754 FPR=0.046 iter=60 wall=1.6s\n"}
+,{"stream_name":"stdout","time":84.474234682,"data":"[    71s] S5 spike+bias+malfunc+drift   2 layer (6,3)  F1=0.691 AUC=0.793 FPR=0.031 iter=60 wall=1.9s\n"}
+,{"stream_name":"stdout","time":117.731882075,"data":"[   104s] grid 1 layer (6)     F1 val=0.392 uji=0.408 wall=30s\n"}
+,{"stream_name":"stdout","time":174.428206633,"data":"[   160s] grid 1 layer (12)    F1 val=0.410 uji=0.419 wall=56s\n"}
+,{"stream_name":"stdout","time":211.522412699,"data":"[   197s] grid 2 layer (6,3)   F1 val=0.402 uji=0.398 wall=36s\n"}
+,{"stream_name":"stdout","time":293.912884279,"data":"[   280s] grid 2 layer (12,6)  F1 val=0.414 uji=0.431 wall=82s\n"}
+,{"stream_name":"stdout","time":417.87179593,"data":"[   404s] grid 2 layer (16,8)  F1 val=0.398 uji=0.411 wall=123s\n"}
+,{"stream_name":"stdout","time":418.00322329,"data":"-\u003e dipilih (F1 validasi tertinggi): 2 layer (12,6)\n"}
+,{"stream_name":"stdout","time":419.210414709,"data":"33 model disimpan \u0026 dimuat ulang; selisih prob maks = 2.22e-16\n"}
+,{"stream_name":"stdout","time":419.403449252,"data":"Selesai. Wall total 405 s, 26 file di exports/\n"}
+,{"stream_name":"stderr","time":423.445903053,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":423.445957912,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":423.646315702,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":423.646350944,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":424.595955636,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":424.73710772,"data":"[NbConvertApp] Writing 1165086 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":428.072881484,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":429.005390459,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":429.005421993,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":429.005748225,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":429.006218132,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":429.006537156,"data":"[NbConvertApp] Writing 533008 bytes to __results__.html\n"}
+]

@@ -71,7 +71,7 @@ print("config: DS",DS,"WIN",WIN,"STRIDE",STRIDE,"MAX_PER_SCN",MAX_PER_SCN,"S",S,
 
 cells.append(code("""# === Load data (4 sensor) — output broker = satu tabel gabungan ===
 def load_default_data():
-    url="https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/tabel_sensor4_generated.csv"
+    url="https://raw.githubusercontent.com/kelvindesman/public-files/refs/heads/main/tabel_sensor4_generated.csv"
     r=requests.get(url); r.raise_for_status()
     return pd.read_csv(StringIO(r.text))
 df=load_default_data()

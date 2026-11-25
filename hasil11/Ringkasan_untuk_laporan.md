@@ -23,15 +23,15 @@ EDM-Fuzzy dan JSD-Fuzzy: 0 NaN/Inf di semua window (matriks Valid).
 MSE/CMSE: ribuan NaN pada N=200 (ditambal median — pola yang sama seperti 08).
 
 Hasil JSD vs EDM (CV reduction): N=200 JSD lebih stabil pada 144/315
-pasangan (45,7%, rata-rata −26%) · N=700 59/315 (18,7%, −28%) · N=1000
-52/315 (16,5%, −31%) → **EDM-Fuzzy lebih stabil pada 56 dari 63 sel
-(89%)**. Ini temuan jujur yang harus masuk laporan apa adanya.
+pasangan (45,7%, rata-rata −19,1%) · N=700 59/315 (18,7%, −16,5%) · N=1000
+52/315 (16,5%, −16,4%) → **EDM-Fuzzy lebih stabil pada 56 dari 63 baris
+kelas (N × skenario × kelas, 89%)**. Ini temuan jujur yang harus masuk laporan apa adanya.
 
 ## Bagian 2 — Klasifikasi 5 skenario (LM asli, grouped CV)
 
 Selisih F1 (JSD − EDM): **JSD unggul pada 11 dari 15 sel**
 (N=200: 3/5 · N=700: 5/5 · N=1000: 3/5).
-Rata-rata selisih: N=200 +0,002 · N=700 +0,053 · N=1000 +0,030 · pooled +0,028.
+Rata-rata selisih: N=200 +0,002 · N=700 +0,053 · N=1000 +0,029 · pooled +0,028.
 F1 rata-rata: EDM 0,458 vs JSD 0,486.
 
 Uji berpasangan: **N=700 signifikan** (p = 0,027; Wilcoxon 0,0625);
@@ -58,9 +58,8 @@ S2-N200, S4-N200, S5-N200, S3-N700, S1-N1000, S4-N1000 — tulis apa adanya.)
 
 ## Separabilitas (RQ3)
 
-Campuran: JSD lebih terpisah di S1-N200/N700, S3-N700/N1000, S2-N1000,
-S5-N1000; EDM lebih terpisah di S2-N200, S4-N200, S5-N200, S1-N1000;
-sisanya sebanding. Detail per sel di `11_rq3_interpretasi.csv` + boxplot PNG
+JSD lebih terpisah di 11 sel (N200 S3, S4; seluruh N700; N1000 S2–S5);
+EDM lebih terpisah di 0 sel; 4 sel campuran (N200 S1, S2, S5; N1000 S1). Detail per sel di `11_rq3_interpretasi.csv` + boxplot PNG
 per window.
 
 ## Kalimat usulan untuk laporan

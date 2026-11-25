@@ -1,0 +1,776 @@
+[{"stream_name":"stderr","time":10.375281911,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":10.375361735,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":10.375392004,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":10.375396705,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":11.303428859,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":11.303480145,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":11.303486393,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":11.30349074,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":12.993006857,"data":"[t+   0.0 min] runtime guard armed | budget=10.5 h | BLAS threads=1\n"}
+,{"stream_name":"stdout","time":16.938465598,"data":"RUNTIME_PROFILE=fast | CV_N_REPEATS=10 | SAMPEN_N_REF=512 | ANN grids: unchanged from original\n"}
+,{"stream_name":"stdout","time":17.006214101,"data":"X_feat/y belum ada. Jalankan dulu bagian ekstraksi fitur (compute entropy -\u003e X_feat) dan label y.\n"}
+,{"stream_name":"stdout","time":17.072090388,"data":"X_feat/y belum ada. Jalankan dulu bagian ekstraksi fitur (compute entropy -\u003e X_feat) dan label y.\n"}
+,{"stream_name":"stdout","time":19.587416746,"data":"Columns: ['kelembaban1', 'kelembaban2', 'kelembaban3', 'kelembaban4']\n"}
+,{"stream_name":"stdout","time":19.587456399,"data":"Shape X: (60763, 4) Shape X_ds: (15191, 4)\n"}
+,{"stream_name":"stdout","time":19.631124449,"data":"WIN/STRIDE: 256 128 N: 15191\n"}
+,{"stream_name":"stdout","time":20.028480091,"data":"faulty windows: 117\n"}
+,{"stream_name":"stdout","time":20.028525587,"data":"drift windows: 107\n"}
+,{"stream_name":"stdout","time":20.028531477,"data":"spike windows: 117\n"}
+,{"stream_name":"stdout","time":20.028535868,"data":"bias windows: 117\n"}
+,{"stream_name":"stdout","time":20.028540029,"data":"hardware windows: 117\n"}
+,{"stream_name":"stdout","time":20.02854408,"data":"bias+malfunc windows: 117\n"}
+,{"stream_name":"stdout","time":20.028548194,"data":"spike+malfunc windows: 117\n"}
+,{"stream_name":"stdout","time":20.028552205,"data":"spike+bias windows: 117\n"}
+,{"stream_name":"stdout","time":20.028555987,"data":"drift+malfunc windows: 117\n"}
+,{"stream_name":"stdout","time":20.028559837,"data":"drift+bias windows: 117\n"}
+,{"stream_name":"stdout","time":20.028563968,"data":"drift+spike windows: 117\n"}
+,{"stream_name":"stdout","time":20.028567739,"data":"spike+bias+malfunc windows: 117\n"}
+,{"stream_name":"stdout","time":20.0285716,"data":"drift+bias+malfunc windows: 117\n"}
+,{"stream_name":"stdout","time":20.028575529,"data":"spike+drift+malfunc windows: 117\n"}
+,{"stream_name":"stdout","time":20.02857927,"data":"drift+spike+bias windows: 117\n"}
+,{"stream_name":"stdout","time":20.028583096,"data":"spike+bias+malfunc+drift windows: 117\n"}
+,{"stream_name":"stdout","time":20.028587365,"data":"Total windows: (1979, 4, 256) Classes: (array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16]), array([117, 117, 107, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117,\n"}
+,{"stream_name":"stdout","time":20.028593906,"data":"       117, 117, 117, 117]))\n"}
+,{"stream_name":"stdout","time":20.116395714,"data":"After subsample toggles: (1979, 256, 4) (array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16]), array([117, 117, 107, 117, 117, 117, 117, 117, 117, 117, 117, 117, 117,\n"}
+,{"stream_name":"stdout","time":20.116470459,"data":"       117, 117, 117, 117]))\n"}
+,{"stream_name":"stdout","time":20.352839923,"data":"Using scales: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] S: 10 max_scale: 64\n"}
+,{"stream_name":"stdout","time":20.484595609,"data":"[t+   0.1 min] entropy features: EDM-Fuzzy (1979 windows)\n"}
+,{"stream_name":"stderr","time":116.851250625,"data":"2026-10-22 20:56:51,007 | INFO | Entropy EDM-Fuzzy | wall=96.34s cpu=96.65s peak_mem=15.65 MB rss=348 MB\n"}
+,{"stream_name":"stderr","time":116.851304412,"data":"\n"}
+,{"stream_name":"stderr","time":116.851310171,"data":"2026-10-22 20:56:51,007 | INFO | Entropy EDM-Fuzzy | wall=96.34s cpu=96.65s peak_mem=15.65 MB rss=348 MB\n"}
+,{"stream_name":"stdout","time":116.852815993,"data":"EDM-Fuzzy feature shape: (1979, 40) | cfg: S10_m2_r0.2_nref128_bins40_rich1\n"}
+,{"stream_name":"stdout","time":116.852853616,"data":"[t+   1.7 min] entropy features: CMSE (1979 windows)\n"}
+,{"stream_name":"stderr","time":118.81805944,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":119.033535718,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":119.033595989,"data":"\n"}
+,{"stream_name":"stderr","time":119.033899679,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":119.624618515,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":119.836144195,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":119.836193876,"data":"\n"}
+,{"stream_name":"stderr","time":119.836201486,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":121.727101591,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":121.955222208,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":121.955470958,"data":"\n"}
+,{"stream_name":"stderr","time":121.955577124,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":122.38623968,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":122.584348412,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":122.599503571,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":122.599572688,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":122.59958216,"data":"\n"}
+,{"stream_name":"stderr","time":122.59958723,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":122.599592656,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":122.883978137,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":123.085183643,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":123.085264864,"data":"\n"}
+,{"stream_name":"stderr","time":123.085272451,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":125.164254065,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":125.361375116,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":125.375957213,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":125.376005977,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":125.376012085,"data":"\n"}
+,{"stream_name":"stderr","time":125.376361726,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":125.376384603,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":127.438032836,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":127.6378316,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":127.637884678,"data":"\n"}
+,{"stream_name":"stderr","time":127.637891173,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":128.176470347,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":128.397322568,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":128.397409262,"data":"\n"}
+,{"stream_name":"stderr","time":128.397418246,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":129.401126133,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":129.609222089,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":129.609288198,"data":"\n"}
+,{"stream_name":"stderr","time":129.609293579,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":129.821825998,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":130.033286891,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":130.033364757,"data":"\n"}
+,{"stream_name":"stderr","time":130.033370286,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":130.348524868,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":130.559800127,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":130.559855448,"data":"\n"}
+,{"stream_name":"stderr","time":130.559861031,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":130.993466288,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":131.192615127,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":131.192681274,"data":"\n"}
+,{"stream_name":"stderr","time":131.192688183,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":132.204267911,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":132.417885942,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":132.417944782,"data":"\n"}
+,{"stream_name":"stderr","time":132.417951773,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":134.371984515,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":134.578224873,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":134.578260386,"data":"\n"}
+,{"stream_name":"stderr","time":134.578461356,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":135.97494933,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":136.013935584,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":136.184132361,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":136.184179605,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":136.184185807,"data":"\n"}
+,{"stream_name":"stderr","time":136.184190275,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":136.184194668,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":136.491087758,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":136.703462911,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":136.70353315,"data":"\n"}
+,{"stream_name":"stderr","time":136.704210098,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":139.762488336,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":139.968453839,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":139.968525072,"data":"\n"}
+,{"stream_name":"stderr","time":139.968677682,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":141.872322921,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":142.092160927,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":142.092225283,"data":"\n"}
+,{"stream_name":"stderr","time":142.092230693,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":142.438832142,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":142.644893211,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":142.64494398,"data":"\n"}
+,{"stream_name":"stderr","time":142.644948859,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":144.517048768,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":144.544896865,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":144.726408658,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":144.726481325,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":144.726487984,"data":"\n"}
+,{"stream_name":"stderr","time":144.726491787,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":144.726495744,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":144.916927845,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":145.057348004,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":145.12479931,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":145.124857172,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":145.124863326,"data":"\n"}
+,{"stream_name":"stderr","time":145.124867228,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":145.124871351,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":145.456407786,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":145.696534289,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":145.696589197,"data":"\n"}
+,{"stream_name":"stderr","time":145.696595742,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":148.736426643,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":148.995895855,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":148.995937703,"data":"\n"}
+,{"stream_name":"stderr","time":148.995945526,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":151.898138081,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":152.109198437,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":152.109327745,"data":"\n"}
+,{"stream_name":"stderr","time":152.109340102,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":153.377470996,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":153.593215104,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":153.593267627,"data":"\n"}
+,{"stream_name":"stderr","time":153.593275392,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":154.008493376,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":154.218782662,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":154.218863991,"data":"\n"}
+,{"stream_name":"stderr","time":154.218870263,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":155.137776282,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":155.306597674,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":155.364671055,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":155.364719641,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":155.364725426,"data":"\n"}
+,{"stream_name":"stderr","time":155.364729156,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":155.364733979,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":155.488381813,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":155.703871484,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":155.703956879,"data":"\n"}
+,{"stream_name":"stderr","time":155.703964005,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":158.493046615,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":158.714641248,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":158.71469421,"data":"\n"}
+,{"stream_name":"stderr","time":158.714700241,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":159.01429799,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":159.235208935,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":159.23525373,"data":"\n"}
+,{"stream_name":"stderr","time":159.235258438,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":159.656922657,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":159.87571462,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":159.875762957,"data":"\n"}
+,{"stream_name":"stderr","time":159.875768497,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":160.484208211,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":160.699526258,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":160.699572972,"data":"\n"}
+,{"stream_name":"stderr","time":160.699578546,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":160.74284686,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":160.959847764,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":160.959893207,"data":"\n"}
+,{"stream_name":"stderr","time":160.96015314,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":164.221298869,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":164.433474349,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":164.433557075,"data":"\n"}
+,{"stream_name":"stderr","time":164.433563687,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":165.478518083,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":165.698596097,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":165.698646194,"data":"\n"}
+,{"stream_name":"stderr","time":165.698652419,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":165.929661855,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":166.142067181,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":166.142127956,"data":"\n"}
+,{"stream_name":"stderr","time":166.142133798,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":167.076209023,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":167.296448307,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":167.296494755,"data":"\n"}
+,{"stream_name":"stderr","time":167.29668613,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":172.084844634,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":172.293555123,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":172.293635832,"data":"\n"}
+,{"stream_name":"stderr","time":172.293642598,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":174.056095982,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":174.270433176,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":174.270489797,"data":"\n"}
+,{"stream_name":"stderr","time":174.270495835,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":175.635520707,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":175.871144901,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":175.871221334,"data":"\n"}
+,{"stream_name":"stderr","time":175.871226796,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":176.240277727,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":176.438599524,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":176.438676774,"data":"\n"}
+,{"stream_name":"stderr","time":176.438689869,"data":"/tmp/ipykernel_16/821455580.py:181: RuntimeWarning: Mean of empty slice\n"}
+,{"stream_name":"stderr","time":179.981735998,"data":"2026-10-22 20:57:54,138 | INFO | Entropy CMSE | wall=63.13s cpu=62.79s peak_mem=15.51 MB rss=348 MB\n"}
+,{"stream_name":"stderr","time":179.98178955,"data":"\n"}
+,{"stream_name":"stderr","time":179.981796342,"data":"2026-10-22 20:57:54,138 | INFO | Entropy CMSE | wall=63.13s cpu=62.79s peak_mem=15.51 MB rss=348 MB\n"}
+,{"stream_name":"stdout","time":179.983063956,"data":"CMSE feature shape: (1979, 40) | cfg: S10_m2_r0.2_nref128_bins40_rich1\n"}
+,{"stream_name":"stdout","time":179.983091767,"data":"[t+   2.8 min] entropy features: FME (1979 windows)\n"}
+,{"stream_name":"stderr","time":180.167124217,"data":"/tmp/ipykernel_16/103500860.py:15: UserWarning: F_CMSE masih ada NaN; imputasi median diterapkan.\n"}
+,{"stream_name":"stderr","time":180.167173374,"data":"  warnings.warn(f\"{name} masih ada NaN; imputasi median diterapkan.\")\n"}
+,{"stream_name":"stderr","time":180.167178958,"data":"\n"}
+,{"stream_name":"stderr","time":180.167182906,"data":"/tmp/ipykernel_16/103500860.py:15: UserWarning: F_CMSE masih ada NaN; imputasi median diterapkan.\n"}
+,{"stream_name":"stderr","time":180.167187199,"data":"  warnings.warn(f\"{name} masih ada NaN; imputasi median diterapkan.\")\n"}
+,{"stream_name":"stderr","time":249.871680456,"data":"2026-10-22 20:59:04,022 | INFO | Entropy FME | wall=69.87s cpu=68.41s peak_mem=15.51 MB rss=348 MB\n"}
+,{"stream_name":"stderr","time":249.871734509,"data":"\n"}
+,{"stream_name":"stderr","time":249.871741772,"data":"2026-10-22 20:59:04,022 | INFO | Entropy FME | wall=69.87s cpu=68.41s peak_mem=15.51 MB rss=348 MB\n"}
+,{"stream_name":"stdout","time":249.873286509,"data":"FME feature shape: (1979, 40) | cfg: S10_m2_r0.2_nref128_bins40_rich1\n"}
+,{"stream_name":"stdout","time":249.873331352,"data":"[t+   3.9 min] entropy features: JSD-Fuzzy (1979 windows)\n"}
+,{"stream_name":"stderr","time":309.570610007,"data":"2026-10-22 21:00:03,728 | INFO | Entropy JSD-Fuzzy | wall=59.70s cpu=59.55s peak_mem=15.51 MB rss=348 MB\n"}
+,{"stream_name":"stderr","time":309.570656081,"data":"\n"}
+,{"stream_name":"stderr","time":309.570662848,"data":"2026-10-22 21:00:03,728 | INFO | Entropy JSD-Fuzzy | wall=59.70s cpu=59.55s peak_mem=15.51 MB rss=348 MB\n"}
+,{"stream_name":"stdout","time":309.572334965,"data":"JSD-Fuzzy feature shape: (1979, 160) | cfg: S10_m2_r0.2_nref128_bins40_rich1\n"}
+,{"stream_name":"stdout","time":309.620625514,"data":"Alias set: X_feat=F (1979, 40) y (1979,)\n"}
+,{"stream_name":"stdout","time":389.617085917,"data":"[t+   6.3 min] CV stability 1/17 (normal) | 80s\n"}
+,{"stream_name":"stdout","time":463.760292787,"data":"[t+   7.5 min] CV stability 2/17 (faulty) | 74s\n"}
+,{"stream_name":"stdout","time":537.913661995,"data":"[t+   8.7 min] CV stability 3/17 (drift) | 74s\n"}
+,{"stream_name":"stdout","time":608.564281008,"data":"[t+   9.9 min] CV stability 4/17 (spike) | 71s\n"}
+,{"stream_name":"stdout","time":677.579496916,"data":"[t+  11.1 min] CV stability 5/17 (bias) | 69s\n"}
+,{"stream_name":"stdout","time":745.886382427,"data":"[t+  12.2 min] CV stability 6/17 (hardware) | 68s\n"}
+,{"stream_name":"stdout","time":822.333036278,"data":"[t+  13.5 min] CV stability 7/17 (bias+malfunc) | 76s\n"}
+,{"stream_name":"stdout","time":900.394162002,"data":"[t+  14.8 min] CV stability 8/17 (spike+malfunc) | 78s\n"}
+,{"stream_name":"stdout","time":978.133781049,"data":"[t+  16.1 min] CV stability 9/17 (spike+bias) | 78s\n"}
+,{"stream_name":"stdout","time":1056.532495438,"data":"[t+  17.4 min] CV stability 10/17 (drift+malfunc) | 78s\n"}
+,{"stream_name":"stdout","time":1136.785149609,"data":"[t+  18.7 min] CV stability 11/17 (drift+bias) | 80s\n"}
+,{"stream_name":"stdout","time":1210.764456997,"data":"[t+  20.0 min] CV stability 12/17 (drift+spike) | 74s\n"}
+,{"stream_name":"stdout","time":1287.009550079,"data":"[t+  21.2 min] CV stability 13/17 (spike+bias+malfunc) | 76s\n"}
+,{"stream_name":"stdout","time":1357.415609038,"data":"[t+  22.4 min] CV stability 14/17 (drift+bias+malfunc) | 70s\n"}
+,{"stream_name":"stdout","time":1428.989961679,"data":"[t+  23.6 min] CV stability 15/17 (spike+drift+malfunc) | 72s\n"}
+,{"stream_name":"stdout","time":1500.814239455,"data":"[t+  24.8 min] CV stability 16/17 (drift+spike+bias) | 72s\n"}
+,{"stream_name":"stdout","time":1571.975150677,"data":"[t+  26.0 min] CV stability 17/17 (spike+bias+malfunc+drift) | 71s\n"}
+,{"stream_name":"stdout","time":1573.58048714,"data":"X_feat: (1979, 40)\n"}
+,{"stream_name":"stdout","time":1573.580540292,"data":"y: (1979,)\n"}
+,{"stream_name":"stdout","time":1573.580582227,"data":"class counts: {0: 117, 1: 117, 2: 107, 3: 117, 4: 117, 5: 117, 6: 117, 7: 117, 8: 117, 9: 117, 10: 117, 11: 117, 12: 117, 13: 117, 14: 117, 15: 117, 16: 117}\n"}
+,{"stream_name":"stdout","time":1576.228151239,"data":"LogReg(balanced)   mean=0.2144 std=0.0308  scores=[0.2287 0.2088 0.2604 0.2081 0.1658]\n"}
+,{"stream_name":"stdout","time":1576.897122568,"data":"SVM-RBF(balanced)  mean=0.2032 std=0.0114  scores=[0.2082 0.1977 0.2227 0.1982 0.1892]\n"}
+,{"stream_name":"stdout","time":1590.849245079,"data":"RF(balanced)       mean=0.1867 std=0.0221  scores=[0.1851 0.1792 0.2288 0.1644 0.1762]\n"}
+,{"stream_name":"stdout","time":1590.984298809,"data":"[skip] legacy grid (312 combos x 5 folds). Set RUN_LEGACY_BIG_GRID=True untuk menjalankannya.\n"}
+,{"stream_name":"stdout","time":1591.126357278,"data":"[t+  26.3 min] ANN grid: EDM-Fuzzy\n"}
+,{"stream_name":"stdout","time":1591.191489594,"data":"Fitting 3 folds for each of 204 candidates, totalling 612 fits\n"}
+,{"stream_name":"stderr","time":1644.023703058,"data":"2026-10-22 21:22:18,022 | INFO | ANN EDM-Fuzzy | wall=52.72s cpu=7.76s peak_mem=3.13 MB rss=377 MB\n"}
+,{"stream_name":"stderr","time":1644.0237913,"data":"\n"}
+,{"stream_name":"stderr","time":1644.02395951,"data":"2026-10-22 21:22:18,022 | INFO | ANN EDM-Fuzzy | wall=52.72s cpu=7.76s peak_mem=3.13 MB rss=377 MB\n"}
+,{"stream_name":"stdout","time":1644.029262804,"data":"[t+  27.2 min] ANN grid: CMSE\n"}
+,{"stream_name":"stdout","time":1644.047713234,"data":"Fitting 3 folds for each of 204 candidates, totalling 612 fits\n"}
+,{"stream_name":"stderr","time":1691.204845004,"data":"2026-10-22 21:23:05,279 | INFO | ANN CMSE | wall=47.25s cpu=6.02s peak_mem=3.06 MB rss=377 MB\n"}
+,{"stream_name":"stderr","time":1691.204889964,"data":"\n"}
+,{"stream_name":"stderr","time":1691.20489669,"data":"2026-10-22 21:23:05,279 | INFO | ANN CMSE | wall=47.25s cpu=6.02s peak_mem=3.06 MB rss=377 MB\n"}
+,{"stream_name":"stdout","time":1691.206116416,"data":"[t+  28.0 min] ANN grid: FME\n"}
+,{"stream_name":"stdout","time":1691.307099933,"data":"Fitting 3 folds for each of 204 candidates, totalling 612 fits\n"}
+,{"stream_name":"stderr","time":1741.562727063,"data":"2026-10-22 21:23:55,639 | INFO | ANN FME | wall=50.35s cpu=5.79s peak_mem=3.06 MB rss=377 MB\n"}
+,{"stream_name":"stderr","time":1741.562767041,"data":"\n"}
+,{"stream_name":"stderr","time":1741.564592249,"data":"2026-10-22 21:23:55,639 | INFO | ANN FME | wall=50.35s cpu=5.79s peak_mem=3.06 MB rss=377 MB\n"}
+,{"stream_name":"stdout","time":1741.564602506,"data":"[t+  28.8 min] ANN grid: JSD-Fuzzy\n"}
+,{"stream_name":"stdout","time":1741.666748741,"data":"Fitting 3 folds for each of 204 candidates, totalling 612 fits\n"}
+,{"stream_name":"stderr","time":1920.90291852,"data":"2026-10-22 21:26:54,971 | INFO | ANN JSD-Fuzzy | wall=179.33s cpu=20.67s peak_mem=14.53 MB rss=377 MB\n"}
+,{"stream_name":"stderr","time":1920.902990541,"data":"\n"}
+,{"stream_name":"stderr","time":1920.902999063,"data":"2026-10-22 21:26:54,971 | INFO | ANN JSD-Fuzzy | wall=179.33s cpu=20.67s peak_mem=14.53 MB rss=377 MB\n"}
+,{"stream_name":"stdout","time":1921.315886543,"data":"=== HEAD2HEAD ANCHOR: per-method accuracy/F1 (17-class task, stratified 75/25, seed=42) ===\n"}
+,{"stream_name":"stdout","time":1921.315936756,"data":"                                                                                                                              best_params best_cv_acc  test_acc  macro_f1     wall_s      cpu_s peak_mem_mb rss_peak_mb\n"}
+,{"stream_name":"stdout","time":1921.315970951,"data":"EDM-Fuzzy        {'mlp__activation': 'tanh', 'mlp__alpha': 0.0001, 'mlp__hidden_layer_sizes': (80, 40), 'mlp__learning_rate_init': 0.001}    0.214304  0.230303   0.21739  52.718885   7.761218    3.132526  376.882812\n"}
+,{"stream_name":"stdout","time":1921.315976566,"data":"CMSE         {'mlp__activation': 'relu', 'mlp__alpha': 0.0001, 'mlp__hidden_layer_sizes': (43, 21, 10), 'mlp__learning_rate_init': 0.001}     0.19407  0.153535   0.12615  47.254163   6.022815    3.057943  376.882812\n"}
+,{"stream_name":"stdout","time":1921.315981551,"data":"FME               {'mlp__activation': 'relu', 'mlp__alpha': 0.001, 'mlp__hidden_layer_sizes': (43, 21), 'mlp__learning_rate_init': 0.001}    0.223052  0.224242  0.194804  50.354161   5.788576    3.059921  376.882812\n"}
+,{"stream_name":"stdout","time":1921.315985427,"data":"JSD-Fuzzy  {'mlp__activation': 'tanh', 'mlp__alpha': 0.0001, 'mlp__hidden_layer_sizes': (320, 160, 80), 'mlp__learning_rate_init': 0.001}    0.409025  0.406061  0.393818    179.328  20.669252    14.53018  376.882812\n"}
+,{"stream_name":"stdout","time":1921.795722748,"data":"==================================================================================\n"}
+,{"stream_name":"stdout","time":1921.79577729,"data":" RINGKASAN — DETEKSI FAULT (ANN-MLP) + PENGUKURAN KOMPUTASI PER METODE\n"}
+,{"stream_name":"stdout","time":1921.795864753,"data":" Tugas: klasifikasi 17 kelas (normal + 16 skenario fault), split 75/25, seed=42\n"}
+,{"stream_name":"stdout","time":1921.795869159,"data":"==================================================================================\n"}
+,{"stream_name":"stdout","time":1921.795873285,"data":"\n"}
+,{"stream_name":"stdout","time":1921.795877163,"data":"[1] HASIL FAULT DETECTION (ANN-MLP + GridSearch, 17 kelas):\n"}
+,{"stream_name":"stdout","time":1921.795881179,"data":"           CV Acc  Test Accuracy  Macro-F1 Arsitektur ANN (hidden) Aktivasi\n"}
+,{"stream_name":"stdout","time":1921.795885143,"data":"Metode                                                                     \n"}
+,{"stream_name":"stdout","time":1921.795888603,"data":"EDM-Fuzzy  0.2143         0.2303    0.2174                (80, 40)     tanh\n"}
+,{"stream_name":"stdout","time":1921.795892133,"data":"CMSE       0.1941         0.1535    0.1262            (43, 21, 10)     relu\n"}
+,{"stream_name":"stdout","time":1921.795895794,"data":"FME        0.2231         0.2242    0.1948                (43, 21)     relu\n"}
+,{"stream_name":"stdout","time":1921.795899523,"data":"JSD-Fuzzy  0.4090         0.4061    0.3938          (320, 160, 80)     tanh\n"}
+,{"stream_name":"stdout","time":1927.122141109,"data":"\n"}
+,{"stream_name":"stdout","time":1927.122186977,"data":"[2] PENGUKURAN KOMPUTASI  —  Waktu (time) / CPU (cpu usage) / Memori (memory usage):\n"}
+,{"stream_name":"stdout","time":1927.122193692,"data":"           Fitur Waktu (s)  Fitur CPU (s)  Fitur Memori (MB)  ANN Waktu (s)  ANN CPU (s)  ANN Memori (MB)\n"}
+,{"stream_name":"stdout","time":1927.122198363,"data":"Metode                                                                                                   \n"}
+,{"stream_name":"stdout","time":1927.122202909,"data":"EDM-Fuzzy           96.339         96.652              347.9          0.936        1.839             2.06\n"}
+,{"stream_name":"stdout","time":1927.12220718,"data":"CMSE                63.126         62.793              347.9          0.738        0.849             2.06\n"}
+,{"stream_name":"stdout","time":1927.122211474,"data":"FME                 69.867         68.408              347.9          0.465        0.465             2.06\n"}
+,{"stream_name":"stdout","time":1927.122233938,"data":"JSD-Fuzzy           59.700         59.549              347.9          3.374       13.310            11.66\n"}
+,{"stream_name":"stdout","time":1927.12223866,"data":"\n"}
+,{"stream_name":"stdout","time":1927.122242213,"data":"[Saved] exports/ringkasan_fault_detection.csv\n"}
+,{"stream_name":"stdout","time":1927.122246063,"data":"[Saved] exports/ringkasan_komputasi.csv\n"}
+,{"stream_name":"stdout","time":1927.670034857,"data":"                          precision    recall  f1-score   support\n"}
+,{"stream_name":"stdout","time":1927.670078965,"data":"\n"}
+,{"stream_name":"stdout","time":1927.670083946,"data":"                  normal       0.16      0.17      0.16        29\n"}
+,{"stream_name":"stdout","time":1927.670091695,"data":"                  faulty       0.66      0.72      0.69        29\n"}
+,{"stream_name":"stdout","time":1927.670094383,"data":"                   drift       0.34      0.48      0.40        27\n"}
+,{"stream_name":"stdout","time":1927.670097128,"data":"                   spike       0.21      0.10      0.14        29\n"}
+,{"stream_name":"stdout","time":1927.670099731,"data":"                    bias       0.06      0.07      0.07        30\n"}
+,{"stream_name":"stdout","time":1927.670170147,"data":"                hardware       0.08      0.03      0.05        29\n"}
+,{"stream_name":"stdout","time":1927.670176288,"data":"            bias+malfunc       0.13      0.10      0.12        29\n"}
+,{"stream_name":"stdout","time":1927.670180248,"data":"           spike+malfunc       0.24      0.17      0.20        30\n"}
+,{"stream_name":"stdout","time":1927.670184183,"data":"              spike+bias       0.21      0.17      0.19        29\n"}
+,{"stream_name":"stdout","time":1927.670188464,"data":"           drift+malfunc       0.16      0.31      0.21        29\n"}
+,{"stream_name":"stdout","time":1927.670192302,"data":"              drift+bias       0.16      0.10      0.12        29\n"}
+,{"stream_name":"stdout","time":1927.670196583,"data":"             drift+spike       0.50      0.07      0.12        30\n"}
+,{"stream_name":"stdout","time":1927.670199495,"data":"      spike+bias+malfunc       0.22      0.28      0.25        29\n"}
+,{"stream_name":"stdout","time":1927.670202194,"data":"      drift+bias+malfunc       0.21      0.13      0.16        30\n"}
+,{"stream_name":"stdout","time":1927.670204844,"data":"     spike+drift+malfunc       0.32      0.48      0.38        29\n"}
+,{"stream_name":"stdout","time":1927.670207349,"data":"        drift+spike+bias       0.12      0.21      0.15        29\n"}
+,{"stream_name":"stdout","time":1927.670209906,"data":"spike+bias+malfunc+drift       0.25      0.34      0.29        29\n"}
+,{"stream_name":"stdout","time":1927.670212782,"data":"\n"}
+,{"stream_name":"stdout","time":1927.670216131,"data":"                accuracy                           0.23       495\n"}
+,{"stream_name":"stdout","time":1927.670219981,"data":"               macro avg       0.24      0.23      0.22       495\n"}
+,{"stream_name":"stdout","time":1927.670223612,"data":"            weighted avg       0.24      0.23      0.22       495\n"}
+,{"stream_name":"stdout","time":1927.670227977,"data":"\n"}
+,{"stream_name":"stdout","time":1927.670231836,"data":"Accuracy: 0.23030303030303031\n"}
+,{"stream_name":"stdout","time":1927.670235644,"data":"Macro-F1: 0.21739040105353027\n"}
+,{"stream_name":"stdout","time":1928.658791516,"data":"=== Confusion Matrix - EDM-Fuzzy ===\n"}
+,{"stream_name":"stdout","time":1928.65882754,"data":"                          precision    recall  f1-score   support\n"}
+,{"stream_name":"stdout","time":1928.658833389,"data":"\n"}
+,{"stream_name":"stdout","time":1928.65885358,"data":"                  normal       0.16      0.17      0.16        29\n"}
+,{"stream_name":"stdout","time":1928.658858133,"data":"                  faulty       0.66      0.72      0.69        29\n"}
+,{"stream_name":"stdout","time":1928.658862621,"data":"                   drift       0.34      0.48      0.40        27\n"}
+,{"stream_name":"stdout","time":1928.658866658,"data":"                   spike       0.21      0.10      0.14        29\n"}
+,{"stream_name":"stdout","time":1928.658870409,"data":"                    bias       0.06      0.07      0.07        30\n"}
+,{"stream_name":"stdout","time":1928.658874069,"data":"                hardware       0.08      0.03      0.05        29\n"}
+,{"stream_name":"stdout","time":1928.658878061,"data":"            bias+malfunc       0.13      0.10      0.12        29\n"}
+,{"stream_name":"stdout","time":1928.658882204,"data":"           spike+malfunc       0.24      0.17      0.20        30\n"}
+,{"stream_name":"stdout","time":1928.658891377,"data":"              spike+bias       0.21      0.17      0.19        29\n"}
+,{"stream_name":"stdout","time":1928.65889632,"data":"           drift+malfunc       0.16      0.31      0.21        29\n"}
+,{"stream_name":"stdout","time":1928.658900403,"data":"              drift+bias       0.16      0.10      0.12        29\n"}
+,{"stream_name":"stdout","time":1928.65890412,"data":"             drift+spike       0.50      0.07      0.12        30\n"}
+,{"stream_name":"stdout","time":1928.658907917,"data":"      spike+bias+malfunc       0.22      0.28      0.25        29\n"}
+,{"stream_name":"stdout","time":1928.658911691,"data":"      drift+bias+malfunc       0.21      0.13      0.16        30\n"}
+,{"stream_name":"stdout","time":1928.658915484,"data":"     spike+drift+malfunc       0.32      0.48      0.38        29\n"}
+,{"stream_name":"stdout","time":1928.658919221,"data":"        drift+spike+bias       0.12      0.21      0.15        29\n"}
+,{"stream_name":"stdout","time":1928.65892316,"data":"spike+bias+malfunc+drift       0.25      0.34      0.29        29\n"}
+,{"stream_name":"stdout","time":1928.658927275,"data":"\n"}
+,{"stream_name":"stdout","time":1928.658930945,"data":"                accuracy                           0.23       495\n"}
+,{"stream_name":"stdout","time":1928.658934869,"data":"               macro avg       0.24      0.23      0.22       495\n"}
+,{"stream_name":"stdout","time":1928.658938796,"data":"            weighted avg       0.24      0.23      0.22       495\n"}
+,{"stream_name":"stdout","time":1928.658942873,"data":"\n"}
+,{"stream_name":"stdout","time":1928.658946547,"data":"Accuracy: 0.2303  Macro-F1: 0.2174\n"}
+,{"stream_name":"stdout","time":1929.392525375,"data":"=== Confusion Matrix - CMSE ===\n"}
+,{"stream_name":"stdout","time":1929.39256729,"data":"                          precision    recall  f1-score   support\n"}
+,{"stream_name":"stdout","time":1929.392573847,"data":"\n"}
+,{"stream_name":"stdout","time":1929.392577775,"data":"                  normal       0.00      0.00      0.00        29\n"}
+,{"stream_name":"stdout","time":1929.39258163,"data":"                  faulty       0.50      0.66      0.57        29\n"}
+,{"stream_name":"stdout","time":1929.392585753,"data":"                   drift       0.13      0.26      0.18        27\n"}
+,{"stream_name":"stdout","time":1929.392589619,"data":"                   spike       0.00      0.00      0.00        29\n"}
+,{"stream_name":"stdout","time":1929.392594248,"data":"                    bias       0.05      0.03      0.04        30\n"}
+,{"stream_name":"stdout","time":1929.392598347,"data":"                hardware       0.15      0.07      0.10        29\n"}
+,{"stream_name":"stdout","time":1929.392620202,"data":"            bias+malfunc       0.13      0.17      0.15        29\n"}
+,{"stream_name":"stdout","time":1929.392624727,"data":"           spike+malfunc       0.08      0.10      0.09        30\n"}
+,{"stream_name":"stdout","time":1929.39262837,"data":"              spike+bias       0.17      0.03      0.06        29\n"}
+,{"stream_name":"stdout","time":1929.392631958,"data":"           drift+malfunc       0.00      0.00      0.00        29\n"}
+,{"stream_name":"stdout","time":1929.392636123,"data":"              drift+bias       0.10      0.17      0.13        29\n"}
+,{"stream_name":"stdout","time":1929.392640147,"data":"             drift+spike       0.00      0.00      0.00        30\n"}
+,{"stream_name":"stdout","time":1929.392643682,"data":"      spike+bias+malfunc       0.16      0.10      0.12        29\n"}
+,{"stream_name":"stdout","time":1929.392647549,"data":"      drift+bias+malfunc       0.20      0.13      0.16        30\n"}
+,{"stream_name":"stdout","time":1929.392651559,"data":"     spike+drift+malfunc       0.19      0.55      0.28        29\n"}
+,{"stream_name":"stdout","time":1929.392661087,"data":"        drift+spike+bias       0.10      0.21      0.13        29\n"}
+,{"stream_name":"stdout","time":1929.392664887,"data":"spike+bias+malfunc+drift       0.14      0.14      0.14        29\n"}
+,{"stream_name":"stdout","time":1929.392668617,"data":"\n"}
+,{"stream_name":"stdout","time":1929.392672255,"data":"                accuracy                           0.15       495\n"}
+,{"stream_name":"stdout","time":1929.392675893,"data":"               macro avg       0.12      0.15      0.13       495\n"}
+,{"stream_name":"stdout","time":1929.392679688,"data":"            weighted avg       0.12      0.15      0.13       495\n"}
+,{"stream_name":"stdout","time":1929.392683267,"data":"\n"}
+,{"stream_name":"stdout","time":1929.39268721,"data":"Accuracy: 0.1535  Macro-F1: 0.1262\n"}
+,{"stream_name":"stdout","time":1930.104425132,"data":"=== Confusion Matrix - FME ===\n"}
+,{"stream_name":"stdout","time":1930.104481713,"data":"                          precision    recall  f1-score   support\n"}
+,{"stream_name":"stdout","time":1930.104488422,"data":"\n"}
+,{"stream_name":"stdout","time":1930.104501853,"data":"                  normal       0.25      0.14      0.18        29\n"}
+,{"stream_name":"stdout","time":1930.104507338,"data":"                  faulty       0.69      0.83      0.75        29\n"}
+,{"stream_name":"stdout","time":1930.104512934,"data":"                   drift       0.15      0.33      0.20        27\n"}
+,{"stream_name":"stdout","time":1930.104518385,"data":"                   spike       0.10      0.03      0.05        29\n"}
+,{"stream_name":"stdout","time":1930.104523714,"data":"                    bias       0.00      0.00      0.00        30\n"}
+,{"stream_name":"stdout","time":1930.104528969,"data":"                hardware       0.17      0.14      0.15        29\n"}
+,{"stream_name":"stdout","time":1930.104534234,"data":"            bias+malfunc       0.18      0.24      0.21        29\n"}
+,{"stream_name":"stdout","time":1930.104539418,"data":"           spike+malfunc       0.20      0.13      0.16        30\n"}
+,{"stream_name":"stdout","time":1930.104544665,"data":"              spike+bias       0.40      0.07      0.12        29\n"}
+,{"stream_name":"stdout","time":1930.104549914,"data":"           drift+malfunc       0.22      0.55      0.32        29\n"}
+,{"stream_name":"stdout","time":1930.104555297,"data":"              drift+bias       0.18      0.38      0.25        29\n"}
+,{"stream_name":"stdout","time":1930.104560698,"data":"             drift+spike       0.33      0.13      0.19        30\n"}
+,{"stream_name":"stdout","time":1930.104597084,"data":"      spike+bias+malfunc       0.17      0.34      0.23        29\n"}
+,{"stream_name":"stdout","time":1930.104602655,"data":"      drift+bias+malfunc       0.12      0.07      0.09        30\n"}
+,{"stream_name":"stdout","time":1930.104608038,"data":"     spike+drift+malfunc       0.23      0.34      0.28        29\n"}
+,{"stream_name":"stdout","time":1930.10461336,"data":"        drift+spike+bias       0.11      0.07      0.09        29\n"}
+,{"stream_name":"stdout","time":1930.104618615,"data":"spike+bias+malfunc+drift       0.25      0.03      0.06        29\n"}
+,{"stream_name":"stdout","time":1930.104623011,"data":"\n"}
+,{"stream_name":"stdout","time":1930.104627643,"data":"                accuracy                           0.22       495\n"}
+,{"stream_name":"stdout","time":1930.104633042,"data":"               macro avg       0.22      0.23      0.19       495\n"}
+,{"stream_name":"stdout","time":1930.104638457,"data":"            weighted avg       0.22      0.22      0.19       495\n"}
+,{"stream_name":"stdout","time":1930.104643733,"data":"\n"}
+,{"stream_name":"stdout","time":1930.104648647,"data":"Accuracy: 0.2242  Macro-F1: 0.1948\n"}
+,{"stream_name":"stdout","time":1930.607154334,"data":"=== Confusion Matrix - JSD-Fuzzy ===\n"}
+,{"stream_name":"stdout","time":1930.607203702,"data":"                          precision    recall  f1-score   support\n"}
+,{"stream_name":"stdout","time":1930.607208603,"data":"\n"}
+,{"stream_name":"stdout","time":1930.607211169,"data":"                  normal       0.20      0.14      0.16        29\n"}
+,{"stream_name":"stdout","time":1930.607214086,"data":"                  faulty       0.87      0.90      0.88        29\n"}
+,{"stream_name":"stdout","time":1930.607216636,"data":"                   drift       0.33      0.22      0.27        27\n"}
+,{"stream_name":"stdout","time":1930.607219172,"data":"                   spike       0.57      0.55      0.56        29\n"}
+,{"stream_name":"stdout","time":1930.607221582,"data":"                    bias       0.32      0.40      0.35        30\n"}
+,{"stream_name":"stdout","time":1930.607224128,"data":"                hardware       0.06      0.03      0.04        29\n"}
+,{"stream_name":"stdout","time":1930.60722665,"data":"            bias+malfunc       0.17      0.14      0.15        29\n"}
+,{"stream_name":"stdout","time":1930.607229051,"data":"           spike+malfunc       0.27      0.40      0.32        30\n"}
+,{"stream_name":"stdout","time":1930.607231431,"data":"              spike+bias       0.63      0.66      0.64        29\n"}
+,{"stream_name":"stdout","time":1930.607234204,"data":"           drift+malfunc       0.42      0.48      0.45        29\n"}
+,{"stream_name":"stdout","time":1930.6072366,"data":"              drift+bias       0.25      0.24      0.25        29\n"}
+,{"stream_name":"stdout","time":1930.607239008,"data":"             drift+spike       0.36      0.57      0.44        30\n"}
+,{"stream_name":"stdout","time":1930.607241422,"data":"      spike+bias+malfunc       0.38      0.55      0.45        29\n"}
+,{"stream_name":"stdout","time":1930.607244558,"data":"      drift+bias+malfunc       0.43      0.33      0.38        30\n"}
+,{"stream_name":"stdout","time":1930.607246962,"data":"     spike+drift+malfunc       0.53      0.59      0.56        29\n"}
+,{"stream_name":"stdout","time":1930.60724936,"data":"        drift+spike+bias       0.22      0.14      0.17        29\n"}
+,{"stream_name":"stdout","time":1930.607251742,"data":"spike+bias+malfunc+drift       0.70      0.55      0.62        29\n"}
+,{"stream_name":"stdout","time":1930.607254374,"data":"\n"}
+,{"stream_name":"stdout","time":1930.60725677,"data":"                accuracy                           0.41       495\n"}
+,{"stream_name":"stdout","time":1930.607278993,"data":"               macro avg       0.40      0.41      0.39       495\n"}
+,{"stream_name":"stdout","time":1930.607281631,"data":"            weighted avg       0.39      0.41      0.39       495\n"}
+,{"stream_name":"stdout","time":1930.60728403,"data":"\n"}
+,{"stream_name":"stdout","time":1930.607286294,"data":"Accuracy: 0.4061  Macro-F1: 0.3938\n"}
+,{"stream_name":"stdout","time":1931.345370341,"data":"EDM-Fuzzy    final training loss (cross-entropy) = 1.955654  (solver=adam, alpha=0.0001, n_iter=30)\n"}
+,{"stream_name":"stdout","time":1931.345425138,"data":"CMSE         final training loss (cross-entropy) = 2.117494  (solver=adam, alpha=0.0001, n_iter=39)\n"}
+,{"stream_name":"stdout","time":1931.345431662,"data":"FME          final training loss (cross-entropy) = 2.036111  (solver=adam, alpha=0.001, n_iter=31)\n"}
+,{"stream_name":"stdout","time":1931.34543641,"data":"JSD-Fuzzy    final training loss (cross-entropy) = 0.614914  (solver=adam, alpha=0.0001, n_iter=27)\n"}
+,{"stream_name":"stdout","time":1931.976408807,"data":"=== Arsitektur ANN terbaik (hasil Grid Search) ===\n"}
+,{"stream_name":"stdout","time":1931.976447963,"data":"Input layer : 40 node\n"}
+,{"stream_name":"stdout","time":1931.976453614,"data":"Hidden layer: (80, 40) (jumlah layer = 2)\n"}
+,{"stream_name":"stdout","time":1931.976458746,"data":"Output layer: 17 node (kelas = [np.int64(0), np.int64(1), np.int64(2), np.int64(3), np.int64(4), np.int64(5), np.int64(6), np.int64(7), np.int64(8), np.int64(9), np.int64(10), np.int64(11), np.int64(12), np.int64(13), np.int64(14), np.int64(15), np.int64(16)])\n"}
+,{"stream_name":"stdout","time":1931.976464795,"data":"Activation  : tanh\n"}
+,{"stream_name":"stdout","time":1931.97646864,"data":"Alpha (L2)  : 0.0001\n"}
+,{"stream_name":"stdout","time":1931.976472483,"data":"LR init     : 0.001\n"}
+,{"stream_name":"stderr","time":1936.461394731,"data":"/tmp/ipykernel_16/1341092295.py:18: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.\n"}
+,{"stream_name":"stderr","time":1936.461444935,"data":"  sk = _sstats.skew(x, axis=1, bias=False)\n"}
+,{"stream_name":"stderr","time":1936.461450677,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1361: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":1936.461454989,"data":"  nval = ((n - 1.0) * n)**0.5 / (n - 2.0) * m3 / m2**1.5\n"}
+,{"stream_name":"stderr","time":1936.461457742,"data":"/tmp/ipykernel_16/1341092295.py:19: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.\n"}
+,{"stream_name":"stderr","time":1936.461461325,"data":"  ku = _sstats.kurtosis(x, axis=1, bias=False)\n"}
+,{"stream_name":"stderr","time":1936.46146476,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1469: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":1936.461467493,"data":"  nval = 1.0/(n-2)/(n-3) * ((n**2-1.0)*m4/m2**2.0 - 3*(n-1)**2.0)\n"}
+,{"stream_name":"stderr","time":1936.461470087,"data":"\n"}
+,{"stream_name":"stderr","time":1936.461472455,"data":"/tmp/ipykernel_16/1341092295.py:18: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.\n"}
+,{"stream_name":"stderr","time":1936.461475366,"data":"  sk = _sstats.skew(x, axis=1, bias=False)\n"}
+,{"stream_name":"stderr","time":1936.461477765,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1361: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":1936.461500785,"data":"  nval = ((n - 1.0) * n)**0.5 / (n - 2.0) * m3 / m2**1.5\n"}
+,{"stream_name":"stderr","time":1936.461504774,"data":"/tmp/ipykernel_16/1341092295.py:19: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.\n"}
+,{"stream_name":"stderr","time":1936.4615097,"data":"  ku = _sstats.kurtosis(x, axis=1, bias=False)\n"}
+,{"stream_name":"stderr","time":1936.461513341,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1469: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":1936.461517819,"data":"  nval = 1.0/(n-2)/(n-3) * ((n**2-1.0)*m4/m2**2.0 - 3*(n-1)**2.0)\n"}
+,{"stream_name":"stdout","time":1936.480642945,"data":"Time-domain feature matrix: (1979, 48) | 12 fitur/sensor\n"}
+,{"stream_name":"stdout","time":1936.480683105,"data":"[t+  32.1 min] ANN hybrid: EDM-Fuzzy\n"}
+,{"stream_name":"stdout","time":1936.682125329,"data":"Fitting 3 folds for each of 204 candidates, totalling 612 fits\n"}
+,{"stream_name":"stderr","time":2013.967114929,"data":"2026-10-22 21:28:27,978 | INFO | ANN hybrid EDM-Fuzzy | wall=77.32s cpu=13.09s peak_mem=6.24 MB rss=523 MB\n"}
+,{"stream_name":"stderr","time":2013.967172138,"data":"\n"}
+,{"stream_name":"stderr","time":2013.967178885,"data":"2026-10-22 21:28:27,978 | INFO | ANN hybrid EDM-Fuzzy | wall=77.32s cpu=13.09s peak_mem=6.24 MB rss=523 MB\n"}
+,{"stream_name":"stdout","time":2013.969156211,"data":"[t+  33.3 min] ANN hybrid: CMSE\n"}
+,{"stream_name":"stdout","time":2014.005508791,"data":"Fitting 3 folds for each of 204 candidates, totalling 612 fits\n"}
+,{"stream_name":"stderr","time":2089.03677246,"data":"2026-10-22 21:29:43,039 | INFO | ANN hybrid CMSE | wall=75.06s cpu=8.90s peak_mem=6.22 MB rss=523 MB\n"}
+,{"stream_name":"stderr","time":2089.036823086,"data":"\n"}
+,{"stream_name":"stderr","time":2089.036828703,"data":"2026-10-22 21:29:43,039 | INFO | ANN hybrid CMSE | wall=75.06s cpu=8.90s peak_mem=6.22 MB rss=523 MB\n"}
+,{"stream_name":"stdout","time":2089.038211724,"data":"[t+  34.6 min] ANN hybrid: FME\n"}
+,{"stream_name":"stdout","time":2089.067229228,"data":"Fitting 3 folds for each of 204 candidates, totalling 612 fits\n"}
+,{"stream_name":"stderr","time":2161.992413748,"data":"2026-10-22 21:30:56,007 | INFO | ANN hybrid FME | wall=72.96s cpu=8.56s peak_mem=6.21 MB rss=523 MB\n"}
+,{"stream_name":"stderr","time":2161.992455927,"data":"\n"}
+,{"stream_name":"stderr","time":2161.992671357,"data":"2026-10-22 21:30:56,007 | INFO | ANN hybrid FME | wall=72.96s cpu=8.56s peak_mem=6.21 MB rss=523 MB\n"}
+,{"stream_name":"stdout","time":2161.994313318,"data":"[t+  35.8 min] ANN hybrid: JSD-Fuzzy\n"}
+,{"stream_name":"stdout","time":2162.043745982,"data":"Fitting 3 folds for each of 204 candidates, totalling 612 fits\n"}
+,{"stream_name":"stderr","time":2416.167586583,"data":"2026-10-22 21:35:10,223 | INFO | ANN hybrid JSD-Fuzzy | wall=254.21s cpu=26.54s peak_mem=20.67 MB rss=523 MB\n"}
+,{"stream_name":"stderr","time":2416.167631325,"data":"\n"}
+,{"stream_name":"stderr","time":2416.16763799,"data":"2026-10-22 21:35:10,223 | INFO | ANN hybrid JSD-Fuzzy | wall=254.21s cpu=26.54s peak_mem=20.67 MB rss=523 MB\n"}
+,{"stream_name":"stdout","time":2416.168855691,"data":"\n"}
+,{"stream_name":"stdout","time":2416.16887961,"data":"=== Entropy-only vs Hybrid (Entropy + Time-Domain) — tugas 17 kelas ===\n"}
+,{"stream_name":"stdout","time":2416.168887139,"data":"           n_fitur entropy  n_fitur hybrid  Acc entropy  Acc hybrid  F1 entropy  F1 hybrid  Delta F1  Delta Acc\n"}
+,{"stream_name":"stdout","time":2416.168906616,"data":"Metode                                                                                                         \n"}
+,{"stream_name":"stdout","time":2416.1689113,"data":"EDM-Fuzzy               40              88       0.2303      0.2707      0.2174     0.2655    0.0481     0.0404\n"}
+,{"stream_name":"stdout","time":2416.168915597,"data":"CMSE                    40              88       0.1535      0.2505      0.1262     0.2006    0.0744     0.0970\n"}
+,{"stream_name":"stdout","time":2416.168919475,"data":"FME                     40              88       0.2242      0.2485      0.1948     0.2171    0.0223     0.0243\n"}
+,{"stream_name":"stdout","time":2416.168923345,"data":"JSD-Fuzzy              160             208       0.4061      0.4162      0.3938     0.4107    0.0169     0.0101\n"}
+,{"stream_name":"stdout","time":2416.168931883,"data":"\n"}
+,{"stream_name":"stdout","time":2416.168935823,"data":"[Saved] exports/hybrid_feature_comparison.csv\n"}
+,{"stream_name":"stdout","time":2416.917152494,"data":"[Saved] exports/hybrid_f1_comparison.png\n"}
+,{"stream_name":"stdout","time":2416.917201386,"data":"\n"}
+,{"stream_name":"stdout","time":2416.917211379,"data":"Metode hybrid terbaik: JSD-Fuzzy | Acc=0.4162 F1=0.4107\n"}
+,{"stream_name":"stdout","time":2416.917216559,"data":"                          precision    recall  f1-score   support\n"}
+,{"stream_name":"stdout","time":2416.917221061,"data":"\n"}
+,{"stream_name":"stdout","time":2416.917224947,"data":"                  normal       0.28      0.45      0.34        29\n"}
+,{"stream_name":"stdout","time":2416.917229044,"data":"                  faulty       1.00      0.93      0.96        29\n"}
+,{"stream_name":"stdout","time":2416.917232858,"data":"                   drift       0.21      0.19      0.20        27\n"}
+,{"stream_name":"stdout","time":2416.91723687,"data":"                   spike       0.55      0.59      0.57        29\n"}
+,{"stream_name":"stdout","time":2416.917240698,"data":"                    bias       0.20      0.07      0.10        30\n"}
+,{"stream_name":"stdout","time":2416.917244883,"data":"                hardware       0.16      0.17      0.17        29\n"}
+,{"stream_name":"stdout","time":2416.917248564,"data":"            bias+malfunc       0.42      0.28      0.33        29\n"}
+,{"stream_name":"stdout","time":2416.91725241,"data":"           spike+malfunc       0.39      0.40      0.39        30\n"}
+,{"stream_name":"stdout","time":2416.917256367,"data":"              spike+bias       0.69      0.76      0.72        29\n"}
+,{"stream_name":"stdout","time":2416.917260276,"data":"           drift+malfunc       0.52      0.48      0.50        29\n"}
+,{"stream_name":"stdout","time":2416.917263779,"data":"              drift+bias       0.24      0.21      0.22        29\n"}
+,{"stream_name":"stdout","time":2416.917267614,"data":"             drift+spike       0.17      0.17      0.17        30\n"}
+,{"stream_name":"stdout","time":2416.917271466,"data":"      spike+bias+malfunc       0.47      0.59      0.52        29\n"}
+,{"stream_name":"stdout","time":2416.917275662,"data":"      drift+bias+malfunc       0.41      0.23      0.30        30\n"}
+,{"stream_name":"stdout","time":2416.917279545,"data":"     spike+drift+malfunc       0.43      0.66      0.52        29\n"}
+,{"stream_name":"stdout","time":2416.917283397,"data":"        drift+spike+bias       0.22      0.34      0.27        29\n"}
+,{"stream_name":"stdout","time":2416.917287456,"data":"spike+bias+malfunc+drift       0.85      0.59      0.69        29\n"}
+,{"stream_name":"stdout","time":2416.917290677,"data":"\n"}
+,{"stream_name":"stdout","time":2416.91729299,"data":"                accuracy                           0.42       495\n"}
+,{"stream_name":"stdout","time":2416.917355242,"data":"               macro avg       0.42      0.42      0.41       495\n"}
+,{"stream_name":"stdout","time":2416.917360814,"data":"            weighted avg       0.42      0.42      0.41       495\n"}
+,{"stream_name":"stdout","time":2416.917364573,"data":"\n"}
+,{"stream_name":"stdout","time":2417.971861559,"data":"[Saved] exports/hybrid_cm_JSD-Fuzzy.png\n"}
+,{"stream_name":"stdout","time":2418.294997537,"data":"Dataset multi-label: 1862 window (exclude 'faulty'). Prevalensi per fault:\n"}
+,{"stream_name":"stdout","time":2418.29505441,"data":"  drift    : 49.7%\n"}
+,{"stream_name":"stdout","time":2418.295063389,"data":"  spike    : 50.3%\n"}
+,{"stream_name":"stdout","time":2418.295067685,"data":"  bias     : 50.3%\n"}
+,{"stream_name":"stdout","time":2418.295071508,"data":"  hardware : 50.3%\n"}
+,{"stream_name":"stdout","time":2418.295075477,"data":"[t+  40.1 min] multi-label detect: EDM-Fuzzy\n"}
+,{"stream_name":"stdout","time":2422.998996606,"data":"[t+  40.2 min] multi-label detect: JSD-Fuzzy\n"}
+,{"stream_name":"stdout","time":2436.36180309,"data":"\n"}
+,{"stream_name":"stdout","time":2436.361847164,"data":"=== Deteksi Per-Tipe Fault (multi-label, fitur hybrid) ===\n"}
+,{"stream_name":"stdout","time":2436.361853318,"data":"   Method    Fault  Prevalence  Accuracy  Precision  Recall    F1  ROC_AUC\n"}
+,{"stream_name":"stdout","time":2436.361857526,"data":"EDM-Fuzzy    drift       0.497     0.976      0.996   0.957 0.976    0.991\n"}
+,{"stream_name":"stdout","time":2436.361861475,"data":"EDM-Fuzzy    spike       0.503     0.541      0.537   0.615 0.574    0.538\n"}
+,{"stream_name":"stdout","time":2436.361865396,"data":"EDM-Fuzzy     bias       0.503     0.536      0.530   0.679 0.596    0.547\n"}
+,{"stream_name":"stdout","time":2436.361869163,"data":"EDM-Fuzzy hardware       0.503     0.884      0.933   0.829 0.878    0.953\n"}
+,{"stream_name":"stdout","time":2436.361873122,"data":"JSD-Fuzzy    drift       0.497     0.972      0.991   0.953 0.971    0.984\n"}
+,{"stream_name":"stdout","time":2436.36187685,"data":"JSD-Fuzzy    spike       0.503     0.783      0.812   0.739 0.774    0.876\n"}
+,{"stream_name":"stdout","time":2436.361880628,"data":"JSD-Fuzzy     bias       0.503     0.601      0.614   0.551 0.581    0.661\n"}
+,{"stream_name":"stdout","time":2436.361884798,"data":"JSD-Fuzzy hardware       0.503     0.959      0.961   0.957 0.959    0.990\n"}
+,{"stream_name":"stdout","time":2436.36188861,"data":"\n"}
+,{"stream_name":"stdout","time":2436.361891958,"data":"[Saved] exports/multilabel_perfault_detection.csv\n"}
+,{"stream_name":"stdout","time":2436.361895655,"data":"\n"}
+,{"stream_name":"stdout","time":2436.361899202,"data":"Rata-rata per metode (4 fault):\n"}
+,{"stream_name":"stdout","time":2436.361903616,"data":"           Accuracy     F1  ROC_AUC\n"}
+,{"stream_name":"stdout","time":2436.361907472,"data":"Method                             \n"}
+,{"stream_name":"stdout","time":2436.361910979,"data":"EDM-Fuzzy     0.734  0.756    0.757\n"}
+,{"stream_name":"stdout","time":2436.361914907,"data":"JSD-Fuzzy     0.829  0.821    0.878\n"}
+,{"stream_name":"stdout","time":2437.117500119,"data":"[Saved] exports/multilabel_perfault_f1.png\n"}
+,{"stream_name":"stdout","time":2456.52616119,"data":"[t+  40.7 min] S-sweep over (5, 8, 10, 12)\n"}
+,{"stream_name":"stderr","time":2469.443621192,"data":"/usr/local/lib/python3.12/dist-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.\n"}
+,{"stream_name":"stderr","time":2469.443663763,"data":"  warnings.warn(\n"}
+,{"stream_name":"stderr","time":2469.443684736,"data":"\n"}
+,{"stream_name":"stderr","time":2469.443688832,"data":"/usr/local/lib/python3.12/dist-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.\n"}
+,{"stream_name":"stderr","time":2469.443692912,"data":"  warnings.warn(\n"}
+,{"stream_name":"stderr","time":2487.837521703,"data":"/usr/local/lib/python3.12/dist-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.\n"}
+,{"stream_name":"stderr","time":2487.837558928,"data":"  warnings.warn(\n"}
+,{"stream_name":"stderr","time":2487.837563768,"data":"\n"}
+,{"stream_name":"stderr","time":2487.837567563,"data":"/usr/local/lib/python3.12/dist-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.\n"}
+,{"stream_name":"stderr","time":2487.837572142,"data":"  warnings.warn(\n"}
+,{"stream_name":"stderr","time":2509.01679394,"data":"/usr/local/lib/python3.12/dist-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.\n"}
+,{"stream_name":"stderr","time":2509.016840049,"data":"  warnings.warn(\n"}
+,{"stream_name":"stderr","time":2509.016846156,"data":"\n"}
+,{"stream_name":"stderr","time":2509.017065232,"data":"/usr/local/lib/python3.12/dist-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.\n"}
+,{"stream_name":"stderr","time":2509.017081582,"data":"  warnings.warn(\n"}
+,{"stream_name":"stderr","time":2533.328509185,"data":"/usr/local/lib/python3.12/dist-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.\n"}
+,{"stream_name":"stderr","time":2533.328570458,"data":"  warnings.warn(\n"}
+,{"stream_name":"stderr","time":2533.328579021,"data":"\n"}
+,{"stream_name":"stderr","time":2533.328583695,"data":"/usr/local/lib/python3.12/dist-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.\n"}
+,{"stream_name":"stderr","time":2533.328589505,"data":"  warnings.warn(\n"}
+,{"stream_name":"stdout","time":2534.180965233,"data":"Skenario S1–S5 siap dibentuk.\n"}
+,{"stream_name":"stdout","time":2534.181008687,"data":"scenario_names: ['normal', 'faulty', 'drift', 'spike', 'bias', 'hardware', 'bias+malfunc', 'spike+malfunc', 'spike+bias', 'drift+malfunc'] ...\n"}
+,{"stream_name":"stdout","time":2534.515104769,"data":"\n"}
+,{"stream_name":"stdout","time":2534.515137628,"data":"=== RQ1: Feature Matrix Validation ===\n"}
+,{"stream_name":"stdout","time":2534.515144093,"data":"   Method  n_samples  n_scale_features  NaN_values  Infinite_values Status\n"}
+,{"stream_name":"stdout","time":2534.515149145,"data":"EDM-Fuzzy       1979                40           0                0  Valid\n"}
+,{"stream_name":"stdout","time":2534.515154076,"data":"JSD-Fuzzy       1979               160           0                0  Valid\n"}
+,{"stream_name":"stdout","time":2534.515210357,"data":"\n"}
+,{"stream_name":"stdout","time":2534.515215298,"data":"[Saved] exports/rq1_feature_matrix_validation.csv\n"}
+,{"stream_name":"stdout","time":2534.895316345,"data":"Menghitung CV per kelas per skala untuk EDM-Fuzzy dan JSD-Fuzzy...\n"}
+,{"stream_name":"stdout","time":2534.895371509,"data":"\n"}
+,{"stream_name":"stdout","time":2534.895377692,"data":"=== RQ2: Mean CV per Scale (semua kelas) ===\n"}
+,{"stream_name":"stdout","time":2534.8953816,"data":"       EDM-Fuzzy  JSD-Fuzzy  CV_Reduction_%\n"}
+,{"stream_name":"stdout","time":2534.895385521,"data":"scale                                      \n"}
+,{"stream_name":"stdout","time":2534.89538932,"data":"1         0.4641     0.1746         62.3701\n"}
+,{"stream_name":"stdout","time":2534.895392871,"data":"2         0.4119     0.1627         60.5116\n"}
+,{"stream_name":"stdout","time":2534.895396641,"data":"3         0.4015     0.1639         59.1806\n"}
+,{"stream_name":"stdout","time":2534.895399658,"data":"4         0.3948     0.1659         57.9845\n"}
+,{"stream_name":"stdout","time":2534.895402188,"data":"5         0.3967     0.1646         58.4943\n"}
+,{"stream_name":"stdout","time":2534.895404607,"data":"6         0.3953     0.1695         57.1313\n"}
+,{"stream_name":"stdout","time":2534.895407064,"data":"7         0.4004     0.1756         56.1555\n"}
+,{"stream_name":"stdout","time":2534.8954095,"data":"8         0.3967     0.1822         54.0760\n"}
+,{"stream_name":"stdout","time":2534.895411855,"data":"9         0.3958     0.1841         53.4745\n"}
+,{"stream_name":"stdout","time":2534.895414512,"data":"10        0.3991     0.1883         52.8317\n"}
+,{"stream_name":"stdout","time":2534.895418042,"data":"EDM-Fuzzy | Global Mean CV = 0.4056\n"}
+,{"stream_name":"stdout","time":2534.895421698,"data":"JSD-Fuzzy | Global Mean CV = 0.1731\n"}
+,{"stream_name":"stdout","time":2534.895425703,"data":"\n"}
+,{"stream_name":"stdout","time":2534.895429235,"data":"[Saved] exports/rq2_cv_per_scale.csv, rq2_cv_per_class_scale.csv\n"}
+,{"stream_name":"stdout","time":2535.943147661,"data":"[Saved] exports/rq2_cv_stability_plot.png\n"}
+,{"stream_name":"stdout","time":2536.967776856,"data":"[Saved] exports/rq3_boxplot_separability_S2.png\n"}
+,{"stream_name":"stdout","time":2537.151169197,"data":"\n"}
+,{"stream_name":"stdout","time":2537.151202657,"data":"=== RQ3: Feature Separability Summary (Scenario S2) ===\n"}
+,{"stream_name":"stdout","time":2537.151208001,"data":"   Method    Class  Median     Q1     Q3    IQR   Mean    Std\n"}
+,{"stream_name":"stdout","time":2537.151211078,"data":"EDM-Fuzzy   normal  0.3363 0.2377 0.4080 0.1703 0.3250 0.1074\n"}
+,{"stream_name":"stdout","time":2537.151214227,"data":"EDM-Fuzzy    drift  0.3288 0.2975 0.3676 0.0701 0.3221 0.0755\n"}
+,{"stream_name":"stdout","time":2537.151216813,"data":"EDM-Fuzzy    spike  0.3482 0.2541 0.4159 0.1619 0.3388 0.1019\n"}
+,{"stream_name":"stdout","time":2537.151219501,"data":"EDM-Fuzzy     bias  0.3352 0.2375 0.4078 0.1703 0.3249 0.1079\n"}
+,{"stream_name":"stdout","time":2537.151221958,"data":"EDM-Fuzzy hardware  0.4856 0.4127 0.5292 0.1166 0.4663 0.0909\n"}
+,{"stream_name":"stdout","time":2537.151224395,"data":"JSD-Fuzzy   normal  0.0173 0.0135 0.0213 0.0078 0.0179 0.0063\n"}
+,{"stream_name":"stdout","time":2537.15122697,"data":"JSD-Fuzzy    drift  0.0349 0.0304 0.0416 0.0113 0.0398 0.0197\n"}
+,{"stream_name":"stdout","time":2537.151229424,"data":"JSD-Fuzzy    spike  0.0206 0.0170 0.0240 0.0069 0.0209 0.0059\n"}
+,{"stream_name":"stdout","time":2537.151232654,"data":"JSD-Fuzzy     bias  0.0185 0.0149 0.0230 0.0081 0.0195 0.0063\n"}
+,{"stream_name":"stdout","time":2537.151236336,"data":"JSD-Fuzzy hardware  0.0204 0.0175 0.0242 0.0067 0.0214 0.0054\n"}
+,{"stream_name":"stdout","time":2537.151239787,"data":"\n"}
+,{"stream_name":"stdout","time":2537.151243362,"data":"[Saved] exports/rq3_separability_summary.csv\n"}
+,{"stream_name":"stdout","time":2537.50325948,"data":"Helper RQ4 siap.\n"}
+,{"stream_name":"stdout","time":2537.503296428,"data":"RQ4 akan menjalankan Grid Search ANN-LM untuk 2 metode x 5 skenario.\n"}
+,{"stream_name":"stdout","time":2537.503301738,"data":"⚠️  Ini membutuhkan waktu beberapa menit. Pastikan semua cell di atas sudah dijalankan.\n"}
+,{"stream_name":"stdout","time":2537.68406535,"data":"Distribusi sampel per skenario:\n"}
+,{"stream_name":"stdout","time":2537.684100697,"data":"  S1: Binary: fault-free vs all-fault | n=1979, classes={0: 117, 1: 1862}\n"}
+,{"stream_name":"stdout","time":2537.684105913,"data":"  S2: 5-class: normal + 4 single faults | n=575, classes={0: 117, 1: 107, 2: 117, 3: 117, 4: 117}\n"}
+,{"stream_name":"stdout","time":2537.684110209,"data":"  S3: Multi-class: normal + 2-fault combinations | n=819, classes={0: 117, 1: 117, 2: 117, 3: 117, 4: 117, 5: 117, 6: 117}\n"}
+,{"stream_name":"stdout","time":2537.684114421,"data":"  S4: 4-class: single fault identification | n=458, classes={0: 107, 1: 117, 2: 117, 3: 117}\n"}
+,{"stream_name":"stdout","time":2537.684118714,"data":"  S5: All-class: normal + single + 2-fault combos | n=1277, classes={0: 117, 1: 107, 2: 117, 3: 117, 4: 117, 5: 117, 6: 117, 7: 117, 8: 117, 9: 117, 10: 117}\n"}
+,{"stream_name":"stdout","time":2537.684123206,"data":"\n"}
+,{"stream_name":"stdout","time":2565.780761865,"data":"▶ S1 | EDM-Fuzzy | n=1979 | n_classes=2 ... F1=0.4838 Acc=0.9374 [28.1s]\n"}
+,{"stream_name":"stdout","time":2640.534947555,"data":"▶ S1 | JSD-Fuzzy | n=1979 | n_classes=2 ... F1=0.4844 Acc=0.9394 [74.5s]\n"}
+,{"stream_name":"stdout","time":2652.481834149,"data":"▶ S2 | EDM-Fuzzy | n=575 | n_classes=5 ... F1=0.3002 Acc=0.3542 [12.2s]\n"}
+,{"stream_name":"stdout","time":2683.308488695,"data":"▶ S2 | JSD-Fuzzy | n=575 | n_classes=5 ... F1=0.5431 Acc=0.5417 [30.5s]\n"}
+,{"stream_name":"stdout","time":2700.421510123,"data":"▶ S3 | EDM-Fuzzy | n=819 | n_classes=7 ... F1=0.2770 Acc=0.3220 [17.4s]\n"}
+,{"stream_name":"stdout","time":2747.822572915,"data":"▶ S3 | JSD-Fuzzy | n=819 | n_classes=7 ... F1=0.6388 Acc=0.6390 [47.2s]\n"}
+,{"stream_name":"stdout","time":2759.399736211,"data":"▶ S4 | EDM-Fuzzy | n=458 | n_classes=4 ... F1=0.5288 Acc=0.5478 [11.8s]\n"}
+,{"stream_name":"stdout","time":2786.480487735,"data":"▶ S4 | JSD-Fuzzy | n=458 | n_classes=4 ... F1=0.7099 Acc=0.7043 [26.9s]\n"}
+,{"stream_name":"stdout","time":2810.499801081,"data":"▶ S5 | EDM-Fuzzy | n=1277 | n_classes=11 ... F1=0.1952 Acc=0.2156 [24.2s]\n"}
+,{"stream_name":"stdout","time":2887.489155481,"data":"▶ S5 | JSD-Fuzzy | n=1277 | n_classes=11 ... F1=0.4448 Acc=0.4500 [76.8s]\n"}
+,{"stream_name":"stdout","time":2887.489205602,"data":"\n"}
+,{"stream_name":"stdout","time":2887.489211505,"data":"✅ RQ4 selesai.\n"}
+,{"stream_name":"stdout","time":2887.671614502,"data":"\n"}
+,{"stream_name":"stdout","time":2887.671648723,"data":"=== RQ4: Hasil Klasifikasi – Lima Skenario (EDM-Fuzzy vs JSD-Fuzzy) ===\n"}
+,{"stream_name":"stdout","time":2887.671656748,"data":"Scenario    Method  n_classes  n_train  n_test Best_Architecture Best_Activation  CV_F1_macro  Accuracy  Precision  Recall  F1_macro  wall_s\n"}
+,{"stream_name":"stdout","time":2887.671662437,"data":"      S1 EDM-Fuzzy          2     1484     495          (20, 10)            tanh       0.5572    0.9374     0.4706  0.4979    0.4838   28.08\n"}
+,{"stream_name":"stdout","time":2887.671667988,"data":"      S1 JSD-Fuzzy          2     1484     495    (256, 128, 64)            tanh       0.5959    0.9394     0.4706  0.4989    0.4844   74.47\n"}
+,{"stream_name":"stdout","time":2887.671673205,"data":"      S2 EDM-Fuzzy          5      431     144             (80,)            relu       0.4313    0.3542     0.2964  0.3597    0.3002   12.19\n"}
+,{"stream_name":"stdout","time":2887.671695017,"data":"      S2 JSD-Fuzzy          5      431     144     (160, 80, 40)            tanh       0.5370    0.5417     0.5472  0.5493    0.5431   30.51\n"}
+,{"stream_name":"stdout","time":2887.671699542,"data":"      S3 EDM-Fuzzy          7      614     205             (80,)            tanh       0.3866    0.3220     0.2684  0.3246    0.2770   17.40\n"}
+,{"stream_name":"stdout","time":2887.67170366,"data":"      S3 JSD-Fuzzy          7      614     205             (80,)            tanh       0.6857    0.6390     0.6555  0.6389    0.6388   47.19\n"}
+,{"stream_name":"stdout","time":2887.67170781,"data":"      S4 EDM-Fuzzy          4      343     115          (32, 16)            relu       0.5370    0.5478     0.5439  0.5514    0.5288   11.77\n"}
+,{"stream_name":"stdout","time":2887.671711942,"data":"      S4 JSD-Fuzzy          4      343     115            (256,)            tanh       0.6850    0.7043     0.7210  0.7076    0.7099   26.90\n"}
+,{"stream_name":"stdout","time":2887.671715727,"data":"      S5 EDM-Fuzzy         11      957     320      (80, 40, 20)            tanh       0.2300    0.2156     0.1970  0.2165    0.1952   24.16\n"}
+,{"stream_name":"stdout","time":2887.671720382,"data":"      S5 JSD-Fuzzy         11      957     320    (256, 128, 64)            tanh       0.4101    0.4500     0.4559  0.4489    0.4448   76.83\n"}
+,{"stream_name":"stdout","time":2887.671724445,"data":"\n"}
+,{"stream_name":"stdout","time":2887.671727854,"data":"[Saved] exports/rq4_classification_results.csv\n"}
+,{"stream_name":"stdout","time":2888.493275072,"data":"[Saved] exports/rq4_performance_comparison.png\n"}
+,{"stream_name":"stdout","time":2889.198937792,"data":"[Saved] exports/rq4_cm_S1_EDM_Fuzzy.png\n"}
+,{"stream_name":"stdout","time":2889.492416403,"data":"[Saved] exports/rq4_cm_S1_JSD_Fuzzy.png\n"}
+,{"stream_name":"stdout","time":2889.914923013,"data":"[Saved] exports/rq4_cm_S2_EDM_Fuzzy.png\n"}
+,{"stream_name":"stdout","time":2890.326459051,"data":"[Saved] exports/rq4_cm_S2_JSD_Fuzzy.png\n"}
+,{"stream_name":"stdout","time":2890.880876909,"data":"[Saved] exports/rq4_cm_S3_EDM_Fuzzy.png\n"}
+,{"stream_name":"stdout","time":2891.470580858,"data":"[Saved] exports/rq4_cm_S3_JSD_Fuzzy.png\n"}
+,{"stream_name":"stdout","time":2892.036081599,"data":"[Saved] exports/rq4_cm_S4_EDM_Fuzzy.png\n"}
+,{"stream_name":"stdout","time":2892.458265491,"data":"[Saved] exports/rq4_cm_S4_JSD_Fuzzy.png\n"}
+,{"stream_name":"stdout","time":2893.464574488,"data":"[Saved] exports/rq4_cm_S5_EDM_Fuzzy.png\n"}
+,{"stream_name":"stdout","time":2894.28425756,"data":"[Saved] exports/rq4_cm_S5_JSD_Fuzzy.png\n"}
+,{"stream_name":"stdout","time":2894.670254964,"data":"=== RQ5: Paired t-test F1-score ===\n"}
+,{"stream_name":"stdout","time":2894.67029429,"data":"Scenario  F1_EDM-Fuzzy  F1_JSD-Fuzzy  Difference (JSD-EDM)\n"}
+,{"stream_name":"stdout","time":2894.670299216,"data":"      S1        0.4838        0.4844                0.0006\n"}
+,{"stream_name":"stdout","time":2894.67030332,"data":"      S2        0.3002        0.5431                0.2429\n"}
+,{"stream_name":"stdout","time":2894.670307391,"data":"      S3        0.2770        0.6388                0.3618\n"}
+,{"stream_name":"stdout","time":2894.670311408,"data":"      S4        0.5288        0.7099                0.1811\n"}
+,{"stream_name":"stdout","time":2894.670315298,"data":"      S5        0.1952        0.4448                0.2496\n"}
+,{"stream_name":"stdout","time":2894.670319034,"data":"\n"}
+,{"stream_name":"stdout","time":2894.670330496,"data":"Mean F1 EDM-Fuzzy : 0.3570\n"}
+,{"stream_name":"stdout","time":2894.670333078,"data":"Mean F1 JSD-Fuzzy : 0.5642\n"}
+,{"stream_name":"stdout","time":2894.670335597,"data":"Mean Difference   : 0.2072 (JSD - EDM)\n"}
+,{"stream_name":"stdout","time":2894.67035052,"data":"t-statistic       : 3.4939\n"}
+,{"stream_name":"stdout","time":2894.670353206,"data":"p-value           : 0.0250\n"}
+,{"stream_name":"stdout","time":2894.670355761,"data":"Signifikan        : Ya (p \u003c 0.05)\n"}
+,{"stream_name":"stdout","time":2894.670358786,"data":"\n"}
+,{"stream_name":"stdout","time":2894.6703611,"data":"[Saved] exports/rq5_paired_ttest.csv\n"}
+,{"stream_name":"stdout","time":2895.23049368,"data":"[Saved] exports/rq5_f1_paired_comparison.png\n"}
+,{"stream_name":"stdout","time":2895.964936529,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":2895.964964386,"data":"RINGKASAN PAPER: JSD-Fuzzy vs EDM-Fuzzy\n"}
+,{"stream_name":"stdout","time":2895.964969976,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":2895.964973047,"data":"\n"}
+,{"stream_name":"stdout","time":2895.964976847,"data":"[RQ1] Feature Matrix Validation:\n"}
+,{"stream_name":"stdout","time":2895.964980601,"data":"   Method  n_samples  n_scale_features  NaN_values  Infinite_values Status\n"}
+,{"stream_name":"stdout","time":2895.964984587,"data":"EDM-Fuzzy       1979                40           0                0  Valid\n"}
+,{"stream_name":"stdout","time":2895.96498889,"data":"JSD-Fuzzy       1979               160           0                0  Valid\n"}
+,{"stream_name":"stdout","time":2895.964993229,"data":"\n"}
+,{"stream_name":"stdout","time":2895.964997245,"data":"[RQ2] Mean CV per Scale (averaged across all classes):\n"}
+,{"stream_name":"stdout","time":2895.965001,"data":"       EDM-Fuzzy  JSD-Fuzzy  CV_Reduction_%\n"}
+,{"stream_name":"stdout","time":2895.965005037,"data":"scale                                      \n"}
+,{"stream_name":"stdout","time":2895.965008936,"data":"1         0.4641     0.1746         62.3701\n"}
+,{"stream_name":"stdout","time":2895.96501272,"data":"2         0.4119     0.1627         60.5116\n"}
+,{"stream_name":"stdout","time":2895.965033408,"data":"3         0.4015     0.1639         59.1806\n"}
+,{"stream_name":"stdout","time":2895.965041536,"data":"4         0.3948     0.1659         57.9845\n"}
+,{"stream_name":"stdout","time":2895.965045671,"data":"5         0.3967     0.1646         58.4943\n"}
+,{"stream_name":"stdout","time":2895.965049573,"data":"6         0.3953     0.1695         57.1313\n"}
+,{"stream_name":"stdout","time":2895.96505341,"data":"7         0.4004     0.1756         56.1555\n"}
+,{"stream_name":"stdout","time":2895.96505715,"data":"8         0.3967     0.1822         54.0760\n"}
+,{"stream_name":"stdout","time":2895.965060939,"data":"9         0.3958     0.1841         53.4745\n"}
+,{"stream_name":"stdout","time":2895.9650647,"data":"10        0.3991     0.1883         52.8317\n"}
+,{"stream_name":"stdout","time":2895.965069031,"data":"  → JSD-Fuzzy lebih stabil pada 10/10 scale, rata-rata CV reduction = 57.22%\n"}
+,{"stream_name":"stdout","time":2895.965072671,"data":"\n"}
+,{"stream_name":"stdout","time":2895.965074946,"data":"[RQ4] Klasifikasi Lima Skenario:\n"}
+,{"stream_name":"stdout","time":2895.965077387,"data":"Scenario    Method  Accuracy  Precision  Recall  F1_macro\n"}
+,{"stream_name":"stdout","time":2895.965079932,"data":"      S1 EDM-Fuzzy    0.9374     0.4706  0.4979    0.4838\n"}
+,{"stream_name":"stdout","time":2895.965082333,"data":"      S1 JSD-Fuzzy    0.9394     0.4706  0.4989    0.4844\n"}
+,{"stream_name":"stdout","time":2895.965084673,"data":"      S2 EDM-Fuzzy    0.3542     0.2964  0.3597    0.3002\n"}
+,{"stream_name":"stdout","time":2895.965087183,"data":"      S2 JSD-Fuzzy    0.5417     0.5472  0.5493    0.5431\n"}
+,{"stream_name":"stdout","time":2895.965100306,"data":"      S3 EDM-Fuzzy    0.3220     0.2684  0.3246    0.2770\n"}
+,{"stream_name":"stdout","time":2895.965102878,"data":"      S3 JSD-Fuzzy    0.6390     0.6555  0.6389    0.6388\n"}
+,{"stream_name":"stdout","time":2895.96510591,"data":"      S4 EDM-Fuzzy    0.5478     0.5439  0.5514    0.5288\n"}
+,{"stream_name":"stdout","time":2895.965110039,"data":"      S4 JSD-Fuzzy    0.7043     0.7210  0.7076    0.7099\n"}
+,{"stream_name":"stdout","time":2895.965113833,"data":"      S5 EDM-Fuzzy    0.2156     0.1970  0.2165    0.1952\n"}
+,{"stream_name":"stdout","time":2895.965118067,"data":"      S5 JSD-Fuzzy    0.4500     0.4559  0.4489    0.4448\n"}
+,{"stream_name":"stdout","time":2895.965121975,"data":"\n"}
+,{"stream_name":"stdout","time":2895.965125867,"data":"[RQ5] Paired t-test:\n"}
+,{"stream_name":"stdout","time":2895.965129914,"data":"Scenario  F1_EDM-Fuzzy  F1_JSD-Fuzzy  Difference (JSD-EDM)  p_value    Signifikan\n"}
+,{"stream_name":"stdout","time":2895.965134335,"data":"      S1        0.4838        0.4844                0.0006 0.025034 Ya (p \u003c 0.05)\n"}
+,{"stream_name":"stdout","time":2895.965138845,"data":"      S2        0.3002        0.5431                0.2429 0.025034 Ya (p \u003c 0.05)\n"}
+,{"stream_name":"stdout","time":2895.965144627,"data":"      S3        0.2770        0.6388                0.3618 0.025034 Ya (p \u003c 0.05)\n"}
+,{"stream_name":"stdout","time":2895.965148613,"data":"      S4        0.5288        0.7099                0.1811 0.025034 Ya (p \u003c 0.05)\n"}
+,{"stream_name":"stdout","time":2895.965152682,"data":"      S5        0.1952        0.4448                0.2496 0.025034 Ya (p \u003c 0.05)\n"}
+,{"stream_name":"stdout","time":2896.448340583,"data":"\n"}
+,{"stream_name":"stdout","time":2896.448373716,"data":"[Saved] exports/paper_summary_tables.xlsx\n"}
+,{"stream_name":"stderr","time":2902.970158216,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":2902.970205727,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":2903.193856496,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":2903.193889642,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":2903.991940632,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":2904.621364681,"data":"[NbConvertApp] Writing 3871353 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":2907.624404217,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":2909.498360725,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":2909.49840178,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.49872083,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.499222308,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.499337676,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.499685036,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.499862069,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.500113079,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.500374128,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.500536308,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.50085367,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.501591009,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.501678662,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.501928199,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.502102856,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.502278327,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.502646319,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.502817513,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.502980692,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.503144576,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.503317538,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.503488724,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.503711803,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.504007512,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.504152538,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.504449212,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.504662157,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.504855016,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.505138172,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":2909.50541079,"data":"[NbConvertApp] Writing 1661419 bytes to __results__.html\n"}
+]

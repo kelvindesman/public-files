@@ -1,0 +1,187 @@
+[{"stream_name":"stderr","time":9.591947032,"data":"/usr/local/lib/python3.12/dist-packages/nbformat/__init__.py:96: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":9.592050642,"data":"  validate(nb)\n"}
+,{"stream_name":"stderr","time":11.283552202,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":11.283654965,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":11.283661382,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":11.283664136,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":12.280935534,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":12.280974367,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":12.280979623,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":12.280984016,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":13.846458129,"data":"[t+   0.0 min] runtime guard armed | budget=10.5 h | BLAS threads=1\n"}
+,{"stream_name":"stdout","time":15.283523363,"data":"RUNTIME_PROFILE=fast | METHOD_LIST=['EDM-Fuzzy', 'JSD-Fuzzy']\n"}
+,{"stream_name":"stdout","time":15.303718564,"data":"config: {'DS': 4, 'WIN': 256, 'STRIDE': 128, 'MAX_PER_CLASS': 200, 'REPEATS_PER_SCENARIO': 4, 'FAULT_TYPES': ['drift', 'spike', 'bias', 'hardware']}\n"}
+,{"stream_name":"stdout","time":15.963120416,"data":"Columns: ['kelembaban1', 'kelembaban2', 'kelembaban3', 'kelembaban4'] | Shape X: (60763, 4) -\u003e downsampled X_ds: (15191, 4)\n"}
+,{"stream_name":"stdout","time":16.070286566,"data":"Skenario: 16 + normal = 17 kelas\n"}
+,{"stream_name":"stdout","time":16.070320249,"data":"Jenis fault: ['drift', 'spike', 'bias', 'hardware'] -\u003e label Tahap 2 = 16\n"}
+,{"stream_name":"stdout","time":16.164790151,"data":"faulty                       windows=458\n"}
+,{"stream_name":"stdout","time":16.164828207,"data":"drift                        windows=428\n"}
+,{"stream_name":"stdout","time":16.271303375,"data":"spike                        windows=468\n"}
+,{"stream_name":"stdout","time":16.271340765,"data":"bias                         windows=468\n"}
+,{"stream_name":"stdout","time":16.271345576,"data":"hardware                     windows=468\n"}
+,{"stream_name":"stdout","time":16.271349609,"data":"bias+malfunc                 windows=468\n"}
+,{"stream_name":"stdout","time":16.330080192,"data":"spike+malfunc                windows=468\n"}
+,{"stream_name":"stdout","time":16.330136498,"data":"spike+bias                   windows=468\n"}
+,{"stream_name":"stdout","time":16.382605959,"data":"drift+malfunc                windows=468\n"}
+,{"stream_name":"stdout","time":16.382646047,"data":"drift+bias                   windows=468\n"}
+,{"stream_name":"stdout","time":16.488590776,"data":"drift+spike                  windows=468\n"}
+,{"stream_name":"stdout","time":16.488657072,"data":"spike+bias+malfunc           windows=468\n"}
+,{"stream_name":"stdout","time":16.488663762,"data":"drift+bias+malfunc           windows=468\n"}
+,{"stream_name":"stdout","time":16.543632801,"data":"spike+drift+malfunc          windows=468\n"}
+,{"stream_name":"stdout","time":16.543693646,"data":"drift+spike+bias             windows=468\n"}
+,{"stream_name":"stdout","time":16.600809935,"data":"spike+bias+malfunc+drift     windows=468\n"}
+,{"stream_name":"stdout","time":16.613232551,"data":"\n"}
+,{"stream_name":"stdout","time":16.613283512,"data":"Total windows: (7555, 256, 4)\n"}
+,{"stream_name":"stdout","time":16.613289382,"data":"\n"}
+,{"stream_name":"stdout","time":16.613293291,"data":"Prevalensi fault per (sensor x jenis) -- HARUS berbeda-beda,\n"}
+,{"stream_name":"stdout","time":16.613296751,"data":"kalau semua sama berarti injeksi masih menyamakan sensor:\n"}
+,{"stream_name":"stdout","time":16.613300323,"data":"    drift  spike   bias  hardware\n"}
+,{"stream_name":"stdout","time":16.613304169,"data":"S1  0.241  0.372  0.294     0.325\n"}
+,{"stream_name":"stdout","time":16.613308129,"data":"S2  0.297  0.232  0.356     0.372\n"}
+,{"stream_name":"stdout","time":16.613311735,"data":"S3  0.297  0.325  0.356     0.279\n"}
+,{"stream_name":"stdout","time":16.613315626,"data":"S4  0.312  0.341  0.310     0.310\n"}
+,{"stream_name":"stdout","time":16.649258518,"data":"After balanced subsample: (3317, 256, 4)\n"}
+,{"stream_name":"stdout","time":16.649294418,"data":"Label Tahap 2: (3317, 16) -\u003e ['S1:drift', 'S1:spike', 'S1:bias', 'S1:hardware', 'S2:drift', 'S2:spike', 'S2:bias', 'S2:hardware', 'S3:drift', 'S3:spike', 'S3:bias', 'S3:hardware', 'S4:drift', 'S4:spike', 'S4:bias', 'S4:hardware']\n"}
+,{"stream_name":"stdout","time":16.649302811,"data":"\n"}
+,{"stream_name":"stdout","time":16.649307085,"data":"Prevalensi 16 label:\n"}
+,{"stream_name":"stdout","time":16.649311401,"data":"S1:drift       0.232\n"}
+,{"stream_name":"stdout","time":16.649315549,"data":"S1:spike       0.363\n"}
+,{"stream_name":"stdout","time":16.649319279,"data":"S1:bias        0.290\n"}
+,{"stream_name":"stdout","time":16.649322902,"data":"S1:hardware    0.315\n"}
+,{"stream_name":"stdout","time":16.649326549,"data":"S2:drift       0.290\n"}
+,{"stream_name":"stdout","time":16.649330409,"data":"S2:spike       0.226\n"}
+,{"stream_name":"stdout","time":16.649333865,"data":"S2:bias        0.340\n"}
+,{"stream_name":"stdout","time":16.64933786,"data":"S2:hardware    0.361\n"}
+,{"stream_name":"stdout","time":16.64934173,"data":"S3:drift       0.290\n"}
+,{"stream_name":"stdout","time":16.649345515,"data":"S3:spike       0.314\n"}
+,{"stream_name":"stdout","time":16.649348795,"data":"S3:bias        0.348\n"}
+,{"stream_name":"stdout","time":16.649352173,"data":"S3:hardware    0.273\n"}
+,{"stream_name":"stdout","time":16.649356044,"data":"S4:drift       0.310\n"}
+,{"stream_name":"stdout","time":16.649359837,"data":"S4:spike       0.336\n"}
+,{"stream_name":"stdout","time":16.649363445,"data":"S4:bias        0.308\n"}
+,{"stream_name":"stdout","time":16.649367284,"data":"S4:hardware    0.302\n"}
+,{"stream_name":"stdout","time":16.694373531,"data":"Using scales: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n"}
+,{"stream_name":"stderr","time":19.192586163,"data":"/tmp/ipykernel_16/1766821873.py:34: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.\n"}
+,{"stream_name":"stderr","time":19.192628021,"data":"  sk = _sstats.skew(x, axis=1, bias=False); ku = _sstats.kurtosis(x, axis=1, bias=False)\n"}
+,{"stream_name":"stderr","time":19.192633281,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1361: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":19.192648852,"data":"  nval = ((n - 1.0) * n)**0.5 / (n - 2.0) * m3 / m2**1.5\n"}
+,{"stream_name":"stderr","time":19.192651715,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1469: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":19.192654308,"data":"  nval = 1.0/(n-2)/(n-3) * ((n**2-1.0)*m4/m2**2.0 - 3*(n-1)**2.0)\n"}
+,{"stream_name":"stderr","time":19.192656736,"data":"\n"}
+,{"stream_name":"stderr","time":19.192659083,"data":"/tmp/ipykernel_16/1766821873.py:34: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.\n"}
+,{"stream_name":"stderr","time":19.192661974,"data":"  sk = _sstats.skew(x, axis=1, bias=False); ku = _sstats.kurtosis(x, axis=1, bias=False)\n"}
+,{"stream_name":"stderr","time":19.192664674,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1361: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":19.192667217,"data":"  nval = ((n - 1.0) * n)**0.5 / (n - 2.0) * m3 / m2**1.5\n"}
+,{"stream_name":"stderr","time":19.192669655,"data":"/usr/local/lib/python3.12/dist-packages/scipy/stats/_stats_py.py:1469: RuntimeWarning: invalid value encountered in divide\n"}
+,{"stream_name":"stderr","time":19.192672305,"data":"  nval = 1.0/(n-2)/(n-3) * ((n**2-1.0)*m4/m2**2.0 - 3*(n-1)**2.0)\n"}
+,{"stream_name":"stdout","time":19.257015217,"data":"[t+   0.1 min] entropy features: EDM-Fuzzy (3317 windows)\n"}
+,{"stream_name":"stderr","time":125.14575145,"data":"2026-10-22 20:57:17,550 | INFO | Entropy EDM-Fuzzy | wall=105.88s cpu=105.65s peak_mem=26.11 MB\n"}
+,{"stream_name":"stderr","time":125.145907519,"data":"\n"}
+,{"stream_name":"stderr","time":125.145914089,"data":"2026-10-22 20:57:17,550 | INFO | Entropy EDM-Fuzzy | wall=105.88s cpu=105.65s peak_mem=26.11 MB\n"}
+,{"stream_name":"stdout","time":125.147248686,"data":"EDM-Fuzzy hybrid feature shape: (3317, 88)\n"}
+,{"stream_name":"stdout","time":125.147279256,"data":"[t+   1.9 min] entropy features: JSD-Fuzzy (3317 windows)\n"}
+,{"stream_name":"stderr","time":198.381348338,"data":"2026-10-22 20:58:30,787 | INFO | Entropy JSD-Fuzzy | wall=73.23s cpu=65.13s peak_mem=25.96 MB\n"}
+,{"stream_name":"stderr","time":198.381391977,"data":"\n"}
+,{"stream_name":"stderr","time":198.381398942,"data":"2026-10-22 20:58:30,787 | INFO | Entropy JSD-Fuzzy | wall=73.23s cpu=65.13s peak_mem=25.96 MB\n"}
+,{"stream_name":"stdout","time":198.382453828,"data":"JSD-Fuzzy hybrid feature shape: (3317, 208)\n"}
+,{"stream_name":"stdout","time":199.153198507,"data":"[t+   3.1 min] Tahap 1 (17 kelas): EDM-Fuzzy\n"}
+,{"stream_name":"stderr","time":236.303699766,"data":"2026-10-22 20:59:08,696 | INFO | Stage1 EDM-Fuzzy | wall=37.13s cpu=23.24s peak_mem=9.77 MB\n"}
+,{"stream_name":"stderr","time":236.30375105,"data":"\n"}
+,{"stream_name":"stderr","time":236.303756953,"data":"2026-10-22 20:59:08,696 | INFO | Stage1 EDM-Fuzzy | wall=37.13s cpu=23.24s peak_mem=9.77 MB\n"}
+,{"stream_name":"stdout","time":236.309687491,"data":"  EDM-Fuzzy | acc=0.2723 macro-F1=0.2574\n"}
+,{"stream_name":"stdout","time":236.309720477,"data":"[t+   3.7 min] Tahap 1 (17 kelas): JSD-Fuzzy\n"}
+,{"stream_name":"stderr","time":339.968315237,"data":"2026-10-22 21:00:52,357 | INFO | Stage1 JSD-Fuzzy | wall=103.66s cpu=23.03s peak_mem=24.48 MB\n"}
+,{"stream_name":"stderr","time":339.968379642,"data":"\n"}
+,{"stream_name":"stderr","time":339.97108518,"data":"2026-10-22 21:00:52,357 | INFO | Stage1 JSD-Fuzzy | wall=103.66s cpu=23.03s peak_mem=24.48 MB\n"}
+,{"stream_name":"stdout","time":339.973615267,"data":"  JSD-Fuzzy | acc=0.3578 macro-F1=0.3502\n"}
+,{"stream_name":"stdout","time":340.062711193,"data":"[t+   5.4 min] Tahap 2 (16 label): EDM-Fuzzy\n"}
+,{"stream_name":"stderr","time":389.042122237,"data":"2026-10-22 21:01:41,446 | INFO | Stage2 EDM-Fuzzy | wall=48.97s cpu=96.08s peak_mem=12.01 MB\n"}
+,{"stream_name":"stderr","time":389.042191972,"data":"\n"}
+,{"stream_name":"stderr","time":389.042198666,"data":"2026-10-22 21:01:41,446 | INFO | Stage2 EDM-Fuzzy | wall=48.97s cpu=96.08s peak_mem=12.01 MB\n"}
+,{"stream_name":"stdout","time":389.043376006,"data":"  EDM-Fuzzy | n_eval=825 macro-F1=0.488 subset-acc=0.093 hamming=0.210\n"}
+,{"stream_name":"stdout","time":389.043406321,"data":"[t+   6.3 min] Tahap 2 (16 label): JSD-Fuzzy\n"}
+,{"stream_name":"stderr","time":486.63021776,"data":"2026-10-22 21:03:19,034 | INFO | Stage2 JSD-Fuzzy | wall=97.58s cpu=129.56s peak_mem=27.40 MB\n"}
+,{"stream_name":"stderr","time":486.630262767,"data":"\n"}
+,{"stream_name":"stderr","time":486.630268564,"data":"2026-10-22 21:03:19,034 | INFO | Stage2 JSD-Fuzzy | wall=97.58s cpu=129.56s peak_mem=27.40 MB\n"}
+,{"stream_name":"stdout","time":486.635608738,"data":"  JSD-Fuzzy | n_eval=790 macro-F1=0.709 subset-acc=0.138 hamming=0.154\n"}
+,{"stream_name":"stdout","time":486.635645913,"data":"\n"}
+,{"stream_name":"stdout","time":486.635649938,"data":"=== Tahap 2: F1 per (sensor x jenis fault) ===\n"}
+,{"stream_name":"stdout","time":486.635653159,"data":"   Method Sensor    Fault  Prevalensi  Precision  Recall    F1  ROC_AUC\n"}
+,{"stream_name":"stdout","time":486.635656421,"data":"EDM-Fuzzy     S1    drift       0.216      0.513   0.225 0.312    0.561\n"}
+,{"stream_name":"stdout","time":486.63565961,"data":"EDM-Fuzzy     S1    spike       0.354      0.331   0.161 0.217    0.507\n"}
+,{"stream_name":"stdout","time":486.63566264,"data":"EDM-Fuzzy     S1     bias       0.287      0.446   0.139 0.212    0.502\n"}
+,{"stream_name":"stdout","time":486.635665744,"data":"EDM-Fuzzy     S1 hardware       0.324      0.988   0.918 0.951    0.882\n"}
+,{"stream_name":"stdout","time":486.635668764,"data":"EDM-Fuzzy     S2    drift       0.293      0.880   0.785 0.830    0.501\n"}
+,{"stream_name":"stdout","time":486.635671883,"data":"EDM-Fuzzy     S2    spike       0.223      0.250   0.011 0.021    0.498\n"}
+,{"stream_name":"stdout","time":486.635674828,"data":"EDM-Fuzzy     S2     bias       0.325      0.318   0.101 0.153    0.482\n"}
+,{"stream_name":"stdout","time":486.635678091,"data":"EDM-Fuzzy     S2 hardware       0.365      0.975   0.910 0.942    0.849\n"}
+,{"stream_name":"stdout","time":486.635681058,"data":"EDM-Fuzzy     S3    drift       0.276      0.891   0.789 0.837    0.501\n"}
+,{"stream_name":"stdout","time":486.635684107,"data":"EDM-Fuzzy     S3    spike       0.324      0.490   0.176 0.259    0.529\n"}
+,{"stream_name":"stdout","time":486.635687035,"data":"EDM-Fuzzy     S3     bias       0.353      0.333   0.082 0.132    0.502\n"}
+,{"stream_name":"stdout","time":486.635690141,"data":"EDM-Fuzzy     S3 hardware       0.276      0.968   0.930 0.949    0.726\n"}
+,{"stream_name":"stdout","time":486.635693097,"data":"EDM-Fuzzy     S4    drift       0.305      0.860   0.754 0.803    0.502\n"}
+,{"stream_name":"stdout","time":486.635696053,"data":"EDM-Fuzzy     S4    spike       0.341      0.532   0.178 0.267    0.531\n"}
+,{"stream_name":"stdout","time":486.635699025,"data":"EDM-Fuzzy     S4     bias       0.310      0.333   0.039 0.070    0.528\n"}
+,{"stream_name":"stdout","time":486.635701978,"data":"EDM-Fuzzy     S4 hardware       0.308      0.907   0.807 0.854    0.618\n"}
+,{"stream_name":"stdout","time":486.63570491,"data":"JSD-Fuzzy     S1    drift       0.224      0.841   0.689 0.758    0.558\n"}
+,{"stream_name":"stdout","time":486.635722617,"data":"JSD-Fuzzy     S1    spike       0.365      0.759   0.667 0.710    0.530\n"}
+,{"stream_name":"stdout","time":486.635725241,"data":"JSD-Fuzzy     S1     bias       0.290      0.632   0.397 0.488    0.517\n"}
+,{"stream_name":"stdout","time":486.635727873,"data":"JSD-Fuzzy     S1 hardware       0.337      0.988   0.895 0.939    0.883\n"}
+,{"stream_name":"stdout","time":486.635730336,"data":"JSD-Fuzzy     S2    drift       0.306      0.934   0.876 0.904    0.499\n"}
+,{"stream_name":"stdout","time":486.635732791,"data":"JSD-Fuzzy     S2    spike       0.233      0.631   0.380 0.475    0.595\n"}
+,{"stream_name":"stdout","time":486.635735313,"data":"JSD-Fuzzy     S2     bias       0.325      0.583   0.327 0.419    0.468\n"}
+,{"stream_name":"stdout","time":486.635737725,"data":"JSD-Fuzzy     S2 hardware       0.376      0.974   0.886 0.928    0.810\n"}
+,{"stream_name":"stdout","time":486.635740139,"data":"JSD-Fuzzy     S3    drift       0.285      0.935   0.902 0.919    0.499\n"}
+,{"stream_name":"stdout","time":486.635743773,"data":"JSD-Fuzzy     S3    spike       0.333      0.701   0.536 0.608    0.527\n"}
+,{"stream_name":"stdout","time":486.635746223,"data":"JSD-Fuzzy     S3     bias       0.353      0.626   0.534 0.576    0.473\n"}
+,{"stream_name":"stdout","time":486.63574884,"data":"JSD-Fuzzy     S3 hardware       0.289      0.967   0.908 0.937    0.790\n"}
+,{"stream_name":"stdout","time":486.635751301,"data":"JSD-Fuzzy     S4    drift       0.315      0.915   0.867 0.891    0.488\n"}
+,{"stream_name":"stdout","time":486.635753765,"data":"JSD-Fuzzy     S4    spike       0.352      0.699   0.543 0.611    0.521\n"}
+,{"stream_name":"stdout","time":486.635756214,"data":"JSD-Fuzzy     S4     bias       0.303      0.500   0.226 0.311    0.441\n"}
+,{"stream_name":"stdout","time":486.635759004,"data":"JSD-Fuzzy     S4 hardware       0.318      0.908   0.825 0.864    0.740\n"}
+,{"stream_name":"stdout","time":486.692425839,"data":"\n"}
+,{"stream_name":"stdout","time":486.69246369,"data":"=== EDM-Fuzzy — F1 deteksi (baris = jenis fault, kolom = sensor) ===\n"}
+,{"stream_name":"stdout","time":486.692479653,"data":"Sensor       S1     S2     S3     S4\n"}
+,{"stream_name":"stdout","time":486.692483982,"data":"Fault                               \n"}
+,{"stream_name":"stdout","time":486.692488146,"data":"bias      0.212  0.153  0.132  0.070\n"}
+,{"stream_name":"stdout","time":486.692496707,"data":"drift     0.312  0.830  0.837  0.803\n"}
+,{"stream_name":"stdout","time":486.69250028,"data":"hardware  0.951  0.942  0.949  0.854\n"}
+,{"stream_name":"stdout","time":486.69250446,"data":"spike     0.217  0.021  0.259  0.267\n"}
+,{"stream_name":"stdout","time":486.7013483,"data":"\n"}
+,{"stream_name":"stdout","time":486.701382907,"data":"=== JSD-Fuzzy — F1 deteksi (baris = jenis fault, kolom = sensor) ===\n"}
+,{"stream_name":"stdout","time":486.701388874,"data":"Sensor       S1     S2     S3     S4\n"}
+,{"stream_name":"stdout","time":486.701392808,"data":"Fault                               \n"}
+,{"stream_name":"stdout","time":486.701396652,"data":"bias      0.488  0.419  0.576  0.311\n"}
+,{"stream_name":"stdout","time":486.701400433,"data":"drift     0.758  0.904  0.919  0.891\n"}
+,{"stream_name":"stdout","time":486.701404228,"data":"hardware  0.939  0.928  0.937  0.864\n"}
+,{"stream_name":"stdout","time":486.701408216,"data":"spike     0.710  0.475  0.608  0.611\n"}
+,{"stream_name":"stdout","time":486.742148446,"data":"=== Ringkasan Tahap 2 ===\n"}
+,{"stream_name":"stdout","time":486.742185945,"data":"   Method   Sudut pandang     Item  F1 rata-rata  AUC rata-rata\n"}
+,{"stream_name":"stdout","time":486.742192318,"data":"EDM-Fuzzy      per sensor       S1         0.423          0.613\n"}
+,{"stream_name":"stdout","time":486.742217842,"data":"EDM-Fuzzy      per sensor       S2         0.486          0.582\n"}
+,{"stream_name":"stdout","time":486.742222754,"data":"EDM-Fuzzy      per sensor       S3         0.544          0.564\n"}
+,{"stream_name":"stdout","time":486.742226675,"data":"EDM-Fuzzy      per sensor       S4         0.499          0.545\n"}
+,{"stream_name":"stdout","time":486.742230599,"data":"EDM-Fuzzy per jenis fault     bias         0.142          0.504\n"}
+,{"stream_name":"stdout","time":486.742234425,"data":"EDM-Fuzzy per jenis fault    drift         0.696          0.516\n"}
+,{"stream_name":"stdout","time":486.742238312,"data":"EDM-Fuzzy per jenis fault hardware         0.924          0.769\n"}
+,{"stream_name":"stdout","time":486.742242107,"data":"EDM-Fuzzy per jenis fault    spike         0.191          0.516\n"}
+,{"stream_name":"stdout","time":486.742245727,"data":"JSD-Fuzzy      per sensor       S1         0.724          0.622\n"}
+,{"stream_name":"stdout","time":486.742250025,"data":"JSD-Fuzzy      per sensor       S2         0.682          0.593\n"}
+,{"stream_name":"stdout","time":486.742252711,"data":"JSD-Fuzzy      per sensor       S3         0.760          0.572\n"}
+,{"stream_name":"stdout","time":486.742255221,"data":"JSD-Fuzzy      per sensor       S4         0.669          0.548\n"}
+,{"stream_name":"stdout","time":486.742262525,"data":"JSD-Fuzzy per jenis fault     bias         0.448          0.475\n"}
+,{"stream_name":"stdout","time":486.742265471,"data":"JSD-Fuzzy per jenis fault    drift         0.868          0.511\n"}
+,{"stream_name":"stdout","time":486.742270398,"data":"JSD-Fuzzy per jenis fault hardware         0.917          0.806\n"}
+,{"stream_name":"stdout","time":486.742275467,"data":"JSD-Fuzzy per jenis fault    spike         0.601          0.543\n"}
+,{"stream_name":"stdout","time":487.472766869,"data":"[Saved] exports/cara_b_heatmap_f1.png\n"}
+,{"stream_name":"stderr","time":493.467399898,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":493.467442928,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":493.703782052,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":493.703819028,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":494.589840712,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":495.047481653,"data":"[NbConvertApp] Writing 125622 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":498.375773916,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":499.720680181,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":499.720713143,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":499.721160031,"data":"[NbConvertApp] Writing 461572 bytes to __results__.html\n"}
+]

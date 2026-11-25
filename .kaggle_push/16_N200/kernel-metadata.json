@@ -1,0 +1,16 @@
+{
+ "id": "kelvindsmn/simpan-model-final-deteksi-fault-n200",
+ "title": "Simpan Model Final Deteksi Fault N200",
+ "code_file": "simpan-model-final-deteksi-fault-n200.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": false,
+ "enable_tpu": false,
+ "enable_internet": true,
+ "keywords": [],
+ "dataset_sources": [],
+ "kernel_sources": [],
+ "competition_sources": [],
+ "model_sources": []
+}

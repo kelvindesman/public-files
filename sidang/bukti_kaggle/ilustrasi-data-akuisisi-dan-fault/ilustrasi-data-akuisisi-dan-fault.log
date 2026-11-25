@@ -1,0 +1,52 @@
+[{"stream_name":"stderr","time":7.201530118,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":7.201589918,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":8.265917412,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.265948492,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.265953112,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.265956363,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":8.902043907,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.902073137,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.902076287,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.902078407,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":11.288060371,"data":"Sumber data: unduh -\u003e https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv\n"}
+,{"stream_name":"stdout","time":19.797244895,"data":"Baris akuisisi: 281721\n"}
+,{"stream_name":"stdout","time":19.797284765,"data":"Rentang waktu : 2025-09-14 14:50:07+00:00 -\u003e 2025-12-21 10:30:07+00:00\n"}
+,{"stream_name":"stdout","time":19.955804017,"data":"Baris mentah : 281721\n"}
+,{"stream_name":"stdout","time":19.955828486,"data":"Stempel ganda: 0 -\u003e dibuang\n"}
+,{"stream_name":"stdout","time":19.955832166,"data":"NaN mentah   : {'kelembaban1': 0, 'kelembaban2': 0, 'kelembaban3': 0, 'kelembaban4': 0}\n"}
+,{"stream_name":"stdout","time":19.955834446,"data":"Luar 0-100%  : {'kelembaban1': 0, 'kelembaban2': 0, 'kelembaban3': 0, 'kelembaban4': 0} -\u003e dilaporkan, TIDAK dibuang\n"}
+,{"stream_name":"stdout","time":19.955836586,"data":"Macet \u003e=10   : {'kelembaban1': 556, 'kelembaban2': 654, 'kelembaban3': 659, 'kelembaban4': 657} -\u003e dilaporkan, TIDAK dibuang\n"}
+,{"stream_name":"stdout","time":19.955840556,"data":"Pencilan |z|\u003e6: {'kelembaban1': 13, 'kelembaban2': 0, 'kelembaban3': 0, 'kelembaban4': 0} -\u003e dilaporkan, TIDAK dibuang\n"}
+,{"stream_name":"stdout","time":19.955842686,"data":"Setelah 5 menit: 28173 baris | slot bolong: 0 | isian interpolasi: 0 | isian median: 0\n"}
+,{"stream_name":"stdout","time":19.9907543,"data":"exports/ILU_tabel_10_langkah.csv\n"}
+,{"stream_name":"stdout","time":21.454755486,"data":"Simpan: exports/ILU_empat_kanal_bersih.png\n"}
+,{"stream_name":"stdout","time":21.474354601,"data":"Kondisi: 16 | drift: 1.0 poin/hari (episode 3.0 hari)\n"}
+,{"stream_name":"stdout","time":23.006873229,"data":"[Tersimpan] exports/ILU_contoh_fault_vs_asli_S1.png\n"}
+,{"stream_name":"stdout","time":26.078263576,"data":"[Tersimpan] exports/ILU_grid_fault_vs_asli_S1.png\n"}
+,{"stream_name":"stdout","time":27.100050085,"data":"[Tersimpan] exports/ILU_contoh_fault_vs_asli_S2.png\n"}
+,{"stream_name":"stdout","time":30.278923416,"data":"[Tersimpan] exports/ILU_grid_fault_vs_asli_S2.png\n"}
+,{"stream_name":"stdout","time":31.327685831,"data":"[Tersimpan] exports/ILU_contoh_fault_vs_asli_S3.png\n"}
+,{"stream_name":"stdout","time":34.562370064,"data":"[Tersimpan] exports/ILU_grid_fault_vs_asli_S3.png\n"}
+,{"stream_name":"stdout","time":35.48164116,"data":"[Tersimpan] exports/ILU_contoh_fault_vs_asli_S4.png\n"}
+,{"stream_name":"stdout","time":38.378577333,"data":"[Tersimpan] exports/ILU_grid_fault_vs_asli_S4.png\n"}
+,{"stream_name":"stdout","time":38.402629985,"data":"exports/ILU_contoh_fault_vs_asli.csv\n"}
+,{"stream_name":"stdout","time":38.402677004,"data":"Baris data plot: 72576 | sensor: ['S1', 'S2', 'S3', 'S4']\n"}
+,{"stream_name":"stderr","time":41.359302091,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":41.359343031,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":41.530617933,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":41.530647283,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":42.293212486,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":42.394947092,"data":"[NbConvertApp] Writing 2803591 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":44.763672596,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":45.310319592,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":45.310357392,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":45.310546482,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":45.310767472,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":45.310977862,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":45.311186492,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":45.311447392,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":45.311594391,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":45.311801741,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":45.311967372,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":45.312217761,"data":"[NbConvertApp] Writing 379816 bytes to __results__.html\n"}
+]

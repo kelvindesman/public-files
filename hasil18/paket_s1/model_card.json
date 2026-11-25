@@ -1,0 +1,310 @@
+{
+ "nama": "ANN-LM deteksi gangguan sensor kelembaban tanah (tanpa entropi, per sampel)",
+ "dibuat": "2026-11-20 13:45 UTC",
+ "notebook_latih": "kaggle.com/code/kelvindsmn/data-hipotetik-berlabel-ann-lm",
+ "status_publikasi": "Metode (ANN dilatih Levenberg-Marquardt, fitur lag tanpa entropi, skenario S1-S5) berasal dari program pertama (Des 2025). Judul/DOI publikasinya belum terverifikasi; konfirmasi ke pembimbing sebelum disitasi. Kode program pertama memakai scipy least_squares(method='lm') dengan Jacobian numerik dan 1 keluaran sigmoid; model ini dilatih ulang dengan LM asli (Jacobian analitik).",
+ "label": "Label berasal dari fault injection: gangguan disuntikkan secara sintetis ke data sensor, sehingga setiap sampel tahu pasti fault/normal. Bukan label dari gangguan nyata di lapangan.",
+ "data_sumber": "tabel_sensor4_generated.csv (4 sensor kelembaban tanah, interval 30 detik)",
+ "fault_injection": {
+  "drift_total_poin_per_episode": 5.0,
+  "bias_poin_per_episode": 5.0,
+  "spike_relatif": 0.3,
+  "spike_kepadatan": 0.0152,
+  "hardware": "8% nilai macet + 5% hilang (NaN)",
+  "episode": "3 episode x 3 hari (posisi 10/40/70%)",
+  "kondisi_latih": [
+   "normal",
+   "faulty",
+   "drift",
+   "spike",
+   "bias",
+   "hardware",
+   "bias+malfunc",
+   "spike+malfunc",
+   "spike+bias",
+   "drift+malfunc",
+   "drift+bias",
+   "drift+spike",
+   "spike+bias+malfunc",
+   "drift+bias+malfunc",
+   "spike+drift+malfunc",
+   "drift+spike+bias",
+   "spike+bias+malfunc+drift"
+  ]
+ },
+ "fitur": {
+  "lag_k": 10,
+  "nama": [
+   "lag1",
+   "lag2",
+   "lag3",
+   "lag4",
+   "lag5",
+   "lag6",
+   "lag7",
+   "lag8",
+   "lag9",
+   "lag10",
+   "diff",
+   "isna",
+   "isna_10"
+  ],
+  "interval_sampel_detik": 30
+ },
+ "pembagian_data": "blok hari berulang latih,latih,latih,validasi,uji",
+ "lm": {
+  "iterasi_maks": 60,
+  "lambda_awal": 0.001,
+  "batas_waktu_s": 300.0,
+  "baris_latih_maks": 120000,
+  "target": "one-hot 2 kelas, keluaran linear, softmax saat prediksi",
+  "aktivasi_tersembunyi": "tanh",
+  "redaman": "Marquardt diag(JtJ), lambda diperbarui aturan Nielsen"
+ },
+ "grid_search": {
+  "kandidat": {
+   "1 layer (6)": [
+    6
+   ],
+   "1 layer (12)": [
+    12
+   ],
+   "2 layer (6,3)": [
+    6,
+    3
+   ],
+   "2 layer (12,6)": [
+    12,
+    6
+   ],
+   "2 layer (16,8)": [
+    16,
+    8
+   ]
+  },
+  "kriteria": "F1 validasi tertinggi; data uji tidak dipakai untuk memilih",
+  "identifikasi_sensor": "tidak ada; model menilai satu deret sensor sendiri-sendiri"
+ },
+ "model": {
+  "rata2": {
+   "file": "15_model_gabungan_rata2.npz",
+   "masukan": "rata-rata 4 sensor (satu deret)",
+   "arsitektur": "2 layer (16,8)",
+   "hidden": [
+    16,
+    8
+   ],
+   "n_parameter": 378,
+   "ambang": 0.6,
+   "hasil_uji": {
+    "precision": 0.969,
+    "recall": 0.6155,
+    "F1": 0.7528,
+    "ROC_AUC": 0.8746,
+    "FPR_data_normal": 0.008
+   },
+   "grid": [
+    {
+     "arsitektur": "1 layer (6)",
+     "n_parameter": 98,
+     "F1_validasi": 0.7016,
+     "F1_uji": 0.7644
+    },
+    {
+     "arsitektur": "1 layer (12)",
+     "n_parameter": 194,
+     "F1_validasi": 0.7038,
+     "F1_uji": 0.7649
+    },
+    {
+     "arsitektur": "2 layer (6,3)",
+     "n_parameter": 113,
+     "F1_validasi": 0.705,
+     "F1_uji": 0.7538
+    },
+    {
+     "arsitektur": "2 layer (12,6)",
+     "n_parameter": 260,
+     "F1_validasi": 0.7019,
+     "F1_uji": 0.761
+    },
+    {
+     "arsitektur": "2 layer (16,8)",
+     "n_parameter": 378,
+     "F1_validasi": 0.709,
+     "F1_uji": 0.7528
+    }
+   ],
+   "file_paket_s1": "model_ann_lm_rata2.npz"
+  },
+  "4sensor": {
+   "file": "15_model_gabungan_4sensor.npz",
+   "masukan": "satu sensor per panggilan (panggil untuk tiap kolom sensor)",
+   "arsitektur": "2 layer (12,6)",
+   "hidden": [
+    12,
+    6
+   ],
+   "n_parameter": 260,
+   "ambang": 0.38,
+   "hasil_uji": {
+    "precision": 0.6621,
+    "recall": 0.6201,
+    "F1": 0.6404,
+    "ROC_AUC": 0.8387,
+    "FPR_data_normal": 0.0735
+   },
+   "grid": [
+    {
+     "arsitektur": "1 layer (6)",
+     "n_parameter": 98,
+     "F1_validasi": 0.5495,
+     "F1_uji": 0.6156
+    },
+    {
+     "arsitektur": "1 layer (12)",
+     "n_parameter": 194,
+     "F1_validasi": 0.5473,
+     "F1_uji": 0.6183
+    },
+    {
+     "arsitektur": "2 layer (6,3)",
+     "n_parameter": 113,
+     "F1_validasi": 0.5491,
+     "F1_uji": 0.6162
+    },
+    {
+     "arsitektur": "2 layer (12,6)",
+     "n_parameter": 260,
+     "F1_validasi": 0.5599,
+     "F1_uji": 0.6404
+    },
+    {
+     "arsitektur": "2 layer (16,8)",
+     "n_parameter": 378,
+     "F1_validasi": 0.5547,
+     "F1_uji": 0.6186
+    }
+   ],
+   "file_paket_s1": "model_ann_lm_4sensor.npz"
+  }
+ },
+ "batasan": [
+  "Drift kecil sulit dideteksi per sampel (recall drift rendah, lihat 15_hasil_model_gabungan_per_kondisi.csv).",
+  "Dilatih pada satu set data dan fault sintetis; pada data lain ambang mungkin perlu disetel ulang.",
+  "Data harus satu deret per sensor, urut waktu, interval kira-kira 30 detik, nilai persen 0-100."
+ ],
+ "paket_s1": {
+  "dibuat_oleh": "kaggle.com/code/kelvindsmn/paket-s1-data-hipotetik-10000",
+  "data": "data_hipotetik_berlabel_10000.csv",
+  "baris": 10000,
+  "episode_hari": 0.5,
+  "catatan_episode": "notebook 15 memakai 3 hari; dipendekkan agar 3 episode muat di 10.000 baris",
+  "penugasan_sensor": {
+   "kelembaban1": "S2 drift",
+   "kelembaban2": "S3 spike+bias",
+   "kelembaban3": "S4 drift+bias+malfunc",
+   "kelembaban4": "S5 spike+bias+malfunc+drift"
+  },
+  "preprocessing": {
+   "fitur": [
+    "lag1",
+    "lag2",
+    "lag3",
+    "lag4",
+    "lag5",
+    "lag6",
+    "lag7",
+    "lag8",
+    "lag9",
+    "lag10",
+    "diff",
+    "isna",
+    "isna_10"
+   ],
+   "lag_k": 10,
+   "nilai_hilang": "NaN diisi nilai valid sebelumnya (ffill) sebelum lag dihitung; isna dan isna_10 menandai data hilang",
+   "normalisasi": "z = (fitur - mean) / scale, mean dan scale dari file model (StandardScaler data latih notebook 15)",
+   "mean": [
+    50.184548,
+    50.182814,
+    50.1817,
+    50.183394,
+    50.187085,
+    50.183126,
+    50.185409,
+    50.187592,
+    50.183111,
+    50.18894,
+    -0.001569,
+    0.005842,
+    0.056383
+   ],
+   "scale": [
+    3.944426,
+    3.941015,
+    3.929303,
+    3.940143,
+    3.952322,
+    3.946176,
+    3.950221,
+    3.953263,
+    3.94501,
+    3.963257,
+    1.272166,
+    0.076207,
+    0.278934
+   ]
+  },
+  "skor_pada_data_10000": [
+   {
+    "sensor": "kelembaban1",
+    "kondisi": "drift",
+    "precision": 0.8849,
+    "recall": 0.2137,
+    "F1": 0.3442,
+    "alarm_palsu_% (baris normal)": 2.12,
+    "recall_drift": 0.214,
+    "recall_spike": NaN,
+    "recall_bias": NaN,
+    "recall_hardware": NaN
+   },
+   {
+    "sensor": "kelembaban2",
+    "kondisi": "spike+bias",
+    "precision": 0.9614,
+    "recall": 0.334,
+    "F1": 0.4958,
+    "alarm_palsu_% (baris normal)": 1.02,
+    "recall_drift": NaN,
+    "recall_spike": 1.0,
+    "recall_bias": 0.334,
+    "recall_hardware": NaN
+   },
+   {
+    "sensor": "kelembaban3",
+    "kondisi": "drift+bias+malfunc",
+    "precision": 0.993,
+    "recall": 0.6609,
+    "F1": 0.7936,
+    "alarm_palsu_% (baris normal)": 0.35,
+    "recall_drift": 0.661,
+    "recall_spike": NaN,
+    "recall_bias": 0.661,
+    "recall_hardware": 0.927
+   },
+   {
+    "sensor": "kelembaban4",
+    "kondisi": "spike+bias+malfunc+drift",
+    "precision": 0.8656,
+    "recall": 0.9583,
+    "F1": 0.9096,
+    "alarm_palsu_% (baris normal)": 11.34,
+    "recall_drift": 0.958,
+    "recall_spike": 0.985,
+    "recall_bias": 0.958,
+    "recall_hardware": 0.997
+   }
+  ]
+ }
+}

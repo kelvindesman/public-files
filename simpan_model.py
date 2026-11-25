@@ -3,7 +3,8 @@
 Tujuan: saat sidang/Zoom tidak perlu training ulang 10 jam. Notebook demo
 (`sidang/03_Demo_Model_Tersimpan.ipynb`) cukup membuka file di `models/`.
 
-Alur sama dengan notebook 11 v3, window N = 700 (5 menit/sampel = 2,4 hari):
+Alur sama dengan notebook 11 v3, window N = 700 (5 menit/sampel = 2,4 hari) atau
+N lain lewat env WIN=200/1000:
 data -> sinkron 5 menit -> injeksi 16 kondisi fault -> window -> entropi
 multiskala EDM/JSD (4 sensor x 15 skala = 60 fitur) -> untuk tiap skenario
 S1..S5: cari arsitektur dengan grid yang sama (inner grouped CV) -> latih
@@ -14,6 +15,7 @@ data, jadi akurasinya pada data latih bukan ukuran generalisasi).
 
 Pakai:
     python simpan_model.py                  # run penuh (Kaggle: +-1 jam)
+    WIN=1000 python simpan_model.py         # model untuk panjang jendela lain
     SMOKE=1 python simpan_model.py          # uji cepat lokal (data kecil, grid kecil)
 """
 import json
@@ -33,21 +35,38 @@ import sklearn
 
 import deteksi_fault_core as core
 
-WIN = 700
+WIN = int(os.environ.get("WIN", "700"))   # 200 / 700 / 1000 seperti notebook 11
 METHODS = ["EDM-Fuzzy", "JSD-Fuzzy"]
 SMOKE = os.environ.get("SMOKE", "0") == "1"
 OUT = Path(os.environ.get("MODEL_DIR", "models_smoke" if SMOKE else "models"))
 N_JOBS = int(os.environ.get("N_JOBS", "-1"))
 
-# Angka CV resmi notebook 11 v3 (hasil11/exports/11_rq4_performa_ann.csv, N=700),
+# Angka CV resmi notebook 11 v3 (hasil11/exports/11_rq4_performa_ann.csv, kolom F1, per N),
 # disalin supaya demo bisa menampilkan "seberapa sering model ini benar" tanpa file lain.
-CV_F1_NB11 = {
-    ("S1", "EDM-Fuzzy"): 0.5945, ("S1", "JSD-Fuzzy"): 0.6712,
-    ("S2", "EDM-Fuzzy"): 0.3283, ("S2", "JSD-Fuzzy"): 0.3469,
-    ("S3", "EDM-Fuzzy"): 0.1836, ("S3", "JSD-Fuzzy"): 0.1962,
-    ("S4", "EDM-Fuzzy"): 0.3386, ("S4", "JSD-Fuzzy"): 0.4257,
-    ("S5", "EDM-Fuzzy"): 0.8037, ("S5", "JSD-Fuzzy"): 0.8718,
+CV_F1_NB11_PER_N = {
+    200: {
+        ("S1", "EDM-Fuzzy"): 0.6531, ("S1", "JSD-Fuzzy"): 0.6344,
+        ("S2", "EDM-Fuzzy"): 0.3002, ("S2", "JSD-Fuzzy"): 0.3147,
+        ("S3", "EDM-Fuzzy"): 0.2192, ("S3", "JSD-Fuzzy"): 0.1885,
+        ("S4", "EDM-Fuzzy"): 0.3666, ("S4", "JSD-Fuzzy"): 0.3969,
+        ("S5", "EDM-Fuzzy"): 0.7615, ("S5", "JSD-Fuzzy"): 0.7774,
+    },
+    700: {
+        ("S1", "EDM-Fuzzy"): 0.5945, ("S1", "JSD-Fuzzy"): 0.6712,
+        ("S2", "EDM-Fuzzy"): 0.3283, ("S2", "JSD-Fuzzy"): 0.3469,
+        ("S3", "EDM-Fuzzy"): 0.1836, ("S3", "JSD-Fuzzy"): 0.1962,
+        ("S4", "EDM-Fuzzy"): 0.3386, ("S4", "JSD-Fuzzy"): 0.4257,
+        ("S5", "EDM-Fuzzy"): 0.8037, ("S5", "JSD-Fuzzy"): 0.8718,
+    },
+    1000: {
+        ("S1", "EDM-Fuzzy"): 0.4905, ("S1", "JSD-Fuzzy"): 0.6681,
+        ("S2", "EDM-Fuzzy"): 0.3807, ("S2", "JSD-Fuzzy"): 0.3651,
+        ("S3", "EDM-Fuzzy"): 0.2200, ("S3", "JSD-Fuzzy"): 0.1642,
+        ("S4", "EDM-Fuzzy"): 0.3815, ("S4", "JSD-Fuzzy"): 0.3997,
+        ("S5", "EDM-Fuzzy"): 0.8486, ("S5", "JSD-Fuzzy"): 0.8715,
+    },
 }
+CV_F1_NB11 = CV_F1_NB11_PER_N[WIN]
 
 
 def log(msg):
@@ -161,7 +180,10 @@ def main():
                    "generalisasi; angka resmi = cv_f1_nb11 (CV grouped notebook 11 v3).",
         "models": rows,
     }
-    (OUT / "meta.json").write_text(json.dumps(meta, indent=1, default=str))
+    teks = json.dumps(meta, indent=1, default=str)
+    (OUT / f"meta_N{WIN}.json").write_text(teks)
+    if WIN == 700:   # nama lama tetap ada untuk notebook demo 03 dan test yang sudah ada
+        (OUT / "meta.json").write_text(teks)
     print(pd.DataFrame(rows).to_string(index=False))
     log(f"selesai dalam {meta['total_seconds']} s -> {OUT}/")
 

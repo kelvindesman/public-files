@@ -1,0 +1,64 @@
+{
+ "nama": "ANN-LM deteksi gangguan, data gist 10.000 titik (1 sinyal, tanpa entropi)",
+ "dibuat": "2026-11-23 00:21 UTC",
+ "data_sumber": {
+  "file": "gistfile1.txt",
+  "sha256": "23d39c08d38b4028b548dd13c3636f0432586637a2f77c75b9f5666d08452871",
+  "baris": 10000,
+  "diurutkan_menurut_timestamp": true,
+  "nilai_dipotong_ke_0_100": 116
+ },
+ "fault_injection": {
+  "drift_total_poin_per_episode": 5.0,
+  "bias_poin_per_episode": 5.0,
+  "spike_relatif": 0.3,
+  "spike_kepadatan": 0.0152,
+  "hardware": "8% macet + 5% hilang (NaN)",
+  "episode": "3 x 1440 sampel (posisi 10/40/70%)"
+ },
+ "fitur": [
+  "lag1",
+  "lag2",
+  "lag3",
+  "lag4",
+  "lag5",
+  "lag6",
+  "lag7",
+  "lag8",
+  "lag9",
+  "lag10",
+  "diff",
+  "isna",
+  "isna_10"
+ ],
+ "pembagian_data": "blok 200 sampel bergiliran latih,latih,latih,validasi,uji",
+ "lm_iterasi_maks": 60,
+ "model_gabungan": {
+  "file": "15c_model_gabungan.npz",
+  "arsitektur": "2 layer (12,6)",
+  "ambang": 0.44,
+  "hasil_uji": {
+   "precision": 0.3675,
+   "recall": 0.5219,
+   "F1": 0.4313,
+   "ROC_AUC": 0.6847,
+   "FPR_data_normal": 0.2085
+  }
+ },
+ "F1_uji_per_skenario": {
+  "1 layer (6)": {
+   "S1": 0.923,
+   "S2": 0.649,
+   "S3": 0.583,
+   "S4": 0.676,
+   "S5": 0.637
+  },
+  "2 layer (6,3)": {
+   "S1": 0.84,
+   "S2": 0.623,
+   "S3": 0.603,
+   "S4": 0.679,
+   "S5": 0.691
+  }
+ }
+}

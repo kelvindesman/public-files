@@ -1,0 +1,206 @@
+[{"stream_name":"stderr","time":11.562365232,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":11.562461902,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":11.562466972,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":11.562469862,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":12.431728904,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":12.431763024,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":12.431766888,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":12.431769604,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":15.427757521,"data":"Tabel 1 paper\n"}
+,{"stream_name":"stdout","time":15.427795621,"data":" skenario model  h1  h2  akurasi  presisi  recall    F1\n"}
+,{"stream_name":"stdout","time":15.427800452,"data":"        1     A  12   0    0.997    0.995   0.992 0.994\n"}
+,{"stream_name":"stdout","time":15.427804219,"data":"        1     B  12   4    0.997    0.995   0.992 0.994\n"}
+,{"stream_name":"stdout","time":15.427808448,"data":"        1     C  12   8    0.997    0.995   0.992 0.994\n"}
+,{"stream_name":"stdout","time":15.427811915,"data":"        2     A   3   8    0.999    1.000   0.997 0.999\n"}
+,{"stream_name":"stdout","time":15.427815874,"data":"        2     B   3  12    0.999    1.000   0.997 0.999\n"}
+,{"stream_name":"stdout","time":15.427819647,"data":"        2     C   3   4    0.998    1.000   0.992 0.996\n"}
+,{"stream_name":"stdout","time":15.427823611,"data":"        3     A   5   0    0.997    0.997   0.987 0.992\n"}
+,{"stream_name":"stdout","time":15.42782718,"data":"        3     B   5   4    0.997    0.997   0.987 0.992\n"}
+,{"stream_name":"stdout","time":15.427831212,"data":"        3     C   5   8    0.997    0.997   0.987 0.992\n"}
+,{"stream_name":"stdout","time":15.427835326,"data":"        4     A   5   0    0.997    0.987   0.997 0.992\n"}
+,{"stream_name":"stdout","time":15.427839799000001,"data":"        4     B   5   4    0.997    0.987   0.997 0.992\n"}
+,{"stream_name":"stdout","time":15.427843592,"data":"        4     C   5   8    0.997    0.987   0.997 0.992\n"}
+,{"stream_name":"stdout","time":15.4278472,"data":"        5     A   3   4    0.997    1.000   1.000 1.000\n"}
+,{"stream_name":"stdout","time":15.427850938,"data":"        5     B   3   8    0.997    1.000   1.000 1.000\n"}
+,{"stream_name":"stdout","time":15.427854677,"data":"        5     C   3   0    0.996    0.999   1.000 0.999\n"}
+,{"stream_name":"stdout","time":15.427858528,"data":"\n"}
+,{"stream_name":"stdout","time":15.427862128,"data":"Tabel 2 paper (sama untuk model A, B, C dalam satu skenario)\n"}
+,{"stream_name":"stdout","time":15.427865914,"data":" skenario  waktu_s  cpu_persen  memori_persen\n"}
+,{"stream_name":"stdout","time":15.427869878,"data":"        1   591.88        78.4           4.80\n"}
+,{"stream_name":"stdout","time":15.427873525,"data":"        2    58.84        86.0           4.81\n"}
+,{"stream_name":"stdout","time":15.427877315,"data":"        3   185.21        81.6           4.81\n"}
+,{"stream_name":"stdout","time":15.427880963,"data":"        4   157.28        82.5           4.81\n"}
+,{"stream_name":"stdout","time":15.427884628,"data":"        5    33.74        50.5           4.81\n"}
+,{"stream_name":"stdout","time":19.219463979,"data":"data: 60763 baris, dipakai 10000 baris pertama\n"}
+,{"stream_name":"stdout","time":19.219501438,"data":"rentang kelembaban_tanah_persen: 44.75–92.75 (median 47.50)\n"}
+,{"stream_name":"stdout","time":19.293259879,"data":"fault acak S1: spike\n"}
+,{"stream_name":"stdout","time":19.293296436,"data":"S1: kolom fault = ['kelembaban_tanah_persen_spike'], porsi label_fault=1: 0.071\n"}
+,{"stream_name":"stdout","time":19.293300796,"data":"S2: kolom fault = ['kelembaban_tanah_persen_drift', 'kelembaban_tanah_persen_spike', 'kelembaban_tanah_persen_bias', 'kelembaban_tanah_persen_hardware'], porsi label_fault=1: 1.000\n"}
+,{"stream_name":"stdout","time":19.293304104,"data":"S3: kolom fault = ['kelembaban_tanah_persen_bias_malfunc', 'kelembaban_tanah_persen_spike_malfunc', 'kelembaban_tanah_persen_spike_bias', 'kelembaban_tanah_persen_drift_malfunc', 'kelembaban_tanah_persen_drift_bias', 'kelembaban_tanah_persen_drift_spike'], porsi label_fault=1: 1.000\n"}
+,{"stream_name":"stdout","time":19.293308434,"data":"S4: kolom fault = ['kelembaban_tanah_persen_spike_bias_malfunc', 'kelembaban_tanah_persen_drift_bias_malfunc', 'kelembaban_tanah_persen_spike_drift_malfunc', 'kelembaban_tanah_persen_drift_spike_bias'], porsi label_fault=1: 1.000\n"}
+,{"stream_name":"stdout","time":19.293311348,"data":"S5: kolom fault = ['kelembaban_tanah_persen_spike_drift_bias_malfunc'], porsi label_fault=1: 1.000\n"}
+,{"stream_name":"stdout","time":19.420223874,"data":"\n"}
+,{"stream_name":"stdout","time":19.420272119,"data":"=== Scenario 1 ===\n"}
+,{"stream_name":"stdout","time":19.420278432,"data":"[info] Using synthetic 'label_auto' | thr=49.5000 | pos_rate=0.207\n"}
+,{"stream_name":"stdout","time":200.051242916,"data":"[info] Using synthetic 'label_auto' | thr=48.2879 | pos_rate=0.200\n"}
+,{"stream_name":"stdout","time":240.372787954,"data":"  scenario  h1_size  h2_size label_used  accuracy  precision  recall  f1_best   best_t  wall_time_s  cpu_percent  mem_percent\n"}
+,{"stream_name":"stdout","time":240.37282998,"data":"Scenario 1        3        0 label_auto    0.9295     0.9808     1.0   0.9903 0.999882       40.287         50.8       0.9307\n"}
+,{"stream_name":"stdout","time":240.372836167,"data":"Scenario 1        3        4 label_auto    0.9295     0.9808     1.0   0.9903 0.999882       40.287         50.8       0.9307\n"}
+,{"stream_name":"stdout","time":240.372841089,"data":"Scenario 1        3        8 label_auto    0.9295     0.9808     1.0   0.9903 0.999882       40.287         50.8       0.9307\n"}
+,{"stream_name":"stdout","time":240.372845837,"data":"\n"}
+,{"stream_name":"stdout","time":240.372849964,"data":"=== Scenario 2 ===\n"}
+,{"stream_name":"stdout","time":240.372854169,"data":"[info] Using synthetic 'label_auto' | thr=49.5000 | pos_rate=0.207\n"}
+,{"stream_name":"stdout","time":458.440380541,"data":"[info] Using synthetic 'label_auto' | thr=48.2879 | pos_rate=0.200\n"}
+,{"stream_name":"stdout","time":696.869442311,"data":"  scenario  h1_size  h2_size label_used  accuracy  precision  recall  f1_best   best_t  wall_time_s  cpu_percent  mem_percent\n"}
+,{"stream_name":"stdout","time":696.869493963,"data":"Scenario 2        8        0 label_auto    0.9995        1.0     1.0      1.0 0.974645      238.418         75.2       0.9088\n"}
+,{"stream_name":"stdout","time":696.869501168,"data":"Scenario 2        8        4 label_auto    0.9995        1.0     1.0      1.0 0.974645      238.418         75.2       0.9088\n"}
+,{"stream_name":"stdout","time":696.869524709,"data":"Scenario 2        8        8 label_auto    0.9995        1.0     1.0      1.0 0.974645      238.418         75.2       0.9088\n"}
+,{"stream_name":"stdout","time":696.869530646,"data":"\n"}
+,{"stream_name":"stdout","time":696.869550874,"data":"=== Scenario 3 ===\n"}
+,{"stream_name":"stdout","time":696.869555379,"data":"[info] Using synthetic 'label_auto' | thr=49.5000 | pos_rate=0.207\n"}
+,{"stream_name":"stdout","time":968.165429298,"data":"[info] Using synthetic 'label_auto' | thr=48.2879 | pos_rate=0.200\n"}
+,{"stream_name":"stdout","time":1281.605310298,"data":"  scenario  h1_size  h2_size label_used  accuracy  precision  recall  f1_best  best_t  wall_time_s  cpu_percent  mem_percent\n"}
+,{"stream_name":"stdout","time":1281.605461139,"data":"Scenario 3        8        0 label_auto    0.9972     0.9893  0.9946    0.992  0.1344      313.631         72.1       0.9115\n"}
+,{"stream_name":"stdout","time":1281.605470993,"data":"Scenario 3        8        4 label_auto    0.9972     0.9893  0.9946    0.992  0.1344      313.631         72.1       0.9115\n"}
+,{"stream_name":"stdout","time":1281.60547465,"data":"Scenario 3        8        8 label_auto    0.9972     0.9893  0.9946    0.992  0.1344      313.631         72.1       0.9115\n"}
+,{"stream_name":"stdout","time":1281.60547804,"data":"\n"}
+,{"stream_name":"stdout","time":1281.605480951,"data":"=== Scenario 4 ===\n"}
+,{"stream_name":"stdout","time":1281.60548397,"data":"[info] Using synthetic 'label_auto' | thr=49.5000 | pos_rate=0.207\n"}
+,{"stream_name":"stdout","time":1526.492463187,"data":"[info] Using synthetic 'label_auto' | thr=48.2879 | pos_rate=0.200\n"}
+,{"stream_name":"stdout","time":1570.732685781,"data":"  scenario  h1_size  h2_size label_used  accuracy  precision  recall  f1_best  best_t  wall_time_s  cpu_percent  mem_percent\n"}
+,{"stream_name":"stdout","time":1570.732727659,"data":"Scenario 4        3        0 label_auto    0.9995        1.0     1.0      1.0 0.98905       44.216         71.3       0.9149\n"}
+,{"stream_name":"stdout","time":1570.732733754,"data":"Scenario 4        3        4 label_auto    0.9995        1.0     1.0      1.0 0.98905       44.216         71.3       0.9149\n"}
+,{"stream_name":"stdout","time":1570.732741439,"data":"Scenario 4        3        8 label_auto    0.9995        1.0     1.0      1.0 0.98905       44.216         71.3       0.9149\n"}
+,{"stream_name":"stdout","time":1570.73274648,"data":"\n"}
+,{"stream_name":"stdout","time":1570.732750696,"data":"=== Scenario 5 ===\n"}
+,{"stream_name":"stdout","time":1570.732755134,"data":"[info] Using synthetic 'label_auto' | thr=49.5000 | pos_rate=0.207\n"}
+,{"stream_name":"stdout","time":1741.185136998,"data":"[info] Using synthetic 'label_auto' | thr=48.2879 | pos_rate=0.200\n"}
+,{"stream_name":"stdout","time":1776.327589243,"data":"  scenario  h1_size  h2_size label_used  accuracy  precision  recall  f1_best   best_t  wall_time_s  cpu_percent  mem_percent\n"}
+,{"stream_name":"stdout","time":1776.327659969,"data":"Scenario 5        3        0 label_auto    0.9995        1.0     1.0      1.0 0.999664       35.324         51.0       1.0189\n"}
+,{"stream_name":"stdout","time":1776.327666379,"data":"Scenario 5        3        4 label_auto    0.9995        1.0     1.0      1.0 0.999664       35.324         51.0       1.0189\n"}
+,{"stream_name":"stdout","time":1776.32767179,"data":"Scenario 5        3        8 label_auto    0.9995        1.0     1.0      1.0 0.999664       35.324         51.0       1.0189\n"}
+,{"stream_name":"stdout","time":1776.327676672,"data":"\n"}
+,{"stream_name":"stdout","time":1776.327680919,"data":"Total waktu §2: 1757.0 s  (N_CPUS=4, RAM=31.3 GB)\n"}
+,{"stream_name":"stdout","time":1776.427872386,"data":"Rekonstruksi — Tabel 1\n"}
+,{"stream_name":"stdout","time":1776.427910539,"data":" skenario model  h1  h2  akurasi  presisi  recall     F1\n"}
+,{"stream_name":"stdout","time":1776.42791626,"data":"        1     A   3   0   0.9295   0.9808  1.0000 0.9903\n"}
+,{"stream_name":"stdout","time":1776.427942616,"data":"        1     B   3   4   0.9295   0.9808  1.0000 0.9903\n"}
+,{"stream_name":"stdout","time":1776.427946774,"data":"        1     C   3   8   0.9295   0.9808  1.0000 0.9903\n"}
+,{"stream_name":"stdout","time":1776.427950472,"data":"        2     A   8   0   0.9995   1.0000  1.0000 1.0000\n"}
+,{"stream_name":"stdout","time":1776.427953923,"data":"        2     B   8   4   0.9995   1.0000  1.0000 1.0000\n"}
+,{"stream_name":"stdout","time":1776.427957136,"data":"        2     C   8   8   0.9995   1.0000  1.0000 1.0000\n"}
+,{"stream_name":"stdout","time":1776.427960451,"data":"        3     A   8   0   0.9972   0.9893  0.9946 0.9920\n"}
+,{"stream_name":"stdout","time":1776.427964019,"data":"        3     B   8   4   0.9972   0.9893  0.9946 0.9920\n"}
+,{"stream_name":"stdout","time":1776.427967248,"data":"        3     C   8   8   0.9972   0.9893  0.9946 0.9920\n"}
+,{"stream_name":"stdout","time":1776.427970874,"data":"        4     A   3   0   0.9995   1.0000  1.0000 1.0000\n"}
+,{"stream_name":"stdout","time":1776.427974238,"data":"        4     B   3   4   0.9995   1.0000  1.0000 1.0000\n"}
+,{"stream_name":"stdout","time":1776.427977491,"data":"        4     C   3   8   0.9995   1.0000  1.0000 1.0000\n"}
+,{"stream_name":"stdout","time":1776.4279807,"data":"        5     A   3   0   0.9995   1.0000  1.0000 1.0000\n"}
+,{"stream_name":"stdout","time":1776.427983877,"data":"        5     B   3   4   0.9995   1.0000  1.0000 1.0000\n"}
+,{"stream_name":"stdout","time":1776.427987407,"data":"        5     C   3   8   0.9995   1.0000  1.0000 1.0000\n"}
+,{"stream_name":"stdout","time":1776.427991065,"data":"\n"}
+,{"stream_name":"stdout","time":1776.42799427,"data":"Rekonstruksi — Tabel 2\n"}
+,{"stream_name":"stdout","time":1776.427998177,"data":" skenario model  h1  h2  waktu_s  cpu_persen  memori_persen\n"}
+,{"stream_name":"stdout","time":1776.428001736,"data":"        1     A   3   0   40.287        50.8         0.9307\n"}
+,{"stream_name":"stdout","time":1776.428005451,"data":"        1     B   3   4   40.287        50.8         0.9307\n"}
+,{"stream_name":"stdout","time":1776.428009179,"data":"        1     C   3   8   40.287        50.8         0.9307\n"}
+,{"stream_name":"stdout","time":1776.428012852,"data":"        2     A   8   0  238.418        75.2         0.9088\n"}
+,{"stream_name":"stdout","time":1776.428016216,"data":"        2     B   8   4  238.418        75.2         0.9088\n"}
+,{"stream_name":"stdout","time":1776.428019773,"data":"        2     C   8   8  238.418        75.2         0.9088\n"}
+,{"stream_name":"stdout","time":1776.428022868,"data":"        3     A   8   0  313.631        72.1         0.9115\n"}
+,{"stream_name":"stdout","time":1776.428026293,"data":"        3     B   8   4  313.631        72.1         0.9115\n"}
+,{"stream_name":"stdout","time":1776.428030243,"data":"        3     C   8   8  313.631        72.1         0.9115\n"}
+,{"stream_name":"stdout","time":1776.428032797,"data":"        4     A   3   0   44.216        71.3         0.9149\n"}
+,{"stream_name":"stdout","time":1776.428035157,"data":"        4     B   3   4   44.216        71.3         0.9149\n"}
+,{"stream_name":"stdout","time":1776.428037486,"data":"        4     C   3   8   44.216        71.3         0.9149\n"}
+,{"stream_name":"stdout","time":1776.428039803,"data":"        5     A   3   0   35.324        51.0         1.0189\n"}
+,{"stream_name":"stdout","time":1776.428042191,"data":"        5     B   3   4   35.324        51.0         1.0189\n"}
+,{"stream_name":"stdout","time":1776.428044856,"data":"        5     C   3   8   35.324        51.0         1.0189\n"}
+,{"stream_name":"stdout","time":1776.428047527,"data":"\n"}
+,{"stream_name":"stdout","time":1776.42805452,"data":"Akurasi per skenario: paper vs rekonstruksi\n"}
+,{"stream_name":"stdout","time":1776.428058261,"data":"          paper                               rekonstruksi                               \n"}
+,{"stream_name":"stdout","time":1776.42806082,"data":"            min    max identik_dalam_skenario          min     max identik_dalam_skenario\n"}
+,{"stream_name":"stdout","time":1776.428063332,"data":"skenario                                                                                 \n"}
+,{"stream_name":"stdout","time":1776.428065731,"data":"1         0.997  0.997                   True       0.9295  0.9295                   True\n"}
+,{"stream_name":"stdout","time":1776.428068163,"data":"2         0.998  0.999                  False       0.9995  0.9995                   True\n"}
+,{"stream_name":"stdout","time":1776.428070523,"data":"3         0.997  0.997                   True       0.9972  0.9972                   True\n"}
+,{"stream_name":"stdout","time":1776.428073194,"data":"4         0.997  0.997                   True       0.9995  0.9995                   True\n"}
+,{"stream_name":"stdout","time":1776.428075671,"data":"5         0.996  0.997                  False       0.9995  0.9995                   True\n"}
+,{"stream_name":"stdout","time":1776.522384943,"data":"[info] Using synthetic 'label_auto' | thr=48.2879 | pos_rate=0.200\n"}
+,{"stream_name":"stdout","time":1827.116810174,"data":"[1 12 0]: jumlah parameter = 493\n"}
+,{"stream_name":"stdout","time":1877.551790828,"data":"[1 12 4]: jumlah parameter = 493\n"}
+,{"stream_name":"stdout","time":1927.646278278,"data":"[1 12 8]: jumlah parameter = 493\n"}
+,{"stream_name":"stdout","time":1927.646311759,"data":"prediksi ketiga 'arsitektur' identik: True\n"}
+,{"stream_name":"stdout","time":1927.693452989,"data":"          waktu_s_jumlah_nilai_unik  cpu_persen_jumlah_nilai_unik  memori_persen_jumlah_nilai_unik\n"}
+,{"stream_name":"stdout","time":1927.6935378,"data":"skenario                                                                                          \n"}
+,{"stream_name":"stdout","time":1927.693546663,"data":"1                                 1                             1                                1\n"}
+,{"stream_name":"stdout","time":1927.693551375,"data":"2                                 1                             1                                1\n"}
+,{"stream_name":"stdout","time":1927.693555646,"data":"3                                 1                             1                                1\n"}
+,{"stream_name":"stdout","time":1927.693588766,"data":"4                                 1                             1                                1\n"}
+,{"stream_name":"stdout","time":1927.693618044,"data":"5                                 1                             1                                1\n"}
+,{"stream_name":"stdout","time":1927.738049212,"data":"mesin ini: 4 core logis, RAM 31.3 GB\n"}
+,{"stream_name":"stdout","time":1927.73808485,"data":"CPU % kalau hanya satu thread yang bekerja = 100 / N_CPUS = 25.0 %; lebih tinggi berarti pustaka numerik memakai beberapa thread\n"}
+,{"stream_name":"stdout","time":1927.738091567,"data":"          cpu_persen  memori_persen\n"}
+,{"stream_name":"stdout","time":1927.738095882,"data":"skenario                           \n"}
+,{"stream_name":"stdout","time":1927.738100254,"data":"1               50.8         0.9307\n"}
+,{"stream_name":"stdout","time":1927.738104593,"data":"2               75.2         0.9088\n"}
+,{"stream_name":"stdout","time":1927.738108708,"data":"3               72.1         0.9115\n"}
+,{"stream_name":"stdout","time":1927.738112936,"data":"4               71.3         0.9149\n"}
+,{"stream_name":"stdout","time":1927.738137745,"data":"5               51.0         1.0189\n"}
+,{"stream_name":"stdout","time":1927.841426728,"data":"[info] Using synthetic 'label_auto' | thr=48.2879 | pos_rate=0.200\n"}
+,{"stream_name":"stdout","time":1927.88965226,"data":"fitur kelembaban1..4 ada di input model: True\n"}
+,{"stream_name":"stdout","time":1927.889690994,"data":"akurasi aturan 'rata-rata(kelembaban1..4) \u003e= 48.29' terhadap label_auto: 1.0000\n"}
+,{"stream_name":"stdout","time":1927.889695467,"data":"kesesuaian label_auto dengan label fault sebenarnya (S5): 0.200  (porsi fault sebenarnya 1.000, porsi label_auto 0.200)\n"}
+,{"stream_name":"stdout","time":1927.933840695,"data":"paper (3 desimal):\n"}
+,{"stream_name":"stdout","time":1927.933874909,"data":" skenario model  h1  h2  akurasi  presisi  recall  F1\n"}
+,{"stream_name":"stdout","time":1927.933878822,"data":"        5     A   3   4    0.997      1.0     1.0 1.0\n"}
+,{"stream_name":"stdout","time":1927.933881424,"data":"        5     B   3   8    0.997      1.0     1.0 1.0\n"}
+,{"stream_name":"stdout","time":1927.933884029,"data":"\n"}
+,{"stream_name":"stdout","time":1927.933886517,"data":"rekonstruksi (4 desimal):\n"}
+,{"stream_name":"stdout","time":1927.933889428,"data":" skenario model  h1  h2  akurasi  presisi  recall  F1  waktu_s  cpu_persen  memori_persen\n"}
+,{"stream_name":"stdout","time":1927.933893043,"data":"        2     A   8   0   0.9995      1.0     1.0 1.0  238.418        75.2         0.9088\n"}
+,{"stream_name":"stdout","time":1927.933896818,"data":"        2     B   8   4   0.9995      1.0     1.0 1.0  238.418        75.2         0.9088\n"}
+,{"stream_name":"stdout","time":1927.933901132,"data":"        2     C   8   8   0.9995      1.0     1.0 1.0  238.418        75.2         0.9088\n"}
+,{"stream_name":"stdout","time":1927.933904744,"data":"        4     A   3   0   0.9995      1.0     1.0 1.0   44.216        71.3         0.9149\n"}
+,{"stream_name":"stdout","time":1927.933908801,"data":"        4     B   3   4   0.9995      1.0     1.0 1.0   44.216        71.3         0.9149\n"}
+,{"stream_name":"stdout","time":1927.93391241,"data":"        4     C   3   8   0.9995      1.0     1.0 1.0   44.216        71.3         0.9149\n"}
+,{"stream_name":"stdout","time":1927.933916508,"data":"        5     A   3   0   0.9995      1.0     1.0 1.0   35.324        51.0         1.0189\n"}
+,{"stream_name":"stdout","time":1927.933920609,"data":"        5     B   3   4   0.9995      1.0     1.0 1.0   35.324        51.0         1.0189\n"}
+,{"stream_name":"stdout","time":1927.933924672,"data":"        5     C   3   8   0.9995      1.0     1.0 1.0   35.324        51.0         1.0189\n"}
+,{"stream_name":"stdout","time":1932.159432968,"data":"\n"}
+,{"stream_name":"stdout","time":1932.159467305,"data":"S1 [1 3]: ambang dari data uji t = 0.999764; sampel dengan p tepat = t: 1\n"}
+,{"stream_name":"stdout","time":1932.159472498,"data":"  presisi 0.9929, recall 1.0000, F1 0.9964  (p \u003e= t)\n"}
+,{"stream_name":"stdout","time":1932.159476828,"data":"  akurasi versi kode (p \u003e  t): 0.9985\n"}
+,{"stream_name":"stdout","time":1932.159480667,"data":"  akurasi satu ambang (p \u003e= t): 0.9990\n"}
+,{"stream_name":"stdout","time":1932.204051902,"data":"S1: porsi label_fault=1 = 0.071  -\u003e kelas unik: [np.int64(0), np.int64(1)]\n"}
+,{"stream_name":"stdout","time":1932.204206743,"data":"S2: porsi label_fault=1 = 1.000  -\u003e kelas unik: [np.int64(1)]\n"}
+,{"stream_name":"stdout","time":1932.204212632,"data":"S3: porsi label_fault=1 = 1.000  -\u003e kelas unik: [np.int64(1)]\n"}
+,{"stream_name":"stdout","time":1932.204216508,"data":"S4: porsi label_fault=1 = 1.000  -\u003e kelas unik: [np.int64(1)]\n"}
+,{"stream_name":"stdout","time":1932.204236766,"data":"S5: porsi label_fault=1 = 1.000  -\u003e kelas unik: [np.int64(1)]\n"}
+,{"stream_name":"stdout","time":1932.359994404,"data":"[info] Using synthetic 'label_auto' | thr=49.5000 | pos_rate=0.207\n"}
+,{"stream_name":"stdout","time":2099.396379417,"data":"[info] Using synthetic 'label_auto' | thr=48.2879 | pos_rate=0.200\n"}
+,{"stream_name":"stdout","time":2138.602693946,"data":"   scenario  h1_size  h2_size label_used  accuracy  precision  recall  f1_best\n"}
+,{"stream_name":"stdout","time":2138.602733048,"data":"Tanpa fault        3        0 label_auto    0.9262     0.9146     1.0   0.9550\n"}
+,{"stream_name":"stdout","time":2138.602738717,"data":"Tanpa fault        3        4 label_auto    0.9245     0.9035     1.0   0.9492\n"}
+,{"stream_name":"stdout","time":2138.602743546,"data":"Tanpa fault        3        8 label_auto    0.9245     0.9035     1.0   0.9492\n"}
+,{"stream_name":"stdout","time":2138.602748487,"data":"\n"}
+,{"stream_name":"stdout","time":2138.602752847,"data":"F1 terbaik tanpa fault: 0.9550 vs rentang F1 S1-S5 rekonstruksi: 0.9903-1.0000\n"}
+,{"stream_name":"stdout","time":2138.602757567,"data":"akurasi tanpa fault: 0.9262 (lihat S6: akurasi kode memakai p \u003e t)\n"}
+,{"stream_name":"stdout","time":2138.645035211,"data":"          aspek                                          paper / kode Des 2025                                                                                     versi terbaru                                   kenapa                                                                               dampak                                                                                 sumber\n"}
+,{"stream_name":"stdout","time":2138.645097898,"data":" Label (S4, S7)           label_auto = 20 % level tertinggi dari sinyal bersih mask fault yang benar-benar disuntikkan; fault berupa episode sehingga ada kelas normal dan fault               label harus mengukur fault NB15 v3 (program pertama + LM asli + label fault): F1 1 sinyal 0,753, 4 sensor 0,640 build_15_data_hipotetik_ann_lm_notebook.py; hasil15/data-hipotetik-berlabel-ann-lm.log\n"}
+,{"stream_name":"stdout","time":2138.645105343,"data":"Arsitektur (S1)                                      h2 dicatat, tidak dipakai          grid 8 arsitektur (1 dan 2 hidden layer) yang benar-benar dilatih, dipilih di dalam fold      perbandingan arsitektur harus nyata                   arsitektur terpilih berbeda per fold; tercatat di models/meta.json                                                      deteksi_fault_core.py HIDDEN_GRID\n"}
+,{"stream_name":"stdout","time":2138.645111252,"data":" Biaya (S2, S3) 1 angka per skenario untuk seluruh grid; CPU % bergantung core                    waktu latih per model dan per fold; tidak ada klaim efisiensi antar arsitektur biaya harus melekat ke model yang diukur                                NB11 total 610 menit; inferensi model tersimpan \u003c 1 s                                  hasil11/Ringkasan_untuk_laporan.md; sidang/bukti_demo\n"}
+,{"stream_name":"stdout","time":2138.645117661,"data":"Ambang (S5, S6)                 dipilih di data uji; akurasi p\u003et, presisi p\u003e=t                                   dipilih di validasi/fold dalam; semua metrik dari satu prediksi        data uji tidak boleh ikut memilih                                                  angka F1 turun ke tingkat realistis                                       build_15 best_threshold(); deteksi_fault_core.py\n"}
+,{"stream_name":"stdout","time":2138.645125193,"data":"       Evaluasi                                  satu split berurutan 60/20/20                              StratifiedGroupKFold blok waktu + uji statistik + purge + label acak         satu split tidak memberi variasi                            NB11: JSD 11/15 sel, p = 0,076; label acak F1 0,446–0,508                                            statistik_sel.csv; efek_purge_permutasi.csv\n"}
+,{"stream_name":"stdout","time":2138.645149149,"data":"Simulator fault                  drift 0,15–0,2 per sampel, bias seluruh deret                           drift 1 poin/hari per episode; bias/drift/spike per episode (NB14/NB15) fault harus mungkin terjadi secara fisik                                                       NB11 v2 → v3: p 0,0504 → 0,076                                                                         commit 9963cd2\n"}
+,{"stream_name":"stdout","time":2138.645154384,"data":"      Pelatihan             scipy least_squares (Jacobian numerik), init randn                                      LM asli dengan Jacobian analitik ber-self-check, init Xavier   permintaan pembimbing: LM sesuai paper                                      NB09 RQ2: LM juara 4/10 sel, BR 5/10, Adam 1/10                                                    hasil09/exports/09_ringkasan_rq.txt\n"}
+,{"stream_name":"stdout","time":2138.690481181,"data":"statistik_sel.csv tidak ditemukan; lewati.\n"}
+,{"stream_name":"stderr","time":2142.581243807,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":2142.581282147,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":2142.803296917,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":2142.803332869,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":2143.752782459,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":2143.86387781,"data":"[NbConvertApp] Writing 71919 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":2147.056075737,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":2147.861150957,"data":"[NbConvertApp] Writing 453465 bytes to __results__.html\n"}
+]

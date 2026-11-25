@@ -1,0 +1,10 @@
+kolom,arti
+timestamp,"waktu pembacaan (UTC), interval ±30 detik"
+kelembaban1..4,"nilai sensor DENGAN fault (%), NaN = data hilang (gejala kerusakan hardware). Ini masukan model."
+kelembaban1..4_asli,"nilai sensor sebelum fault disuntikkan (%), untuk pembanding"
+label_s1..4,"1 = sampel sensor itu sedang fault, 0 = normal (kunci jawaban)"
+jenis_s1..4,"jenis fault: normal, drift, spike, bias, hardware, atau gabungan seperti spike+bias"
+kondisi_s1..4,skenario dan kondisi yang disuntikkan ke sensor itu (tetap sepanjang file)
+label_fault,1 = minimal satu sensor fault pada baris ini
+sensor_rusak,"daftar sensor yang fault pada baris ini, mis. s2,s4"
+dalam_episode,"1 = baris di dalam episode gangguan (drift/bias aktif, spike/hardware hanya muncul di sini untuk kombinasi)"

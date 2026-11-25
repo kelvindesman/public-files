@@ -1,0 +1,17 @@
+skenario,kondisi,n_sampel,fault_%,NaN,jenis_terbanyak
+S1,faulty,10000,8.01,492,hardware
+S2,drift,10000,43.2,0,drift
+S2,spike,10000,1.52,0,spike
+S2,bias,10000,43.2,0,bias
+S2,hardware,10000,8.11,493,hardware
+S3,bias+malfunc,10000,43.2,218,bias
+S3,spike+malfunc,10000,4.14,212,hardware
+S3,spike+bias,10000,43.2,0,bias
+S3,drift+malfunc,10000,43.2,200,drift
+S3,drift+bias,10000,43.2,0,drift+bias
+S3,drift+spike,10000,43.2,0,drift
+S4,spike+bias+malfunc,10000,43.2,233,bias
+S4,drift+bias+malfunc,10000,43.2,231,drift+bias
+S4,spike+drift+malfunc,10000,43.2,205,drift
+S4,drift+spike+bias,10000,43.2,0,drift+bias
+S5,spike+bias+malfunc+drift,10000,43.2,223,drift+bias

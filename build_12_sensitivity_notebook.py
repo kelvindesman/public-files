@@ -12,7 +12,7 @@ Hasil ditulis ke exports/ (CSV + PNG + ringkasan). Tidak mengubah notebook 01-11
 import json
 
 OUT = "12_Sensitivitas_Parameter.ipynb"
-REPO_RAW = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv"
+REPO_RAW = "https://raw.githubusercontent.com/kelvindesman/public-files/refs/heads/main/data_sensor.csv"
 
 
 def md(src):

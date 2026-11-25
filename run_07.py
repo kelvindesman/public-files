@@ -103,7 +103,7 @@ print("Metode   :", METHOD_LIST, "| K-Fold :", N_SPLITS, "| MAX_PER_CLASS :", MA
 import requests, glob
 from io import StringIO
 
-DATA_URL = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv"
+DATA_URL = "https://raw.githubusercontent.com/kelvindesman/public-files/refs/heads/main/data_sensor.csv"
 DATA_NAME = "data_sensor.csv"
 
 def load_sensor_data():

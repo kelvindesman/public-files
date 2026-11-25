@@ -1,0 +1,198 @@
+{
+ "dibuat": "2026-11-21T09:54:16+00:00",
+ "commit": "77832c6",
+ "smoke": false,
+ "window": 1000,
+ "sampling_detik": 300,
+ "t_scales": 15,
+ "m": 2,
+ "r_ratio": 0.2,
+ "n_ref": 128,
+ "jsd": {
+  "bins": 8,
+  "h_ratio": 1.0,
+  "range_sd": 3.0,
+  "r_jsd_ratio": 0.2
+ },
+ "max_per_class": 100,
+ "n_window": 1651,
+ "feature_seconds": {
+  "EDM-Fuzzy": 241.7,
+  "JSD-Fuzzy": 2330.9
+ },
+ "total_seconds": 4866.4,
+ "python": "3.13.18",
+ "numpy": "2.1.3",
+ "sklearn": "1.6.1",
+ "joblib": "1.6.0",
+ "mesin": "x86_64 cpu=4",
+ "catatan": "Model dilatih di semua window skenario. Akurasi data latih BUKAN ukuran generalisasi; angka resmi = cv_f1_nb11 (CV grouped notebook 11 v3).",
+ "models": [
+  {
+   "scenario_short": "S1",
+   "method": "EDM-Fuzzy",
+   "hidden": [
+    32,
+    16
+   ],
+   "activation": "relu",
+   "inner_cv_f1": 0.6507937787378713,
+   "n_train": 110,
+   "train_acc": 0.9181818181818182,
+   "train_acc_sensor_all4": 0.7272727272727273,
+   "cv_f1_nb11": 0.4905,
+   "lm_status": "max_iter",
+   "file": "model_N1000_S1_EDM.joblib",
+   "train_s": 120.2
+  },
+  {
+   "scenario_short": "S1",
+   "method": "JSD-Fuzzy",
+   "hidden": [
+    32,
+    16
+   ],
+   "activation": "tanh",
+   "inner_cv_f1": 0.714934426815323,
+   "n_train": 110,
+   "train_acc": 0.9818181818181818,
+   "train_acc_sensor_all4": 1.0,
+   "cv_f1_nb11": 0.6681,
+   "lm_status": "max_iter",
+   "file": "model_N1000_S1_JSD.joblib",
+   "train_s": 119.8
+  },
+  {
+   "scenario_short": "S2",
+   "method": "EDM-Fuzzy",
+   "hidden": [
+    64,
+    16
+   ],
+   "activation": "tanh",
+   "inner_cv_f1": 0.2496782048321036,
+   "n_train": 275,
+   "train_acc": 0.8727272727272727,
+   "train_acc_sensor_all4": 0.6954545454545454,
+   "cv_f1_nb11": 0.3807,
+   "lm_status": "max_iter",
+   "file": "model_N1000_S2_EDM.joblib",
+   "train_s": 383.6
+  },
+  {
+   "scenario_short": "S2",
+   "method": "JSD-Fuzzy",
+   "hidden": [
+    32,
+    8
+   ],
+   "activation": "tanh",
+   "inner_cv_f1": 0.32943863372089,
+   "n_train": 275,
+   "train_acc": 0.9018181818181819,
+   "train_acc_sensor_all4": 0.5909090909090909,
+   "cv_f1_nb11": 0.3651,
+   "lm_status": "max_iter",
+   "file": "model_N1000_S2_JSD.joblib",
+   "train_s": 137.5
+  },
+  {
+   "scenario_short": "S3",
+   "method": "EDM-Fuzzy",
+   "hidden": [
+    16
+   ],
+   "activation": "relu",
+   "inner_cv_f1": 0.23169457249141068,
+   "n_train": 385,
+   "train_acc": 0.825974025974026,
+   "train_acc_sensor_all4": 0.9272727272727272,
+   "cv_f1_nb11": 0.22,
+   "lm_status": "max_iter",
+   "file": "model_N1000_S3_EDM.joblib",
+   "train_s": 130.6
+  },
+  {
+   "scenario_short": "S3",
+   "method": "JSD-Fuzzy",
+   "hidden": [
+    64
+   ],
+   "activation": "relu",
+   "inner_cv_f1": 0.20298821203746364,
+   "n_train": 385,
+   "train_acc": 0.9766233766233766,
+   "train_acc_sensor_all4": 0.9757575757575757,
+   "cv_f1_nb11": 0.1642,
+   "lm_status": "max_iter",
+   "file": "model_N1000_S3_JSD.joblib",
+   "train_s": 335.8
+  },
+  {
+   "scenario_short": "S4",
+   "method": "EDM-Fuzzy",
+   "hidden": [
+    64,
+    16
+   ],
+   "activation": "tanh",
+   "inner_cv_f1": 0.3532679279182104,
+   "n_train": 275,
+   "train_acc": 0.9963636363636363,
+   "train_acc_sensor_all4": 1.0,
+   "cv_f1_nb11": 0.3815,
+   "lm_status": "max_iter",
+   "file": "model_N1000_S4_EDM.joblib",
+   "train_s": 367.2
+  },
+  {
+   "scenario_short": "S4",
+   "method": "JSD-Fuzzy",
+   "hidden": [
+    64,
+    16
+   ],
+   "activation": "tanh",
+   "inner_cv_f1": 0.382129799412273,
+   "n_train": 275,
+   "train_acc": 1.0,
+   "train_acc_sensor_all4": 1.0,
+   "cv_f1_nb11": 0.3997,
+   "lm_status": "max_iter",
+   "file": "model_N1000_S4_JSD.joblib",
+   "train_s": 380.6
+  },
+  {
+   "scenario_short": "S5",
+   "method": "EDM-Fuzzy",
+   "hidden": [
+    64
+   ],
+   "activation": "relu",
+   "inner_cv_f1": 0.79752886002886,
+   "n_train": 110,
+   "train_acc": 1.0,
+   "train_acc_sensor_all4": 1.0,
+   "cv_f1_nb11": 0.8486,
+   "lm_status": "converged(tol)",
+   "file": "model_N1000_S5_EDM.joblib",
+   "train_s": 147.3
+  },
+  {
+   "scenario_short": "S5",
+   "method": "JSD-Fuzzy",
+   "hidden": [
+    64
+   ],
+   "activation": "tanh",
+   "inner_cv_f1": 0.8804926289557438,
+   "n_train": 110,
+   "train_acc": 1.0,
+   "train_acc_sensor_all4": 1.0,
+   "cv_f1_nb11": 0.8715,
+   "lm_status": "converged(tol)",
+   "file": "model_N1000_S5_JSD.joblib",
+   "train_s": 156.8
+  }
+ ]
+}

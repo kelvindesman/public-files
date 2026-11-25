@@ -30,7 +30,7 @@ Data: data_sensor.csv (281.721 baris, 2025-09-14 .. 2025-12-21, interval 30 deti
 """
 import json
 
-REPO_RAW = "https://raw.githubusercontent.com/vousmeevoyez/public-files/refs/heads/main/data_sensor.csv"
+REPO_RAW = "https://raw.githubusercontent.com/kelvindesman/public-files/refs/heads/main/data_sensor.csv"
 OUT = "/Users/kelvin/apps/public-files/08_JSD_Fuzzy_vs_EDM_Fuzzy_Paper_Q3.ipynb"
 
 

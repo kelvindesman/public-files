@@ -118,7 +118,6 @@ tabel atas; S5 (empat fault sekaligus) paling mudah, S3 paling sulit.
 HARI_MULAI = 10
 SENSOR_RUSAK = ["S2"]
 FAULT = ["drift", "spike", "bias", "hardware"]
-SEED = 1
 """),
     md(r"""
 ### Langkah 3 — Ambil data asli lalu beri kerusakan buatan
@@ -142,7 +141,7 @@ if start + WIN > len(X):
     raise ValueError(f"HARI_MULAI terlalu besar: maks {(len(X) - WIN) * core.SAMPLING_SECONDS / 86400:.0f}")
 sens_idx = [core.SENSORS.index(s) for s in SENSOR_RUSAK]
 
-KONDISI, Y_full, M_full = core.inject_like_training(X, FAULT, sens_idx, seed=SEED)
+KONDISI, Y_full, M_full = core.inject_like_training(X, FAULT, sens_idx, seed=1)
 X_asli = X[start:start + WIN]
 X_fault, M_fault = Y_full[start:start + WIN], M_full[start:start + WIN]
 waktu = df_sync.index[start:start + WIN]
