@@ -26,7 +26,7 @@ sensor_pilihan = [(1,), (0, 3), (0, 1, 2), (0, 1, 2, 3), ()]
 hari_pilihan = [0.0, 10.0, 39.5, 69.0, pil_hari.max]
 for i, (nn, fault) in enumerate(itertools.product(META, kombinasi_fault)):
     p = dict(n=nn, hari=hari_pilihan[i % 5], sensor=sensor_pilihan[i % 5], fault=fault,
-             k=[0.1, 1.0, 50.0][i % 3], seed=2026 + i, lihat=i % 4)
+             k=[0.1, 1.0, 50.0][i % 3], lihat=i % 4)
     t0 = time.time()
     for fn in (gambar_fault, gambar_entropi, tebak):
         try:
@@ -37,11 +37,11 @@ for i, (nn, fault) in enumerate(itertools.product(META, kombinasi_fault)):
     if dt > 4.0: lambat.append((nn, len(p["sensor"]), round(dt, 2)))
 t0 = time.time()
 pil_fault.value = ("spike", "bias"); pil_sensor.value = (0, 3); pil_int.value = 10.0
-pil_hari.value = 40.0; pil_N.value = max(META); pil_seed.value = 7; pil_lihat.value = 3
+pil_hari.value = 40.0; pil_N.value = max(META); pil_lihat.value = 3
 t_widget = time.time() - t0
 print("HASIL_GERAK=" + json.dumps({"n": n, "n_N": len(META), "error": [str(e)[:400] for e in err[:3]],
                                    "n_error": len(err), "lambat": lambat[:5], "n_lambat": len(lambat),
-                                   "t_widget_7_ubah": round(t_widget, 2)}))
+                                   "t_widget_6_ubah": round(t_widget, 2)}))
 """
 
 
@@ -64,17 +64,18 @@ def test_semua_pilihan_panel_jalan_dan_cepat():
     assert hasil["n"] == hasil["n_N"] * 16
     # satu perubahan panel = fault + entropi baru untuk semua sensor yang dirusak (N = 1000: ±0,4 s/sensor/metode)
     assert hasil["n_lambat"] == 0, hasil["lambat"]
-    assert hasil["t_widget_7_ubah"] < 20.0
+    assert hasil["t_widget_6_ubah"] < 20.0
 
 
 # source: Kelvin, chat 2026-11-21 — "make sure sidang-interaktif-deteksi-fault all adjustable for demo purpose";
+# seed dropped from the panel: Kelvin chat 2026-11-25 — "hide seed from all surface so less question";
 # default N = 1000: Kelvin chat 2026-11-21 pasted checklist "3. Model demo sidang (...), data 1000"
 def test_panel_mencakup_semua_parameter_demo():
     nb = _jalankan(NB_INTERNAL, "print('BAWAAN_N=' + str(pil_N.value))\n"
                                 "print('KONTROL=' + json.dumps(sorted(KONTROL)) + ' N=' + json.dumps(sorted(META)))")
     teks = "".join(o.get("text", "") for o in nb.cells[-1].outputs if o.output_type == "stream")
     assert json.loads(teks.split("KONTROL=")[1].split(" N=")[0]) == sorted(
-        ["n", "hari", "sensor", "fault", "k", "seed", "lihat"])
+        ["n", "hari", "sensor", "fault", "k", "lihat"])
     assert json.loads(teks.split(" N=")[1].splitlines()[0]) == [200, 700, 1000]
     assert teks.split("BAWAAN_N=")[1].splitlines()[0] == "1000"
 
@@ -133,3 +134,15 @@ def test_bobot_numpy_sama_dengan_model_tersimpan():
             p = {"fill": m.fill, "mean": m.mean, "scale": m.scale, "act": m.activation,
                  "W": [W for W, _ in lay], "b": [bb for _, bb in lay]}
             assert np.abs(maju(p, X, "kelas") - m.predict_proba(X)).max() < 1e-9
+
+
+# source: Kelvin, chat 2026-11-25 — "hide seed from all surface so less question"
+def test_seed_tidak_terlihat_di_salinan_presentasi():
+    subprocess.run([PY, str(ROOT / "sidang" / "qa" / "ekspor_notebook_sidang.py")], check=True, capture_output=True)
+    pres = nbformat.read(NB_PRESENTASI, as_version=4)
+    markdown = " ".join(c.source for c in pres.cells if c.cell_type == "markdown").lower()
+    assert "seed" not in markdown
+    kode = "\n".join(c.source for c in pres.cells if c.cell_type == "code")
+    assert 'description="Seed"' not in kode and "pil_seed" not in kode
+    # the one remaining fixed value lives inside the fault simulator call, not in the panel
+    assert kode.lower().count("seed") == 1

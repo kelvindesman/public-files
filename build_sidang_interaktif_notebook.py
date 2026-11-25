@@ -74,8 +74,8 @@ diekspor; tidak ada model yang dilatih ulang di sini, jadi tiap sel selesai dala
 hitungan detik.
 
 Cara pakai: **Run All** sekali, lalu ubah pilihan di panel kontrol: panjang jendela
-(N = 200/700/1000, bawaan 1000), hari mulai, sensor yang dirusak, kombinasi fault, intensitas,
-dan seed. Fault dan entropi dihitung langsung dengan fungsi penelitian yang sama;
+(N = 200/700/1000, bawaan 1000), hari mulai, sensor yang dirusak, kombinasi fault, dan
+intensitas. Fault dan entropi dihitung langsung dengan fungsi penelitian yang sama;
 grafik dan tebakan model ikut berubah.
 """)
 
@@ -242,10 +242,9 @@ pil_sensor = w.SelectMultiple(options=[(f"S{s+1}", s) for s in range(4)], value=
 pil_fault = w.SelectMultiple(options=FAULT4, value=tuple(FAULT4), rows=4, description="Fault")
 pil_int = w.FloatLogSlider(value=1, base=10, min=-1, max=2, step=0.1, description="Intensitas ×",
                            continuous_update=False, readout_format=".2g")
-pil_seed = w.BoundedIntText(value=2026, min=0, max=10**6, description="Seed")
 pil_lihat = w.Dropdown(options=[(f"S{s+1}", s) for s in range(4)], value=1, description="Gambar sensor")
-PANEL = w.VBox([w.HBox([pil_N, pil_hari, pil_int]), w.HBox([pil_sensor, pil_fault, w.VBox([pil_seed, pil_lihat])])])
-KONTROL = dict(n=pil_N, hari=pil_hari, sensor=pil_sensor, fault=pil_fault, k=pil_int, seed=pil_seed, lihat=pil_lihat)
+PANEL = w.VBox([w.HBox([pil_N, pil_hari, pil_int]), w.HBox([pil_sensor, pil_fault, w.VBox([pil_lihat])])])
+KONTROL = dict(n=pil_N, hari=pil_hari, sensor=pil_sensor, fault=pil_fault, k=pil_int, lihat=pil_lihat)
 
 
 def _skala(fn, kw, k):
@@ -261,30 +260,30 @@ def _skala(fn, kw, k):
 
 
 @lru_cache(maxsize=32)
-def deret_rusak(sensor, fault, k, seed):
+def deret_rusak(sensor, fault, k):
     # Fault disuntikkan ke SELURUH deret lalu jendela dipotong, persis seperti data latih
     # (core.segment_and_label); urutan komponen = definisi kondisi di core.SCENARIOS.
     if not sensor or not fault:
         return X5, np.zeros(X5.shape, bool), "normal"
     kondisi = core.condition_for(fault)
     faults = [(fn, _skala(fn, kw, k)) for fn, kw in core.SCENARIOS[kondisi]]
-    Y, M = core.inject_faults_multisensor(X5, faults, list(sensor), seed=seed)
+    Y, M = core.inject_faults_multisensor(X5, faults, list(sensor), seed=2026)
     return Y, M, kondisi
 
 
 @lru_cache(maxsize=2048)
 def fitur_sensor(n, mulai, s, mi, kunci):
-    # Entropi multiskala 1 sensor (15 skala). float32 seperti core.make_windows; seed 7 + 19·s
-    # seperti core.concat_multisensor_features(seed=7) untuk jendela pertama.
+    # Entropi multiskala 1 sensor (15 skala). float32 seperti core.make_windows; sd = 7 + 19·s
+    # seperti core.concat_multisensor_features untuk jendela pertama.
     Y = X5 if kunci is None else deret_rusak(*kunci)[0]
     x = Y[mulai:mulai + n, s].astype(np.float32).astype(float)
     return core.entropy_1d(x, METODE[mi], sd=7 + 19 * s)
 
 
-def jendela(n, hari, sensor, fault, k, seed, **_):
+def jendela(n, hari, sensor, fault, k, **_):
     sensor, fault = tuple(sorted(sensor)), tuple(f for f in FAULT4 if f in fault)
     mulai = min(int(round(hari * PER_HARI)), len(X5) - n)
-    kunci = (sensor, fault, float(k), int(seed)) if sensor and fault else None
+    kunci = (sensor, fault, float(k)) if sensor and fault else None
     Y, M, kondisi = deret_rusak(*kunci) if kunci else (X5, np.zeros(X5.shape, bool), "normal")
     F = {mi: (np.concatenate([fitur_sensor(n, mulai, s, mi, None) for s in range(4)]),
               np.concatenate([fitur_sensor(n, mulai, s, mi, kunci if s in sensor else None) for s in range(4)]))

@@ -69,7 +69,6 @@ Ubah salah satu baris ini, lalu **Run all** lagi:
 HARI_MULAI = 10                  # potongan data mulai hari ke-berapa (0–95)
 SENSOR_RUSAK = ["S2"]            # contoh lain: ["S1", "S3"] atau ["S1","S2","S3","S4"]
 FAULT = ["drift", "spike", "bias", "hardware"]   # satu atau kombinasi
-SEED = 1                         # ganti angka = pola kerusakan acak yang lain
 ```
 
 Dua hal soal `HARI_MULAI`:
@@ -130,8 +129,8 @@ Jawaban yang bisa dipakai:
   notebook 12). Itu batasan yang sudah ditulis, bukan bug.
 - Kombinasi empat kerusakan (S5) paling mudah dikenali; dua kerusakan (S3)
   paling sulit.
-- Tebakan dengan peluang dekat 50 % bisa berbalik kalau jalan ulang dengan
-  seed lain: entropi memakai 128 titik acuan yang diambil acak (`n_ref`),
+- Tebakan dengan peluang dekat 50 % bisa berbalik pada potongan lain:
+  entropi memakai 128 titik acuan yang diambil acak (`n_ref`),
   jadi fiturnya sedikit berubah. Itu sebabnya yang dinilai adalah banyak
   window (Langkah 6) dan CV, bukan satu contoh.
 - Akurasi Langkah 6 (sekitar 80 %) lebih tinggi dari F1 CV karena posisi
