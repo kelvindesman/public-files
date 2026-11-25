@@ -21,6 +21,8 @@ ROOT = Path(__file__).resolve().parents[2]
 NB = ROOT / "sidang" / "04_Sidang_Interaktif.ipynb"
 TAG = "catatan-internal"
 HTML = Path(__file__).with_name("catatan_artifact_template.html")
+# (id, judul, file markdown di sidang/qa) untuk catatan bergambar di luar notebook
+TAMBAHAN = [("portabel", "dari eksperimen ke model portabel (bergambar)", "13_alur_model_portabel.md")]
 
 
 def bongkar(src: str) -> tuple[str, str, str] | None:
@@ -181,11 +183,18 @@ def main() -> int:
         grup, judul, isi = b
         isi, judul = gaya_netral(isi), gaya_netral(judul)
         docs.append({"id": f"c{len(docs) + 1:02d}", "grup": grup, "judul": judul, "md": isi})
+    n_nb = len(docs)
+    # Catatan bergambar yang ditulis langsung di sidang/qa (bukan dari notebook): disisipkan
+    # setelah catatan per bagian notebook terakhir.
+    pos = max(i for i, d in enumerate(docs) if d["grup"] == "Catatan per bagian notebook") + 1
+    for i, (did, judul, f) in enumerate(TAMBAHAN):
+        docs.insert(pos + i, {"id": did, "grup": "Catatan per bagian notebook", "judul": judul,
+                              "md": (Path(__file__).parent / f).read_text(encoding="utf-8")})
     sisa = [(d["id"], m.group(0)) for d in docs
             for m in re.finditer(r"\b(saya|Saya|Anda|kami|Kami|kita|Kita|aku|Aku|Bapak|Ibu)\b|\w+-?ku\b(?<!laku)(?<!baku)(?<!buku)", d["judul"] + " " + d["md"])]
     assert not sisa, f"masih ada kata ganti orang: {sisa[:10]}"
     n_sel = sum(TAG in c.metadata.get("tags", []) for c in nb.cells)
-    assert len(docs) == n_sel - 1, f"{len(docs)} dokumen dari {n_sel} sel catatan (1 sel judul)"
+    assert n_nb == n_sel - 1, f"{n_nb} dokumen dari {n_sel} sel catatan (1 sel judul)"
     peta_nb, peta_sidang = peta_kaggle()
     for d in docs:
         d["md"] = tautkan(d["md"], peta_nb, peta_sidang)
